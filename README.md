@@ -6,7 +6,7 @@ An online U-Fund system built in Java **24** and ___ _replace with other platfor
 ## Team
 
 - Anthony Rosati Jr. 
-- MEMBER2
+- Anthony Pelto
 - MEMBER3
 - MEMBER4
 
