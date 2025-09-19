@@ -9,6 +9,7 @@ An online U-Fund system built in Java **24** and ___ _replace with other platfor
 - Anthony Pelto
 - Addison Asuncion
 - Seth Taylor
+- Nicholas Li
 
 
 ## Prerequisites
