@@ -42,7 +42,13 @@ public class Need {
      * @param name
      */
     public void setName(String name) {this.name = name;}
-    
+    /**
+     * Set value of need for deserialization
+     * @return double value, price of need
+     */
+    public void setValue(double value) {this.value = value;}
+
+
     /**
      * Retrieves name of need
      * @return name of need
