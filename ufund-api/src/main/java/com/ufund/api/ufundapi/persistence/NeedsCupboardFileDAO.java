@@ -21,23 +21,94 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
     private ObjectMapper objectMapper;
     private static int nextId;
     private String fn;
-
-    /**
-     * Need to add constructor
-     */
     
-     /**
-      * Add nextId
-      */
+    /**
+     *Create Needs Cupboard DAO(Data Access Object)
+     * @param fn Filename to rw from
+     * @param objectMapper provides deserialization & serialization for JSON
+     */
+     public NeedsCupboardFileDAO(@Value("${needs.file}") String fn, ObjectMapper objectMapper) throws IOException{
+            this.fn = fn;
+            this.objectMapper = objectMapper;
+            load();
 
+    }
+
+     /**
+      * Update id for next need created
+      *@return Next id
+      */
+    private synchronized static int nextId(){
+        int id = nextId;
+        ++nextId;
+        return id;
+    }
 
     /**
-     * Add getNeedsArray
+     *  Create array of Needs from tree map
+     * @return Array of Needs, could be null
      */
+    private Need[] getNeedsArray(){
+        return getNeedsArray();
+
+    }
+
+    /**
+     * Creates array of Needs from tree map for needs that contain "text"
+     * if "text" is null, array will contain all needs in treemap
+     * @param text, if this string is passed in only add needs contaiting to Array
+     * @return Array of Needs
+     */
+    private Need[] getNeedsArray(String text){
+        ArrayList<Need> needsArrayList = new ArrayList<>();
+
+        for (Need need : needs.values()){
+            if (text == null || need.getName().contains(text)){
+                needsArrayList.add(need);
+            }
+        }
+
+        Need[] needsArray = new Need[needsArrayList.size()];
+        needsArrayList.toArray(needsArray);
+        return needsArray;
+
+    }
 
      /**
-      * Add Save & Load methods for loading in needs from JSON
+      * Saves Needs from map into file
+      *@return true, if written successfully
       */
+
+    private boolean save() throws IOException{
+        Need[] needsArray = getNeedsArray();
+        //use the object mapper to serialize jave objects to JSON 
+        //Issues will raise an IOException
+        objectMapper.writeValue(new File(fn), needsArray);
+        return true;
+
+    }
+    /**
+     * Load from JSON into the map
+     * Increment id after all have been read in
+     * @return true if read successfully
+     */
+    private boolean load() throws IOException{
+        needs = new TreeMap<>();
+        nextId = 0;
+        //use object mapper to deserialize  file into needsArray
+        Need[] needsArray = objectMapper.readValue(new File(fn), Need[].class);
+        //add needs to needs tree map
+        for (Need need : needsArray){
+            needs.put(need.getId(), need);
+            if (need.getId() > nextId)
+                nextId = need.getId();
+        }
+
+        ++nextId;
+        return true;
+    }
+
+
     @Override
     public Need[] getNeeds() throws IOException {
         // TODO Auto-generated method stub
@@ -45,9 +116,10 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
     }
 
     @Override
-    public Need[] searchNeeds() throws IOException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'searchNeeds'");
+    public Need[] searchNeeds(String text) throws IOException {
+        synchronized(needs) {
+            return getNeedsArray(text);
+        }
     }
 
     @Override
