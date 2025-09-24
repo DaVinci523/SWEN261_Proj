@@ -11,7 +11,7 @@ public interface NeedsCupboardDAO {
 
     Need[] getNeeds() throws IOException;
 
-    Need[] searchNeeds() throws IOException;
+    Need[] searchNeeds(String text) throws IOException;
 
     Need getNeed(int id) throws IOException;
 

@@ -1,6 +1,7 @@
 package com.ufund.api.ufundapi.controller;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,7 +33,8 @@ public class NeedsCupboardController {
      * Constructor
      * @param needsCupboardController
      */
-    public NeedsCupboardController(NeedsCupboardController needsCupboardController){
+    public NeedsCupboardController(NeedsCupboardDAO needsCupboardDAO){
+        this.needsCupboardDAO = needsCupboardDAO;
     }
 
 
@@ -49,7 +51,17 @@ public class NeedsCupboardController {
 
     @GetMapping("/")
     public ResponseEntity<Need[]> searchNeeds(@RequestParam String name){
-        return null;
+        LOG.info("GET /needs/?name=" + name);
+        try {
+            Need[] needs = needsCupboardDAO.searchNeeds(name);
+            return new ResponseEntity<Need[]>(needs, HttpStatus.OK);
+
+        }
+        catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        }
     }
 
     @PostMapping("") 

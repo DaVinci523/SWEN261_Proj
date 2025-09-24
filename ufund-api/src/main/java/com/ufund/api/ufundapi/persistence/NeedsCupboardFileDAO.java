@@ -30,7 +30,7 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
      public NeedsCupboardFileDAO(@Value("${needs.file}") String fn, ObjectMapper objectMapper) throws IOException{
             this.fn = fn;
             this.objectMapper = objectMapper;
-
+            load();
 
     }
 
@@ -116,9 +116,10 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
     }
 
     @Override
-    public Need[] searchNeeds() throws IOException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'searchNeeds'");
+    public Need[] searchNeeds(String text) throws IOException {
+        synchronized(needs) {
+            return getNeedsArray(text);
+        }
     }
 
     @Override
