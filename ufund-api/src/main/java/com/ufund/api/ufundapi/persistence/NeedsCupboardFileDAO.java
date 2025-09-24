@@ -130,8 +130,14 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
 
     @Override
     public Need createdNeed(Need need) throws IOException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createdNeed'");
+        synchronized(need) {
+            // We create a new hero object because the id field is immutable
+            // and we need to assign the next unique id
+            Need newNeed = new Need(nextId(),need.getName(), need.getValue());
+            needs.put(newNeed.getId(),newNeed);
+            save(); // may throw an IOException
+            return newNeed;
+        }
     }
 
     @Override
