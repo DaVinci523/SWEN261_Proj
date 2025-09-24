@@ -49,7 +49,7 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
      * @return Array of Needs, could be null
      */
     private Need[] getNeedsArray(){
-        return getNeedsArray();
+        return getNeedsArray(null);
 
     }
 
