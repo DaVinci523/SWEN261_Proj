@@ -49,7 +49,7 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
      * @return Array of Needs, could be null
      */
     private Need[] getNeedsArray(){
-        return getNeedsArray();
+        return getNeedsArray(null);
 
     }
 
@@ -63,6 +63,7 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
         ArrayList<Need> needsArrayList = new ArrayList<>();
 
         for (Need need : needs.values()){
+            needsArrayList.add(need);
             if (text == null || need.getName().contains(text)){
                 needsArrayList.add(need);
             }
@@ -111,8 +112,9 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
 
     @Override
     public Need[] getNeeds() throws IOException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getNeeds'");
+        synchronized(needs) {
+            return getNeedsArray();
+        }
     }
 
     @Override
