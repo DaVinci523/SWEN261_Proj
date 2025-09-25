@@ -82,7 +82,7 @@ public class NeedsCupboardController {
     @PutMapping("")
     public ResponseEntity<Need> updateNeed(@RequestBody Need need){
         LOG.info("PUT /needs " + need);
-
+        
         try {
             Need updated = needsCupboardDAO.updateNeed(need);
             if (updated != null) {

@@ -63,7 +63,6 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
         ArrayList<Need> needsArrayList = new ArrayList<>();
 
         for (Need need : needs.values()){
-            needsArrayList.add(need);
             if (text == null || need.getName().contains(text)){
                 needsArrayList.add(need);
             }
@@ -140,10 +139,10 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
     public Need updateNeed(Need need) throws IOException {
         synchronized(needs) {
             if (needs.containsKey(need.getId()) == false)
-                return null;  // hero does not exist
+                return null;
 
             needs.put(need.getId(),need);
-            save(); // may throw an IOException
+            save();
             return need;
         }
     }
