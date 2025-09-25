@@ -63,7 +63,6 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
         ArrayList<Need> needsArrayList = new ArrayList<>();
 
         for (Need need : needs.values()){
-            needsArrayList.add(need);
             if (text == null || need.getName().contains(text)){
                 needsArrayList.add(need);
             }
