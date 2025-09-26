@@ -143,8 +143,14 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
 
     @Override
     public boolean deleteNeed(int id) throws IOException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteNeed'");
+         synchronized(needs) {
+            if (needs.containsKey(id)) {
+                needs.remove(id);
+                return save();
+            }
+            else
+                return false;
+        }
     }
     
 

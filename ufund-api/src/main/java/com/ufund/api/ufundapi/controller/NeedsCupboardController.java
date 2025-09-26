@@ -76,7 +76,20 @@ public class NeedsCupboardController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Need> deleteHero(@PathVariable int id){
-        return null;
+       LOG.info("DELETE /needs/" + id);
+
+        try{
+
+            if(needsCupboardDAO.deleteNeed(id))
+                return new ResponseEntity<>(HttpStatus.OK);
+            else
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+
+        } catch (IOException e){
+            LOG.log(Level.SEVERE,e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }
