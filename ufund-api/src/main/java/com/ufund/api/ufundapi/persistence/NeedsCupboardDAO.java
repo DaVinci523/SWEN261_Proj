@@ -8,17 +8,49 @@ import com.ufund.api.ufundapi.model.Need;
  * @author CTRL
  */
 public interface NeedsCupboardDAO {
-
+   
+    /**
+     * Returns array of all needs in JSON
+     * @return getNeedsArray
+     */
     Need[] getNeeds() throws IOException;
-
+    
+    /**
+     * Search for needs containing text passed in
+     * @param String text
+     * @return getNeedsArray that contains text
+     */
     Need[] searchNeeds(String text) throws IOException;
 
+    /**
+     * Returns single need with id
+     * @param int id id to search for 
+     * @return need if found, null if no id in needs JSON
+     */
     Need getNeed(int id) throws IOException;
 
+    /**
+     * Creates a new Need object
+     * 
+     * @param need: the input object containing the name and value
+     * @return the new need with a generated id
+     * @throws I/O exception if an error occured while saving the new Need to storage
+     */
     Need createdNeed(Need need) throws IOException;
 
+    /**
+     * Update need's contents, ie)name, value
+     * @param  Need need
+     * @return Need updated need
+     */
     Need updateNeed(Need need) throws IOException;
 
+    /**
+     * Delete need at specified id
+     * @param int id
+     * @return true if file was updated succesfully
+     * @return false, if deletion failed
+     */
     boolean deleteNeed(int id) throws IOException;
 
 

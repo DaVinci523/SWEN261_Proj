@@ -76,7 +76,6 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
       * Saves Needs from map into file
       *@return true, if written successfully
       */
-
     private boolean save() throws IOException{
         Need[] needsArray = getNeedsArray();
         //use the object mapper to serialize jave objects to JSON 
@@ -105,7 +104,10 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
         ++nextId;
         return true;
     }
-
+    /**
+     * Returns array of all needs in JSON
+     * @return getNeedsArray
+     */
 
     @Override
     public Need[] getNeeds() throws IOException {
@@ -113,7 +115,11 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
             return getNeedsArray();
         }
     }
-
+    /**
+     * Search for needs containing text passed in
+     * @param String text
+     * @return getNeedsArray that contains text
+     */
     @Override
     public Need[] searchNeeds(String text) throws IOException {
         synchronized(needs) {
@@ -121,6 +127,11 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
         }
     }
 
+    /**
+     * Returns single need with id
+     * @param int id id to search for 
+     * @return need if found, null if no id in needs JSON
+     */
     @Override
     public Need getNeed(int id) throws IOException {
         synchronized(needs) {
@@ -142,21 +153,22 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
     @Override
     public Need createdNeed(Need need) throws IOException {
         synchronized(need) {
-            // Check if the need already exists
             boolean exists = needs.values().stream().anyMatch(n -> n.getName().equalsIgnoreCase(need.getName()));
             if (exists){
                 return null;
             }
-            // We create a new need object because the id field is immutable
-            // and we need to assign the next unique id. We also assign a value 
-            // name to the need.
             Need newNeed = new Need(nextId(),need.getName(), need.getValue());
             needs.put(newNeed.getId(),newNeed);
-            save(); // may throw an IOException
+            save();
             return newNeed;
         }
     }
 
+    /**
+     * Update need's contents, ie)name, value
+     * @param  Need need
+     * @return Need updated need
+     */
     @Override
     public Need updateNeed(Need need) throws IOException {
         synchronized(needs) {
@@ -169,6 +181,12 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
         }
     }
 
+    /**
+     * Delete need at specified id
+     * @param int id
+     * @return true if file was updated succesfully
+     * @return false, if deletion failed
+     */
     @Override
     public boolean deleteNeed(int id) throws IOException {
          synchronized(needs) {

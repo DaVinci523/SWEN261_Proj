@@ -36,7 +36,13 @@ public class NeedsCupboardController {
         this.needsCupboardDAO = needsCupboardDAO;
     }
 
-
+    /**
+     * Handles HTTP GET requests to the "/needs/id"
+     * @param id: the searched objects id
+     * @return a Response entity containing HttpStatus.OK if the search was successful,
+     * a HttpStatus.NOT_FOUND if the search fails due to a non existent id
+     *  HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+     */
     @GetMapping("/{id}")
     public ResponseEntity<Need> getNeed(@PathVariable int id){
          LOG.info("GET /needs/" + id);
@@ -53,23 +59,34 @@ public class NeedsCupboardController {
         }
     }
 
-
+    /**
+     * Handles HTTP GET requests to the "/needs"
+     * @return a Response entity containing HttpStatus.OK if the array of needs is returned,
+     * a HttpStatus.NOT_FOUND if the return fails
+     * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+     */
     @GetMapping("")
     public ResponseEntity<Need[]> getNeeds(){
         LOG.info("GET /needs");
         try {
-            Need need[] = needsCupboardDAO.getNeeds(); // gets all needs as an array of needs
+            Need need[] = needsCupboardDAO.getNeeds();
             if (need != null)
-                return new ResponseEntity<>(need,HttpStatus.OK); // returns the array of needs
+                return new ResponseEntity<>(need,HttpStatus.OK); 
             else
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        catch(IOException e) { //INTERNAL_SERVER_ERROR if otherwise
+        catch(IOException e) {
             LOG.log(Level.SEVERE,e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }   
     }
 
+    /**
+     * Handles HTTP GET requests to the "/needs/?name= "name""
+     * @param name , check if need contains String name
+     * @return a Response entity containing HttpStatus.OK if the search was successful,
+     * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+     */
     @GetMapping("/")
     public ResponseEntity<Need[]> searchNeeds(@RequestParam String name){
         LOG.info("GET /needs/?name=" + name);
@@ -84,36 +101,38 @@ public class NeedsCupboardController {
     }
 
     /**
-     * Handles HTTP Post requests to the "/needs"
+     * Handles HTTP POST requests to the "/needs"
      * @param need: the object to be created
      * @return a Response entity containing HttpStatus.CREATED if the creation was successful,
-     * a HttpStatus.CONFLICT if the creation fails due to a conflict, or a ttpStatus.INTERNAL_SERVER_ERROR
+     * a HttpStatus.CONFLICT if the creation fails due to a conflict, or a HttpStatus.INTERNAL_SERVER_ERROR
      * if an I/O error occured. 
      */
     @PostMapping("") 
     public ResponseEntity<Need> createNeed(@RequestBody Need need){
-        // Logs the incoming POST request and the need object that was recieved
         LOG.info("POST /needs " + need);
 
         try {
-            // Calls the DAO method to create a new Need in the storage
             Need newNeed = needsCupboardDAO.createdNeed(need);
 
-            // If creation is successful then return the new Need with status 201
             if (newNeed != null){
                 return new ResponseEntity<>(newNeed, HttpStatus.CREATED);
             }
-            // If creation failed due to a conflict, return status 409
             else{
                 return new ResponseEntity<>(HttpStatus.CONFLICT);
             }
         } catch (IOException e){
-            // Log the error in the event of an I/O problem and return status 500
             LOG.log(Level.SEVERE, e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
+    /**
+     * Handles HTTP PUT requests to the "/needs"
+     * @param need: the object to be updated
+     * @return a Response entity containing HttpStatus.OK if the update was successful,
+     * a HttpStatus.NOT_FOUND if need doesn't exist
+     * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+     */
     @PutMapping("")
     public ResponseEntity<Need> updateNeed(@RequestBody Need need){
         LOG.info("PUT /needs " + need);
@@ -131,10 +150,16 @@ public class NeedsCupboardController {
         }
     }
 
+    /**
+     * Handles HTTP DELETE requests to the "/needs"
+     * @param id , id of need to be deleted
+     * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
+     * a HttpStatus.NOT_FOUND if a need of id doesn't exist
+     * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Need> deleteNeed(@PathVariable int id){
        LOG.info("DELETE /needs/" + id);
-
         try{
 
             if(needsCupboardDAO.deleteNeed(id))
