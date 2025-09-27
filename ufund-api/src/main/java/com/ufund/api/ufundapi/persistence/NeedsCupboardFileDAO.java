@@ -123,9 +123,13 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
 
     @Override
     public Need getNeed(int id) throws IOException {
-        // TODO Auto-generated method stub
-        //blah
-        throw new UnsupportedOperationException("Unimplemented method 'getNeed'");
+        synchronized(needs) {
+            if (needs.containsKey(id))
+                return needs.get(id);
+            else
+                return null;
+        }
+
     }
 
     /**

@@ -39,7 +39,18 @@ public class NeedsCupboardController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Need> getNeed(@PathVariable int id){
-        return null;
+         LOG.info("GET /needs/" + id);
+        try {
+            Need need = needsCupboardDAO.getNeed(id);
+            if (need != null)
+                return new ResponseEntity<Need>(need,HttpStatus.OK);
+            else
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        catch(IOException e) {
+            LOG.log(Level.SEVERE,e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 
