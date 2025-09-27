@@ -56,6 +56,12 @@ public class Need {
     public String getName() {return name;}
 
     /**
+     * Retrieves name of need
+     * @return name of need
+     */
+    public double getValue() {return value;}
+
+    /**
      * @return String representation of a Need
      */
     @Override

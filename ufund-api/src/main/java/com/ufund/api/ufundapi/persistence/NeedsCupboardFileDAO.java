@@ -76,7 +76,6 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
       * Saves Needs from map into file
       *@return true, if written successfully
       */
-
     private boolean save() throws IOException{
         Need[] needsArray = getNeedsArray();
         //use the object mapper to serialize jave objects to JSON 
@@ -105,7 +104,10 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
         ++nextId;
         return true;
     }
-
+    /**
+     * Returns array of all needs in JSON
+     * @return getNeedsArray
+     */
 
     @Override
     public Need[] getNeeds() throws IOException {
@@ -113,7 +115,11 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
             return getNeedsArray();
         }
     }
-
+    /**
+     * Search for needs containing text passed in
+     * @param String text
+     * @return getNeedsArray that contains text
+     */
     @Override
     public Need[] searchNeeds(String text) throws IOException {
         synchronized(needs) {
@@ -121,18 +127,48 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
         }
     }
 
+    /**
+     * Returns single need with id
+     * @param int id id to search for 
+     * @return need if found, null if no id in needs JSON
+     */
     @Override
     public Need getNeed(int id) throws IOException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getNeed'");
+        synchronized(needs) {
+            if (needs.containsKey(id))
+                return needs.get(id);
+            else
+                return null;
+        }
+
     }
 
+    /**
+     * Creates a new Need object
+     * 
+     * @param need: the input object containing the name and value
+     * @return the new need with a generated id
+     * @throws I/O exception if an error occured while saving the new Need to storage
+     */
     @Override
     public Need createdNeed(Need need) throws IOException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createdNeed'");
+        synchronized(need) {
+            boolean exists = needs.values().stream().anyMatch(n -> n.getName().equalsIgnoreCase(need.getName()));
+            if (exists){
+                return null;
+            }
+            Need newNeed = new Need(nextId(),need.getName(), need.getValue());
+            needs.put(newNeed.getId(),newNeed);
+            save();
+            return newNeed;
+        }
     }
 
+    /**
+     * Update need's contents, ie)name, value
+     * @param  Need need
+     * @return Need updated need
+     */
     @Override
     public Need updateNeed(Need need) throws IOException {
         synchronized(needs) {
@@ -145,10 +181,22 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
         }
     }
 
+    /**
+     * Delete need at specified id
+     * @param int id
+     * @return true if file was updated succesfully
+     * @return false, if deletion failed
+     */
     @Override
     public boolean deleteNeed(int id) throws IOException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteNeed'");
+         synchronized(needs) {
+            if (needs.containsKey(id)) {
+                needs.remove(id);
+                return save();
+            }
+            else
+                return false;
+        }
     }
     
 
