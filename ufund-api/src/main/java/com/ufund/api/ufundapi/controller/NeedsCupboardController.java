@@ -66,7 +66,20 @@ public class NeedsCupboardController {
 
     @PostMapping("") 
     public ResponseEntity<Need> createNeed(@RequestBody Need need){
-        return null;
+        LOG.info("POST /needs " + need);
+
+        try {
+            Need newNeed = needsCupboardDAO.createdNeed(need);
+            if (newNeed != null){
+                return new ResponseEntity<>(newNeed, HttpStatus.CREATED);
+            }
+            else{
+                return new ResponseEntity<>(HttpStatus.CONFLICT);
+            }
+        } catch (IOException e){
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PutMapping("")
