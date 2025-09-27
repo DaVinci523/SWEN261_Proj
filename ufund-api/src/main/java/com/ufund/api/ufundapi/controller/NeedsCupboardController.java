@@ -85,7 +85,7 @@ public class NeedsCupboardController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Need> deleteHero(@PathVariable int id){
+    public ResponseEntity<Need> deleteNeed(@PathVariable int id){
        LOG.info("DELETE /needs/" + id);
 
         try{
