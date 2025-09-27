@@ -62,7 +62,7 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
         ArrayList<Need> needsArrayList = new ArrayList<>();
 
         for (Need need : needs.values()){
-            if (need.getName().contains(text)){
+            if (text == null || need.getName().contains(text)){
                 needsArrayList.add(need);
             }
         }
@@ -135,8 +135,14 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
 
     @Override
     public Need updateNeed(Need need) throws IOException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateNeed'");
+        synchronized(needs) {
+            if (needs.containsKey(need.getId()) == false)
+                return null;
+
+            needs.put(need.getId(),need);
+            save();
+            return need;
+        }
     }
 
     @Override

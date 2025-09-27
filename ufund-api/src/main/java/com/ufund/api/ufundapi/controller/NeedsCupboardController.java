@@ -79,7 +79,19 @@ public class NeedsCupboardController {
 
     @PutMapping("")
     public ResponseEntity<Need> updateNeed(@RequestBody Need need){
-        return null;
+        LOG.info("PUT /needs " + need);
+        
+        try {
+            Need updated = needsCupboardDAO.updateNeed(need);
+            if (updated != null) {
+                return new ResponseEntity<Need>(updated, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @DeleteMapping("/{id}")
