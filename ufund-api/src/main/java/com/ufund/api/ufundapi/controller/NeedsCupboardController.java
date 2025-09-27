@@ -39,7 +39,7 @@ public class NeedsCupboardController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Need> getNeed(@PathVariable int id){
-         LOG.info("GET /heroes/" + id);
+         LOG.info("GET /needs/" + id);
         try {
             Need need = needsCupboardDAO.getNeed(id);
             if (need != null)
