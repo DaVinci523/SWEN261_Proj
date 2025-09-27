@@ -139,6 +139,11 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
     @Override
     public Need createdNeed(Need need) throws IOException {
         synchronized(need) {
+            // Check if the need already exists
+            boolean exists = needs.values().stream().anyMatch(n -> n.getName().equalsIgnoreCase(need.getName()));
+            if (exists){
+                return null;
+            }
             // We create a new need object because the id field is immutable
             // and we need to assign the next unique id. We also assign a value 
             // name to the need.
