@@ -50,7 +50,6 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
      */
     private Need[] getNeedsArray(){
         return getNeedsArray(null);
-
     }
 
     /**
@@ -71,7 +70,6 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
         Need[] needsArray = new Need[needsArrayList.size()];
         needsArrayList.toArray(needsArray);
         return needsArray;
-
     }
 
      /**
