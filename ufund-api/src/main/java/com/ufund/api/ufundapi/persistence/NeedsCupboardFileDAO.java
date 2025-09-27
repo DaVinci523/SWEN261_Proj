@@ -127,10 +127,29 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
         throw new UnsupportedOperationException("Unimplemented method 'getNeed'");
     }
 
+    /**
+     * Creates a new Need object
+     * 
+     * @param need: the input object containing the name and value
+     * @return the new need with a generated id
+     * @throws I/O exception if an error occured while saving the new Need to storage
+     */
     @Override
     public Need createdNeed(Need need) throws IOException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createdNeed'");
+        synchronized(need) {
+            // Check if the need already exists
+            boolean exists = needs.values().stream().anyMatch(n -> n.getName().equalsIgnoreCase(need.getName()));
+            if (exists){
+                return null;
+            }
+            // We create a new need object because the id field is immutable
+            // and we need to assign the next unique id. We also assign a value 
+            // name to the need.
+            Need newNeed = new Need(nextId(),need.getName(), need.getValue());
+            needs.put(newNeed.getId(),newNeed);
+            save(); // may throw an IOException
+            return newNeed;
+        }
     }
 
     @Override
