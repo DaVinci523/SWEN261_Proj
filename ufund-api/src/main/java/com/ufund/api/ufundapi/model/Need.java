@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Need {
     private static final Logger LOG = Logger.getLogger(Need.class.getName());
     
-    static final String STRINGIFY = "Need [id=%d, name=%s, value=%d]";
+    static final String STRINGIFY = "Need [id=%d, name=%s, value=%f]";
 
     @JsonProperty("id") private int id;
     @JsonProperty("name") private String name;
@@ -54,6 +54,12 @@ public class Need {
      * @return name of need
      */
     public String getName() {return name;}
+
+    /**
+     * Retrieves name of need
+     * @return name of need
+     */
+    public double getValue() {return value;}
 
     /**
      * @return String representation of a Need

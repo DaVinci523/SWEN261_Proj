@@ -76,28 +76,77 @@ public class NeedsCupboardController {
         try {
             Need[] needs = needsCupboardDAO.searchNeeds(name);
             return new ResponseEntity<Need[]>(needs, HttpStatus.OK);
-
         }
         catch (IOException e) {
             LOG.log(Level.SEVERE, e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-
         }
     }
 
+    /**
+     * Handles HTTP Post requests to the "/needs"
+     * @param need: the object to be created
+     * @return a Response entity containing HttpStatus.CREATED if the creation was successful,
+     * a HttpStatus.CONFLICT if the creation fails due to a conflict, or a ttpStatus.INTERNAL_SERVER_ERROR
+     * if an I/O error occured. 
+     */
     @PostMapping("") 
     public ResponseEntity<Need> createNeed(@RequestBody Need need){
-        return null;
+        // Logs the incoming POST request and the need object that was recieved
+        LOG.info("POST /needs " + need);
+
+        try {
+            // Calls the DAO method to create a new Need in the storage
+            Need newNeed = needsCupboardDAO.createdNeed(need);
+
+            // If creation is successful then return the new Need with status 201
+            if (newNeed != null){
+                return new ResponseEntity<>(newNeed, HttpStatus.CREATED);
+            }
+            // If creation failed due to a conflict, return status 409
+            else{
+                return new ResponseEntity<>(HttpStatus.CONFLICT);
+            }
+        } catch (IOException e){
+            // Log the error in the event of an I/O problem and return status 500
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PutMapping("")
     public ResponseEntity<Need> updateNeed(@RequestBody Need need){
-        return null;
+        LOG.info("PUT /needs " + need);
+        
+        try {
+            Need updated = needsCupboardDAO.updateNeed(need);
+            if (updated != null) {
+                return new ResponseEntity<Need>(updated, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Need> deleteHero(@PathVariable int id){
-        return null;
+    public ResponseEntity<Need> deleteNeed(@PathVariable int id){
+       LOG.info("DELETE /needs/" + id);
+
+        try{
+
+            if(needsCupboardDAO.deleteNeed(id))
+                return new ResponseEntity<>(HttpStatus.OK);
+            else
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+
+        } catch (IOException e){
+            LOG.log(Level.SEVERE,e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }
