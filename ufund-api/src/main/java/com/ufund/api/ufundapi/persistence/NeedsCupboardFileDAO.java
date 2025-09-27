@@ -128,6 +128,13 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
         throw new UnsupportedOperationException("Unimplemented method 'getNeed'");
     }
 
+    /**
+     * Creates a new Need object
+     * 
+     * @param need: the input object containing the name and value
+     * @return the new need with a generated id
+     * @throws I/O exception if an error occured while saving the new Need to storage
+     */
     @Override
     public Need createdNeed(Need need) throws IOException {
         synchronized(need) {
