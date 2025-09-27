@@ -50,7 +50,6 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
      */
     private Need[] getNeedsArray(){
         return getNeedsArray(null);
-
     }
 
     /**
@@ -63,7 +62,7 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
         ArrayList<Need> needsArrayList = new ArrayList<>();
 
         for (Need need : needs.values()){
-            if (text == null || need.getName().contains(text)){
+            if (need.getName().contains(text)){
                 needsArrayList.add(need);
             }
         }
@@ -71,7 +70,6 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
         Need[] needsArray = new Need[needsArrayList.size()];
         needsArrayList.toArray(needsArray);
         return needsArray;
-
     }
 
      /**
