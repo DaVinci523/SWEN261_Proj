@@ -25,8 +25,7 @@ import com.ufund.api.ufundapi.model.Need;
 @RestController
 @RequestMapping("needs")
 public class NeedsCupboardController {
-    private static final Logger LOG = Logger.getLogger(
-        NeedsCupboardController.class.getName());
+    private static final Logger LOG = Logger.getLogger(NeedsCupboardController.class.getName());
     private NeedsCupboardDAO needsCupboardDAO;
 
     /**
@@ -57,7 +56,18 @@ public class NeedsCupboardController {
 
     @GetMapping("")
     public ResponseEntity<Need[]> getNeeds(){
-        return null;
+        LOG.info("GET /needs");
+        try {
+            Need need[] = needsCupboardDAO.getNeeds(); // gets all needs as an array of needs
+            if (need != null)
+                return new ResponseEntity<>(need,HttpStatus.OK); // returns the array of needs
+            else
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        catch(IOException e) { //INTERNAL_SERVER_ERROR if otherwise
+            LOG.log(Level.SEVERE,e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }   
     }
 
     @GetMapping("/")
