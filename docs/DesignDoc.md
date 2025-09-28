@@ -117,6 +117,42 @@ This section describes the web interface and flow; this is how the user views an
 
 ### ViewModel Tier
 > _**[Sprint 1]** List the classes supporting this tier and provide a description of there purpose._
+> NeedsCupboardController.java - Handles HTTP requests from the model tier. 
+getNeed()
+Handles HTTP GET requests to the "/needs/id"
+     * @param id: the searched objects id
+     * @return a Response entity containing HttpStatus.OK if the search was successful,
+     * a HttpStatus.NOT_FOUND if the search fails due to a non existent id
+     *  HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
+getNeeds()
+     * Handles HTTP GET requests to the "/needs"
+     * @return a Response entity containing HttpStatus.OK if the array of needs is returned,
+     * a HttpStatus.NOT_FOUND if the return fails
+     * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
+searchNeeds()
+ * Handles HTTP GET requests to the "/needs/?name= "name""
+     * @param name , check if need contains String name
+     * @return a Response entity containing HttpStatus.OK if the search was successful,
+     * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
+createNeed()
+     * Handles HTTP POST requests to the "/needs"
+     * @param need: the object to be created
+     * @return a Response entity containing HttpStatus.CREATED if the creation was successful,
+     * a HttpStatus.CONFLICT if the creation fails due to a conflict, or a HttpStatus.INTERNAL_SERVER_ERROR
+     * if an I/O error occurred.
+updateNeed()
+     * Handles HTTP PUT requests to the "/needs"
+     * @param need: the object to be updated
+     * @return a Response entity containing HttpStatus.OK if the update was successful,
+     * a HttpStatus.NOT_FOUND if need doesn't exist
+     * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
+deleteNeed()
+     * Handles HTTP DELETE requests to the "/needs"
+     * @param id , id of need to be deleted
+     * @return a Response entity containing HttpStatus.OK if the deletion was successful,
+     * a HttpStatus.NOT_FOUND if a need of id doesn't exist
+     * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
+
 
 > _**[Sprint 4]** Provide a summary of this tier of your architecture. This
 > section will follow the same instructions that are given for the View
@@ -129,6 +165,9 @@ This section describes the web interface and flow; this is how the user views an
 
 ### Model Tier
 > _**[Sprint 1]** List the classes supporting this tier and provide a description of there purpose._
+> Need.java - Create a Need object with given id, name, and value.
+Contains getters (getID(), getName(), getValue()) and setters (setName(), setValue()).
+
 
 > _**[Sprint 2, 3 & 4]** Provide a summary of this tier of your architecture. This
 > section will follow the same instructions that are given for the View
