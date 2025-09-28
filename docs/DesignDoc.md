@@ -181,6 +181,8 @@ Contains getters (getID(), getName(), getValue()) and setters (setName(), setVal
 ## OO Design Principles
 
 > _**[Sprint 1]** Name and describe the initial OO Principles that your team has considered in support of your design (and implementation) for this first Sprint._
+>  The two Object Oriented Design principles that the CTRL team is championing throughout the design and implementation are Low Coupling and Open/Close. The Low Coupling principle is implemented into the design through there being only one connection. The Open/Close principle is utilized as our program is designed to grow over time. As of Sprint 1 the foundational code has been written and we will be able to add new functionality without modifying what is already there.
+
 
 > _**[Sprint 2, 3 & 4]** Will eventually address upto **4 key OO Principles** in your final design. Follow guidance in augmenting those completed in previous Sprints as indicated to you by instructor. Be sure to include any diagrams (or clearly refer to ones elsewhere in your Tier sections above) to support your claims._
 
