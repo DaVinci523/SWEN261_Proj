@@ -11,10 +11,11 @@ geometry: margin=1in
 ## Team Information
 * Team name: CTRL
 * Team members
-  * MEMBER1
-  * MEMBER2
-  * MEMBER3
-  * MEMBER4
+  * Anthony Rosati Jr.
+  * Anthony Pelto
+  * Addison Asuncion
+  * Nicholas Li
+  * Seth Taylor
 
 ## Executive Summary
 
