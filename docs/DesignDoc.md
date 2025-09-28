@@ -55,7 +55,8 @@ This section describes the features of the application.
 
 This section describes the application domain.
 
-![Domain Model](domain-model-placeholder.png)
+<img width="1791" height="1380" alt="image" src="https://github.com/user-attachments/assets/779d54cf-a361-4c2b-8186-70e175dff452" />
+
 
 > _**[Sprint 2 & 4]** Provide a high-level overview of the domain for this application. You
 > can discuss the more important domain entities and their relationship
@@ -117,7 +118,8 @@ This section describes the web interface and flow; this is how the user views an
 
 ### ViewModel Tier
 > _**[Sprint 1]** List the classes supporting this tier and provide a description of there purpose._
-> NeedsCupboardController.java - Handles HTTP requests from the model tier. 
+>
+NeedsCupboardController.java - Handles HTTP requests from the model tier. 
 getNeed()
 Handles HTTP GET requests to the "/needs/id"
      * @param id: the searched objects id
