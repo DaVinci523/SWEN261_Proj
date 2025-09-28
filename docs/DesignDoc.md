@@ -88,7 +88,8 @@ Both the ViewModel and Model are built using Java and Spring Framework. Details 
 This section describes the web interface and flow; this is how the user views and interacts with the web application.
 >_For the reference below, provide an initial draft image/sketch of possible layout of a mayor page of your User Interface and a brief description of the elements it contains **[Sprint 1]**_
 
-![Replace with your First concept of a layout for a mayor page in the User Interface](draft-layout-ui.png)
+<img width="1870" height="951" alt="image" src="https://github.com/user-attachments/assets/0681ec0a-3fe0-4b14-8b4f-04e08e3192c3" />
+
 
 ### 
 > _Provide a summary of the application's user interface.  Describe, from the user's perspective, the flow of the pages/navigation in the web application.
