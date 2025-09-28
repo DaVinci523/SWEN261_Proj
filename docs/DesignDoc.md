@@ -175,3 +175,25 @@ This section describes the web interface and flow; this is how the user views an
 
 ## Ongoing Rationale
 >_**[Sprint 1, 2, 3 & 4]** Throughout the project, provide a time stamp **(yyyy/mm/dd): Sprint # and description** of any _**mayor**_ team decisions or design milestones/changes and corresponding justification._
+>Sprint #1:
+2025/09/10
+Revised our Sprint 1 Domain Model with additional information on any “flavoring” we intend on adding.
+Chose our project topic - “Research Funding : Name : RIT Student Funding Research”
+2025/09/13
+Trello updates that enforce our Sprint 1 Planning decisions and guidelines including: making a new list containing our plans in code communications, team communications, version control activities, and more. 
+Also began initial drafts on acceptance criteria for each of our user stories.
+2025/09/17
+Assign OO Design Principles to each group member and champion two of them.
+Understand how each user story can be implemented and coded as well as a general understanding of our project’s architecture. 
+This includes beginning our draft of solution tasks for each user story.
+2025/09/20
+Finalize solution tasks and anything inside our user story cards.
+Designed a UML of our classes and project structure to enforce our understanding of our project.
+2025/09/24
+Make sure each group member has an understanding of how our github works and begin coding each of our user stories.
+2025/09/27-28
+Finalize our Sprint 1 coding and make sure it adheres to our user story. 
+Ensuring each member has their code properly working before merging all of it.
+Record our demo video and our scripts.
+Finish all Sprint 1 requirements in the Design Doc. 
+
