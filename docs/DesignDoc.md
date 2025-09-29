@@ -55,7 +55,7 @@ This section describes the features of the application.
 
 This section describes the application domain.
 
-<img width="1791" height="1380" alt="image" src="https://github.com/user-attachments/assets/779d54cf-a361-4c2b-8186-70e175dff452" />
+<img width="700" height="543" alt="Team1DomainAnalysis2 drawio" src="https://github.com/user-attachments/assets/4761c2de-7beb-43d9-9579-60b06b449997" />
 
 
 > _**[Sprint 2 & 4]** Provide a high-level overview of the domain for this application. You
@@ -73,7 +73,7 @@ The following Tiers/Layers model shows a high-level view of the webapp's archite
 **NOTE**: detailed diagrams are required in later sections of this document.
 > _**[Sprint 1]** (Augment this diagram with your **own** rendition and representations of sample system classes, placing them into the appropriate M/V/VM (orange rectangle) tier section. Focus on what is currently required to support **Sprint 1 - Demo requirements**. Make sure to describe your design choices in the corresponding _**Tier Section**_ and also in the _**OO Design Principles**_ section below.)_
 
-<img width="700" height="543" alt="Team1DomainAnalysis2 drawio" src="https://github.com/user-attachments/assets/4f481c02-777b-43df-8564-bb5f27ccfd63" />
+<img width="1542" height="995" alt="Screenshot 2025-09-29 163450" src="https://github.com/user-attachments/assets/5b2db26b-9f8d-4537-84f7-b81fad5f1e49" />
 
 
 The web application, is built using the Model–View–ViewModel (MVVM) architecture pattern. 
