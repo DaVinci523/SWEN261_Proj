@@ -73,7 +73,7 @@ The following Tiers/Layers model shows a high-level view of the webapp's archite
 **NOTE**: detailed diagrams are required in later sections of this document.
 > _**[Sprint 1]** (Augment this diagram with your **own** rendition and representations of sample system classes, placing them into the appropriate M/V/VM (orange rectangle) tier section. Focus on what is currently required to support **Sprint 1 - Demo requirements**. Make sure to describe your design choices in the corresponding _**Tier Section**_ and also in the _**OO Design Principles**_ section below.)_
 
-<img width="1552" height="1000" alt="image" src="https://github.com/user-attachments/assets/853b5326-fe24-44e7-8577-23710d1cba2b" />
+<img width="700" height="543" alt="Team1DomainAnalysis2 drawio" src="https://github.com/user-attachments/assets/4f481c02-777b-43df-8564-bb5f27ccfd63" />
 
 
 The web application, is built using the Model–View–ViewModel (MVVM) architecture pattern. 
