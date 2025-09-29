@@ -71,7 +71,6 @@ This section describes the application architecture.
 
 The following Tiers/Layers model shows a high-level view of the webapp's architecture. 
 **NOTE**: detailed diagrams are required in later sections of this document.
-> _**[Sprint 1]** (Augment this diagram with your **own** rendition and representations of sample system classes, placing them into the appropriate M/V/VM (orange rectangle) tier section. Focus on what is currently required to support **Sprint 1 - Demo requirements**. Make sure to describe your design choices in the corresponding _**Tier Section**_ and also in the _**OO Design Principles**_ section below.)_
 
 <img width="1542" height="995" alt="Screenshot 2025-09-29 163450" src="https://github.com/user-attachments/assets/5b2db26b-9f8d-4537-84f7-b81fad5f1e49" />
 
@@ -88,7 +87,6 @@ Both the ViewModel and Model are built using Java and Spring Framework. Details 
 ### Overview of User Interface
 
 This section describes the web interface and flow; this is how the user views and interacts with the web application.
->_For the reference below, provide an initial draft image/sketch of possible layout of a mayor page of your User Interface and a brief description of the elements it contains **[Sprint 1]**_
 
 <img width="1870" height="951" alt="image" src="https://github.com/user-attachments/assets/0681ec0a-3fe0-4b14-8b4f-04e08e3192c3" />
 
@@ -117,8 +115,7 @@ This section describes the web interface and flow; this is how the user views an
  >* _Include other details such as attributes and method signatures that you think are needed to support the level of detail in your discussion._
 
 ### ViewModel Tier
-> _**[Sprint 1]** List the classes supporting this tier and provide a description of there purpose._
->
+
 * NeedsCupboardController.java - Handles HTTP requests from the model tier. 
   * getNeed()
   * Handles HTTP GET requests to the "/needs/id"
@@ -166,8 +163,7 @@ This section describes the web interface and flow; this is how the user views an
 ![Replace with your ViewModel Tier class diagram 1, etc.](model-placeholder.png)
 
 ### Model Tier
-> _**[Sprint 1]** List the classes supporting this tier and provide a description of there purpose._
->*  Need.java - Create a Need object with given id, name, and value.
+  * Need.java - Create a Need object with given id, name, and value.
   * Contains getters (getID(), getName(), getValue()) and setters (setName(), setValue()).
 
 
@@ -182,8 +178,7 @@ This section describes the web interface and flow; this is how the user views an
 
 ## OO Design Principles
 
-> _**[Sprint 1]** Name and describe the initial OO Principles that your team has considered in support of your design (and implementation) for this first Sprint._
->  The two Object Oriented Design principles that the CTRL team is championing throughout the design and implementation are Low Coupling and Open/Close. The Low Coupling principle is implemented into the design through there being only one connection. The Open/Close principle is utilized as our program is designed to grow over time. As of Sprint 1 the foundational code has been written and we will be able to add new functionality without modifying what is already there.
+  * The two Object Oriented Design principles that the CTRL team is championing throughout the design and implementation are Low Coupling and Open/Close. The Low Coupling principle is implemented into the design through there being only one connection. The Open/Close principle is utilized as our program is designed to grow over time. As of Sprint 1 the foundational code has been written and we will be able to add new functionality without modifying what is already there.
 
 
 > _**[Sprint 2, 3 & 4]** Will eventually address upto **4 key OO Principles** in your final design. Follow guidance in augmenting those completed in previous Sprints as indicated to you by instructor. Be sure to include any diagrams (or clearly refer to ones elsewhere in your Tier sections above) to support your claims._
