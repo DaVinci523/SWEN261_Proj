@@ -220,7 +220,8 @@ Contains getters (getID(), getName(), getValue()) and setters (setName(), setVal
 
 ## Ongoing Rationale
 >_**[Sprint 1, 2, 3 & 4]** Throughout the project, provide a time stamp **(yyyy/mm/dd): Sprint # and description** of any _**mayor**_ team decisions or design milestones/changes and corresponding justification._
->Sprint #1:
+
+Sprint #1:
 2025/09/10
 Revised our Sprint 1 Domain Model with additional information on any “flavoring” we intend on adding.
 Chose our project topic - “Research Funding : Name : RIT Student Funding Research”
