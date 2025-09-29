@@ -132,7 +132,7 @@ getNeeds()
      * a HttpStatus.NOT_FOUND if the return fails
      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
 searchNeeds()
- * Handles HTTP GET requests to the "/needs/?name= "name""
+     * Handles HTTP GET requests to the "/needs/?name= "name""
      * @param name , check if need contains String name
      * @return a Response entity containing HttpStatus.OK if the search was successful,
      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
