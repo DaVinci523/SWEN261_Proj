@@ -174,4 +174,28 @@ public class NeedsCupboardController {
         }
     }
 
+    /**
+     * Handles HTTP DELETE requests to the "/needs"
+     * @param type , type of need to be deleted
+     * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
+     * a HttpStatus.NOT_FOUND if a need of id doesn't exist
+     * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+     */
+    @DeleteMapping("/{type}")
+    public ResponseEntity<Need> deleteNeedType(@PathVariable String type){
+       LOG.info("DELETE /needs/" + type);
+        try{
+
+            if(needsCupboardDAO.deleteNeedType(type))
+                return new ResponseEntity<>(HttpStatus.OK);
+            else
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+
+        } catch (IOException e){
+            LOG.log(Level.SEVERE,e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
