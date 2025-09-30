@@ -146,7 +146,7 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
     /**
      * Creates a new Need object
      * 
-     * @param need: the input object containing the name, cost, quantity, and type
+     * @param need: the input object containing the name, value, quantity, and type
      * @return the new need with a generated id
      * @throws I/O exception if an error occured while saving the new Need to storage
      */
@@ -157,7 +157,7 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
             if (exists){
                 return null;
             }
-            Need newNeed = new Need(nextId(),need.getName(), need.getCost(), need.getQuantity(), need.getType());
+            Need newNeed = new Need(nextId(),need.getName(), need.getValue(), need.getQuantity(), need.getType());
             needs.put(newNeed.getId(),newNeed);
             save();
             return newNeed;
@@ -165,7 +165,7 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
     }
 
     /**
-     * Update need's contents, ie)name, cost, quantity, type
+     * Update need's contents, ie)name, value, quantity, type
      * @param  Need need
      * @return Need updated need
      */
