@@ -158,7 +158,7 @@ public class NeedsCupboardController {
      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Need> deleteNeed(@PathVariable int id){
+    public ResponseEntity<Need> deleteNeedId(@PathVariable int id){
        LOG.info("DELETE /needs/" + id);
         try{
 
@@ -181,9 +181,9 @@ public class NeedsCupboardController {
      * a HttpStatus.NOT_FOUND if a need of id doesn't exist
      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
      */
-    @DeleteMapping("/")
+    @DeleteMapping("//")
     public ResponseEntity<Need> deleteNeedType(@PathVariable String type){
-       LOG.info("DELETE /needs/?type=" + type);
+       LOG.info("DELETE /needs//" + type);
         try{
 
             if(needsCupboardDAO.deleteNeedType(type))

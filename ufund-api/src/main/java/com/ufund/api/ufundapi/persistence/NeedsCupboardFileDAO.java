@@ -199,4 +199,25 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
         }
     }
 
+    /**
+     * Delete need at specified id
+     * @param int id
+     * @return true if file was updated succesfully
+     * @return false, if deletion failed
+     */
+    @Override
+    public boolean deleteNeedType(String type) throws IOException {
+         synchronized(needs) {
+            for (Need need : needs.values()){
+                if (need.getType() == type){
+                    needs.remove(need.getId());
+                    return save();
+                }
+                else
+                    continue;
+           }
+     }
+        return true;
+    }
+
 }
