@@ -198,6 +198,4 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
                 return false;
         }
     }
-    
-
 }
