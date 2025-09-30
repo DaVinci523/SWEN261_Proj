@@ -34,6 +34,7 @@ public class Need {
             this.value = value;
             this.quantity = quantity;
             this.type = type;
+
     }
 
     /**

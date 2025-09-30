@@ -53,6 +53,13 @@ public interface NeedsCupboardDAO {
      */
     boolean deleteNeed(int id) throws IOException;
 
+    /**
+     * Delete needs with the given type
+     * @param String type
+     * @return true if file was updated succesfully
+     * @return false, if deletion failed
+     */
+    boolean deleteNeedType(String type) throws IOException;
 
 
 
