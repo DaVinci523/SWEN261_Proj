@@ -33,7 +33,7 @@ public class Need {
             this.name = name;
             this.cost = cost;
             this.quantity = quantity;
-            
+            this.type = type;
     }
 
     /**
@@ -65,6 +65,16 @@ public class Need {
      * @return name of need
      */
     public double getCost() {return cost;}
+    /**
+    * retrieves quantity of need
+    * @return quantity
+    */
+    public int getQuantity() {return quantity;}
+    /**
+     * retrieves type of need
+     * @return type
+     */
+    public String getType() {return type;}
 
     /**
      * @return String representation of a Need
