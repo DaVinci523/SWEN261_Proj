@@ -185,8 +185,52 @@ public class NeedsCupboardController {
     public ResponseEntity<Need> deleteNeedType(@PathVariable String type){
        LOG.info("DELETE /needs/type/" + type);
         try{
-            System.out.println(needsCupboardDAO.deleteNeedType(type));
             if(needsCupboardDAO.deleteNeedType(type))
+                return new ResponseEntity<>(HttpStatus.OK);
+            else
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+
+        } catch (IOException e){
+            LOG.log(Level.SEVERE,e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    /**
+     * Handles HTTP DELETE requests to the "/needs"
+     * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
+     * a HttpStatus.NOT_FOUND if a need of id doesn't exist
+     * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+     */
+    @DeleteMapping("")
+    public ResponseEntity<Need> deleteAll(){
+       LOG.info("DELETE /needs");
+        try{
+            if(needsCupboardDAO.deleteAll())
+                return new ResponseEntity<>(HttpStatus.OK);
+            else
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+
+        } catch (IOException e){
+            LOG.log(Level.SEVERE,e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Handles HTTP DELETE requests to the "/needs"
+     * @param name , string to check if name contains
+     * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
+     * a HttpStatus.NOT_FOUND if a need of id doesn't exist
+     * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+     */
+    @DeleteMapping("/name/{name}")
+    public ResponseEntity<Need> deleteNeedName(@PathVariable String name){
+       LOG.info("DELETE /needs/name/" + name);
+        try{
+            if(needsCupboardDAO.deleteNeedName(name))
                 return new ResponseEntity<>(HttpStatus.OK);
             else
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
