@@ -32,14 +32,14 @@ public interface NeedsCupboardDAO {
     /**
      * Creates a new Need object
      * 
-     * @param need: the input object containing the name and value
+     * @param need: the input object containing the name, value, quantity, and type
      * @return the new need with a generated id
      * @throws I/O exception if an error occured while saving the new Need to storage
      */
     Need createdNeed(Need need) throws IOException;
 
     /**
-     * Update need's contents, ie)name, value
+     * Update need's contents, ie)name, value, quantity, and type
      * @param  Need need
      * @return Need updated need
      */
@@ -53,9 +53,28 @@ public interface NeedsCupboardDAO {
      */
     boolean deleteNeed(int id) throws IOException;
 
+    /**
+     * Delete needs with the given type
+     * @param String type
+     * @return true if file was updated succesfully
+     * @return false, if deletion failed
+     */
+    boolean deleteNeedType(String type) throws IOException;
 
+    /**
+     * Delete all needs
+     * @return true if file was updated succesfully
+     * @return false, if deletion failed
+     */
+    boolean deleteAll() throws IOException;
 
-
+    /**
+     * Deletes needs that contain string name
+     * @param  String name
+     * @return true if file was updated succesfully
+     * @return false, if deletion failed
+     */
+    boolean deleteNeedName(String name) throws IOException;
 
 
 

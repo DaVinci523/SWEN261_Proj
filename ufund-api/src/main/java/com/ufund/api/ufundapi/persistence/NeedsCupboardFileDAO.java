@@ -146,7 +146,7 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
     /**
      * Creates a new Need object
      * 
-     * @param need: the input object containing the name and value
+     * @param need: the input object containing the name, value, quantity, and type
      * @return the new need with a generated id
      * @throws I/O exception if an error occured while saving the new Need to storage
      */
@@ -157,7 +157,7 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
             if (exists){
                 return null;
             }
-            Need newNeed = new Need(nextId(),need.getName(), need.getValue());
+            Need newNeed = new Need(nextId(),need.getName(), need.getValue(), need.getQuantity(), need.getType());
             needs.put(newNeed.getId(),newNeed);
             save();
             return newNeed;
@@ -165,7 +165,7 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
     }
 
     /**
-     * Update need's contents, ie)name, value
+     * Update need's contents, ie)name, value, quantity, type
      * @param  Need need
      * @return Need updated need
      */
@@ -198,6 +198,53 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
                 return false;
         }
     }
-    
+
+    /**
+     * Delete all needs of specific type
+     * Seemed liike using a removeIf is the best way to do this 
+     * since you cant iterate through a tree map and delete things without throwing error.
+     * @param int id
+     * @return true if file was updated succesfully
+     * @return false, if deletion failed
+     */
+    @Override
+    public boolean deleteNeedType(String type) throws IOException {
+        synchronized(needs) {
+            if(needs.entrySet().removeIf(entry -> entry.getValue().getType().equals(type))){
+                return save();
+            }
+            else
+                return false;
+     }
+    }
+
+    /**
+     * Delete all needs of specific type
+     * @return true if file was updated succesfully
+     * @return false, if deletion failed
+     */
+    @Override
+    public boolean deleteAll() throws IOException {
+        synchronized(needs) {
+            needs.clear();
+            return save();
+     }
+    }
+
+    /**
+     * Delete all needs of specific name
+     * @return true if file was updated succesfully
+     * @return false, if deletion failed
+     */
+    @Override
+    public boolean deleteNeedName(String name) throws IOException {
+        synchronized(needs) {
+            if(needs.entrySet().removeIf(entry -> entry.getValue().getName().contains(name))){
+                return save();
+            }
+            else 
+                return false;
+     }
+    }
 
 }
