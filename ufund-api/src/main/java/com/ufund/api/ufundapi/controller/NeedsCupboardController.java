@@ -185,7 +185,6 @@ public class NeedsCupboardController {
     public ResponseEntity<Need> deleteNeedType(@PathVariable String type){
        LOG.info("DELETE /needs/type/" + type);
         try{
-            System.out.println(needsCupboardDAO.deleteNeedType(type));
             if(needsCupboardDAO.deleteNeedType(type))
                 return new ResponseEntity<>(HttpStatus.OK);
             else
