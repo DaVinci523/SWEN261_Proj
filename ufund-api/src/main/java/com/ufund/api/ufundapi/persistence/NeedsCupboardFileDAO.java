@@ -232,7 +232,7 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
     }
 
     /**
-     * Delete all needs of specific type
+     * Delete all needs of specific name
      * @return true if file was updated succesfully
      * @return false, if deletion failed
      */
