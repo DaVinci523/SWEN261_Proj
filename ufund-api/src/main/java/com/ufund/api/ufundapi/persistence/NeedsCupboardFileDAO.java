@@ -200,24 +200,19 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
     }
 
     /**
-     * Delete need at specified id
+     * Delete all needs of specific type
+     * Seemed liike using a removeIf is the best way to do this 
+     * since you cant iterate through a tree map and delete things without throwing error.
      * @param int id
      * @return true if file was updated succesfully
      * @return false, if deletion failed
      */
     @Override
     public boolean deleteNeedType(String type) throws IOException {
-         synchronized(needs) {
-            for (Need need : needs.values()){
-                if (need.getType() == type){
-                    needs.remove(need.getId());
-                    return save();
-                }
-                else
-                    continue;
-           }
+        synchronized(needs) {
+            needs.entrySet().removeIf(entry -> entry.getValue().getType().equals(type));
+            return save();
      }
-        return true;
     }
 
 }
