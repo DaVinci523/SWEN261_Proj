@@ -22,6 +22,14 @@ import java.util.logging.Logger;
 import com.ufund.api.ufundapi.persistence.NeedsCupboardDAO;
 import com.ufund.api.ufundapi.model.Need;
 
+/**
+ * Handles the REST API requests for the Need resource
+ * <p>
+ * {@literal @}RestController Spring annotation identifies this class as a REST API
+ * method handler to the Spring framework
+ * 
+ * @author SWEN Faculty,, Modified by CTRL Team
+ */
 @RestController
 @RequestMapping("needs")
 public class NeedsCupboardController {

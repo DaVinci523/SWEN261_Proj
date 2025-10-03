@@ -2,7 +2,7 @@ package com.ufund.api.ufundapi.model;
 
 
 /**
- * The unit test suite for the Hero class
+ * The unit test suite for the Needs class
  * 
  * @author CTRL Team
  */
