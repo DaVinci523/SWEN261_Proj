@@ -2,6 +2,7 @@ package com.ufund.api.ufundapi.persistence;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -60,8 +61,8 @@ public class NeedsCupboardFileDAOTest {
         Need[] needs = NeedsCupboardFileDAO.getNeeds();
 
         // Analyze
-        assertNotEquals(needs.length,testNeeds.length); // checks that both lists are of equal length
+        assertEquals(needs.length,testNeeds.length); // checks that both lists are of equal length
         for (int i = 0; i < testNeeds.length;++i) 
-            assertNotEquals(needs[i],testNeeds[i]); // checks if each values in the list are equivallent
+            assertEquals(needs[i],testNeeds[i]); // checks if each values in the list are equivallent
    }
 }
