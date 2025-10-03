@@ -121,12 +121,12 @@ This section describes the web interface and flow; this is how the user views an
   * Handles HTTP GET requests to the "/needs/id"
       * @param id: the searched objects id
       * @return a Response entity containing HttpStatus.OK if the search was successful,
-      * a HttpStatus.NOT_FOUND if the search fails due to a non existent id
+      * a HttpStatus.NO_CONTENT if the returned data is null
       *  HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
   * getNeeds()
       * Handles HTTP GET requests to the "/needs"
       * @return a Response entity containing HttpStatus.OK if the array of needs is returned,
-      * a HttpStatus.NOT_FOUND if the return fails
+      * a HttpStatus.NO_CONTENT if the return fails
       * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
   * searchNeeds()
       * Handles HTTP GET requests to the "/needs/?name= "name""
@@ -151,7 +151,23 @@ This section describes the web interface and flow; this is how the user views an
       * @return a Response entity containing HttpStatus.OK if the deletion was successful,
       * a HttpStatus.NOT_FOUND if a need of id doesn't exist
       * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
-
+  * deleteNeedType()
+      * Handles HTTP DELETE requests to the "/needs"
+      * @param type , type of need to be deleted
+      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
+      * a HttpStatus.NOT_FOUND if a need of id doesn't exist
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+  * deleteAll()
+      * Handles HTTP DELETE requests to the "/needs"
+      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
+      * a HttpStatus.NOT_FOUND if a need of id doesn't exist
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+  * deleteNeedName()
+      * Handles HTTP DELETE requests to the "/needs"
+      * @param name , string to check if name contains
+      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
+      * a HttpStatus.NOT_FOUND if a need of id doesn't exist
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
 
 > _**[Sprint 4]** Provide a summary of this tier of your architecture. This
 > section will follow the same instructions that are given for the View
