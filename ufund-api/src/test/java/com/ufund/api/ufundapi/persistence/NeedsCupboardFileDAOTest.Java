@@ -34,8 +34,14 @@ public class NeedsCupboardFileDAOTest {
     Need[] testNeeds;
     ObjectMapper mockObjectMapper;
 
+    /**
+     * Before each test, we will create and inject a Mock Object Mapper to
+     * isolate the tests from the underlying file
+     * @throws IOException
+     */
     @BeforeEach
     public void setupNeedsCupbboardFileDAO() throws IOException {
+        // Setup
         mockObjectMapper = mock(ObjectMapper.class);
 
         testNeeds = new Need[3];
@@ -65,4 +71,38 @@ public class NeedsCupboardFileDAOTest {
         for (int i = 0; i < testNeeds.length;++i) 
             assertEquals(needs[i],testNeeds[i]); // checks if each values in the list are equivallent
    }
+
+   @Test 
+   public void testDeleteNeedType() {
+        // Tests:
+            // if need is properly deleted
+            // if need type not found
+            // bad data is handled well
+            
+        // Invoke
+        boolean result = assertDoesNotThrow(() -> needsCupboardFileDAO.deleteNeedType("board"),"Unexpected exception thrown");
+
+        // Analzye
+        assertEquals(result,true);
+        // We check the internal tree map size against the length
+        // of the test needs array - 1 (because of the delete)
+        // Because needs attribute of NeedsCupboardFileDAO is package private
+        // we can access it directly
+        assertEquals(needsCupboardFileDAO.needs.size(),testNeeds.length-1);
+   }    
+
+   @Test 
+   public void testDeleteNeedTypeNotFound() {
+        // Tests:
+            // if need is properly deleted
+            // if need type not found
+            // bad data is handled well
+            
+        // Invoke
+        boolean result = assertDoesNotThrow(() -> needsCupboardFileDAO.deleteNeedType("board"),"Unexpected exception thrown");
+
+        // Analzye
+        assertEquals(result,false);
+        assertEquals(needsCupboardFileDAO.needs.size(),testNeeds.length); // check for no change in length
+   }    
 }

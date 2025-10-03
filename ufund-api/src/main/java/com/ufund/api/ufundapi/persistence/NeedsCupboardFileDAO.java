@@ -219,7 +219,7 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
     @Override
     public boolean deleteNeedType(String type) throws IOException {
         synchronized(needs) {
-            if(needs.entrySet().removeIf(entry -> entry.getValue().getType().equals(type))){
+            if(needs.entrySet().removeIf(entry -> entry.getValue().getType().equals(type))){ // remove entry if it matches the given type
                 return save();
             }
             else
