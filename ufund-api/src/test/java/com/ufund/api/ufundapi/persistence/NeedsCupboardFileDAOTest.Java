@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.ufund.api.ufundapi.model;
+import com.ufund.api.ufundapi.model.Need;
 
 import java.io.File;
 import java.io.IOException; 
@@ -45,9 +45,9 @@ public class NeedsCupboardFileDAOTest {
         mockObjectMapper = mock(ObjectMapper.class);
 
         testNeeds = new Need[3];
-        testNeeds[0] = new Need[1, "Wires", 20.00, 5, "cord"];
-        testNeeds[1] = new Need[2, "Breadboard", 10, 1, "board"];
-        testNeeds[2] = new Need[3, "Lab Kit", 100, 3, "kit"];
+        testNeeds[0] = new Need(1, "Wires", 20.00, 5, "cord");
+        testNeeds[1] = new Need(2, "Breadboard", 10, 1, "board");
+        testNeeds[2] = new Need(3, "Lab Kit", 100, 3, "kit");
 
         when(mockObjectMapper
                 .readValue(new File("doesnt_matter.txt"), Need[].class))
@@ -64,7 +64,7 @@ public class NeedsCupboardFileDAOTest {
             // empty list returned when no needs are given
             
         // Invoke
-        Need[] needs = NeedsCupboardFileDAO.getNeeds();
+        Need[] needs = needsCupboardFileDAO.getNeeds();
 
         // Analyze
         assertEquals(needs.length,testNeeds.length); // checks that both lists are of equal length
@@ -99,7 +99,7 @@ public class NeedsCupboardFileDAOTest {
             // bad data is handled well
             
         // Invoke
-        boolean result = assertDoesNotThrow(() -> needsCupboardFileDAO.deleteNeedType("board"),"Unexpected exception thrown");
+        boolean result = assertDoesNotThrow(() -> needsCupboardFileDAO.deleteNeedType("box"),"Unexpected exception thrown");
 
         // Analzye
         assertEquals(result,false);

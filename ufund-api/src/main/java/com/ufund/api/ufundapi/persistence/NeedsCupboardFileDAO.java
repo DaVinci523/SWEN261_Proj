@@ -119,7 +119,7 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
      */
 
     @Override
-    public Need[] getNeeds() throws IOException {
+    public Need[] getNeeds() {
         synchronized(needs) {
             return getNeedsArray();
         }
