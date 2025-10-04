@@ -138,4 +138,90 @@ public class NeedsCupboardControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
 
+    @Test
+    public void testGetNeed() throws IOException {  // getHero may throw IOException
+        // Setup
+        Need need = new Need(99, "Silicon Wafer", 800, 5, "Electronics");
+        // When the same id is passed in, our mock Hero DAO will return the Hero object
+        when(mockNeedsCupboardDAO.getNeed(need.getId())).thenReturn(need);
+
+        // Invoke
+        ResponseEntity<Need> response = needsCupboardController.getNeed(need.getId());
+
+        // Analyze
+        assertEquals(HttpStatus.OK,response.getStatusCode());
+        assertEquals(need,response.getBody());
+    }
+
+    @Test
+    public void testGetNeedNotFound() throws Exception { // createHero may throw IOException
+        // Setup
+        int needId = 99;
+        // When the same id is passed in, our mock Hero DAO will return null, simulating
+        // no hero found
+        when(mockNeedsCupboardDAO.getNeed(needId)).thenReturn(null);
+
+        // Invoke
+        ResponseEntity<Need> response = needsCupboardController.getNeed(needId);
+
+        // Analyze
+        assertEquals(HttpStatus.NOT_FOUND,response.getStatusCode());
+    }
+
+    @Test
+    public void testGetNeedHandleException() throws Exception { // createHero may throw IOException
+        // Setup
+        int needId = 99;
+        // When getHero is called on the Mock Hero DAO, throw an IOException
+        doThrow(new IOException()).when(mockNeedsCupboardDAO).getNeed(needId);
+
+        // Invoke
+        ResponseEntity<Need> response = needsCupboardController.getNeed(needId);
+
+        // Analyze
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,response.getStatusCode());
+    }
+
+    
+    @Test
+    public void testDeleteNeed() throws IOException { // deleteHero may throw IOException
+        // Setup
+        int needId = 99;
+        // when deleteHero is called return true, simulating successful deletion
+        when(mockNeedsCupboardDAO.deleteNeed(needId)).thenReturn(true);
+
+        // Invoke
+        ResponseEntity<Need> response = needsCupboardController.deleteNeedId(needId);
+
+        // Analyze
+        assertEquals(HttpStatus.OK,response.getStatusCode());
+    }
+
+    @Test
+    public void testDeleteNeedNotFound() throws IOException { // deleteHero may throw IOException
+        // Setup
+        int needId = 99;
+        // when deleteHero is called return false, simulating failed deletion
+        when(mockNeedsCupboardDAO.deleteNeed(needId)).thenReturn(false);
+
+        // Invoke
+        ResponseEntity<Need> response = needsCupboardController.deleteNeedId(needId);
+
+        // Analyze
+        assertEquals(HttpStatus.NOT_FOUND,response.getStatusCode());
+    }
+
+    @Test
+    public void testDeleteNeedHandleException() throws IOException { // deleteHero may throw IOException
+        // Setup
+        int needId = 99;
+        // When deleteHero is called on the Mock Hero DAO, throw an IOException
+        doThrow(new IOException()).when(mockNeedsCupboardDAO).deleteNeed(needId);
+
+        // Invoke
+        ResponseEntity<Need> response = needsCupboardController.deleteNeedId(needId);
+
+        // Analyze
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,response.getStatusCode());
+    }
 }

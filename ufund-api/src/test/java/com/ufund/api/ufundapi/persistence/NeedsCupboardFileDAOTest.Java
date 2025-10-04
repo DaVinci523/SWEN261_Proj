@@ -143,5 +143,29 @@ public class NeedsCupboardFileDAOTest {
         // Analzye
         assertEquals(result,false);
         assertEquals(needsCupboardFileDAO.needs.size(),testNeeds.length); // check for no change in length
-   }    
+   } 
+   
+   @Test
+    public void testGetNeed() throws IOException {
+        // Invoke
+        Need need = needsCupboardFileDAO.getNeed(1);
+
+        // Analzye
+        assertEquals(need,testNeeds[0]);
+    }
+
+    @Test
+    public void testDeleteNeed() {
+        // Invoke
+        boolean result = assertDoesNotThrow(() -> needsCupboardFileDAO.deleteNeed(1),
+                            "Unexpected exception thrown");
+
+        // Analzye
+        assertEquals(result,true);
+        // We check the internal tree map size against the length
+        // of the test heroes array - 1 (because of the delete)
+        // Because heroes attribute of HeroFileDAO is package private
+        // we can access it directly
+        assertEquals(needsCupboardFileDAO.needs.size(),testNeeds.length-1);
+    }
 }
