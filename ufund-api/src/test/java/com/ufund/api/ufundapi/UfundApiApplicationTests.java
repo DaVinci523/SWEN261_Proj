@@ -31,11 +31,6 @@ class UfundApiApplicationTests {
 	 * Creates a new NeedsCupboardController object before each test and injects
 	 * a mock NeedsCupboardDAO
 	 */
-	@BeforeEach
-	public void setupNeedsCupboardController() {
-		mockNeedsCupboardDAO = mock(NeedsCupboardDAO.class);
-		needsCupboardController = new NeedsCupboardController(mockNeedsCupboardDAO);
-	}
 	@Test
 	void contextLoads() {
 	}
