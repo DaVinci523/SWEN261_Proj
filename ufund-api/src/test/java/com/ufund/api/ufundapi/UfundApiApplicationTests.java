@@ -7,10 +7,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 @SpringBootTest
 class UfundApiApplicationTests {
 
-	 @MockBean
-    private com.ufund.api.ufundapi.persistence.NeedsCupboardDAO needsCupboardDAO;
-
-    @org.junit.jupiter.api.Test
+    @Test
 	void contextLoads() {
 	}
 
