@@ -186,7 +186,7 @@ public class NeedsCupboardControllerTest {
     @Test
     public void testDeleteNeed() throws IOException { // deleteHero may throw IOException
         // Setup
-        int needId = 99;
+        int needId = 1;
         // when deleteHero is called return true, simulating successful deletion
         when(mockNeedsCupboardDAO.deleteNeed(needId)).thenReturn(true);
 
@@ -200,7 +200,7 @@ public class NeedsCupboardControllerTest {
     @Test
     public void testDeleteNeedNotFound() throws IOException { // deleteHero may throw IOException
         // Setup
-        int needId = 99;
+        int needId = 1;
         // when deleteHero is called return false, simulating failed deletion
         when(mockNeedsCupboardDAO.deleteNeed(needId)).thenReturn(false);
 
@@ -214,12 +214,94 @@ public class NeedsCupboardControllerTest {
     @Test
     public void testDeleteNeedHandleException() throws IOException { // deleteHero may throw IOException
         // Setup
-        int needId = 99;
+        int needId = 1;
         // When deleteHero is called on the Mock Hero DAO, throw an IOException
         doThrow(new IOException()).when(mockNeedsCupboardDAO).deleteNeed(needId);
 
         // Invoke
         ResponseEntity<Need> response = needsCupboardController.deleteNeedId(needId);
+
+        // Analyze
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,response.getStatusCode());
+    }
+
+    @Test
+    public void testUpdateNeed() throws IOException { // updateHero may throw IOException
+        // Setup
+        Need need = new Need(1, "Lab Kit", 20.0, 0, "Kit");
+        // when updateHero is called, return true simulating successful
+        // update and save
+        when(mockNeedsCupboardDAO.updateNeed(need)).thenReturn(need);
+        ResponseEntity<Need> response = needsCupboardController.updateNeed(need);
+        need.setName("Microscope");
+
+        // Invoke
+        response = needsCupboardController.updateNeed(need);
+        // Analyze
+        assertEquals(HttpStatus.OK,response.getStatusCode());
+        assertEquals(need,response.getBody());
+    }
+
+    @Test
+    public void testUpdateNeedFailed() throws IOException { // updateNeed may throw IOException
+        // Setup
+        Need need = new Need(99, "Lab Kit", 20.0, 0, "Kit");
+        // when updateHero is called, return true simulating successful
+        // update and save
+        when(mockNeedsCupboardDAO.updateNeed(need)).thenReturn(null);
+
+        // Invoke
+        ResponseEntity<Need> response = needsCupboardController.updateNeed(need);
+
+        // Analyze
+        assertEquals(HttpStatus.NOT_FOUND,response.getStatusCode());
+    }
+
+    @Test
+    public void testUpdateHeroHandleException() throws IOException { // updateHero may throw IOException
+        // Setup
+        Need need = new Need(99, "Lab Kit", 20.0, 0, "Kit");
+        // When updateHero is called on the Mock Hero DAO, throw an IOException
+        doThrow(new IOException()).when(mockNeedsCupboardDAO).updateNeed(need);
+
+        // Invoke
+        ResponseEntity<Need> response = needsCupboardController.updateNeed(need);
+
+        // Analyze
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,response.getStatusCode());
+    }
+    
+    @Test
+    public void testDeleteNeedName() throws IOException { // deleteHero may throw IOException
+        // when deleteHero is called return true, simulating successful deletion
+        when(mockNeedsCupboardDAO.deleteNeedName("Kit")).thenReturn(true);
+
+        // Invoke
+        ResponseEntity<Need> response = needsCupboardController.deleteNeedName("Kit");
+
+        // Analyze
+        assertEquals(HttpStatus.OK,response.getStatusCode());
+    }
+
+    @Test
+    public void testDeleteNeedNameNotFound() throws IOException { // deleteHero may throw IOException
+        // when deleteHero is called return false, simulating failed deletion
+        when(mockNeedsCupboardDAO.deleteNeedName("Kit")).thenReturn(false);
+
+        // Invoke
+        ResponseEntity<Need> response = needsCupboardController.deleteNeedName("Kit");
+
+        // Analyze
+        assertEquals(HttpStatus.NOT_FOUND,response.getStatusCode());
+    }
+
+    @Test
+    public void testDeleteNeedNameHandleException() throws IOException { // deleteHero may throw IOException
+        // When deleteHero is called on the Mock Hero DAO, throw an IOException
+        doThrow(new IOException()).when(mockNeedsCupboardDAO).deleteNeedName("Kit");
+
+        // Invoke
+        ResponseEntity<Need> response = needsCupboardController.deleteNeedName("Kit");
 
         // Analyze
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,response.getStatusCode());
