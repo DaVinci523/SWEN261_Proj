@@ -1,14 +1,6 @@
 package com.ufund.api.ufundapi;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.mock;
-
-import java.io.IOException;
-
-import org.mockito.Mock;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -20,7 +12,13 @@ import com.ufund.api.ufundapi.controller.NeedsCupboardController;
 import com.ufund.api.ufundapi.model.Need;
 import com.ufund.api.ufundapi.persistence.NeedsCupboardDAO;
 
-@ExtendWith(MockitoExtension.class)
+/**
+ * A built in test that comes with the Spring framework that validates
+ * that the REST API service starts (that's it)
+ */
+
+ @Tag("Controller-tier")
+@SpringBootTest
 class UfundApiApplicationTests {
 	private NeedsCupboardController needsCupboardController;
 

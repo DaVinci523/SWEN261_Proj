@@ -22,6 +22,14 @@ import java.util.logging.Logger;
 import com.ufund.api.ufundapi.persistence.NeedsCupboardDAO;
 import com.ufund.api.ufundapi.model.Need;
 
+/**
+ * Handles the REST API requests for the Need resource
+ * <p>
+ * {@literal @}RestController Spring annotation identifies this class as a REST API
+ * method handler to the Spring framework
+ * 
+ * @author SWEN Faculty,, Modified by CTRL Team
+ */
 @RestController
 @RequestMapping("needs")
 public class NeedsCupboardController {
@@ -62,7 +70,7 @@ public class NeedsCupboardController {
     /**
      * Handles HTTP GET requests to the "/needs"
      * @return a Response entity containing HttpStatus.OK if the array of needs is returned,
-     * a HttpStatus.NOT_FOUND if the return fails
+     * a HttpStatus.NO_CONTENT if the returned data is null
      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
      */
     @GetMapping("")
@@ -73,7 +81,7 @@ public class NeedsCupboardController {
             if (need != null)
                 return new ResponseEntity<>(need,HttpStatus.OK); 
             else
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         catch(IOException e) {
             LOG.log(Level.SEVERE,e.getLocalizedMessage());
