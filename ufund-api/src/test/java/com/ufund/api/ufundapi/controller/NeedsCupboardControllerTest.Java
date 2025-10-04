@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 import java.io.IOException;
 
 import com.ufund.api.ufund-api.persistence.NeedsCupboardDAO;
+import com.ufund.api.ufundapi.persistence.NeedsCupboardDAO;
 import com.ufund.api.ufundapi.model.Need;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -41,18 +42,18 @@ public class NeedsCupboardControllerTest {
     public void testGetNeeds() throws IOException { // getHeroes may throw IOException
         // Setup
         Need[] needs = new Need[2];
-        needs[0] = new Need[1, "Wires", 20.00, 5, "cord"];
-        needs[1] = new Need[2, "Breadboard", 10, 1, "board"];
+        needs[0] = new Need(1, "Wires", 20.00, 5, "cord");
+        needs[1] = new Need(2, "Breadboard", 10, 1, "board");
 
         // When getNeeds is called return the needs created above
-        when(NeedsCupboardDAO.getNeeds()).thenReturn(needs);
+        when(mockNeedsCupboardDAO.getNeeds()).thenReturn(needs);
 
         // Invoke
         ResponseEntity<Need[]> response = needsCupboardController.getNeeds();
 
         // Analyze
-        assertEquals(HttpStatus.OK,response.getStatusCode());
-        assertEquals(heroes,response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(needs, response.getBody());
     }
 
     @Test
@@ -70,45 +71,45 @@ public class NeedsCupboardControllerTest {
 
     // deleteNeedType() Tests
     @Test
-    public void deleteNeedType() throws IOException { // deleteNeedType may throw IOException
+    public void testDeleteNeedType() throws IOException { // deleteNeedType may throw IOException
         // Setup
-        int needType = 'board';
+        String needType = "board";
         // when deleteNeedType is called return true, simulating successful deletion
         when(mockNeedsCupboardDAO.deleteNeedType(needType)).thenReturn(true);
 
         // Invoke
-        ResponseEntity<Hero> response = needsCupboardController.deleteNeedType(needType);
+        ResponseEntity<Need> response = needsCupboardController.deleteNeedType(needType);
 
         // Analyze
         assertEquals(HttpStatus.OK,response.getStatusCode());
     }
 
     @Test
-    public void deleteNeedTypeNotFound() throws IOException { // deleteNeedType may throw IOException
+    public void testDeleteNeedTypeNotFound() throws IOException { // deleteNeedType may throw IOException
         // Setup
-        int needType = 'board';
+        String needType = "board";
         // when deleteNeedType is called return false, simulating failed deletion
         when(mockNeedsCupboardDAO.deleteNeedType(needType)).thenReturn(false);
 
         // Invoke
-        ResponseEntity<Hero> response = needsCupboardController.deleteNeedType(needType);
+        ResponseEntity<Need> response = needsCupboardController.deleteNeedType(needType);
 
         // Analyze
-        assertEquals(HttpStatus.NOT_FOUND,response.getStatusCode());
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
 
     @Test
-    public void deleteNeedHandleException() throws IOException { // deleteNeedType may throw IOException
+    public void testDeleteNeedTypeHandleException() throws IOException { // deleteNeedType may throw IOException
         // Setup
-        int needType = 'board';
+        String needType = "board";
         // When deleteNeedType is called on the Mock NeedsCupboardDAO, throw an IOException
         doThrow(new IOException()).when(mockNeedsCupboardDAO).deleteNeedType(needType);
 
         // Invoke
-        ResponseEntity<Hero> response = needsCupboardController.deleteNeedType(needType);
+        ResponseEntity<Need> response = needsCupboardController.deleteNeedType(needType);
 
         // Analyze
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,response.getStatusCode());
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
 
 }
