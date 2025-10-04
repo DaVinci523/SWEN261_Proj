@@ -14,24 +14,33 @@ import org.springframework.stereotype.Component;
 
 import com.ufund.api.ufundapi.model.Need;
 
+/**
+ * Implements the functionality for JSON file-based peristance for Needs
+ * 
+ * {@literal @}Component Spring annotation instantiates a single instance of this
+ * class and injects the instance into other classes as needed
+ * 
+ * @author SWEN Faculty, Modified by CTRL Team
+ */
 @Component 
 public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
-    public static Logger LOG = Logger.getLogger(NeedsCupboardDAO.class.getName());
+    private static final Logger LOG = Logger.getLogger(NeedsCupboardDAO.class.getName());
     Map<Integer,Need> needs;
     private ObjectMapper objectMapper;
     private static int nextId;
-    private String fn;
+    private String filename;
     
     /**
      *Create Needs Cupboard DAO(Data Access Object)
-     * @param fn Filename to rw from
+     * @param filename Filename to rw from
      * @param objectMapper provides deserialization & serialization for JSON
+     * 
+     * @throws IOException when file cannot be accessed or read from
      */
-     public NeedsCupboardFileDAO(@Value("${needs.file}") String fn, ObjectMapper objectMapper) throws IOException{
-            this.fn = fn;
+     public NeedsCupboardFileDAO(@Value("${needs.file}") String filename, ObjectMapper objectMapper) throws IOException{
+            this.filename = filename;
             this.objectMapper = objectMapper;
-            load();
-
+            load();  // load the needs from the file
     }
 
      /**
@@ -80,7 +89,7 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
         Need[] needsArray = getNeedsArray();
         //use the object mapper to serialize jave objects to JSON 
         //Issues will raise an IOException
-        objectMapper.writeValue(new File(fn), needsArray);
+        objectMapper.writeValue(new File(filename), needsArray);
         return true;
 
     }
@@ -93,7 +102,7 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
         needs = new TreeMap<>();
         nextId = 0;
         //use object mapper to deserialize  file into needsArray
-        Need[] needsArray = objectMapper.readValue(new File(fn), Need[].class);
+        Need[] needsArray = objectMapper.readValue(new File(filename), Need[].class);
         //add needs to needs tree map
         for (Need need : needsArray){
             needs.put(need.getId(), need);
@@ -110,7 +119,7 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
      */
 
     @Override
-    public Need[] getNeeds() throws IOException {
+    public Need[] getNeeds() {
         synchronized(needs) {
             return getNeedsArray();
         }
@@ -210,7 +219,7 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
     @Override
     public boolean deleteNeedType(String type) throws IOException {
         synchronized(needs) {
-            if(needs.entrySet().removeIf(entry -> entry.getValue().getType().equals(type))){
+            if(needs.entrySet().removeIf(entry -> entry.getValue().getType().equals(type))){ // remove entry if it matches the given type
                 return save();
             }
             else

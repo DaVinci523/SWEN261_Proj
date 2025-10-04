@@ -5,7 +5,7 @@ import com.ufund.api.ufundapi.model.Need;
 
 /**
  * Interfacing for Need object
- * @author CTRL
+ * @author SWEN Faculty, Modified by CTRL Team
  */
 public interface NeedsCupboardDAO {
    

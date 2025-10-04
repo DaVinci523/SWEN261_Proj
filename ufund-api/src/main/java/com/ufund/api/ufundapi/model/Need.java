@@ -25,7 +25,10 @@ public class Need {
      * @param id Id of the created Need
      * @param name Name of the created Need
      * @param value value of the created Need
-     * @JsonProperty used for mapping JSON to Java object
+     * {@literal @} used for mapping JSON to Java object. JsonProperty is used in serialization and deserialization
+     * of the JSON object to the Java object in mapping the fields.  If a field
+     * is not provided in the JSON object, the Java field gets the default Java
+     * value, i.e. 0 for int
      */
     public Need(@JsonProperty("id") int id, @JsonProperty("name") String name, @JsonProperty("value") double value,
      @JsonProperty("quantity") int quantity, @JsonProperty("type") String type){
