@@ -45,15 +45,128 @@ public class NeedsCupboardFileDAOTest {
         mockObjectMapper = mock(ObjectMapper.class);
 
         testNeeds = new Need[3];
-        testNeeds[0] = new Need(1, "Lab Kit", 20.00, 1, "Kit");
-        testNeeds[1] = new Need(2, "Breadboard", 30.00, 2, "Board");
-        testNeeds[2] = new Need(3, "Microscope", 40.00, 3, "Scope");
+        testNeeds[0] = new Need(1, "Wires", 20.00, 5, "cord");
+        testNeeds[1] = new Need(2, "Breadboard", 10, 1, "board");
+        testNeeds[2] = new Need(3, "Lab Kit", 100, 3, "kit");
 
         when(mockObjectMapper
                 .readValue(new File("doesnt_matter.txt"), Need[].class))
                     .thenReturn(testNeeds);
 
         needsCupboardFileDAO = new NeedsCupboardFileDAO("doesnt_matter.txt", mockObjectMapper);
+    }
+    
+    @Test
+    public void testGetNeeds() {
+        // Invoke
+        Need[] needs = needsCupboardFileDAO.getNeeds();
+        // Analyze
+        assertEquals(needs.length,testNeeds.length); // checks that both lists are of equal length
+        for (int i = 0; i < testNeeds.length;++i) 
+            assertEquals(needs[i],testNeeds[i]); // checks if each values in the list are equivallent
+   }
+
+   @Test 
+   public void testDeleteNeedType() {
+        // Invoke
+        boolean result = assertDoesNotThrow(() -> needsCupboardFileDAO.deleteNeedType("board"),"Unexpected exception thrown");
+
+        // Analzye
+        assertEquals(result,true);
+        // We check the internal tree map size against the length
+        // of the test needs array - 1 (because of the delete)
+        // Because needs attribute of NeedsCupboardFileDAO is package private
+        // we can access it directly
+        assertEquals(needsCupboardFileDAO.needs.size(),testNeeds.length-1);
+   }
+
+    @Test
+    public void testSearchNeeds() throws IOException {
+        // Invoke
+        Need[] needs = needsCupboardFileDAO.searchNeeds("La");
+        // Analyze
+        // Assert that testSearchNeeds should give back array of 1 Need
+        // being just Lab Kit that meets search criteria
+        assertEquals(needs.length,1);
+        assertEquals(needs[0],testNeeds[2]);
+     }
+    
+   @Test 
+   public void testDeleteNeedTypeNull() {
+        // Invoke
+        boolean result = assertDoesNotThrow(() -> needsCupboardFileDAO.deleteNeedType(null),"Unexpected exception thrown");
+
+        // Analzye
+        assertEquals(result,false);
+        // We check the internal tree map size against the length
+        // of the test needs array - 1 (because of the delete)
+        // Because needs attribute of NeedsCupboardFileDAO is package private
+        // we can access it directly
+        assertEquals(needsCupboardFileDAO.needs.size(),testNeeds.length);
+   }    
+
+   @Test 
+   public void testDeleteNeedTypeNumbers() {
+        // Invoke
+        boolean result = assertDoesNotThrow(() -> needsCupboardFileDAO.deleteNeedType("3294022"),"Unexpected exception thrown");
+
+        // Analzye
+        assertEquals(result,false);
+        // We check the internal tree map size against the length
+        // of the test needs array - 1 (because of the delete)
+        // Because needs attribute of NeedsCupboardFileDAO is package private
+        // we can access it directly
+        assertEquals(needsCupboardFileDAO.needs.size(),testNeeds.length);
+   }
+
+   @Test 
+   public void testDeleteNeedTypeSpecialCharacters() {
+        // Invoke
+        // Test many special characters and see if the program crashes or not. 
+        boolean result = assertDoesNotThrow(() -> needsCupboardFileDAO.deleteNeedType("!@#$%^&*()-_+=|~`';:><.,/"),"Unexpected exception thrown");
+
+        // Analzye
+        assertEquals(result,false);
+        // We check the internal tree map size against the length
+        // of the test needs array - 1 (because of the delete)
+        // Because needs attribute of NeedsCupboardFileDAO is package private
+        // we can access it directly
+        assertEquals(needsCupboardFileDAO.needs.size(),testNeeds.length);
+   }
+
+   @Test 
+   public void testDeleteNeedTypeNotFound() {
+            
+        // Invoke
+        boolean result = assertDoesNotThrow(() -> needsCupboardFileDAO.deleteNeedType("box"),"Unexpected exception thrown");
+
+        // Analzye
+        assertEquals(result,false);
+        assertEquals(needsCupboardFileDAO.needs.size(),testNeeds.length); // check for no change in length
+   } 
+   
+   @Test
+    public void testGetNeed() throws IOException {
+        // Invoke
+        Need need = needsCupboardFileDAO.getNeed(1);
+
+        // Analzye
+        assertEquals(need,testNeeds[0]);
+    }
+
+    @Test
+    public void testDeleteNeed() {
+        // Invoke
+        boolean result = assertDoesNotThrow(() -> needsCupboardFileDAO.deleteNeed(1),
+                            "Unexpected exception thrown");
+
+        // Analzye
+        assertEquals(result,true);
+        // We check the internal tree map size against the length
+        // of the test heroes array - 1 (because of the delete)
+        // Because heroes attribute of HeroFileDAO is package private
+        // we can access it directly
+        assertEquals(needsCupboardFileDAO.needs.size(),testNeeds.length-1);
     }
 
     @Test
@@ -87,7 +200,7 @@ public class NeedsCupboardFileDAOTest {
     @Test
     public void testDeleteNeedName() {
         // Invoke
-        boolean result = assertDoesNotThrow(() -> needsCupboardFileDAO.deleteNeedName("scope"),
+        boolean result = assertDoesNotThrow(() -> needsCupboardFileDAO.deleteNeedName("board"),
                             "Unexpected exception thrown");
 
         // Analzye
@@ -109,5 +222,4 @@ public class NeedsCupboardFileDAOTest {
         assertEquals(result,false);
         assertEquals(needsCupboardFileDAO.needs.size(),testNeeds.length); // check for no change in length
    }  
-
 }
