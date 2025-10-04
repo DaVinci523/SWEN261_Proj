@@ -17,9 +17,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import com.ufund.api.ufundapi.model;
-
 import java.io.File;
 import java.io.IOException; 
 
