@@ -7,7 +7,6 @@ import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 
-import com.ufund.api.ufund-api.persistence.NeedsCupboardDAO;
 import com.ufund.api.ufundapi.persistence.NeedsCupboardDAO;
 import com.ufund.api.ufundapi.model.Need;
 
@@ -66,6 +65,33 @@ public class NeedsCupboardControllerTest {
         ResponseEntity<Need[]> response = needsCupboardController.getNeeds();
 
         // Analyze
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,response.getStatusCode());
+    }
+
+    //searchNeeds()     Tests
+    @Test
+    public void testSearchNeeds() throws IOException{
+        String searchString = "La";
+        Need[] needs = new Need[3];
+        needs[0] = new Need(1, "Lab Kit", 20.00, 5, "kit");
+        needs[2] = new Need(3, "Lab Extinguisher", 150.00, 1, "safety");
+        //When search heres is classed with "La" return the two Needs created above
+        when(mockNeedsCupboardDAO.searchNeeds(searchString)).thenReturn(needs);
+
+        ResponseEntity<Need[]> response = needsCupboardController.searchNeeds(searchString);
+        assertEquals(HttpStatus.OK,response.getStatusCode());
+        assertEquals(needs,response.getBody());
+
+    }
+    
+    @Test
+    public void testSearchNeedsHandleException() throws IOException {
+        String searchString = "bread";
+        //when searchNeeds is called, IOException is thrown
+        doThrow(new IOException()).when(mockNeedsCupboardDAO).searchNeeds(searchString);
+        //begin
+        ResponseEntity<Need[]> response = needsCupboardController.searchNeeds(searchString);
+        //Test
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,response.getStatusCode());
     }
 

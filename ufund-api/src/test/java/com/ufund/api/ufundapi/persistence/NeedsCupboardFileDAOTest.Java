@@ -60,7 +60,6 @@ public class NeedsCupboardFileDAOTest {
     public void testGetNeeds() {
         // Invoke
         Need[] needs = needsCupboardFileDAO.getNeeds();
-
         // Analyze
         assertEquals(needs.length,testNeeds.length); // checks that both lists are of equal length
         for (int i = 0; i < testNeeds.length;++i) 
@@ -81,6 +80,17 @@ public class NeedsCupboardFileDAOTest {
         assertEquals(needsCupboardFileDAO.needs.size(),testNeeds.length-1);
    }
 
+    @Test
+    public void testSearchNeeds() throws IOException {
+        // Invoke
+        Need[] needs = needsCupboardFileDAO.searchNeeds("La");
+        // Analyze
+        // Assert that testSearchNeeds should give back array of 1 Need
+        // being just Lab Kit that meets search criteria
+        assertEquals(needs.length,1);
+        assertEquals(needs[0],testNeeds[2]);
+     }
+    
    @Test 
    public void testDeleteNeedTypeNull() {
         // Invoke
