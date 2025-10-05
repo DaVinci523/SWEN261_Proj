@@ -222,4 +222,43 @@ public class NeedsCupboardFileDAOTest {
         assertEquals(result,false);
         assertEquals(needsCupboardFileDAO.needs.size(),testNeeds.length); // check for no change in length
    }  
+
+   @Test
+    public void testCreateNeed() {
+    // Setup
+    Need need = new Need(102,"Banana-Plug", 5.50, 3, "plug");
+    // Invoke
+    Need result = assertDoesNotThrow(() -> needsCupboardFileDAO.createdNeed(need),"Unexpected exception thrown");
+    // Analyze
+    assertNotNull(result);
+    assertEquals(need.getName(),result.getName());
+    assertEquals(need.getValue(),result.getValue());
+    assertEquals(need.getQuantity(),result.getQuantity());
+    assertEquals(need.getType(),result.getType());
+    }
+
+
+@Test
+public void testDeleteAllSuccess() {
+	// Invoke
+	Boolean result = assertDoesNotThrow(() -> needsCupboardFileDAO.deleteAll(), "Unexpected exception thrown");
+
+	// Analyze
+	assertEquals(true, result);
+	assertEquals(0, needsCupboardFileDAO.needs.size());
+}
+
+@Test
+public void testDeleteAllWhenAlreadyEmpty() {
+	// Setup
+	needsCupboardFileDAO.needs.clear();
+
+	// Invoke
+	boolean result = assertDoesNotThrow(() -> needsCupboardFileDAO.deleteAll(), "Unexpected exception thrown");
+
+	// Analyze
+	assertEquals(true,result);
+	assertEquals(0, needsCupboardFileDAO.needs.size());
+}
+
 }
