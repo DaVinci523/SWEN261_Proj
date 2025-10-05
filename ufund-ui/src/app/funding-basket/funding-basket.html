@@ -1,5 +1,37 @@
-<ul>
-    <li>Bread Board 67</li>
-    <li>Wires</li>
-    <li>Pliers</li>
+<h2>MyNeedContributions</h2>
+
+<div>
+  <label for="new-need">Need name: </label>
+  <input id="new-need" #needName />
+
+  <!-- (click) passes input value to add() and then clears the input 
+  <button type="button" class="add-button" (click)="add(heroName.value); heroName.value=''">
+    Add hero
+  </button>
+</div>-->
+
+<ul class="userNeeds"> <!--add all userneeds to a list-->
+    @for (need of userNeeds; track need.id) {
+        <!--<a routerLink="/detail/{{need.id}}">
+          <span class="badge">{{need.id}}</span> {{need.name}}
+        </a>--> <!--Route to the need's page if we decide on specifying that--> 
+        <li>
+            <div>
+                <span class="identifier">{{need.id}}</span> {{need.name}}
+                <button type="button" class="change quantity" title="increase need quantity" (click)="increaseQuantity(need)">
+                    [^]
+                </button>
+                <input type="number" id="need-quantity" [(ngModel)]="needQuantity"/> 
+                <button type="button" class="change quantity" title="decrease need quantity" (click)="decreaseQuantity(need)">
+                    [v]
+                </button>
+            </div>
+            <button type="button" class="delete" title="delete need" (click)="delete(need)">
+                [x]
+            </button>
+        </li>
+    } 
+    @empty {
+        <li>There are no items.</li>
+    }
 </ul>
