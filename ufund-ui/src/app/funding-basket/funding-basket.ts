@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { Need } from '../need';
 import { FundingBasketService } from '../funding-basket-service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-funding-basket',
@@ -28,9 +29,9 @@ export class FundingBasket implements OnInit{
     if (!name) { 
       return; 
     }
-    this.fundingBasketService.addNeed({ name } as Need)
-      .subscribe(hero => {
-        this.userNeeds.push(hero);
+    this.fundingBasketService.addNeed({ name, value, quantity, type } as Need)
+      .subscribe(need => {
+        this.userNeeds.push(need);
       });
   }
 
@@ -40,11 +41,26 @@ export class FundingBasket implements OnInit{
   }
 
   increaseQuantity(need: Need): void {
-    this.needQuantity++; // temporary visual
+    //this.fundingBasketService.increaseQuantity(need).subscribe();
+    need.quantity++;; // temporary visual, does NOT affect the data.json file
+    this.fundingBasketService.updateNeed(need)
+        .subscribe();
   }
 
   decreaseQuantity(need: Need): void {
-    this.needQuantity--; // temporary visual
+    //this.fundingBasketService.increaseQuantity(need).subscribe();
+    need.quantity--; // temporary visual, does NOT affect the data.json file
+    this.fundingBasketService.updateNeed(need)
+        .subscribe();
+  }
+
+  saveAll(): void {
+    if (this.userNeeds) {
+      for ( const need of this.userNeeds){ // update every need in the user's funding basket
+      this.fundingBasketService.updateNeed(need)
+        .subscribe();
+      }
+    }
   }
 
 }

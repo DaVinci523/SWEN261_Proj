@@ -1,34 +1,31 @@
-<h2>MyNeedContributions</h2>
+<h1>MyNeedContributions:</h1>
+ <h2>Add Needs to the FundingBasket (but for now it's actually the NeedsCupboard ) list</h2>
+<div> <!--This code allows to add to the list, this is mostly for testing it and should be edited or removed latter.-->
+    <label for="new-need">Need name: </label>
+    <input id="new-need" #needName placeholder="name"/>
+    <label for="new-need">Need value: </label>
+    <input id="new-need" #needValue placeholder="value"/>
+    <label for="new-need">Need type: </label>
+    <input id="new-need" #needType placeholder="type"/>
 
-<div>
-  <label for="new-need">Need name: </label>
-  <input id="new-need" #needName />
+    <!--(click) passes input value to add() and then clears the input -->
+  <button type="button" class="add-button" (click)="add(needName.value, needValue.valueAsNumber, 0, needType.value); needName.value=''; needValue.value=''; needType.value='';">Add Need</button>
+</div>
 
-  <!-- (click) passes input value to add() and then clears the input 
-  <button type="button" class="add-button" (click)="add(heroName.value); heroName.value=''">
-    Add hero
-  </button>
-</div>-->
-
-<ul class="userNeeds"> <!--add all userneeds to a list-->
+<ul class="userNeeds"><!--add all userneeds to a list-->
     @for (need of userNeeds; track need.id) {
         <!--<a routerLink="/detail/{{need.id}}">
           <span class="badge">{{need.id}}</span> {{need.name}}
         </a>--> <!--Route to the need's page if we decide on specifying that--> 
         <li>
-            <div>
-                <span class="identifier">{{need.id}}</span> {{need.name}}
-                <button type="button" class="change quantity" title="increase need quantity" (click)="increaseQuantity(need)">
-                    [^]
-                </button>
-                <input type="number" id="need-quantity" [(ngModel)]="needQuantity"/> 
-                <button type="button" class="change quantity" title="decrease need quantity" (click)="decreaseQuantity(need)">
-                    [v]
-                </button>
-            </div>
-            <button type="button" class="delete" title="delete need" (click)="delete(need)">
-                [x]
-            </button>
+            <span>
+                <span class="identifier">id:[{{need.id}}]</span> | {{need.name}} | cost: ${{need.value}} | type: "{{need.type}}" | 
+                <button type="button" class="change quantity" title="increase need quantity" (click)="increaseQuantity(need)">[^]</button>
+                <input type="number" id="need-quantity" [(ngModel)]="need.quantity"/> 
+                <button type="button" class="change quantity" title="decrease need quantity" (click)="decreaseQuantity(need)">[v]</button>
+            </span>
+
+            <button type="button" class="delete" title="delete need" (click)="delete(need)">[x]</button>
         </li>
     } 
     @empty {

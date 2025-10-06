@@ -7,5 +7,14 @@ import { Component } from '@angular/core';
   styleUrl: './checkout.css'
 })
 export class Checkout {
+  nameOnCard: string = "";
+  cardNumber: string = "";
+  address: string = "";
 
+
+
+  checkout(): void {
+    this.nameOnCard = "";
+    this.cardNumber = "";
+    this.address = "";  }
 }
