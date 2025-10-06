@@ -15,4 +15,9 @@ export class HomePage {
   goToPage(){
     this.router.navigate(['/page']);
   }
+
+  // Method for handling the checkout navigation
+  goToCheckout() {
+    this.router.navigate(['/checkout']);
+  }
 }

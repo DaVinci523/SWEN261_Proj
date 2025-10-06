@@ -9,13 +9,28 @@
 /* Upper bar */
 .upper-bar {
     background-color: orange;
-    border-bottom: 1px solid white;
-    padding: 15px;
+    border-bottom: 1px solid black;
+    padding: 15px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .upper-bar h1 {
     margin: 0;
     font-size: 24px;
+}
+
+.checkout-button {
+    background-color: white;
+    border: 2px solid black;
+    padding: 8px 16px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.checkout-button:active {
+    background-color: white;
 }
 
 /* Layout for the main content */
