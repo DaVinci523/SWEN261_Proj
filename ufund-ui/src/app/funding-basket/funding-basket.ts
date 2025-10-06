@@ -14,6 +14,7 @@ export class FundingBasket implements OnInit{
   constructor(private fundingBasketService: FundingBasketService) { }
   userNeeds: Need[] = []; // the front-end container for the user's needs
   needQuantity: number = 0;
+  displayValue: number = 69;
 
   getNeeds(): void { // gets the needs from the REST api by running a program in the needService
     this.fundingBasketService.getNeeds().subscribe(userNeeds => this.userNeeds = userNeeds);
@@ -25,6 +26,7 @@ export class FundingBasket implements OnInit{
   }
 
   add(name: string, value: number, quantity: number, type: string): void {
+    this.displayValue = value;
     name = name.trim();
     if (!name) { 
       return; 
