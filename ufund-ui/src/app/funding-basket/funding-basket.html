@@ -25,14 +25,24 @@
         <span class="badge">{{need.id}}</span> {{need.name}}
         </a>--> <!--Route to the need's page if we decide on specifying that--> 
         <li>
-            <span>
-                <span class="identifier variable">id:[{{need.id}}]</span> <span class="variable">{{need.name}}</span><span class="variable">${{need.value}}</span><span class="variable">"{{need.type}}"</span>
-                <input type="number" id="need-quantity" [(ngModel)]="need.quantity"/> 
-                <button type="button" class="change-quantity" title="increase need quantity" (click)="increaseQuantity(need)">[^]</button>
-                <button type="button" class="change-quantity" title="decrease need quantity" (click)="decreaseQuantity(need)">[v]</button>
+            <span class="data-container">
+                <span id="need-variables">
+                    <span class="identifier variable">id: [{{need.id}}]</span> 
+                    <span class="variable">name: {{need.name}}</span>
+                    <span class="variable">value: ${{need.value}}</span>
+                    <span class="variable">type: "{{need.type}}"</span>
+                </span>
+                <span id="quantity-inputs">
+                    <button type="button" class="change-quantity" title="decrease need quantity" (click)="decreaseQuantity(need)">[v]</button>
+                    <button type="button" class="change-quantity" title="increase need quantity" (click)="increaseQuantity(need)">[^]</button>
+                    <input type="number" class="manual-quantity" [(ngModel)]="need.quantity"/> 
+                    
+                    
+                </span>
+                <span id="delete-column">
+                    <button type="button" class="delete" title="delete need" (click)="delete(need)">[x]</button>
+                </span>
             </span>
-
-            <button type="button" class="delete" title="delete need" (click)="delete(need)">[x]</button>
         </li>
     } 
     @empty {
