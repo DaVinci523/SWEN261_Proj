@@ -2,8 +2,13 @@
     <!-- Upper Bar -->
      <header class="upper-bar">
         <h1>MyResearch</h1>
+        @if (user.isLoggedIn()) {
+            <p>Welcome {{ user.getCurrentUser() }}!</p>
+        } @else {
+            <button class="login-button" (click)="goToLogin()">Login</button>
+        }
         <button class="checkout-button" (click)="goToCheckout()">Checkout</button>
-     </header>
+     </header>  
 
      <!-- Main Page content-->
     <main class="main-content">
