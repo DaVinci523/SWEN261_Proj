@@ -28,4 +28,8 @@ export class HomePage {
   goToCheckout() {
     this.router.navigate(['/checkout']);
   }
+
+  goToAdmin(){
+     this.router.navigate(['/admin-page']);
+  }
 }
