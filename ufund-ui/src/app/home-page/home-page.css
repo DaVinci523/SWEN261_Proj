@@ -1,0 +1,89 @@
+/* Page layout */
+.home-page {
+    font-family: Arial, sans-serif;
+    color: black;
+    margin: 0;
+    padding: 0;
+}
+
+/* Upper bar */
+.upper-bar {
+    background-color: orange;
+    border-bottom: 1px solid black;
+    padding: 15px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.upper-bar h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.checkout-button {
+    background-color: white;
+    border: 2px solid black;
+    padding: 8px 16px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.checkout-button:active {
+    background-color: white;
+}
+
+/* Layout for the main content */
+.main-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 40px;
+}
+
+/* Left Side */
+.left-section {
+    width: 60%;
+}
+
+.left-section h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.left-section p {
+    font-size: 16px;
+    line-height: 1.4;
+    margin-bottom: 20px;
+}
+
+.left-section img {
+    width: 400px;
+    height: auto;
+    border: 1px solid white;
+}
+
+/* Right section */
+.right-section {
+    width: 35%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fund-now-button {
+    display: block;
+    width: 90%;
+    height: 70%;
+    max-height: 400px;
+    background-color: white;
+    border: 5px solid black;
+    font-size: 50px;
+    cursor: pointer;
+    text-align: center;
+    line-height: 1.2;
+}
+
+.fund-now-button:active {
+    background-color: white;
+}
