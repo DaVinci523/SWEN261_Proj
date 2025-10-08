@@ -1,0 +1,7 @@
+nav-bar{
+    display: grid;
+    grid-template-columns: 70% 20% 10%;
+    padding: 3%;
+    background-color: rgb(251, 109, 7);
+    padding: 15 px 20 px;
+}
