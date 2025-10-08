@@ -1,7 +1,8 @@
-nav-bar{
-    display: grid;
-    grid-template-columns: 70% 20% 10%;
-    padding: 3%;
-    background-color: rgb(251, 109, 7);
-    padding: 15 px 20 px;
+.nav-bar{
+    background-color: orange;
+    border-bottom: 1 px solid black;
+    padding: 15px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
