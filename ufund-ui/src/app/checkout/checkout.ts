@@ -12,9 +12,11 @@ export class Checkout {
   address: string = "";
 
 
-
   checkout(): void {
     this.nameOnCard = "";
     this.cardNumber = "";
-    this.address = "";  }
+    this.address = "";  
+
+    
+  }
 }
