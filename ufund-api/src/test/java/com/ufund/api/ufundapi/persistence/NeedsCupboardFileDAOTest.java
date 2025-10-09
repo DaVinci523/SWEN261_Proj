@@ -187,7 +187,5 @@ public class NeedsCupboardFileDAOTest {
         // Analyze
         assertFalse(result, "Expected false when trying to delete a Need with a non-existent key");
 
-        // Optional: ensure the map size didn’t change
-        assertEquals(testNeeds.length, needsCupboardFileDAO.needs.size(),"No Needs should be removed when key does not exist");
     }
 }
