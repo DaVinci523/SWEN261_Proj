@@ -1,5 +1,51 @@
-<ul>
-    <li>Bread Board 67</li>
-    <li>Wires</li>
-    <li>Pliers</li>
+<h1>MyNeedContributions:</h1>
+<h2>Add Needs to the FundingBasket (but for now it's actually the NeedsCupboard ) list</h2>    
+
+<div> <!--This code allows to add to the list, this is mostly for testing it and should be edited or removed latter.-->
+    <div>
+        <label for="new-need">Need name: </label>
+        <input id="new-need" #needName placeholder="name"/>
+    </div>
+    <div>
+        <label for="new-need">Need value: </label>
+        <input type="number" id="new-need" #needValue placeholder="value"/>
+    </div>
+    <div>
+        <label for="new-need">Need type: </label>
+        <input id="new-need" #needType placeholder="type"/>
+    </div>
+
+    <!--(click) passes input value to add() and then clears the input -->
+<button type="button" class="add-button" (click)="add(needName.value, needValue.valueAsNumber, 0, needType.value); needName.value=''; needValue.value=''; needType.value='';">Add Need</button>
+</div>
+
+<ul class="userNeeds"><!--add all userneeds to a list-->
+    @for (need of userNeeds; track need.id) {
+        <!--<a routerLink="/detail/{{need.id}}">
+        <span class="badge">{{need.id}}</span> {{need.name}}
+        </a>--> <!--Route to the need's page if we decide on specifying that--> 
+        <li>
+            <span class="data-container">
+                <span id="need-variables">
+                    <span class="identifier variable">id: [{{need.id}}]</span> 
+                    <span class="variable">name: {{need.name}}</span>
+                    <span class="variable">value: ${{need.value}}</span>
+                    <span class="variable">type: "{{need.type}}"</span>
+                </span>
+                <span id="quantity-inputs">
+                    <button type="button" class="change-quantity" title="decrease need quantity" (click)="decreaseQuantity(need)">[v]</button>
+                    <button type="button" class="change-quantity" title="increase need quantity" (click)="increaseQuantity(need)">[^]</button>
+                    <input type="number" class="manual-quantity" [(ngModel)]="need.quantity"/> 
+                    
+                    
+                </span>
+                <span id="delete-column">
+                    <button type="button" class="delete" title="delete need" (click)="delete(need)">[x]</button>
+                </span>
+            </span>
+        </li>
+    } 
+    @empty {
+        <li>There are no items.</li>
+    }
 </ul>
