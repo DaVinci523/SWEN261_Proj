@@ -1,5 +1,5 @@
-<h1>MyNeedContributions:</h1>
-<h2>Add Needs to the FundingBasket (but for now it's actually the NeedsCupboard ) list</h2>    
+<h1>My Need Contributions:</h1>
+<h2>Add Needs to the <u>FundingBasket</u> list</h2>    
 
 <div> <!--This code allows to add to the list, this is mostly for testing it and should be edited or removed latter.-->
     <div>
@@ -35,7 +35,7 @@
                 <span id="quantity-inputs">
                     <button type="button" class="change-quantity" title="decrease need quantity" (click)="decreaseQuantity(need)">[v]</button>
                     <button type="button" class="change-quantity" title="increase need quantity" (click)="increaseQuantity(need)">[^]</button>
-                    <input type="number" class="manual-quantity" [(ngModel)]="need.quantity"/> 
+                    <input type="number" class="manual-quantity" [(ngModel)]="need.quantity" (input)="saveAll()"/> 
                     
                     
                 </span>

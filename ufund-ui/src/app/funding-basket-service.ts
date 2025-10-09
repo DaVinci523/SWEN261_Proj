@@ -11,7 +11,7 @@ import { catchError, map, tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class FundingBasketService {
-  private needsUrl = 'http://localhost:8080/needs';  // URL to web api
+  private needsUrl = 'http://localhost:8080/funding_basket_needs';  // URL to web api
 
   constructor(
     private http: HttpClient,

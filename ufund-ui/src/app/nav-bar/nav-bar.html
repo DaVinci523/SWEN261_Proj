@@ -2,7 +2,11 @@
 
 <a (click)="goToHome()">myResearch</a>
 
-<a (click)="goToLogin()">Login</a>
+@if (this.user.isLoggedIn()) {
+    <p>Welcome, {{ this.user.getCurrentUser() }}</p>
+} @else {
+    <a (click)="goToLogin()">Login</a>
+}
 
 <a (click)="goToCheckout()">Checkout</a>
 
