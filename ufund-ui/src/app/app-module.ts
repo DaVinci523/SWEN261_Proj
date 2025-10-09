@@ -15,6 +15,7 @@ import { CheckoutPage } from './checkout-page/checkout-page';
 import { NeedsCupboard } from './needs-cupboard/needs-cupboard';
 import { FundingBasket } from './funding-basket/funding-basket';
 import { Checkout } from './checkout/checkout';
+import { NavBar } from './nav-bar/nav-bar';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { Checkout } from './checkout/checkout';
     CheckoutPage,
     NeedsCupboard,
     FundingBasket,
-    Checkout
+    Checkout,
+    NavBar
   ],
   imports: [
     BrowserModule,
