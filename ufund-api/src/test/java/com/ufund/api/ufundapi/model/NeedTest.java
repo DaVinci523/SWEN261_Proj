@@ -28,8 +28,68 @@ public class NeedTest {
         // Analyze
         assertEquals(expected_id,need.getId());
         assertEquals(expected_name,need.getName());
+        assertEquals(expected_value,need.getValue());
+        assertEquals(expected_quantity,need.getQuantity());
+        assertEquals(expected_type,need.getType());
     }
 
+    @Test
+    public void testValue() {
+        // Setup
+        int id = 99;
+        String name = "Breadboard";
+        double value = 30.0;
+        int quantity = 6;
+        String type = "board";
+        Need need = new Need(id, name, value, quantity, type);
+
+        Double expected_value = 40.0;
+
+        // Invoke
+        need.setValue(expected_value);
+
+        // Analyze
+        assertEquals(expected_value,need.getValue());
+    }
+
+    @Test
+    public void testQuantity() {
+        // Setup
+        int id = 99;
+        String name = "Breadboard";
+        double value = 30.0;
+        int quantity = 6;
+        String type = "board";
+        Need need = new Need(id, name, value, quantity, type);
+
+        int expected_quantity = 7;
+
+        // Invoke
+        need.setQuantity(expected_quantity);
+
+        // Analyze
+        assertEquals(expected_quantity,need.getQuantity());
+    }
+
+    @Test
+    public void testType() {
+        // Setup
+        int id = 99;
+        String name = "Breadboard";
+        double value = 30.0;
+        int quantity = 6;
+        String type = "board";
+        Need need = new Need(id, name, value, quantity, type);
+
+        String expected_type = "breadboard";
+
+        // Invoke
+        need.setType(expected_type);
+
+        // Analyze
+        assertEquals(expected_type,need.getType());
+    }
+    
     @Test
     public void testName() {
         // Setup
