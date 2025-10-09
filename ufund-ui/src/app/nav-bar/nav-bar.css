@@ -1,0 +1,8 @@
+.nav-bar{
+    background-color: orange;
+    border-bottom: 1 px solid black;
+    padding: 15px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
