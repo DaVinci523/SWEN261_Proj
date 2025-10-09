@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { AdminPageService } from '../admin-page-service'; 
+
 
 @Component({
   selector: 'app-admin-page',
