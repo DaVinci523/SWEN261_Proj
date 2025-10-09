@@ -30,6 +30,6 @@ export class HomePage {
   }
 
   goToAdmin(){
-     this.router.navigate(['/admin-page']);
+     this.router.navigate(['/admin']);
   }
 }

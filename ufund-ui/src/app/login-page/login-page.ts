@@ -17,8 +17,12 @@ export class LoginPage {
      if (this.user.userExists(this.username)){
       this.user.login(name);
       alert("Welcome " + this.username);
-      this.router.navigate(['./']);
-     } else {
+      if (this.user.getCurrentUserRole() == 'admin') {
+        this.router.navigate(['/admin']);
+      } else {
+        this.router.navigate(['./']);
+      }
+     } else { 
       alert("User does not exist!");
      }
   }
