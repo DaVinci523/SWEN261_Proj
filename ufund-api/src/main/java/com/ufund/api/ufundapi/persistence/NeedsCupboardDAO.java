@@ -76,21 +76,4 @@ public interface NeedsCupboardDAO {
      */
     boolean deleteNeedName(String name) throws IOException;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
