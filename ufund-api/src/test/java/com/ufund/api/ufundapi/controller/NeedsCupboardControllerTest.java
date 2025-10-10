@@ -68,6 +68,19 @@ public class NeedsCupboardControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,response.getStatusCode());
     }
 
+    @Test
+    public void testGetNeedsNull() throws IOException {
+        // Setup
+        // When getNeeds is called and returns null, simulating no needs found
+        when(mockNeedsCupboardDAO.getNeeds()).thenReturn(null);
+
+        // Invoke
+        ResponseEntity<Need[]> response = needsCupboardController.getNeeds();
+
+        // Analyze
+        assertEquals(HttpStatus.NO_CONTENT,response.getStatusCode());
+    }
+
     //searchNeeds()     Tests
     @Test
     public void testSearchNeeds() throws IOException{
