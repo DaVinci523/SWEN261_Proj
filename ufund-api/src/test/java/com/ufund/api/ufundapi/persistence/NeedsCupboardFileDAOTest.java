@@ -155,6 +155,15 @@ public class NeedsCupboardFileDAOTest {
     }
 
     @Test
+    public void testGetNeedNotFound() throws IOException {
+        // Invoke
+        Need need = needsCupboardFileDAO.getNeed(999);
+
+        // Analzye
+        assertEquals(need, null);
+    }
+
+    @Test
     public void testDeleteNeed() {
         // Invoke
         boolean result = assertDoesNotThrow(() -> needsCupboardFileDAO.deleteNeed(1),
@@ -167,6 +176,18 @@ public class NeedsCupboardFileDAOTest {
         // Because heroes attribute of HeroFileDAO is package private
         // we can access it directly
         assertEquals(needsCupboardFileDAO.needs.size(),testNeeds.length-1);
+    }
+
+    @Test
+    public void testDeleteNeedNotFound() {
+        // Invoke
+        boolean result = assertDoesNotThrow(() -> needsCupboardFileDAO.deleteNeed(999),
+                            "Unexpected exception thrown");
+
+        // Analzye
+        assertEquals(result,false);
+        // If nothing was deleted, the length stays the same.
+        assertEquals(needsCupboardFileDAO.needs.size(),testNeeds.length);
     }
 
     @Test
@@ -225,16 +246,26 @@ public class NeedsCupboardFileDAOTest {
 
    @Test
     public void testCreateNeed() {
-    // Setup
-    Need need = new Need(102,"Banana-Plug", 5.50, 3, "plug");
-    // Invoke
-    Need result = assertDoesNotThrow(() -> needsCupboardFileDAO.createdNeed(need),"Unexpected exception thrown");
-    // Analyze
-    assertNotNull(result);
-    assertEquals(need.getName(),result.getName());
-    assertEquals(need.getValue(),result.getValue());
-    assertEquals(need.getQuantity(),result.getQuantity());
-    assertEquals(need.getType(),result.getType());
+        // Setup
+        Need need = new Need(102,"Banana-Plug", 5.50, 3, "plug");
+        // Invoke
+        Need result = assertDoesNotThrow(() -> needsCupboardFileDAO.createdNeed(need),"Unexpected exception thrown");
+        // Analyze
+        assertNotNull(result);  
+        assertEquals(need.getName(),result.getName());
+        assertEquals(need.getValue(),result.getValue());
+        assertEquals(need.getQuantity(),result.getQuantity());
+        assertEquals(need.getType(),result.getType());
+    }
+
+    @Test
+    public void testCreateNeedAlreadyExists() {
+
+        Need need = new Need(1, "Wires", 20.00, 5, "cord");
+        // Invoke
+        Need result = assertDoesNotThrow(() -> needsCupboardFileDAO.createdNeed(need),"Unexpected exception thrown");
+        // Analyze
+        assertNull(result);
     }
 
 
