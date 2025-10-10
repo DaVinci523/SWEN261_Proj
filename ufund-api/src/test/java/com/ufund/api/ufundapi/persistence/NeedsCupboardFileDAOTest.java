@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -155,12 +156,22 @@ public class NeedsCupboardFileDAOTest {
     }
 
     @Test
+
     public void testGetNeedNotFound() throws IOException {
         // Invoke
         Need need = needsCupboardFileDAO.getNeed(999);
 
         // Analzye
         assertEquals(need, null);
+    }
+
+    public void testGetNeedDoesNotContainKey() throws IOException {
+        // Invoke
+        Need need = needsCupboardFileDAO.getNeed(99999);
+
+        // Analzye
+        assertNull(need, "Null is expected when getting a Need with a key that doesn't exist");
+
     }
 
     @Test
@@ -290,5 +301,12 @@ public class NeedsCupboardFileDAOTest {
         // Analyze
         assertEquals(true,result);
         assertEquals(0, needsCupboardFileDAO.needs.size());
+    }
+    public void testDeleteNeedContainsKey() {
+        // Invoke
+        boolean result = assertDoesNotThrow(() -> needsCupboardFileDAO.deleteNeed(999),"Unexpected exception thrown when deleting a non-existent Need");
+
+        // Analyze
+        assertFalse(result, "Expected false when trying to delete a Need with a non-existent key");
     }
 }
