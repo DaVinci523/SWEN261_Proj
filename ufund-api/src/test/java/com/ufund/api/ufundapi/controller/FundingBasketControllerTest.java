@@ -68,6 +68,19 @@ public class FundingBasketControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,response.getStatusCode());
     }
 
+    @Test
+    public void testGetNeedsNull() throws IOException {
+        // Setup
+        // When getNeeds is called and returns null, simulating no needs found
+        when(mockfundingBasketDAO.getNeeds()).thenReturn(null);
+
+        // Invoke
+        ResponseEntity<Need[]> response = fundingBasketController.getNeeds();
+
+        // Analyze
+        assertEquals(HttpStatus.NO_CONTENT,response.getStatusCode());
+    }
+    
     //searchNeeds()     Tests
     @Test
     public void testSearchNeeds() throws IOException{
