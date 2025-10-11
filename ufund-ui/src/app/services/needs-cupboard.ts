@@ -59,6 +59,30 @@ export class NeedsCupboardService {
   }
 
   /**
+   * Creates a new need
+   * @param the need object to create
+   * @returns Observable of the created Need
+   */
+  createNeed(need: Need): Observable<Need> {
+    return this.http.post<Need>(this.needsUrl, need, this.httpOptions).pipe(
+      tap((newNeed: Need) => this.log(`added need w/ id=${newNeed.id}`)),
+      catchError(this.handleError<Need>('createNeed'))
+    );
+  }
+
+  /**
+   * Updates an existing need 
+   * @param The need object with updated values
+   * @returns An observable of the updated need
+   */
+  updateNeed(need: Need): Observable<any> {
+    return this.http.put(this.needsUrl, need, this.httpOptions).pipe(
+      tap(_ => this.log(`updated hero id=${need.id}`)),
+      catchError(this.handleError<any>('updateNeed'))
+    );
+  }
+
+  /**
    * Logs a NeedsCupboardService message
    * @param The message to log
    */
