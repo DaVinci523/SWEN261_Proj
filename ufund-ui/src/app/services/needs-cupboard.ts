@@ -83,6 +83,56 @@ export class NeedsCupboardService {
   }
 
   /**
+   * Deletes a need by its id
+   * @param id the id of the need delete
+   * @returs the observable of void
+   */
+  deleteNeedById(id: number): Observable<void> {
+    const url = `${this.needsUrl}/${id}`;
+    return this.http.delete<void>(url, this.httpOptions).pipe(
+      tap(() => console.log(`Deleted need id=${id}`)),
+      catchError(this.handleError<void>('deleteNeedById'))
+    );
+  }
+
+  /**
+   * Deletes all needs of a type
+   * @param type the type of the needs to delete
+   * @returns observable of void
+   */
+  deleteNeedByType(type: string): Observable<void> {
+    const url = `${this.needsUrl}/${type}`;
+    return this.http.delete<void>(url, this.httpOptions).pipe(
+      tap(() => console.log(`Deleted needs type=${type}`)),
+      catchError(this.handleError<void>('deleteNeedByType'))
+    );
+  }
+
+  /**
+   * Deletes all needs whose names contain the string
+   * @param name the type of the needs to delete
+   * @returns observable of void
+   */
+  deleteNeedByName(name: string): Observable<void> {
+    const url = `${this.needsUrl}/name/${name}`;
+    return this.http.delete<void>(url, this.httpOptions).pipe(
+      tap(() => console.log(`Deleted needs with name matching=${name}"`)),
+      catchError(this.handleError<void>('deleteNeedByType'))
+    );
+  }
+
+  /**
+   * Deletes all needs in the cupboard
+   * @returns observable of void
+   */
+  deleteAllNeeds(): Observable<void> {
+    return this.http.delete<void>(this.needsUrl, this.httpOptions).pipe(
+      tap(() => console.log('Deleted all needs')),
+      catchError(this.handleError<void>('deleteAllNeeds'))
+    );
+  }
+
+  /**
    * Logs a NeedsCupboardService message
    * @param The message to log
    */
