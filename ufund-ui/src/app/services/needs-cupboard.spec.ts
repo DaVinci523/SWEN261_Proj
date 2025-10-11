@@ -73,7 +73,7 @@ describe('NeedsCupboardService', () => {
   });
 
   it('should delete a need by ID', () => {
-    service.deleteNeedById(1).subscribe(response => expect(response).toBeUndefined());
+    service.deleteNeedById(1).subscribe(response => expect(response).toBeNull());
 
     const req = httpMock.expectOne(`${service['needsUrl']}/1`);
     expect(req.request.method).toBe('DELETE');
