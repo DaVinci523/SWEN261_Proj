@@ -27,6 +27,46 @@ export class NeedsCupboardService {
   }
 
   /**
+   * Fetches a specific need by its id
+   * @param The id of the need to fetch
+   * @return An observable of the Need object
+   */
+  getNeedsByID(id: number): Observable<Need> {
+    const url = `${this.needsUrl}/${id}`;
+    return this.http.get<Need>(url).pipe(
+      tap(() => console.log(`fetched need id=${id}`)),
+      catchError(this.handleError<Need>(`getNeedById id=${id}`))
+    );
+  }
+
+  /**
+   * Searches for needs based on their name
+   * @param The name string to match with other need names
+   * @return An observable array of all matching Need objects
+   */
+  searchNeeds(name: string): Observable<Need[]> {
+    if (!name.trim()) {
+    // if not search term, return empty hero array.
+    return of([]);
+    }
+    const url = `${this.needsUrl}/?name=${name}`;
+    return this.http.get<Need[]>(url).pipe(
+      tap(x => x.length ?
+        this.log(`found needs matching "${name}"`) :
+        this.log(`no needs matching "${name}"`)),
+      catchError(this.handleError<Need[]>('searchHeroes', []))
+    );
+  }
+
+  /**
+   * Logs a NeedsCupboardService message
+   * @param The message to log
+   */
+  private log(message: string){
+    console.log(`NeedsCupboardService: ${message}`);
+  }
+
+  /**
    * Handle the HTTP errors for all requests
    * @param operation - name of the operation that failed
    * @param result - optional value to return as the observable result
