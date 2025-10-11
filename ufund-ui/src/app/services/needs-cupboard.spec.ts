@@ -38,5 +38,52 @@ describe('NeedsCupboardService', () => {
     req.flush(testNeeds);
   });
 
-  
+  it('should fetch a need by ID', () => {
+    service.getNeedsByID(1).subscribe(need => expect(need).toEqual(testNeeds[0]));
+    const req = httpMock.expectOne(`${service['needsUrl']}/1`);
+    expect(req.request.method).toBe('GET');
+    req.flush(testNeeds[0]);
+  })
+
+  it('should create a new need', () => {
+    const newNeed: Need = { id: 3, name: 'Cords', value: 30, quantity: 5, type: 'Equipment' }
+    service.createNeed(newNeed).subscribe(need => expect(need).toEqual(newNeed));
+    const req = httpMock.expectOne(service['needsUrl']);
+    expect(req.request.method).toBe('POST');
+    req.flush(newNeed);
+  })
+
+  it('should update an existing need', () => {
+    const updatedNeed: Need = { ...testNeeds[0], quantity: 5};
+    service.updateNeed(updatedNeed).subscribe(need => expect(need.quantity).toBe(5));
+    const req = httpMock.expectOne(service['needsUrl']);
+    expect(req.request.method).toBe('PUT');
+    req.flush(updatedNeed);
+  })
+
+  it('should search needs by name', () => {
+    service.searchNeeds('Microscope').subscribe(needs => {
+      expect(needs.length).toBe(1);
+      expect(needs[0].name).toBe('Microscope');
+    });
+    
+    const req = httpMock.expectOne(`${service['needsUrl']}/?name=Microscope`);
+    expect(req.request.method).toBe('GET');
+    req.flush([testNeeds[0]]);
+  });
+
+  it('should delete a need by ID', () => {
+    service.deleteNeedById(1).subscribe(response => expect(response).toBeUndefined());
+
+    const req = httpMock.expectOne(`${service['needsUrl']}/1`);
+    expect(req.request.method).toBe('DELETE');
+    req.flush(null);
+  });
+
+  it('should handle HTTP errors gracefully', () => {
+    service.getNeeds().subscribe(needs => expect(needs).toEqual([]));
+
+    const req = httpMock.expectOne(service['needsUrl']);
+    req.flush('Error occured', {status: 500, statusText: 'Server Error '});
+  })
 });
