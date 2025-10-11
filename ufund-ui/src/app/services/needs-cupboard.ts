@@ -54,7 +54,7 @@ export class NeedsCupboardService {
       tap(x => x.length ?
         this.log(`found needs matching "${name}"`) :
         this.log(`no needs matching "${name}"`)),
-      catchError(this.handleError<Need[]>('searchHeroes', []))
+      catchError(this.handleError<Need[]>('searchNeeds', []))
     );
   }
 
@@ -77,7 +77,7 @@ export class NeedsCupboardService {
    */
   updateNeed(need: Need): Observable<any> {
     return this.http.put(this.needsUrl, need, this.httpOptions).pipe(
-      tap(_ => this.log(`updated hero id=${need.id}`)),
+      tap(_ => this.log(`updated need id=${need.id}`)),
       catchError(this.handleError<any>('updateNeed'))
     );
   }
@@ -101,7 +101,7 @@ export class NeedsCupboardService {
    * @returns observable of void
    */
   deleteNeedByType(type: string): Observable<void> {
-    const url = `${this.needsUrl}/${type}`;
+    const url = `${this.needsUrl}/type/${type}`;
     return this.http.delete<void>(url, this.httpOptions).pipe(
       tap(() => console.log(`Deleted needs type=${type}`)),
       catchError(this.handleError<void>('deleteNeedByType'))
@@ -117,7 +117,7 @@ export class NeedsCupboardService {
     const url = `${this.needsUrl}/name/${name}`;
     return this.http.delete<void>(url, this.httpOptions).pipe(
       tap(() => console.log(`Deleted needs with name matching=${name}"`)),
-      catchError(this.handleError<void>('deleteNeedByType'))
+      catchError(this.handleError<void>('deleteNeedByName'))
     );
   }
 
