@@ -1,0 +1,61 @@
+h1 {
+    text-align: center;
+}
+
+/* Containers */
+
+
+li {
+    list-style-type:none;
+    border: 1px solid black;
+    width: 50%;
+    
+}
+
+span.data-container {
+    display: grid;
+    grid-template-columns: 80% 20%;
+    padding: 1%;
+}
+
+/* Grid Items */
+span#need-variables {
+    grid-column: 1;
+    display: grid;
+    grid-template-columns: 10% 22.5% 22.5% 22.5% 22.5%;
+    text-align: center;
+    margin-bottom: auto;
+    padding:  1%;
+
+}
+
+.search{
+    padding:auto;
+    text-align: center;
+    width: 50%;
+    border: 1px solid black;
+
+}
+/* Individual Data Elements */
+span.variable {
+    text-align: center;
+    padding: 1px 1px;
+    border: 1px solid black;
+    width:fit-content;
+    font-size: clamp(8px, 4vw, 10px);
+}
+
+
+span#Fund {
+    grid-column: 2;
+    text-align: center;
+    margin-top: auto;
+    margin-bottom: auto;
+    font-size: auto;
+}
+
+button.Fund {
+    width: auto;
+    border: 1px solid black;
+    text-align: center;
+}

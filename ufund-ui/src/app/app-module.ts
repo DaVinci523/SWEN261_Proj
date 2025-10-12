@@ -1,5 +1,8 @@
-import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { NgModule} from '@angular/core';
+import { provideBrowserGlobalErrorListeners } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
@@ -10,6 +13,7 @@ import { HelperPage } from './helper-page/helper-page';
 import { CheckoutPage } from './checkout-page/checkout-page';
 import { NeedsCupboard } from './needs-cupboard/needs-cupboard';
 import { FundingBasket } from './funding-basket/funding-basket';
+import { NeedDetailComponent } from './need-details/need-details';
 
 @NgModule({
   declarations: [
@@ -20,11 +24,15 @@ import { FundingBasket } from './funding-basket/funding-basket';
     HelperPage,
     CheckoutPage,
     NeedsCupboard,
-    FundingBasket
+    FundingBasket,
+    NeedDetailComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule
+
   ],
   providers: [
     provideBrowserGlobalErrorListeners()

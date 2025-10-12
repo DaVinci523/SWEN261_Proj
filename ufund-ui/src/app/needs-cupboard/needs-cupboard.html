@@ -1,5 +1,35 @@
-<ul>
-    <li>Bread Board 69</li>
-    <li>Oscilliscope</li>
-    <li>Circuit Board</li>
+
+<h2>Needs List</h2>
+
+<ul class="userNeeds"><!--add all userneeds to a list-->
+    <div> 
+  
+  <input
+    class="search"
+    placeholder="Search Needs…"
+    [(ngModel)]="searchTerm"
+    (input)="getNeeds()"   
+    />
+</div>
+    @for (need of needs; track need.id) {
+        <li>
+            <span class="data-container">
+                <span id="need-variables">
+                    <span class="identifier variable">Id: [{{need.id}}]</span> 
+                    <span class="variable">Name: {{need.name}}</span>
+                    <span class="variable">Value: ${{need.value}}</span>
+                    <span class="variable">Quantity: {{need.quantity}}</span>
+                    <span class="variable">Type: "{{need.type}}"</span>
+                </span>
+                 <span id="Fund">
+                    <button type="button" class="Fund" title="Add to Cart" >Add to Cart</button>
+                    
+                    
+                </span>
+            </span>
+        </li>
+    } 
+    @empty {
+        <li>There are no items.</li>
+    }
 </ul>
