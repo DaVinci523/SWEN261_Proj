@@ -12,7 +12,7 @@ public interface NeedsCupboardService {
 
     List<Need> searchNeeds(String text) throws IOException;
 
-    Need creatNeed(Need need) throws IOException;
+    Need createNeed(Need need) throws IOException;
 
     Need updateNeed(Need need) throws IOException;
 
