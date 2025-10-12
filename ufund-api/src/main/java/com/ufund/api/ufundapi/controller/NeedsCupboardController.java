@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 
 // Final Imports will be our NeedsCupboardDAO interface & our Need model
 import com.ufund.api.ufundapi.persistence.NeedsCupboardDAO;
+import com.service.NeedsCupboardService;
 import com.ufund.api.ufundapi.model.Need;
 
 /**
@@ -34,14 +35,14 @@ import com.ufund.api.ufundapi.model.Need;
 @RequestMapping("needs")
 public class NeedsCupboardController {
     private static final Logger LOG = Logger.getLogger(NeedsCupboardController.class.getName());
-    private NeedsCupboardDAO needsCupboardDAO;
+    private final NeedsCupboardService needsCupboardService;
 
     /**
      * Constructor
      * @param needsCupboardController
      */
-    public NeedsCupboardController(NeedsCupboardDAO needsCupboardDAO){
-        this.needsCupboardDAO = needsCupboardDAO;
+    public NeedsCupboardController(NeedsCupboardService needsCupboardService){
+        this.needsCupboardService = needsCupboardService;
     }
 
     /**
@@ -55,7 +56,7 @@ public class NeedsCupboardController {
     public ResponseEntity<Need> getNeed(@PathVariable int id){
          LOG.info("GET /needs/" + id);
         try {
-            Need need = needsCupboardDAO.getNeed(id);
+            Need need = needsCupboardService.getNeedById(id);
             if (need != null)
                 return new ResponseEntity<Need>(need,HttpStatus.OK);
             else
@@ -77,7 +78,7 @@ public class NeedsCupboardController {
     public ResponseEntity<Need[]> getNeeds(){
         LOG.info("GET /needs");
         try {
-            Need need[] = needsCupboardDAO.getNeeds();
+            Need need[] = needsCupboardService.getAllNeeds();
             if (need != null)
                 return new ResponseEntity<>(need,HttpStatus.OK); 
             else
@@ -99,7 +100,7 @@ public class NeedsCupboardController {
     public ResponseEntity<Need[]> searchNeeds(@RequestParam String name){
         LOG.info("GET /needs/?name=" + name);
         try {
-            Need[] needs = needsCupboardDAO.searchNeeds(name);
+            Need[] needs = needsCupboardService.searchNeeds(name);
             return new ResponseEntity<Need[]>(needs, HttpStatus.OK);
         }
         catch (IOException e) {
@@ -120,7 +121,7 @@ public class NeedsCupboardController {
         LOG.info("POST /needs " + need);
 
         try {
-            Need newNeed = needsCupboardDAO.createdNeed(need);
+            Need newNeed = needsCupboardService.createNeed(need);
 
             if (newNeed != null){
                 return new ResponseEntity<>(newNeed, HttpStatus.CREATED);
@@ -146,7 +147,7 @@ public class NeedsCupboardController {
         LOG.info("PUT /needs " + need);
         
         try {
-            Need updated = needsCupboardDAO.updateNeed(need);
+            Need updated = needsCupboardService.updateNeed(need);
             if (updated != null) {
                 return new ResponseEntity<Need>(updated, HttpStatus.OK);
             } else {
@@ -169,8 +170,7 @@ public class NeedsCupboardController {
     public ResponseEntity<Need> deleteNeedId(@PathVariable int id){
        LOG.info("DELETE /needs/" + id);
         try{
-
-            if(needsCupboardDAO.deleteNeed(id))
+            if(needsCupboardService.deleteNeedById(id))
                 return new ResponseEntity<>(HttpStatus.OK);
             else
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -193,7 +193,7 @@ public class NeedsCupboardController {
     public ResponseEntity<Need> deleteNeedType(@PathVariable String type){
        LOG.info("DELETE /needs/type/" + type);
         try{
-            if(needsCupboardDAO.deleteNeedType(type))
+            if(needsCupboardService.deleteNeedByType(type))
                 return new ResponseEntity<>(HttpStatus.OK);
             else
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -215,7 +215,7 @@ public class NeedsCupboardController {
     public ResponseEntity<Need> deleteAll(){
        LOG.info("DELETE /needs");
         try{
-            if(needsCupboardDAO.deleteAll())
+            if(needsCupboardService.deleteAllNeeds())
                 return new ResponseEntity<>(HttpStatus.OK);
             else
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -238,7 +238,7 @@ public class NeedsCupboardController {
     public ResponseEntity<Need> deleteNeedName(@PathVariable String name){
        LOG.info("DELETE /needs/name/" + name);
         try{
-            if(needsCupboardDAO.deleteNeedName(name))
+            if(needsCupboardService.deleteNeedByName(name))
                 return new ResponseEntity<>(HttpStatus.OK);
             else
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);

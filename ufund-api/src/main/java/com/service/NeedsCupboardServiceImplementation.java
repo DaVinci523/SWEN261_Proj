@@ -33,13 +33,13 @@ public class NeedsCupboardServiceImplementation implements NeedsCupboardService{
     }
 
     @Override
-    public List<Need> getAllNeeds() throws IOException {
-        return Arrays.asList(needsCupboardDAO.getNeeds());
+    public Need[] getAllNeeds() throws IOException {
+        return needsCupboardDAO.getNeeds();
     }
 
     @Override
-    public List<Need> searchNeeds(String text) throws IOException {
-        return Arrays.asList(needsCupboardDAO.searchNeeds(text));
+    public Need[] searchNeeds(String name) throws IOException {
+        return needsCupboardDAO.searchNeeds(name);
     }
 
     @Override

@@ -8,9 +8,9 @@ import com.ufund.api.ufundapi.model.Need;
 public interface NeedsCupboardService {
     Need getNeedById(int id) throws IOException;
 
-    List<Need> getAllNeeds() throws IOException;
+    Need[] getAllNeeds() throws IOException;
 
-    List<Need> searchNeeds(String text) throws IOException;
+    Need[] searchNeeds(String name) throws IOException;
 
     Need createNeed(Need need) throws IOException;
 
