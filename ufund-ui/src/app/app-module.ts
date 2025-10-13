@@ -14,7 +14,6 @@ import { CheckoutPage } from './checkout-page/checkout-page';
 import { NeedsCupboard } from './needs-cupboard/needs-cupboard';
 import { FundingBasket } from './funding-basket/funding-basket';
 import { NeedDetailComponent } from './need-details/need-details';
-
 @NgModule({
   declarations: [
     App,
