@@ -68,6 +68,19 @@ public class NeedsCupboardControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,response.getStatusCode());
     }
 
+    @Test
+    public void testGetNeedsNull() throws IOException {
+        // Setup
+        // When getNeeds is called and returns null, simulating no needs found
+        when(mockNeedsCupboardDAO.getNeeds()).thenReturn(null);
+
+        // Invoke
+        ResponseEntity<Need[]> response = needsCupboardController.getNeeds();
+
+        // Analyze
+        assertEquals(HttpStatus.NO_CONTENT,response.getStatusCode());
+    }
+
     //searchNeeds()     Tests
     @Test
     public void testSearchNeeds() throws IOException{
@@ -186,7 +199,7 @@ public class NeedsCupboardControllerTest {
     @Test
     public void testDeleteNeed() throws IOException { // deleteHero may throw IOException
         // Setup
-        int needId = 1;
+        int needId = 99;
         // when deleteHero is called return true, simulating successful deletion
         when(mockNeedsCupboardDAO.deleteNeed(needId)).thenReturn(true);
 
@@ -200,7 +213,7 @@ public class NeedsCupboardControllerTest {
     @Test
     public void testDeleteNeedNotFound() throws IOException { // deleteHero may throw IOException
         // Setup
-        int needId = 1;
+        int needId = 99;
         // when deleteHero is called return false, simulating failed deletion
         when(mockNeedsCupboardDAO.deleteNeed(needId)).thenReturn(false);
 
@@ -214,7 +227,7 @@ public class NeedsCupboardControllerTest {
     @Test
     public void testDeleteNeedHandleException() throws IOException { // deleteHero may throw IOException
         // Setup
-        int needId = 1;
+        int needId = 99;
         // When deleteHero is called on the Mock Hero DAO, throw an IOException
         doThrow(new IOException()).when(mockNeedsCupboardDAO).deleteNeed(needId);
 
@@ -225,6 +238,7 @@ public class NeedsCupboardControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,response.getStatusCode());
     }
 
+    
     @Test
     public void testUpdateNeed() throws IOException { // updateHero may throw IOException
         // Setup
@@ -350,7 +364,7 @@ public class NeedsCupboardControllerTest {
         Need need = new Need(67,"Microscope", 299.99, 1, "scope");
 
 
-        // When createdNeed is called on the Mock Needs Cupboard DAO, throw an IOException
+        // When createdNeed is called on the Mock FundingBasketDAO, throw an IOException
         when(mockNeedsCupboardDAO.createdNeed(org.mockito.Mockito.any(Need.class))).thenThrow(new IOException());
 
 
@@ -396,7 +410,7 @@ public class NeedsCupboardControllerTest {
 
     @Test
     public void testDeleteAllHandleException() throws IOException { // deleteAll may throw IOException
-        // When deleteAll is called on the Mock Needs Cupboard DAO, throw an IOException
+        // When deleteAll is called on the Mock FundingBasket DAO, throw an IOException
         doThrow(new IOException()).when(mockNeedsCupboardDAO).deleteAll();
 
 
@@ -407,5 +421,4 @@ public class NeedsCupboardControllerTest {
         // Analyze
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,response.getStatusCode());
     }
-
 }

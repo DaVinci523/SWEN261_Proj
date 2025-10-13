@@ -1,1 +1,11 @@
-<p>login-page works!</p>
+<app-nav-bar></app-nav-bar>
+<div class="center-page">
+  <form class="center-box">
+    <div>
+      <label>Username: </label>
+      <input name="username" [(ngModel)]="username" />
+    </div>
+
+    <button class="login-button" (click)="onLogin(username)" [disabled]="!username">Login</button>
+  </form>
+</div>

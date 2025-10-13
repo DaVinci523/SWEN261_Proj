@@ -1,0 +1,18 @@
+<h1>Checkout</h1>
+<div> <!--This code allows to add to the list, this is mostly for testing it and should be edited or removed latter.-->
+    <div>
+        <label for="user-checkout-info">Name on Card: </label>
+        <input id="user-checkout-info" [(ngModel)]="nameOnCard" placeholder="name on card"/>
+    </div>
+    <div>
+        <label for="user-checkout-info">Card Number: </label>
+        <input id="user-checkout-info" [(ngModel)]="cardNumber" placeholder="card number"/>
+    </div>
+    <div>
+        <label for="user-checkout-info">Address: </label>
+        <input id="user-checkout-info" [(ngModel)]="address" placeholder="address"/>
+    </div>
+
+    <!--(click) passes input value to add() and then clears the input -->
+  <button type="button" class="add-button" (click)="checkout()">Checkout</button>
+</div>

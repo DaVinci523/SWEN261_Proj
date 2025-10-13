@@ -1,0 +1,14 @@
+.center-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.center-box {
+  text-align: center;
+}
+
+.login-button{
+    margin-top:5px
+}
