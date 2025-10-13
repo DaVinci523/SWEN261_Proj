@@ -1,8 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { NeedsCupboard } from './needs-cupboard/needs-cupboard';
 
-const routes: Routes = [{ path: '', component: NeedsCupboard}];
+import { AdminPage } from './admin-page/admin-page';
+import { HomePage } from './home-page/home-page';
+import { LoginPage } from './login-page/login-page';
+import { CheckoutPage } from './checkout-page/checkout-page';
+
+const routes: Routes = [  
+  { path : 'admin', component: AdminPage},
+  { path : 'homepage', component: HomePage},
+  { path : '', redirectTo: '/homepage', pathMatch: 'full' },
+  { path: 'login', component : LoginPage},
+  { path : 'checkout', component : CheckoutPage}
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
