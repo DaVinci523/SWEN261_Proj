@@ -1,0 +1,13 @@
+<nav class= "nav-bar">
+
+<a (click)="goToHome()">myResearch</a>
+
+@if (this.user.isLoggedIn()) {
+    <p>Welcome, {{ this.user.getCurrentUser() }}</p>
+} @else {
+    <a (click)="goToLogin()">Login</a>
+}
+
+<a (click)="goToCheckout()">Checkout</a>
+
+</nav>
