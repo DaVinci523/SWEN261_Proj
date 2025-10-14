@@ -15,6 +15,8 @@ import { CheckoutPage } from './checkout-page/checkout-page';
 import { NeedsCupboard } from './needs-cupboard/needs-cupboard';
 import { FundingBasket } from './funding-basket/funding-basket';
 import { NeedDetailComponent } from './need-details/need-details';
+import { NavBar } from './nav-bar/nav-bar';
+import { Checkout } from './checkout/checkout';
 @NgModule({
   declarations: [
     App,
@@ -25,7 +27,9 @@ import { NeedDetailComponent } from './need-details/need-details';
     CheckoutPage,
     NeedsCupboard,
     FundingBasket,
-    NeedDetailComponent
+    NeedDetailComponent,
+    NavBar,
+    Checkout
   ],
   imports: [
     BrowserModule,

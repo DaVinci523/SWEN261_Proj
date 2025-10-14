@@ -13,6 +13,7 @@ import { HttpClient } from '@angular/common/http';
   constructor(private needsCupboardService: NeedsCupboardService) { }
   needs: Need[] = [];
   searchTerm = '';
+
   getNeeds(): void {
     const term = this.searchTerm.trim();
     const method = term
@@ -21,9 +22,9 @@ import { HttpClient } from '@angular/common/http';
     method.subscribe(needs => this.needs = needs);
   }
  
-   ngOnInit(): void {
+  ngOnInit(): void {
     this.getNeeds();
-   }
+  }
 
   add(name: string): void {
     name = name.trim();
