@@ -11,6 +11,19 @@ export interface UserInfo {
   providedIn: 'root'
 })
 export class User {
+
+  private USER_KEY = 'auth_username';
+  private FLAG_KEY = 'auth_loggedin';
+
+  constructor() {
+    const flag = localStorage.getItem(this.FLAG_KEY) === 'true';
+    const user = localStorage.getItem(this.USER_KEY);
+    if (flag && user && this.users.has(user)) {
+      this.loggedIn = true;
+      this.currentUser = user;
+    }
+  }
+
   //List of usernames + their role
   private users = new Map<string, UserInfo>([
     ['helper123', { password: 'pw1', role: 'helper' }],
@@ -35,6 +48,8 @@ export class User {
 
     this.loggedIn = true;
     this.currentUser = username;
+    localStorage.setItem(this.FLAG_KEY, 'true');
+    localStorage.setItem(this.USER_KEY, username);
     return true;
   }
 
@@ -43,6 +58,8 @@ export class User {
   logout(): void {
     this.loggedIn = false;
     this.currentUser = "";
+    localStorage.removeItem(this.FLAG_KEY);
+    localStorage.removeItem(this.USER_KEY);
   }
 
   //Checks if a username exists
