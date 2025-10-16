@@ -1,8 +1,38 @@
-.nav-bar{
-    background-color: orange;
-    border-bottom: 1 px solid black;
-    padding: 15px 25px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.nav-bar {
+  background-color: orange;
+  border-bottom: 1px solid black; /* fixed spacing */
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+}
+
+.brand {
+  font-weight: 700;
+  text-decoration: none;
+  color: inherit;
+}
+
+.nav-right {
+  margin-left: auto;            /* pushes this group to the far right */
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.welcome {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.icon-link {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.icon-link img {
+  width: 24px;   /* adjust as needed */
+  height: 24px;
+  display: block;
 }

@@ -1,13 +1,17 @@
-<nav class= "nav-bar">
+<nav class="nav-bar">
+  <a class="brand" (click)="goToHome()">myResearch</a>
 
-<a (click)="goToHome()">myResearch</a>
+  <div class="nav-right">
+    @if(this.user.isLoggedIn()) {
+        <p>Welcome {{this.user.getCurrentUser()}}</p>
+    }
+    <a class="icon-link" (click)="onUserIconClick()" aria-label="Account">
+            <img src="images/user_icon.png" alt="Account" />
+    </a>
 
-@if (this.user.isLoggedIn()) {
-    <p>Welcome, {{ this.user.getCurrentUser() }}</p>
-} @else {
-    <a (click)="goToLogin()">Login</a>
-}
+    <a class="icon-link" (click)="goToCheckout()" aria-label="Checkout">
+       <img src="images/checkout_icon.png" alt="Checkout" />
+    </a>
 
-<a (click)="goToCheckout()">Checkout</a>
-
+  </div>
 </nav>

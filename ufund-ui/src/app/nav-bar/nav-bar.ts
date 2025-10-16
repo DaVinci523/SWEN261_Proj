@@ -16,12 +16,29 @@ export class NavBar {
   }
 
   goToCheckout() {
-    this.router.navigate(['/checkout']);
+    if(this.user.isLoggedIn()) {
+      this.router.navigate(['/checkout']);
+    } else {
+      this.router.navigate(['/login']);
+    }
   }
 
   goToLogin() {
     this.router.navigate(['/login']);
   }
+
+  onUserIconClick() {
+    if (this.user.isLoggedIn()) {
+      const ok = confirm(`Signed in as ${this.user.getCurrentUser()}\n\nLog out?`);
+      if (ok) {
+        this.user.logout();
+        alert('You have been logged out.');
+      }
+    } else {
+      this.goToLogin();
+    }
+  }
+
 
 }
 
