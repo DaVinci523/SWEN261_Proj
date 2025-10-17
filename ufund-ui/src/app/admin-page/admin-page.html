@@ -8,7 +8,7 @@
         <div class="column">
             <h3>Needs Cupoard:</h3>
             @for (need of needs; track need.id) {
-            <li>
+            <li *ngFor="let need of needs">{{need}}
                 <div class="flex-container">
                     <div class="flex-item-left">Name: {{need.name}}</div>
                     <div class="flex-item-right">Quantity: {{need.quantity}}</div>
@@ -16,6 +16,14 @@
                     <div class="flex-item-right">Value: ${{need.value}}</div>
             </div>
             </li>
+
+        <button type="button" class="update" (click)="updateNeed(need)">Update</button>
+        
+
+            }
+
+            @empty {
+                <li>No items to display</li>
             }
         </div>
         <div class ="column">
@@ -63,8 +71,8 @@
             <button type="button" class="clear"
           (click)="updateNeed(need)">Update</button>
         -->
-            <button type="button" class="clear"
-          (click)="createNeed(needName.value, needValue.valueAsNumber, needQuant.valueAsNumber, needType. value)">Add</button>
+            <button type="button" class="add"
+          (click)="createNeed(needName.value, needValue.valueAsNumber, needQuant.valueAsNumber, needType. value)">Add Need</button>
 <!--
             <button type="button" class="clear"
           (click)="deleteNeed()">Delete</button>
