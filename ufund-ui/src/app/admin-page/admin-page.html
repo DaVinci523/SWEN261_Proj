@@ -7,8 +7,17 @@
     <div class="container">
         <div class="column">
             <h3>Needs Cupoard:</h3>
+            @for (need of needs; track need.id) {
+            <li>
+                <div class="flex-container">
+                    <div class="flex-item-left">Name: {{need.name}}</div>
+                    <div class="flex-item-right">Quantity: {{need.quantity}}</div>
+                    <div class="flex-item-right">Type: {{need.type}}</div>
+                    <div class="flex-item-right">Value: ${{need.value}}</div>
+            </div>
+            </li>
+            }
         </div>
-
         <div class ="column">
             <h3>Edit Need:</h3>
             <div class="flex-container">
@@ -16,7 +25,7 @@
                 
                 <div class= "padding"> </div>
 
-                <input type="text" id="username" name="username" placeholder="Enter need name">
+                <input type="text" id="username" name="username" #needName placeholder="Enter need name">
             </div>
             
             <div class = "padding"> </div>
@@ -26,23 +35,40 @@
                 
                 <div class= "padding"> </div>
                 
-                <input type="text" id="username" name="username" placeholder="Enter quantity">
+                <input type="text" id="username" name="username" #needQuant placeholder="Enter quantity">
             </div>
 
             <div class = "padding"> </div>
 
             <div class="flex-container">
-                <div class="flex-item-left">Type: </div>
+                <div class="flex-item-left">Value: </div>
                 
                 <div class= "padding"> </div>
                 
-                <input type="text" id="username" name="username" placeholder="Enter type">
+                <input type="text" id="username" name="username" #needType placeholder="Enter value">
             </div>
 
             <div class = "padding"> </div>
 
-            <button>Update</button>
-        
+             <div class="flex-container">
+                <div class="flex-item-left">Type: </div>
+                
+                <div class= "padding"> </div>
+                
+                <input type="text" id="username" name="username" #needValue placeholder="Enter value">
+            </div>
+
+            <div class = "padding"> </div>
+<!--
+            <button type="button" class="clear"
+          (click)="updateNeed(need)">Update</button>
+        -->
+            <button type="button" class="clear"
+          (click)="createNeed(needName.value, needValue.valueAsNumber, needQuant.valueAsNumber, needType. value)">Add</button>
+<!--
+            <button type="button" class="clear"
+          (click)="deleteNeed()">Delete</button>
+        -->
         </div>
     
     </div>
