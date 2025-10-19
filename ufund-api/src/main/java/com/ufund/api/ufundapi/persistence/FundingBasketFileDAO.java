@@ -170,6 +170,19 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
         
         return true;
     }
+
+    /**
+     * Returns array of all users
+     * @return getNeedsArray
+     */
+
+    @Override
+    public User[] getUsers() {
+        synchronized(currentUserNeeds) {
+            return getUsersArray();
+        }
+    }
+
     /**
      * Returns array of all needs for a specified user
      * @param userName the user this method will modify
@@ -205,7 +218,7 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
      */
     @Override
     public Need getNeed(String userName, int id) throws IOException {
-        swapCurrentUser(userName)
+        swapCurrentUser(userName);
         synchronized(currentUserNeeds) {
             if (currentUserNeeds.containsKey(id))
                 return currentUserNeeds.get(id);
