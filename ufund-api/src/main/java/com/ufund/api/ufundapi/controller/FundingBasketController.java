@@ -122,15 +122,15 @@ public class FundingBasketController {
     /**
      * Handles HTTP GET requests to the "/needs/?name= "name""
      * @param userName: the user to search from
-     * @param needName , check if need contains String name
+     * @param name , check if need contains String name
      * @return a Response entity containing HttpStatus.OK if the search was successful,
      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
      */
-    @GetMapping("/{userName}/") // BUGED: When running the search, it comes up with a 400 error
-    public ResponseEntity<Need[]> searchNeeds(@PathVariable String userName, @RequestParam String needName){
-        LOG.info("GET /funding_basket_needs/"+ userName +"/?name=" + needName);
+    @GetMapping("/{userName}/") 
+    public ResponseEntity<Need[]> searchNeeds(@PathVariable String userName, @RequestParam String name){
+        LOG.info("GET /funding_basket_needs/"+ userName +"/?name=" + name);
         try {
-            Need[] needs = fundingBasketDAO.searchNeeds(userName, needName);
+            Need[] needs = fundingBasketDAO.searchNeeds(userName, name);
             return new ResponseEntity<Need[]>(needs, HttpStatus.OK);
         }
         catch (IOException e) {
