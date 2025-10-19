@@ -17,7 +17,7 @@ public interface FundingBasketService {
      * @return a List of Need objects
      * @throws IOException if an error occurs
      */
-    List<Need> getAllNeeds() throws IOException;
+    Need[] getNeeds() throws IOException;
 
     /**
      * Retrieves a single Need by its ID
@@ -26,7 +26,7 @@ public interface FundingBasketService {
      * @return the matching Need or null if it is not found
      * @throws IOException if an error occurs 
      */
-    Need getNeedById(int id) throws IOException;
+    Need getNeed(int id) throws IOException;
 
     /**
      * Searches for Needs that contain the name specified
@@ -35,7 +35,7 @@ public interface FundingBasketService {
      * @return List of Needs that match the name
      * @throws IOException if an error occurs
      */
-    List<Need> searchNeeds(String name) throws IOException;
+    Need[] searchNeeds(String name) throws IOException;
 
     /**
      * Creates a new Need in the funding basket
@@ -44,7 +44,7 @@ public interface FundingBasketService {
      * @return the newly created Need
      * @throws IOException if an error occurs
      */
-    Need createNeed(Need need) throws IOException;
+    Need createdNeed(Need need) throws IOException;
 
     /**
      * Updates an existing Need in the funding basket
