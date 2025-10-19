@@ -30,12 +30,11 @@ console.log("RUNNING")
     return this.http.get(url);
   }
 
-  // BUGGED: Does not Update
   /** PUT: update the hero on the server */
   updateNeed(userName: String, need: Need): Observable<any> {
-    const url = `${this.needsUrl}/${userName} ${need}`;
-    console.log(url);
-    return this.http.put(url, this.httpOptions)/*.pipe(
+    const url = `${this.needsUrl}/${userName}`;
+
+    return this.http.put(url, need, this.httpOptions)/*.pipe(
       tap(_ => this.log(`updated hero id=${hero.id}`)),
       catchError(this.handleError<any>('updateHero'))
     );*/
@@ -44,10 +43,9 @@ console.log("RUNNING")
   // BUGGED: Does not Add
   /** POST: add a new need to the server */
   addNeed(userName: String, need: Need): Observable<Need> {
-    const url = `${this.needsUrl}/${userName} ${need}`;
-    console.log(url);
+    const url = `${this.needsUrl}/${userName}`;
 
-    return this.http.post<Need>(url, this.httpOptions)/*.pipe(
+    return this.http.post<Need>(url, need, this.httpOptions)/*.pipe(
       tap((newHero: Need) => this.log(`added need w/ id=${newNeed.id}`)),
       catchError(this.handleError<Need>('addNeed'))
     );*/
