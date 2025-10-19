@@ -3,6 +3,9 @@
 
   <div class="nav-right">
     @if(this.user.isLoggedIn()) {
+      @if(this.user.getCurrentUserRole() == 'admin') {
+        <button class = "admin-button" (click) = "goToAdmin()">Admin Page</button>
+      }
         <p>Welcome {{this.user.getCurrentUser()}}</p>
     }
     <a class="icon-link" (click)="onUserIconClick()" aria-label="Account">

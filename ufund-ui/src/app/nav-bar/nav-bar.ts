@@ -15,6 +15,10 @@ export class NavBar {
     this.router.navigate(['']);
   }
 
+  goToAdmin() {
+    this.router.navigate(['/admin']);
+  }
+
   goToCheckout() {
     if(this.user.isLoggedIn()) {
       this.router.navigate(['/checkout']);
