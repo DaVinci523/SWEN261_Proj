@@ -47,29 +47,22 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
      public FundingBasketFileDAO(@Value("${funding_basket.file}") String filename, ObjectMapper objectMapper) throws IOException{
             this.filename = filename;
             this.objectMapper = objectMapper;
-            load();  // load the needs from the file
+            load();  // load the users from the file
     }
-
-     /**
-      * Update id for next need created
-      *@return Next id
-    //   */
-    // private synchronized static int nextId(){
-    //     int id = nextId;
-    //     ++nextId;
-    //     return id;
-    // }
 
     /**
      * Swaps the current user to the specified userName
-     * @param userName
+     * @param userName the user that will be swapped to
      * @return
      */
     private boolean swapCurrentUser(String userName){
         synchronized(currentUser){
             currentUser = userName;
+
             try{
-                currentUserNeeds = users.get(currentUser);
+                for (Need need : users.get(currentUser)){
+                    currentUserNeeds.put(need.getId(), need);
+                }
             } catch (NotFound e){ // send error message if userName is not in the data
                 System.out.println("Error: Not a valid userName");
                 return false;
@@ -82,18 +75,17 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
      *  Create array of Users from tree map
      * @return Array of Users, could be null
      */
-    private User[] getUserArray(String userName){
-        return getUserArray(userName, null);
+    private User[] getUsersArray(){
+        return getUsersArray(null);
     }
 
-
     /**
-     * Creates array of all Users from tree map for needs 
+     * Creates array of all Users from tree map for users 
      * if "text" is null, array will contain all needs in treemap
-     * @param text, if this string is passed in only add needs contaiting to Array
-     * @return Array of Needs
+     * @param text, if this string is passed in only add users contaiting to Array
+     * @return Array of Users
      */
-    private User[] getUserArray(String userName, String text){
+    private User[] getUsersArray(String text){
         ArrayList<User> usersArrayList = new ArrayList<>();
 
         for ( String user : users.keySet() ){
@@ -109,6 +101,7 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
 
     /**
      *  Create array of Needs from tree map
+     * @param userName the user this method will get the needs of
      * @return Array of Needs, could be null
      */
     private Need[] getNeedsArray(String userName){
@@ -118,6 +111,7 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
     /**
      * Creates array of Needs from tree map for needs that contain "text"
      * if "text" is null, array will contain all needs in treemap
+     * @param userName the user this method will get the needs of
      * @param text, if this string is passed in only add needs contaiting to Array
      * @return Array of Needs
      */
@@ -141,10 +135,10 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
       *@return true, if written successfully
       */
     private boolean save() throws IOException{
-        Need[] usersArray = getNeedsArray();
+        User[] usersArray = getUsersArray();
         //use the object mapper to serialize jave objects to JSON 
         //Issues will raise an IOException
-        objectMapper.writeValue(new File(filename), needsArray);
+        objectMapper.writeValue(new File(filename), usersArray);
         return true;
 
     }
@@ -154,9 +148,6 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
      * @return true if read successfully
      */
     private boolean load() throws IOException{
-        Map<Integer,Need> needs = new TreeMap<>();
-        // nextId = 0;
-
         users = new TreeMap<>();
 
         //use object mapper to deserialize  file into needsArray
@@ -166,54 +157,55 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
 
         //add users to users tree map
         for (User user : usersArray){
-            needs.clear(); // clear the temporary needs before each user
+
             currentUser = user.getName();
+
             Need[] needsArray = user.getBasket(); // set needsArray to the current user's funding basket
+            
+            users.put(user.getName(), needsArray);
 
-            //add needs to needs tree map
-            for (Need need : needsArray){
-            needs.put(need.getId(), need);
-            // if (need.getId() > nextId)
-            //     nextId = need.getId();
-
-            users.put(user.getName(), needs);
-            }
         }
-        currentUserNeeds = users.get(currentUser); // sets the current user needs to whatever the last user was in the usersArray(the currentUser)
+
+        swapCurrentUser(currentUser);// sets the current user needs to whatever the last user was in the usersArray(the currentUser)
         
-        // ++nextId;
         return true;
     }
     /**
-     * Returns array of all needs in JSON
+     * Returns array of all needs for a specified user
+     * @param userName the user this method will modify
      * @return getNeedsArray
      */
 
     @Override
-    public Need[] getNeeds() {
+    public Need[] getNeeds(String userName) {
+        swapCurrentUser(userName);
         synchronized(currentUserNeeds) {
-            return getNeedsArray();
+            return getNeedsArray(currentUser);
         }
     }
     /**
      * Search for needs containing text passed in
+     * @param userName the user this method will modify
      * @param String text
      * @return getNeedsArray that contains text
      */
     @Override
-    public Need[] searchNeeds(String text) throws IOException {
+    public Need[] searchNeeds(String userName, String text) throws IOException {
+        swapCurrentUser(userName);
         synchronized(currentUserNeeds) {
-            return getNeedsArray(text);
+            return getNeedsArray(userName, text);
         }
     }
 
     /**
      * Returns single need with id
+     * @param userName the user this method will modify
      * @param int id id to search for 
      * @return need if found, null if no id in needs JSON
      */
     @Override
-    public Need getNeed(int id) throws IOException {
+    public Need getNeed(String userName, int id) throws IOException {
+        swapCurrentUser(userName)
         synchronized(currentUserNeeds) {
             if (currentUserNeeds.containsKey(id))
                 return currentUserNeeds.get(id);
@@ -225,7 +217,6 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
 
     /**
      * Creates a new Need object and a new User if one was not present
-     * 
      * @param userName: the name of the user the new need belongs to
      * @param need: the input object containing the id, name, value, quantity, and type
      * @return the new need
@@ -245,10 +236,17 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
             if (exists){
                 return null;
             }
+
             Need newNeed = new Need(need.getId(),need.getName(), need.getValue(), need.getQuantity(), need.getType());
-            // add the newly created need to the (currentUserNeeds) Map and the current user's needs in the (users) Map
-            currentUserNeeds.put(need.getId(),newNeed);
-            users.put(currentUser, currentUserNeeds);
+            // add the newly created need to the (currentUserNeeds) Map
+            currentUserNeeds.put(need.getId(), newNeed);
+
+            //add the current user's needs in the (users) Map
+            ArrayList<Need> needsArrayList = (ArrayList<Need>)currentUserNeeds.values();
+            Need[] needsArray = new Need[needsArrayList.size()];
+            needsArrayList.toArray(needsArray);
+            users.put(currentUser, needsArray);
+
             save();
             return newNeed;
         }
@@ -256,11 +254,13 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
 
     /**
      * Update need's contents, ie)name, value, quantity, type
+     * @param userName the user this method will modify
      * @param  Need need
      * @return Need updated need
      */
     @Override
-    public Need updateNeed(Need need) throws IOException {
+    public Need updateNeed(String userName, Need need) throws IOException {
+        swapCurrentUser(userName);
         synchronized(currentUserNeeds) {
             if (currentUserNeeds.containsKey(need.getId()) == false)
                 return null;
@@ -273,12 +273,14 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
 
     /**
      * Delete need at specified id
+     * @param userName the user this method will modify
      * @param int id
      * @return true if file was updated succesfully
      * @return false, if deletion failed
      */
     @Override
-    public boolean deleteNeed(int id) throws IOException {
+    public boolean deleteNeed(String userName, int id) throws IOException {
+        swapCurrentUser(userName);
          synchronized(currentUserNeeds) {
             if (currentUserNeeds.containsKey(id)) {
                 currentUserNeeds.remove(id);
@@ -293,12 +295,14 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
      * Delete all needs of specific type
      * Seemed liike using a removeIf is the best way to do this 
      * since you cant iterate through a tree map and delete things without throwing error.
-     * @param int id
+     * @param userName the user this method will modify
+     * @param string type
      * @return true if file was updated succesfully
      * @return false, if deletion failed
      */
     @Override
-    public boolean deleteNeedType(String type) throws IOException {
+    public boolean deleteNeedType(String userName, String type) throws IOException {
+        swapCurrentUser(userName);
         synchronized(currentUserNeeds) {
             if(currentUserNeeds.entrySet().removeIf(entry -> entry.getValue().getType().equals(type))){ // remove entry if it matches the given type
                 return save();
@@ -310,11 +314,13 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
 
     /**
      * Delete all needs
+     * @param userName the user this method will modify
      * @return true if file was updated succesfully
      * @return false, if deletion failed
      */
     @Override
-    public boolean deleteAll() throws IOException {
+    public boolean deleteAll(String userName) throws IOException {
+        swapCurrentUser(userName);
         synchronized(currentUserNeeds) {
             currentUserNeeds.clear();
             return save();
@@ -323,11 +329,13 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
 
     /**
      * Delete all needs of specific name
+     * @param userName the user this method will modify
      * @return true if file was updated succesfully
      * @return false, if deletion failed
      */
     @Override
-    public boolean deleteNeedName(String name) throws IOException {
+    public boolean deleteNeedName(String userName, String name) throws IOException {
+        swapCurrentUser(userName);
         synchronized(currentUserNeeds) {
             if(currentUserNeeds.entrySet().removeIf(entry -> entry.getValue().getName().contains(name))){
                 return save();
