@@ -32,11 +32,12 @@ public interface FundingBasketDAO {
     /**
      * Creates a new Need object
      * 
+     * @param userName: the name of the user that this need is being added to
      * @param need: the input object containing the name, value, quantity, and type
      * @return the new need with a generated id
      * @throws I/O exception if an error occured while saving the new Need to storage
      */
-    Need createdNeed(Need need) throws IOException;
+    Need createdNeed(String userName, Need need) throws IOException;
 
     /**
      * Update need's contents, ie)name, value, quantity, and type

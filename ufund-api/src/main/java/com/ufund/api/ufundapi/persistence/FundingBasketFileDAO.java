@@ -28,10 +28,11 @@ import com.ufund.api.ufundapi.model.User;
 @Component 
 public class FundingBasketFileDAO implements FundingBasketDAO {
     private static final Logger LOG = Logger.getLogger(FundingBasketDAO.class.getName());
-    Map<Integer,Need> needs;
+    Map<Integer,Need> currentUserNeeds; // a map of needs used to access the current user's Map<Integer, Need>
     Map<String,Map<Integer,Need>> users; // users are mapped to username:needs
     private ObjectMapper objectMapper;
-    private static int nextId;
+    private static String currentUser;
+    // private static int nextId;
     private String filename;
     
     /**
@@ -50,12 +51,12 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
      /**
       * Update id for next need created
       *@return Next id
-      */
-    private synchronized static int nextId(){
-        int id = nextId;
-        ++nextId;
-        return id;
-    }
+    //   */
+    // private synchronized static int nextId(){
+    //     int id = nextId;
+    //     ++nextId;
+    //     return id;
+    // }
 
     /**
      *  Create array of Needs from tree map
@@ -74,7 +75,7 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
     private Need[] getNeedsArray(String text){
         ArrayList<Need> needsArrayList = new ArrayList<>();
 
-        for (Need need : needs.values()){
+        for (Need need : currentUserNeeds.values()){
             if (text == null || need.getName().contains(text)){
                 needsArrayList.add(need);
             }
@@ -99,34 +100,38 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
     }
     /**
      * Load from JSON into the map
-     * Increment id after all have been read in
+     * Increment through every user, adding their name and their funding basket to the TreeMap
      * @return true if read successfully
      */
     private boolean load() throws IOException{
+        Map<Integer,Need> needs = new TreeMap<>();
+        // nextId = 0;
+
         users = new TreeMap<>();
-        needs = new TreeMap<>();
-        nextId = 0;
+
         //use object mapper to deserialize  file into needsArray
         FundingBasketDataWrapper userData = objectMapper.readValue(new File(filename), FundingBasketDataWrapper.class);
         
-        List<User> users = userData.getUsers();
+        List<User> usersArray = userData.getUsers();
 
-        //add needs to needs tree map
-        for (User user : userData){
-            users.put(user.getName(), user);
-            if (need.getId() > nextId)
-                nextId = need.getId();
-            
-            Need[] needsArray = new Need[]
+        //add users to users tree map
+        for (User user : usersArray){
+            needs.clear(); // clear the temporary needs before each user
+            currentUser = user.getName();
+            Need[] needsArray = user.getBasket(); // set needsArray to the current user's funding basket
+
+            //add needs to needs tree map
             for (Need need : needsArray){
-                needs.put(need.getId(), need);
-                if (need.getId() > nextId)
-                    nextId = need.getId();
-            }
+            needs.put(need.getId(), need);
+            // if (need.getId() > nextId)
+            //     nextId = need.getId();
 
+            users.put(user.getName(), needs);
+            }
         }
+        currentUserNeeds = users.get(currentUser); // sets the current user needs to whatever the last user was in the usersArray(the currentUser)
         
-        ++nextId;
+        // ++nextId;
         return true;
     }
     /**
@@ -136,7 +141,7 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
 
     @Override
     public Need[] getNeeds() {
-        synchronized(needs) {
+        synchronized(currentUserNeeds) {
             return getNeedsArray();
         }
     }
@@ -147,7 +152,7 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
      */
     @Override
     public Need[] searchNeeds(String text) throws IOException {
-        synchronized(needs) {
+        synchronized(currentUserNeeds) {
             return getNeedsArray(text);
         }
     }
@@ -159,9 +164,9 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
      */
     @Override
     public Need getNeed(int id) throws IOException {
-        synchronized(needs) {
-            if (needs.containsKey(id))
-                return needs.get(id);
+        synchronized(currentUserNeeds) {
+            if (currentUserNeeds.containsKey(id))
+                return currentUserNeeds.get(id);
             else
                 return null;
         }
@@ -171,19 +176,27 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
     /**
      * Creates a new Need object
      * 
-     * @param need: the input object containing the name, value, quantity, and type
-     * @return the new need with a generated id
+     * @param userName: the name of the user the new need belongs to
+     * @param need: the input object containing the id, name, value, quantity, and type
+     * @return the new need
      * @throws I/O exception if an error occured while saving the new Need to storage
      */
     @Override
-    public Need createdNeed(Need need) throws IOException {
+    public Need createdNeed(String userName, Need need) throws IOException {
+        currentUser = userName;
+        currentUserNeeds = users.get(currentUser);
         synchronized(need) {
-            boolean exists = needs.values().stream().anyMatch(n -> n.getName().equalsIgnoreCase(need.getName()));
+            if (need.getId() == 0){ // if an id is not given, then return null
+                return null;
+            }
+            boolean exists = currentUserNeeds.values().stream().anyMatch(n -> n.getName().equalsIgnoreCase(need.getName()) || n.getId() == (need.getId()));
             if (exists){
                 return null;
             }
-            Need newNeed = new Need(nextId(),need.getName(), need.getValue(), need.getQuantity(), need.getType());
-            needs.put(newNeed.getId(),newNeed);
+            Need newNeed = new Need(need.getId(),need.getName(), need.getValue(), need.getQuantity(), need.getType());
+            // add the newly created need to the (currentUserNeeds) Map and the current user's needs in the (users) Map
+            currentUserNeeds.put(need.getId(),newNeed);
+            users.put(currentUser, currentUserNeeds);
             save();
             return newNeed;
         }
