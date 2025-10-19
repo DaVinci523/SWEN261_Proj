@@ -17,39 +17,45 @@ export class FundingBasketService {
     private http: HttpClient,
   ) { }
 
-
-
-    /** GET needs from the server (BUG: CURRENTLY GETS FROM THE NEEDS CUPBOARD, HOWEVER THIS SHOULD GET FROM THE FUNDING BASKET)*/
-  getNeeds(): Observable<Need[]> {
-    return this.http.get<Need[]>(this.needsUrl);
-  }
-
-
   // Save/Modify the Server methods //
-
+  
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
+    /** GET needs from the server */
+  getNeeds(userName: String): Observable<any> {
+    const url = `${this.needsUrl}/${userName}/needs`;
+console.log("RUNNING")
+    return this.http.get(url);
+  }
+
+  // BUGGED: Does not Update
   /** PUT: update the hero on the server */
-  updateNeed(need: Need): Observable<any> {
-    return this.http.put(this.needsUrl, need, this.httpOptions)/*.pipe(
+  updateNeed(userName: String, need: Need): Observable<any> {
+    const url = `${this.needsUrl}/${userName} ${need}`;
+    console.log(url);
+    return this.http.put(url, this.httpOptions)/*.pipe(
       tap(_ => this.log(`updated hero id=${hero.id}`)),
       catchError(this.handleError<any>('updateHero'))
     );*/
   }
 
+  // BUGGED: Does not Add
   /** POST: add a new need to the server */
-  addNeed(need: Need): Observable<Need> {
-    return this.http.post<Need>(this.needsUrl, need, this.httpOptions)/*.pipe(
+  addNeed(userName: String, need: Need): Observable<Need> {
+    const url = `${this.needsUrl}/${userName} ${need}`;
+    console.log(url);
+
+    return this.http.post<Need>(url, this.httpOptions)/*.pipe(
       tap((newHero: Need) => this.log(`added need w/ id=${newNeed.id}`)),
       catchError(this.handleError<Need>('addNeed'))
     );*/
   }
 
   /** DELETE: delete the need from the server */
-  deleteNeed(id: number): Observable<Need> {
-    const url = `${this.needsUrl}/${id}`;
+  deleteNeed(userName: String, id: number): Observable<Need> {
+    const url = `${this.needsUrl}/${userName}/${id}`;
 
     return this.http.delete<Need>(url, this.httpOptions)/*.pipe(
       tap(_ => this.log(`deleted hero id=${id}`)),
