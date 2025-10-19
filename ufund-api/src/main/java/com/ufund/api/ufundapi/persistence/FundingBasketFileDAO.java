@@ -3,6 +3,7 @@ package com.ufund.api.ufundapi.persistence;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Logger;
@@ -12,7 +13,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.ufund.api.ufundapi.model.FundingBasketDataWrapper;
 import com.ufund.api.ufundapi.model.Need;
+import com.ufund.api.ufundapi.model.User;
 
 /**
  * Implements the functionality for JSON file-based peristance for Needs
@@ -26,6 +29,7 @@ import com.ufund.api.ufundapi.model.Need;
 public class FundingBasketFileDAO implements FundingBasketDAO {
     private static final Logger LOG = Logger.getLogger(FundingBasketDAO.class.getName());
     Map<Integer,Need> needs;
+    Map<String,Map<Integer,Need>> users; // users are mapped to username:needs
     private ObjectMapper objectMapper;
     private static int nextId;
     private String filename;
@@ -99,17 +103,29 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
      * @return true if read successfully
      */
     private boolean load() throws IOException{
+        users = new TreeMap<>();
         needs = new TreeMap<>();
         nextId = 0;
         //use object mapper to deserialize  file into needsArray
-        Need[] needsArray = objectMapper.readValue(new File(filename), Need[].class);
+        FundingBasketDataWrapper userData = objectMapper.readValue(new File(filename), FundingBasketDataWrapper.class);
+        
+        List<User> users = userData.getUsers();
+
         //add needs to needs tree map
-        for (Need need : needsArray){
-            needs.put(need.getId(), need);
+        for (User user : userData){
+            users.put(user.getName(), user);
             if (need.getId() > nextId)
                 nextId = need.getId();
-        }
+            
+            Need[] needsArray = new Need[]
+            for (Need need : needsArray){
+                needs.put(need.getId(), need);
+                if (need.getId() > nextId)
+                    nextId = need.getId();
+            }
 
+        }
+        
         ++nextId;
         return true;
     }
