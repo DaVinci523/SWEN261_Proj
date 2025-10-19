@@ -201,7 +201,7 @@ public class FundingBasketController {
      * a HttpStatus.NOT_FOUND if a need of id doesn't exist
      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
      */
-    @DeleteMapping("/{userName}/{id}")
+    @DeleteMapping("/{userName}/{id}") 
     public ResponseEntity<Need> deleteNeedId(@PathVariable String userName, @PathVariable int id){
        LOG.info("DELETE /funding_basket_needs/" + userName + "/" + id);
         try{

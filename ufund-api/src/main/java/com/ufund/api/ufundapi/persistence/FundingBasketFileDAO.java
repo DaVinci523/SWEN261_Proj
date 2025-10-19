@@ -139,6 +139,21 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
       *@return true, if written successfully
       */
     private boolean save() throws IOException{
+        // Set needs in currentUserNeeds to Users
+        ArrayList<Need> currentUserNeedsArrayList = new ArrayList<>();
+
+        // Add the values of the currentUserNeeds to an array (currentNeedsArrayList)
+        for (Need need : currentUserNeeds.values()){
+            currentUserNeedsArrayList.add(need);
+        }
+
+        Need[] currentNeedsArray = new Need[currentUserNeedsArrayList.size()];
+
+        currentUserNeedsArrayList.toArray(currentNeedsArray); // set currentNeedsArrayList to a Need[] (currentNeedsArray)
+
+        users.put(currentUser, currentNeedsArray); // Update user needs
+
+        // Save
         User[] usersArray = getUsersArray();
 
         // turns the array into a list and wraps it as a FundingBAsketDataWrapper, 
