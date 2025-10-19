@@ -81,10 +81,12 @@ public class FundingBasketController {
          LOG.info("GET /funding_basket_needs/" + userName + "/" + id);
         try {
             Need need = fundingBasketDAO.getNeed(userName, id);
-            if (need != null)
+            if (need != null){
                 return new ResponseEntity<Need>(need,HttpStatus.OK);
-            else
+            }
+            else{
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
         }
         catch(IOException e) {
             LOG.log(Level.SEVERE,e.getLocalizedMessage());
@@ -104,10 +106,12 @@ public class FundingBasketController {
         LOG.info("GET /funding_basket_needs/" + userName + "/needs");
         try {
             Need need[] = fundingBasketDAO.getNeeds(userName);
-            if (need != null)
+            if (need != null){
                 return new ResponseEntity<>(need,HttpStatus.OK); 
-            else
+            }
+            else{
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
         }
         catch(IOException e) {
             LOG.log(Level.SEVERE,e.getLocalizedMessage());
@@ -122,7 +126,7 @@ public class FundingBasketController {
      * @return a Response entity containing HttpStatus.OK if the search was successful,
      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
      */
-    @GetMapping("/{userName}/")
+    @GetMapping("/{userName}/") // BUGED: When running the search, it comes up with a 400 error
     public ResponseEntity<Need[]> searchNeeds(@PathVariable String userName, @RequestParam String needName){
         LOG.info("GET /funding_basket_needs/"+ userName +"/?name=" + needName);
         try {
@@ -149,6 +153,7 @@ public class FundingBasketController {
 
         try {
             Need newNeed = fundingBasketDAO.createdNeed(userName, need);
+            System.out.println(newNeed);
 
             if (newNeed != null){
                 return new ResponseEntity<>(newNeed, HttpStatus.CREATED);
@@ -176,6 +181,7 @@ public class FundingBasketController {
         
         try {
             Need updated = fundingBasketDAO.updateNeed(userName, need);
+            System.out.println(updated);
             if (updated != null) {
                 return new ResponseEntity<Need>(updated, HttpStatus.OK);
             } else {

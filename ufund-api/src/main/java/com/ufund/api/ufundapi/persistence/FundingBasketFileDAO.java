@@ -59,6 +59,8 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
         synchronized(currentUser){
             currentUser = userName;
 
+            currentUserNeeds = new TreeMap<>();
+
             try{
                 for (Need need : users.get(currentUser)){
                     currentUserNeeds.put(need.getId(), need);
@@ -255,7 +257,7 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
             currentUserNeeds.put(need.getId(), newNeed);
 
             //add the current user's needs in the (users) Map
-            ArrayList<Need> needsArrayList = (ArrayList<Need>)currentUserNeeds.values();
+            ArrayList<Need> needsArrayList = new ArrayList<Need>(currentUserNeeds.values());
             Need[] needsArray = new Need[needsArrayList.size()];
             needsArrayList.toArray(needsArray);
             users.put(currentUser, needsArray);
@@ -294,13 +296,13 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
     @Override
     public boolean deleteNeed(String userName, int id) throws IOException {
         swapCurrentUser(userName);
-         synchronized(currentUserNeeds) {
-            if (currentUserNeeds.containsKey(id)) {
-                currentUserNeeds.remove(id);
-                return save();
-            }
-            else
-                return false;
+        synchronized(currentUserNeeds) {
+           if (currentUserNeeds.containsKey(id)) {
+               currentUserNeeds.remove(id);
+               return save();
+           }
+           else
+               return false;
         }
     }
 
