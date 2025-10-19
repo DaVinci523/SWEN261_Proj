@@ -3,12 +3,14 @@ package com.ufund.api.ufundapi.persistence;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.logging.Logger;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -51,7 +53,7 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
     }
 
     /**
-     * Swaps the current user to the specified userName
+     * Swaps the current user to the specified userName, setting their respective data
      * @param userName the user that will be swapped to
      * @return
      */
@@ -138,9 +140,15 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
       */
     private boolean save() throws IOException{
         User[] usersArray = getUsersArray();
+
+        // turns the array into a list and wraps it as a FundingBAsketDataWrapper, 
+        // which is written to the file in the required format
+        List<User> usersList = Arrays.asList(usersArray);
+        FundingBasketDataWrapper wrappedList = new FundingBasketDataWrapper(usersList);
+
         //use the object mapper to serialize jave objects to JSON 
         //Issues will raise an IOException
-        objectMapper.writeValue(new File(filename), usersArray);
+        objectMapper.writeValue(new File(filename), wrappedList);
         return true;
 
     }
@@ -299,7 +307,8 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
         synchronized(currentUserNeeds) {
            if (currentUserNeeds.containsKey(id)) {
                currentUserNeeds.remove(id);
-               return save();
+               boolean saved = save();
+               return saved;
            }
            else
                return false;
@@ -320,7 +329,8 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
         swapCurrentUser(userName);
         synchronized(currentUserNeeds) {
             if(currentUserNeeds.entrySet().removeIf(entry -> entry.getValue().getType().equals(type))){ // remove entry if it matches the given type
-                return save();
+               boolean saved = save();
+               return saved;
             }
             else
                 return false;
@@ -338,7 +348,8 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
         swapCurrentUser(userName);
         synchronized(currentUserNeeds) {
             currentUserNeeds.clear();
-            return save();
+            boolean saved = save();
+            return saved;
      }
     }
 
@@ -353,7 +364,8 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
         swapCurrentUser(userName);
         synchronized(currentUserNeeds) {
             if(currentUserNeeds.entrySet().removeIf(entry -> entry.getValue().getName().contains(name))){
-                return save();
+               boolean saved = save();
+               return saved;
             }
             else 
                 return false;

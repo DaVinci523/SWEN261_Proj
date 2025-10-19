@@ -10,6 +10,12 @@ import java.util.List;
 public class FundingBasketDataWrapper {
         private List<User> users;
 
+        // Constructor //
+        public FundingBasketDataWrapper(List<User> users) {
+            this.users = users;
+        }
+
+        // Getters //
         public List<User> getUsers() {
             return users;
         }

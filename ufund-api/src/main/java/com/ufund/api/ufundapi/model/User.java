@@ -33,6 +33,7 @@ public class User {
         this.needs = needs;
     }
 
+    // Getters //
     public String getName() {
         return name;
     }
