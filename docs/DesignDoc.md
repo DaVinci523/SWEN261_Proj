@@ -116,58 +116,72 @@ This section describes the web interface and flow; this is how the user views an
 
 ### ViewModel Tier
 
-* NeedsCupboardController.java - Handles HTTP requests from the model tier. 
+* NeedsCupboardController.java - Handles HTTP requests from the model tier for the Needs cupboard. 
   * getNeed()
-  * Handles HTTP GET requests to the "/needs/id"
+      * Handles HTTP GET requests to the "/needs/id"
       * @param id: the searched objects id
       * @return a Response entity containing HttpStatus.OK if the search was successful,
       * a HttpStatus.NO_CONTENT if the returned data is null
       *  HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
+      * Retrieves a specified need given an id.
   * getNeeds()
       * Handles HTTP GET requests to the "/needs"
       * @return a Response entity containing HttpStatus.OK if the array of needs is returned,
       * a HttpStatus.NO_CONTENT if the return fails
       * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
+      * Retrieves all needs in the NeedCupboard
   * searchNeeds()
       * Handles HTTP GET requests to the "/needs/?name= "name""
       * @param name , check if need contains String name
       * @return a Response entity containing HttpStatus.OK if the search was successful,
       * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
+      * Searches for needs containing the given text
   * createNeed()
       * Handles HTTP POST requests to the "/needs"
       * @param need: the object to be created
       * @return a Response entity containing HttpStatus.CREATED if the creation was successful,
       * a HttpStatus.CONFLICT if the creation fails due to a conflict, or a HttpStatus.INTERNAL_SERVER_ERROR
       * if an I/O error occurred.
+      * Creates a need given its (name, value, quantity, and type). An id is automatically generated. 
   * updateNeed()
       * Handles HTTP PUT requests to the "/needs"
       * @param need: the object to be updated
       * @return a Response entity containing HttpStatus.OK if the update was successful,
       * a HttpStatus.NOT_FOUND if need doesn't exist
       * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
+      * Updates a need given its (id, name, value, quantity, and type). It will update the data at the specified id.
   * deleteNeed()
       * Handles HTTP DELETE requests to the "/needs"
       * @param id , id of need to be deleted
       * @return a Response entity containing HttpStatus.OK if the deletion was successful,
       * a HttpStatus.NOT_FOUND if a need of id doesn't exist
       * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
+      * Deletes a need given its id. 
   * deleteNeedType()
       * Handles HTTP DELETE requests to the "/needs"
       * @param type , type of need to be deleted
       * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
       * a HttpStatus.NOT_FOUND if a need of id doesn't exist
       * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+      * Deletes a need given it contains the given type.
   * deleteAll()
       * Handles HTTP DELETE requests to the "/needs"
       * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
       * a HttpStatus.NOT_FOUND if a need of id doesn't exist
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured.
+      * Deletes all needs in the Cupboard. 
   * deleteNeedName()
       * Handles HTTP DELETE requests to the "/needs"
       * @param name , string to check if name contains
       * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
       * a HttpStatus.NOT_FOUND if a need of id doesn't exist
       * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+      * Deletes needs given it contains the specified name.
+    
+* FundingBasketController.java - Handles HTTP requests from the model tier for the Funding Basket.
+  * Contains the same methods with the addition of a getUsers() method that retrieves all users with funding baskets. 
+  * For the other methods in NeedsCupboard.java, functions similarly, with the addition of a @param userName to access only the funding basket of the specified user. 
+    * For example, if all methods were called with the userName = helper123, then only helper123's funding basket will be accessed and modified. So, if an admin were logged in, they would see no items in the funding basket because their username is not in the funding basket. 
 
 > _**[Sprint 4]** Provide a summary of this tier of your architecture. This
 > section will follow the same instructions that are given for the View
@@ -180,7 +194,75 @@ This section describes the web interface and flow; this is how the user views an
 
 ### Model Tier
   * Need.java - Create a Need object with given id, name, and value.
-  * Contains getters (getID(), getName(), getValue()) and setters (setName(), setValue()).
+    * Contains getters (getID() -> int, getName() -> String, getValue() -> double, getQuantity() -> int, getType() -> String) and setters (setName(), setValue(), setQuantity(), setType()). Also contains a (toString() -> String) override.
+    * This is used in NeedsCupboardFileDAO.java to hold data for a need/s.
+  
+  * FundingBasketDataWrapper.java - Create a Data Wrapper object with a given list of users (List<User>).
+    * Contains (getUsers() -> List<User>) that returns the list of users.
+    * The DataWrapper is used in FundingBasketFileDAO.java to wrap the data taken from funding_basket.json into a list of Users for proccessing by the application, and then later setting data proccessed by the application to the .json file.
+  * User.java - Create a User object with a given name and basket(list of needs)
+    * Contains getters (getName() -> String, getNeeds() -> Need[]) and a (toString() -> String) override.
+    * This is used in FundingBasketFileDAO.java to hold data for a user/s.
+
+  * NeedCupboardFileDAO.java - the working logic behind our application for accessing the Needs Cupboard. 
+    * getNeedsArray()
+      * @param text, if this string is passed in only add needs contaiting to Array
+      * @return Array of Needs
+      * Creates array of Needs from tree map for needs that contain "text".
+      * if "text" is null, array will contain all needs in the treemap.
+    * save()
+      * 
+    * load()
+      * 
+    * getNeeds()
+      * @return getNeedsArray
+      * Returns an array of all needs in the JSON.
+    * searchNeeds()
+      * 
+    * getNeed()
+      * 
+    * createNeed()
+      * 
+    * updateNeed()
+      * 
+    * deleteNeed()
+      * 
+    * deleteNeedType()
+      * 
+    * deleteAll()
+      * 
+    * deleteNeedName()
+      * 
+
+  * FundingBasketFileDAO.java - the working logic behind our application for accessing the Needs Cupboard. 
+    * swapCurrentUser()
+      * 
+    * getUsersArray()
+      * 
+    * getNeedsArray()
+      * 
+    * save()
+      * 
+    * load()
+      * 
+    * getNeeds()
+      * 
+    * searchNeeds()
+      * 
+    * getNeed()
+      * 
+    * createNeed()
+      * 
+    * updateNeed()
+      * 
+    * deleteNeed()
+      * 
+    * deleteNeedType()
+      * 
+    * deleteAll()
+      * 
+    * deleteNeedName()
+      * 
 
 
 > _**[Sprint 2, 3 & 4]** Provide a summary of this tier of your architecture. This

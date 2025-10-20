@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AdminPageService } from '../admin-page-service'; 
 import { Need } from '../need';
+import { User } from '../user';
 
 @Component({
   selector: 'app-admin-page',
@@ -10,7 +11,7 @@ import { Need } from '../need';
 })
 export class AdminPage {
 
-  constructor(private adminPageService:AdminPageService){}  
+  constructor(private adminPageService:AdminPageService, public user: User){}  
   needs:Need[] = [];
   
   getNeeds(): void {
