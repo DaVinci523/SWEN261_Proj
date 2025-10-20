@@ -40,7 +40,6 @@ console.log("RUNNING")
     );*/
   }
 
-  // BUGGED: Does not Add
   /** POST: add a new need to the server */
   addNeed(userName: String, need: Need): Observable<Need> {
     const url = `${this.needsUrl}/${userName}`;
