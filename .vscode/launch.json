@@ -5,6 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "java",
+            "name": "UfundApiApplication",
+            "request": "launch",
+            "mainClass": "com.ufund.api.ufundapi.UfundApiApplication",
+            "projectName": "ufund-api"
+        },
+        {
             "type": "chrome",
             "request": "launch",
             "name": "Launch Chrome against localhost",

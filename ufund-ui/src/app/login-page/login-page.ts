@@ -29,7 +29,7 @@ export class LoginPage {
       if (role === 'admin') {
         this.router.navigate(['/admin']);
       } else {
-        this.router.navigate(['/checkout']);
+        this.router.navigate(['/helper']);
       }
     } else {
       alert('Invalid username or password.');
