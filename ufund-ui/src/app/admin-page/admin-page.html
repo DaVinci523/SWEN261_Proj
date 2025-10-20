@@ -1,82 +1,86 @@
 <app-nav-bar></app-nav-bar>
-<h2>Admin</h2>    
+@if(this.user.getCurrentUserRole() == 'admin') {
+    <h2>Admin</h2>    
 
-<!-- column structure supplied by: -->
-<!-- https://www.w3schools.com/howto/howto_css_two_columns.asp -->
+    <!-- column structure supplied by: -->
+    <!-- https://www.w3schools.com/howto/howto_css_two_columns.asp -->
 
-    <div class="container">
-        <div class="column">
-            <h3>Needs Cupoard:</h3>
-            @for (need of needs; track need.id) {
-            <li *ngFor="let need of needs">{{need}}
-                <div class="flex-container">
-                    <div class="flex-item-left">Name: {{need.name}}</div>
-                    <div class="flex-item-right">Quantity: {{need.quantity}}</div>
-                    <div class="flex-item-right">Type: {{need.type}}</div>
-                    <div class="flex-item-right">Value: ${{need.value}}</div>
-            </div>
-            </li>
+        <div class="container">
+            <div class="column">
+                <h3>Needs Cupoard:</h3>
+                @for (need of needs; track need.id) {
+                <li *ngFor="let need of needs">{{need}}
+                    <div class="flex-container">
+                        <div class="flex-item-left">Name: {{need.name}}</div>
+                        <div class="flex-item-right">Quantity: {{need.quantity}}</div>
+                        <div class="flex-item-right">Type: {{need.type}}</div>
+                        <div class="flex-item-right">Value: ${{need.value}}</div>
+                </div>
+                </li>
 
-        <button type="button" class="update" (click)="updateNeed(need)">Update</button>
-        
-
-            }
-
-            @empty {
-                <li>No items to display</li>
-            }
-        </div>
-        <div class ="column">
-            <h3>Edit Need:</h3>
-            <div class="flex-container">
-                <div class="flex-item-left">Need Name: </div>
-                
-                <div class= "padding"> </div>
-
-                <input type="text" id="username" name="username" #needName placeholder="Enter need name">
-            </div>
+            <button type="button" class="update" (click)="updateNeed(need)">Update</button>
             
-            <div class = "padding"> </div>
 
-            <div class="flex-container">
-                <div class="flex-item-left">Quantity: </div>
-                
-                <div class= "padding"> </div>
-                
-                <input type="text" id="username" name="username" #needQuant placeholder="Enter quantity">
+                }
+
+                @empty {
+                    <li>No items to display</li>
+                }
             </div>
+            <div class ="column">
+                <h3>Edit Need:</h3>
+                <div class="flex-container">
+                    <div class="flex-item-left">Need Name: </div>
+                    
+                    <div class= "padding"> </div>
 
-            <div class = "padding"> </div>
+                    <input type="text" id="username" name="username" #needName placeholder="Enter need name">
+                </div>
+                
+                <div class = "padding"> </div>
 
-            <div class="flex-container">
-                <div class="flex-item-left">Value: </div>
-                
-                <div class= "padding"> </div>
-                
-                <input type="text" id="username" name="username" #needType placeholder="Enter value">
+                <div class="flex-container">
+                    <div class="flex-item-left">Quantity: </div>
+                    
+                    <div class= "padding"> </div>
+                    
+                    <input type="text" id="username" name="username" #needQuant placeholder="Enter quantity">
+                </div>
+
+                <div class = "padding"> </div>
+
+                <div class="flex-container">
+                    <div class="flex-item-left">Value: </div>
+                    
+                    <div class= "padding"> </div>
+                    
+                    <input type="text" id="username" name="username" #needType placeholder="Enter value">
+                </div>
+
+                <div class = "padding"> </div>
+
+                <div class="flex-container">
+                    <div class="flex-item-left">Type: </div>
+                    
+                    <div class= "padding"> </div>
+                    
+                    <input type="text" id="username" name="username" #needValue placeholder="Enter value">
+                </div>
+
+                <div class = "padding"> </div>
+    <!--
+                <button type="button" class="clear"
+            (click)="updateNeed(need)">Update</button>
+            -->
+                <button type="button" class="add"
+            (click)= "createNeed(needName.value, needValue.valueAsNumber, needQuant.valueAsNumber, needType. value)">Add Need</button>
+    <!--
+                <button type="button" class="clear"
+            (click)="deleteNeed()">Delete</button>
+            -->
             </div>
-
-            <div class = "padding"> </div>
-
-             <div class="flex-container">
-                <div class="flex-item-left">Type: </div>
-                
-                <div class= "padding"> </div>
-                
-                <input type="text" id="username" name="username" #needValue placeholder="Enter value">
-            </div>
-
-            <div class = "padding"> </div>
-<!--
-            <button type="button" class="clear"
-          (click)="updateNeed(need)">Update</button>
-        -->
-            <button type="button" class="add"
-          (click)= "createNeed(needName.value, needValue.valueAsNumber, needQuant.valueAsNumber, needType. value)">Add Need</button>
-<!--
-            <button type="button" class="clear"
-          (click)="deleteNeed()">Delete</button>
-        -->
+        
         </div>
-    
-    </div>
+} @else {
+    <div class="restricted">Restricted</div>
+}

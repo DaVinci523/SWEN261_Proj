@@ -22,6 +22,7 @@ import com.ufund.api.ufundapi.persistence.FundingBasketDAO;
 // Final Imports will be our FundingBasketDAO interface & our Need model
 import com.service.FundingBasketService;
 import com.ufund.api.ufundapi.model.Need;
+import com.ufund.api.ufundapi.model.User;
 
 /**
  * Handles the REST API requests for the Need resource
@@ -41,46 +42,23 @@ public class FundingBasketController {
      * Constructor
      * @param fundingBasketController
      */
-    public FundingBasketController(FundingBasketService fundingBasketService){
+    public FundingBasketController(FundingBasketDAO fundingBasketDAO){
         this.fundingBasketService = fundingBasketService;
     }
 
     /**
-     * Handles HTTP GET requests to the "/needs/id"
-     * @param id: the searched objects id
-     * @return a Response entity containing HttpStatus.OK if the search was successful,
-     * a HttpStatus.NOT_FOUND if the search fails due to a non existent id
-     *  HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
-     */
-    @GetMapping("/{id}")
-    public ResponseEntity<Need> getNeed(@PathVariable int id){
-         LOG.info("GET /funding_basket_needs/" + id);
-        try {
-            Need need = fundingBasketService.getNeed(id);
-            if (need != null)
-                return new ResponseEntity<Need>(need,HttpStatus.OK);
-            else
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        catch(IOException e) {
-            LOG.log(Level.SEVERE,e.getLocalizedMessage());
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    /**
-     * Handles HTTP GET requests to the "/needs"
-     * @return a Response entity containing HttpStatus.OK if the array of needs is returned,
+     * Handles HTTP GET requests to the "/users"
+     * @return a Response entity containing HttpStatus.OK if the array of users is returned,
      * a HttpStatus.NO_CONTENT if the returned data is null
      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
      */
-    @GetMapping("")
-    public ResponseEntity<Need[]> getNeeds(){
-        LOG.info("GET /funding_basket_needs");
+    @GetMapping("/users")
+    public ResponseEntity<User[]> getUsers(){
+        LOG.info("GET /funding_basket_needs/users");
         try {
-            Need need[] = fundingBasketService.getNeeds();
-            if (need != null)
-                return new ResponseEntity<>(need,HttpStatus.OK); 
+            User user[] = fundingBasketService.getUsers();
+            if (user != null)
+                return new ResponseEntity<>(user,HttpStatus.OK); 
             else
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -91,16 +69,68 @@ public class FundingBasketController {
     }
 
     /**
+     * Handles HTTP GET requests to the "/needs/id"
+     * @param userName: the user to search in
+     * @param id: the searched objects id
+     * @return a Response entity containing HttpStatus.OK if the search was successful,
+     * a HttpStatus.NOT_FOUND if the search fails due to a non existent id
+     *  HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+     */
+    @GetMapping("{userName}/{id}")
+    public ResponseEntity<Need> getNeed(@PathVariable String userName, @PathVariable int id){
+         LOG.info("GET /funding_basket_needs/" + userName + "/" + id);
+        try {
+            Need need = fundingBasketService.getNeed(userName, id);
+            if (need != null){
+                return new ResponseEntity<Need>(need,HttpStatus.OK);
+            }
+            else{
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        }
+        catch(IOException e) {
+            LOG.log(Level.SEVERE,e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Handles HTTP GET requests to the "userName/needs"
+     * @param userName: the user to retrieve from
+     * @return a Response entity containing HttpStatus.OK if the array of needs is returned,
+     * a HttpStatus.NO_CONTENT if the returned data is null
+     * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+     */
+    @GetMapping("{userName}/needs")
+    public ResponseEntity<Need[]> getNeeds(@PathVariable String userName){
+        LOG.info("GET /funding_basket_needs/" + userName + "/needs");
+        try {
+            Need need[] = fundingBasketService.getNeeds(userName);
+            if (need != null){
+                return new ResponseEntity<>(need,HttpStatus.OK); 
+            }
+            else{
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        }
+        catch(IOException e) {
+            LOG.log(Level.SEVERE,e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }   
+    }
+
+    /**
      * Handles HTTP GET requests to the "/needs/?name= "name""
+     * @param userName: the user to search from
      * @param name , check if need contains String name
      * @return a Response entity containing HttpStatus.OK if the search was successful,
      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
      */
-    @GetMapping("/")
-    public ResponseEntity<Need[]> searchNeeds(@RequestParam String name){
-        LOG.info("GET /funding_basket_needs/?name=" + name);
+    @GetMapping("/{userName}/") 
+    public ResponseEntity<Need[]> searchNeeds(@PathVariable String userName, @RequestParam String name){
+        LOG.info("GET /funding_basket_needs/"+ userName +"/?name=" + name);
         try {
-            Need[] needs = fundingBasketService.searchNeeds(name);
+            Need[] needs = fundingBasketService.searchNeeds(userName, name);
             return new ResponseEntity<Need[]>(needs, HttpStatus.OK);
         }
         catch (IOException e) {
@@ -111,17 +141,19 @@ public class FundingBasketController {
 
     /**
      * Handles HTTP POST requests to the "/needs"
+     * @param userName: the user to create in
      * @param need: the object to be created
      * @return a Response entity containing HttpStatus.CREATED if the creation was successful,
      * a HttpStatus.CONFLICT if the creation fails due to a conflict, or a HttpStatus.INTERNAL_SERVER_ERROR
      * if an I/O error occured. 
      */
-    @PostMapping("") 
-    public ResponseEntity<Need> createNeed(@RequestBody Need need){
-        LOG.info("POST /funding_basket_needs " + need);
+    @PostMapping("/{userName}") 
+    public ResponseEntity<Need> createNeed(@PathVariable String userName, @RequestBody Need need){
+        LOG.info("POST /funding_basket_needs/" + userName + " " + need);
 
         try {
-            Need newNeed = fundingBasketService.createdNeed(need);
+            Need newNeed = fundingBasketService.createdNeed(userName, need);
+            System.out.println(newNeed);
 
             if (newNeed != null){
                 return new ResponseEntity<>(newNeed, HttpStatus.CREATED);
@@ -137,17 +169,19 @@ public class FundingBasketController {
 
     /**
      * Handles HTTP PUT requests to the "/needs"
+     * @param userName: the user to update
      * @param need: the object to be updated
      * @return a Response entity containing HttpStatus.OK if the update was successful,
      * a HttpStatus.NOT_FOUND if need doesn't exist
      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
      */
-    @PutMapping("")
-    public ResponseEntity<Need> updateNeed(@RequestBody Need need){
-        LOG.info("PUT /funding_basket_needs " + need);
+    @PutMapping("/{userName}")
+    public ResponseEntity<Need> updateNeed(@PathVariable String userName, @RequestBody Need need){
+        LOG.info("PUT /funding_basket_needs/" + userName + " " + need);
         
         try {
-            Need updated = fundingBasketService.updateNeed(need);
+            Need updated = fundingBasketService.updateNeed(userName, need);
+            System.out.println(updated);
             if (updated != null) {
                 return new ResponseEntity<Need>(updated, HttpStatus.OK);
             } else {
@@ -161,20 +195,23 @@ public class FundingBasketController {
 
     /**
      * Handles HTTP DELETE requests to the "/needs"
+     * @param userName: the user to delete from
      * @param id , id of need to be deleted
      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
      * a HttpStatus.NOT_FOUND if a need of id doesn't exist
      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
      */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Need> deleteNeedId(@PathVariable int id){
-       LOG.info("DELETE /funding_basket_needs/" + id);
+    @DeleteMapping("/{userName}/{id}") 
+    public ResponseEntity<Need> deleteNeedId(@PathVariable String userName, @PathVariable int id){
+       LOG.info("DELETE /funding_basket_needs/" + userName + "/" + id);
         try{
 
-            if(fundingBasketService.deleteNeed(id))
+            if(fundingBasketService.deleteNeed(userName, id)){
                 return new ResponseEntity<>(HttpStatus.OK);
-            else
+            }
+            else{
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
 
 
         } catch (IOException e){
@@ -185,19 +222,22 @@ public class FundingBasketController {
 
     /**
      * Handles HTTP DELETE requests to the "/needs"
+     * @param userName: the user to delete from
      * @param type , type of need to be deleted
      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
      * a HttpStatus.NOT_FOUND if a need of id doesn't exist
      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
      */
-    @DeleteMapping("/type/{type}")
-    public ResponseEntity<Need> deleteNeedType(@PathVariable String type){
-       LOG.info("DELETE /funding_basket_needs/type/" + type);
+    @DeleteMapping("/{userName}/type/{type}")
+    public ResponseEntity<Need> deleteNeedType(@PathVariable String userName, @PathVariable String type){
+       LOG.info("DELETE /funding_basket_needs/" + userName + "/type/" + type);
         try{
-            if(fundingBasketService.deleteNeedType(type))
+            if(fundingBasketService.deleteNeedType(userName, type)){
                 return new ResponseEntity<>(HttpStatus.OK);
-            else
+            }
+            else{
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
 
 
         } catch (IOException e){
@@ -208,15 +248,16 @@ public class FundingBasketController {
     
     /**
      * Handles HTTP DELETE requests to the "/needs"
+     * @param userName: the user to delete from
      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
      * a HttpStatus.NOT_FOUND if a need of id doesn't exist
      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
      */
-    @DeleteMapping("")
-    public ResponseEntity<Need> deleteAll(){
-       LOG.info("DELETE /funding_basket_needs");
+    @DeleteMapping("/{userName}")
+    public ResponseEntity<Need> deleteAll(@PathVariable String userName){
+       LOG.info("DELETE /funding_basket_needs/" + userName);
         try{
-            if(fundingBasketService.deleteAll())
+            if(fundingBasketService.deleteAll(userName))
                 return new ResponseEntity<>(HttpStatus.OK);
             else
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -230,16 +271,17 @@ public class FundingBasketController {
 
     /**
      * Handles HTTP DELETE requests to the "/needs"
+     * @param userName: the user to delete from
      * @param name , string to check if name contains
      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
      * a HttpStatus.NOT_FOUND if a need of id doesn't exist
      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
      */
-    @DeleteMapping("/name/{name}")
-    public ResponseEntity<Need> deleteNeedName(@PathVariable String name){
-       LOG.info("DELETE /funding_basket_needs/name/" + name);
+    @DeleteMapping("/{userName}/name/{name}")
+    public ResponseEntity<Need> deleteNeedName(@PathVariable String userName, @PathVariable String name){
+       LOG.info("DELETE /funding_basket_needs" + userName + "/name/" + name);
         try{
-            if(fundingBasketService.deleteNeedName(name))
+            if(fundingBasketService.deleteNeedName(userName, name))
                 return new ResponseEntity<>(HttpStatus.OK);
             else
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
