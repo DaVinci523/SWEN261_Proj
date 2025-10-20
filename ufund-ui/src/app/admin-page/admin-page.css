@@ -19,3 +19,13 @@ li{
     list-style-type:none;
     border: 4 px black; 
 }
+
+.restricted {
+  padding: 24px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #fff7f7;
+  color: #a10000;
+  font-weight: 600;
+  text-align: center;
+}
