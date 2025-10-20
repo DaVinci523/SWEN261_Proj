@@ -17,7 +17,7 @@ import java.io.IOError;
 import java.io.IOException;
 
 /**
- * Unit tests for the needsCupboardServiceImplementation
+ * Unit test for the needsCupboardServiceImplementation
  */
 public class needsCupboardServiceTest {
     private NeedsCupboardDAO mockDAO;

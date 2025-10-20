@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 
 import com.ufund.api.ufundapi.persistence.FundingBasketDAO;
 // Final Imports will be our FundingBasketDAO interface & our Need model
-import com.ufund.api.ufundapi.persistence.FundingBasketDAO;
+import com.service.FundingBasketService;
 import com.ufund.api.ufundapi.model.Need;
 import com.ufund.api.ufundapi.model.User;
 
@@ -36,14 +36,14 @@ import com.ufund.api.ufundapi.model.User;
 @RequestMapping("funding_basket_needs")
 public class FundingBasketController {
     private static final Logger LOG = Logger.getLogger(FundingBasketController.class.getName());
-    private FundingBasketDAO fundingBasketDAO;
+    private final FundingBasketService fundingBasketService;
 
     /**
      * Constructor
      * @param fundingBasketController
      */
     public FundingBasketController(FundingBasketDAO fundingBasketDAO){
-        this.fundingBasketDAO = fundingBasketDAO;
+        this.fundingBasketService = fundingBasketService;
     }
 
     /**
@@ -56,7 +56,7 @@ public class FundingBasketController {
     public ResponseEntity<User[]> getUsers(){
         LOG.info("GET /funding_basket_needs/users");
         try {
-            User user[] = fundingBasketDAO.getUsers();
+            User user[] = fundingBasketService.getUsers();
             if (user != null)
                 return new ResponseEntity<>(user,HttpStatus.OK); 
             else
@@ -80,7 +80,7 @@ public class FundingBasketController {
     public ResponseEntity<Need> getNeed(@PathVariable String userName, @PathVariable int id){
          LOG.info("GET /funding_basket_needs/" + userName + "/" + id);
         try {
-            Need need = fundingBasketDAO.getNeed(userName, id);
+            Need need = fundingBasketService.getNeed(userName, id);
             if (need != null){
                 return new ResponseEntity<Need>(need,HttpStatus.OK);
             }
@@ -105,7 +105,7 @@ public class FundingBasketController {
     public ResponseEntity<Need[]> getNeeds(@PathVariable String userName){
         LOG.info("GET /funding_basket_needs/" + userName + "/needs");
         try {
-            Need need[] = fundingBasketDAO.getNeeds(userName);
+            Need need[] = fundingBasketService.getNeeds(userName);
             if (need != null){
                 return new ResponseEntity<>(need,HttpStatus.OK); 
             }
@@ -130,7 +130,7 @@ public class FundingBasketController {
     public ResponseEntity<Need[]> searchNeeds(@PathVariable String userName, @RequestParam String name){
         LOG.info("GET /funding_basket_needs/"+ userName +"/?name=" + name);
         try {
-            Need[] needs = fundingBasketDAO.searchNeeds(userName, name);
+            Need[] needs = fundingBasketService.searchNeeds(userName, name);
             return new ResponseEntity<Need[]>(needs, HttpStatus.OK);
         }
         catch (IOException e) {
@@ -152,7 +152,7 @@ public class FundingBasketController {
         LOG.info("POST /funding_basket_needs/" + userName + " " + need);
 
         try {
-            Need newNeed = fundingBasketDAO.createdNeed(userName, need);
+            Need newNeed = fundingBasketService.createdNeed(userName, need);
             System.out.println(newNeed);
 
             if (newNeed != null){
@@ -180,7 +180,7 @@ public class FundingBasketController {
         LOG.info("PUT /funding_basket_needs/" + userName + " " + need);
         
         try {
-            Need updated = fundingBasketDAO.updateNeed(userName, need);
+            Need updated = fundingBasketService.updateNeed(userName, need);
             System.out.println(updated);
             if (updated != null) {
                 return new ResponseEntity<Need>(updated, HttpStatus.OK);
@@ -206,7 +206,7 @@ public class FundingBasketController {
        LOG.info("DELETE /funding_basket_needs/" + userName + "/" + id);
         try{
 
-            if(fundingBasketDAO.deleteNeed(userName, id)){
+            if(fundingBasketService.deleteNeed(userName, id)){
                 return new ResponseEntity<>(HttpStatus.OK);
             }
             else{
@@ -232,7 +232,7 @@ public class FundingBasketController {
     public ResponseEntity<Need> deleteNeedType(@PathVariable String userName, @PathVariable String type){
        LOG.info("DELETE /funding_basket_needs/" + userName + "/type/" + type);
         try{
-            if(fundingBasketDAO.deleteNeedType(userName, type)){
+            if(fundingBasketService.deleteNeedType(userName, type)){
                 return new ResponseEntity<>(HttpStatus.OK);
             }
             else{
@@ -257,7 +257,7 @@ public class FundingBasketController {
     public ResponseEntity<Need> deleteAll(@PathVariable String userName){
        LOG.info("DELETE /funding_basket_needs/" + userName);
         try{
-            if(fundingBasketDAO.deleteAll(userName))
+            if(fundingBasketService.deleteAll(userName))
                 return new ResponseEntity<>(HttpStatus.OK);
             else
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -281,7 +281,7 @@ public class FundingBasketController {
     public ResponseEntity<Need> deleteNeedName(@PathVariable String userName, @PathVariable String name){
        LOG.info("DELETE /funding_basket_needs" + userName + "/name/" + name);
         try{
-            if(fundingBasketDAO.deleteNeedName(userName, name))
+            if(fundingBasketService.deleteNeedName(userName, name))
                 return new ResponseEntity<>(HttpStatus.OK);
             else
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
