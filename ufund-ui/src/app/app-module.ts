@@ -1,6 +1,6 @@
-import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { NgModule} from '@angular/core';
+import { provideBrowserGlobalErrorListeners } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -14,9 +14,9 @@ import { HelperPage } from './helper-page/helper-page';
 import { CheckoutPage } from './checkout-page/checkout-page';
 import { NeedsCupboard } from './needs-cupboard/needs-cupboard';
 import { FundingBasket } from './funding-basket/funding-basket';
-import { Checkout } from './checkout/checkout';
+import { NeedDetailComponent } from './need-details/need-details';
 import { NavBar } from './nav-bar/nav-bar';
-
+import { Checkout } from './checkout/checkout';
 @NgModule({
   declarations: [
     App,
@@ -27,8 +27,9 @@ import { NavBar } from './nav-bar/nav-bar';
     CheckoutPage,
     NeedsCupboard,
     FundingBasket,
-    Checkout,
-    NavBar
+    NeedDetailComponent,
+    NavBar,
+    Checkout
   ],
   imports: [
     BrowserModule,
