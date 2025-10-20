@@ -4,8 +4,13 @@ Welcome to the PROJECT Project!
 
 ## Team
 
-* MEMBER1
-* MEMBER2
+* Team name: CTRL
+* Team members
+  * Anthony Rosati Jr.
+  * Anthony Pelto
+  * Addison Asuncion
+  * Nicholas Li
+  * Seth Taylor
 
 ## [Design Documentation](DesignDoc)
 

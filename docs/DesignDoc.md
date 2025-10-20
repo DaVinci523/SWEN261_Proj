@@ -180,7 +180,14 @@ This section describes the web interface and flow; this is how the user views an
 
 ### Model Tier
   * Need.java - Create a Need object with given id, name, and value.
-  * Contains getters (getID(), getName(), getValue()) and setters (setName(), setValue()).
+    * Contains getters (getID() -> int, getName() -> String, getValue() -> double, getQuantity() -> int, getType() -> String) and setters (setName(), setValue(), setQuantity(), setType()). Also contains a (toString() -> String) override.
+    * This is used in NeedsCupboardFileDAO.java to hold data for a need/s.
+  * FundingBasketDataWrapper.java - Create a Data Wrapper object with a given list of users (List<User>).
+    * Contains (getUsers() -> List<User>) that returns the list of users.
+    * The DataWrapper is used in FundingBasketFileDAO.java to wrap the data taken from funding_basket.json into a list of Users for proccessing by the application, and then later setting data proccessed by the application to the .json file.
+  * User.java - Create a User object with a given name and basket(list of needs)
+    * Contains getters (getName() -> String, getNeeds() -> Need[]) and a (toString() -> String) override.
+    * This is used in FundingBasketFileDAO.java to hold data for a user/s.
 
 
 > _**[Sprint 2, 3 & 4]** Provide a summary of this tier of your architecture. This
