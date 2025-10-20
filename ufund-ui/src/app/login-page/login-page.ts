@@ -20,7 +20,7 @@ export class LoginPage {
       if (this.user.getCurrentUserRole() == 'admin') {
         this.router.navigate(['/admin']);
       } else {
-        this.router.navigate(['/checkout']);
+        this.router.navigate(['/helper']);
       }
      } else { 
       alert("User does not exist!");
