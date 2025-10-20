@@ -30,7 +30,9 @@ export class NavBar {
   goToLogin() {
     this.router.navigate(['/login']);
   }
-
+  goToHelper(){
+    this.router.navigate(['/helper']);
+  }
   onUserIconClick() {
     if (this.user.isLoggedIn()) {
       const ok = confirm(`Signed in as ${this.user.getCurrentUser()}\n\nLog out?`);
