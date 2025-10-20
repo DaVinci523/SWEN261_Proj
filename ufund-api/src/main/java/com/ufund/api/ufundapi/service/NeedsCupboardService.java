@@ -1,4 +1,4 @@
-package com.service;
+package com.ufund.api.ufundapi.service;
 
 import java.io.IOException;
 import java.util.List;

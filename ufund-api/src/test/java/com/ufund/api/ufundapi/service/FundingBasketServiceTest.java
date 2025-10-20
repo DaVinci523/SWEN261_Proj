@@ -1,11 +1,11 @@
-package service;
+package com.ufund.api.ufundapi.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.service.FundingBasketServiceImplementation;
 import com.ufund.api.ufundapi.model.Need;
 import com.ufund.api.ufundapi.persistence.FundingBasketDAO;
+import com.ufund.api.ufundapi.service.FundingBasketServiceImplementation;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -1,10 +1,12 @@
-package service;
+package com.ufund.api.ufundapi.service;
 
 import org.junit.jupiter.api.BeforeEach;
 
-import com.service.NeedsCupboardServiceImplementation;
 import com.ufund.api.ufundapi.persistence.NeedsCupboardDAO;
+import com.ufund.api.ufundapi.service.NeedsCupboardServiceImplementation;
+
 import org.junit.jupiter.api.Test;
+
 import com.ufund.api.ufundapi.model.Need;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;

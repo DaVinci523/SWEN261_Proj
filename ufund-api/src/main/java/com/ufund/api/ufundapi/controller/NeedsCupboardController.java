@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 
 // Final Imports will be our NeedsCupboardDAO interface & our Need model
 import com.ufund.api.ufundapi.persistence.NeedsCupboardDAO;
-import com.service.NeedsCupboardService;
+import com.ufund.api.ufundapi.service.NeedsCupboardService;
 import com.ufund.api.ufundapi.model.Need;
 
 /**
