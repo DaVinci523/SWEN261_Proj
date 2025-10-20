@@ -1,29 +1,38 @@
 import { Component } from '@angular/core';
-import { User } from '../user';
 import { Router } from '@angular/router';
+import { User } from '../user';
 
 @Component({
   selector: 'app-login-page',
   standalone: false,
   templateUrl: './login-page.html',
-  styleUrl: './login-page.css'
+  styleUrls: ['./login-page.css']   // note: styleUrls (plural)
 })
 export class LoginPage {
   constructor(private router: Router, private user: User) {}
 
   username = '';
+  password = '';
 
-  onLogin(name: string){
-     if (this.user.userExists(this.username)){
-      this.user.login(name);
-      alert("Welcome " + this.username);
-      if (this.user.getCurrentUserRole() == 'admin') {
+  onLogin(): void {
+    if (!this.username || !this.password) {
+      return;
+    }
+
+    const ok = this.user.login(this.username, this.password);
+
+    if (ok) {
+      alert('Welcome ' + this.username);
+
+      const role = this.user.getCurrentUserRole();
+
+      if (role === 'admin') {
         this.router.navigate(['/admin']);
       } else {
         this.router.navigate(['/helper']);
       }
-     } else { 
-      alert("User does not exist!");
-     }
+    } else {
+      alert('Invalid username or password.');
+    }
   }
 }

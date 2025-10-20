@@ -1,11 +1,19 @@
 <app-nav-bar></app-nav-bar>
+
 <div class="center-page">
-  <form class="center-box">
-    <div>
-      <label>Username: </label>
-      <input name="username" [(ngModel)]="username" />
+  <form class="center-box" (ngSubmit)="onLogin()">
+    <div class="field">
+      <label for="username">Username</label>
+      <input id="username" name="username" [(ngModel)]="username" required />
     </div>
 
-    <button class="login-button" (click)="onLogin(username)" [disabled]="!username">Login</button>
+    <div class="field">
+      <label for="password">Password</label>
+      <input id="password" name="password" [(ngModel)]="password" type="password" required />
+    </div>
+
+    <button class="login-button" type="submit" [disabled]="!username || !password">
+      Login
+    </button>
   </form>
 </div>
