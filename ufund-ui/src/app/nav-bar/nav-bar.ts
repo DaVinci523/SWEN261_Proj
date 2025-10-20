@@ -39,6 +39,7 @@ export class NavBar {
       if (ok) {
         this.user.logout();
         alert('You have been logged out.');
+        this.router.navigate(['/homepage']);
       }
     } else {
       this.goToLogin();

@@ -18,11 +18,12 @@ export class User {
   constructor() {
     const flag = localStorage.getItem(this.FLAG_KEY) === 'true';
     const user = localStorage.getItem(this.USER_KEY);
-    if (flag && user && this.users.has(user)) {
+    if (flag && user) {
       this.loggedIn = true;
       this.currentUser = user;
     }
   }
+
 
   //List of usernames + their role
   private users = new Map<string, UserInfo>([
@@ -36,31 +37,24 @@ export class User {
 
   //Makes it known a user is logged in and who is
   login(username: string, password: string): boolean {
-    const rec = this.users.get(username);
-
-    if (!rec) {
-      return false;
-    }
-
-    if (rec.password !== password) {
-      return false;
-    }
-
+    if (!username || !password) {return false};
     this.loggedIn = true;
-    this.currentUser = username;
+    this.currentUser = username.trim();
     localStorage.setItem(this.FLAG_KEY, 'true');
-    localStorage.setItem(this.USER_KEY, username);
+    localStorage.setItem(this.USER_KEY, this.currentUser);
     return true;
   }
+
 
 
   //Logs out a user
   logout(): void {
     this.loggedIn = false;
-    this.currentUser = "";
+    this.currentUser = null;        
     localStorage.removeItem(this.FLAG_KEY);
     localStorage.removeItem(this.USER_KEY);
   }
+
 
   //Checks if a username exists
   userExists(name: string): boolean {
@@ -84,18 +78,20 @@ export class User {
 
   //Get current user role
   getCurrentUserRole(): Role | null {
-    if (this.currentUser === null) {
-      return null;
+    const u = this.currentUser;
+
+    if (!u || u.trim() === '') {
+      return null; 
     }
 
-    const rec = this.users.get(this.currentUser);
-
-    if (!rec) {
-      return null;
+    const name = u.trim().toLowerCase();
+    if (name === 'admin') {
+      return 'admin';
     }
 
-    return rec.role;
+    return 'helper';
   }
+
 
   //Checks if a user is logged in
   isLoggedIn(): boolean {
