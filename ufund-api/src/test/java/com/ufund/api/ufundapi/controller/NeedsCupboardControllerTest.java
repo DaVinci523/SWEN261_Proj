@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 import java.io.IOException;
 
 import com.ufund.api.ufundapi.persistence.NeedsCupboardDAO;
+import com.service.NeedsCupboardService;
 import com.ufund.api.ufundapi.model.Need;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -31,11 +32,10 @@ public class NeedsCupboardControllerTest {
      * a mock NeedsCupboardDAO
      */
     @BeforeEach
-    public void setupHeroController() {
-        mockNeedsCupboardDAO = mock(NeedsCupboardDAO.class);
-        needsCupboardController = new NeedsCupboardController(mockNeedsCupboardDAO);
+    public void setupNeedsCupboardController() {
+        NeedsCupboardService mockService = mock(NeedsCupboardService.class);
+        needsCupboardController = new NeedsCupboardController(mockService);
     }
-
     // getNeeds() Tests
     @Test
     public void testGetNeeds() throws IOException { // getHeroes may throw IOException
