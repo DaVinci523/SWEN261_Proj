@@ -19,8 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.ufund.api.ufundapi.persistence.FundingBasketDAO;
-// Final Imports will be our FundingBasketDAO interface & our Need model
-import com.service.FundingBasketService;
+import com.ufund.api.ufundapi.service.FundingBasketService;
 import com.ufund.api.ufundapi.model.Need;
 import com.ufund.api.ufundapi.model.User;
 
@@ -42,7 +41,7 @@ public class FundingBasketController {
      * Constructor
      * @param fundingBasketController
      */
-    public FundingBasketController(FundingBasketDAO fundingBasketDAO){
+    public FundingBasketController(FundingBasketService fundingBasketService){
         this.fundingBasketService = fundingBasketService;
     }
 

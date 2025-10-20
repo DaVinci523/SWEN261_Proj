@@ -1,46 +1,30 @@
-package com.service;
+package com.ufund.api.ufundapi.service;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.logging.Logger;
-
-import org.springframework.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import com.ufund.api.ufundapi.model.Need;
-import com.ufund.api.ufundapi.persistence.FundingBasketDAO;
+import com.ufund.api.ufundapi.model.User;
 
 /**
- * Implementation of the FundingBasketService interface
+ * Service interface for Funding Basket operations
  * 
  * Author: Anthony Pelto
  */
-@Service
-public class FundingBasketServiceImplementation implements FundingBasketService {
-    private final FundingBasketDAO fundingBasketDAO;
+public interface FundingBasketService {
 
     /**
-     * Constructs a FundingBasketServiceImplementation instance
-     * 
-     * @param fundingBasketDAO the data access object for the Funding Basket operations
+     * Returns array of all users
+     * @return getNeedsArray
      */
-    @Autowired
-    public FundingBasketServiceImplementation(FundingBasketDAO fundingBasketDAO){
-        this.fundingBasketDAO = fundingBasketDAO;
-    }
-
+    User[] getUsers() throws IOException;
+    
     /**
      * Retrieves all Needs from the funding basket
      * 
      * @return a List of Need objects
      * @throws IOException if an error occurs
      */
-    @Override
-    public Need[] getNeeds() throws IOException {
-        return fundingBasketDAO.getNeeds();
-    }
+    Need[] getNeeds(String userName) throws IOException;
 
     /**
      * Retrieves a single Need by its ID
@@ -49,10 +33,7 @@ public class FundingBasketServiceImplementation implements FundingBasketService 
      * @return the matching Need or null if it is not found
      * @throws IOException if an error occurs 
      */
-    @Override
-    public Need getNeed(int id) throws IOException {
-        return fundingBasketDAO.getNeed(id);
-    }
+    Need getNeed(String userName, int id) throws IOException;
 
     /**
      * Searches for Needs that contain the name specified
@@ -61,10 +42,7 @@ public class FundingBasketServiceImplementation implements FundingBasketService 
      * @return List of Needs that match the name
      * @throws IOException if an error occurs
      */
-    @Override
-    public Need[] searchNeeds(String name) throws IOException {
-        return fundingBasketDAO.searchNeeds(name);
-    }
+    Need[] searchNeeds(String userName, String name) throws IOException;
 
     /**
      * Creates a new Need in the funding basket
@@ -73,10 +51,7 @@ public class FundingBasketServiceImplementation implements FundingBasketService 
      * @return the newly created Need
      * @throws IOException if an error occurs
      */
-    @Override
-    public Need createdNeed(Need need) throws IOException {
-        return fundingBasketDAO.createdNeed(need);
-    }
+    Need createdNeed(String userName, Need need) throws IOException;
 
     /**
      * Updates an existing Need in the funding basket
@@ -85,10 +60,7 @@ public class FundingBasketServiceImplementation implements FundingBasketService 
      * @return the updated Need or null if the Need does not exist
      * @throws IOException if an error occurs
      */
-    @Override
-    public Need updateNeed(Need need) throws IOException {
-        return fundingBasketDAO.updateNeed(need);
-    }
+    Need updateNeed(String userName, Need need) throws IOException;
 
     /**
      * Deletes a Need from the funding basket by its ID
@@ -97,22 +69,16 @@ public class FundingBasketServiceImplementation implements FundingBasketService 
      * @return true if the deletion was successful
      * @throws IOException if an error occurs
      */
-    @Override
-    public boolean deleteNeed(int id) throws IOException {
-        return fundingBasketDAO.deleteNeed(id);
-    }
+    boolean deleteNeed(String userName, int id) throws IOException;
 
-     /**
+    /**
      * Deletes all Needs of a specified type
      * 
      * @param type the type of Need to delete
      * @return true if deletion succeeded
      * @throws IOException if an error occurs
      */
-    @Override
-    public boolean deleteNeedType(String type) throws IOException {
-        return fundingBasketDAO.deleteNeedType(type);
-    }
+    boolean deleteNeedType(String userName, String type) throws IOException;
 
     /**
      * Deletes all Needs from the funding basket
@@ -120,10 +86,7 @@ public class FundingBasketServiceImplementation implements FundingBasketService 
      * @return true if the deletion was successful
      * @throws IOException if an error occurs
      */
-    @Override
-    public boolean deleteAll() throws IOException {
-        return fundingBasketDAO.deleteAll();
-    }
+    boolean deleteAll(String userName) throws IOException;
 
     /**
      * Deletes Needs whose names contain a substring
@@ -132,8 +95,5 @@ public class FundingBasketServiceImplementation implements FundingBasketService 
      * @return true if the deletion was successful
      * @throws IOException if an error occurs while saving data
      */
-    @Override
-    public boolean deleteNeedName(String name) throws IOException {
-        return fundingBasketDAO.deleteNeedName(name);
-    }
-}
+    boolean deleteNeedName(String userName, String name) throws IOException;
+} 
