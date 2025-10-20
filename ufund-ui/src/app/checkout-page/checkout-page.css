@@ -27,13 +27,13 @@ div {
 .left {
   left: 0;
   float: left;
-  background-color: #111;
+  background-color: lightgreen;
 }
 
 /* Control the right side */
 .right {
   right: 0;
   float: right;
-  background-color: red;
+  background-color: lightred;
 }
 
