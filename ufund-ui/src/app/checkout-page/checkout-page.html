@@ -1,16 +1,20 @@
 <app-nav-bar></app-nav-bar>
-<div>
+@if (user.getCurrentUserRole() != 'admin') {
+    <div>
 
-    <div id="funding-basket" class="split left">
-        <article>
-            <app-funding-basket></app-funding-basket>
-        </article>
+        <div id="funding-basket" class="split left">
+            <article>
+                <app-funding-basket></app-funding-basket>
+            </article>
+        </div>
+
+        <div id="checkout" class="split right">
+            <article class="center-content">
+                <app-checkout></app-checkout>
+            </article>
+        </div>
+
     </div>
-
-    <div id="checkout" class="split right">
-        <article class="center-content">
-            <app-checkout></app-checkout>
-        </article>
-    </div>
-
-</div>
+} @else {
+    <div class="no-access">No Access</div>
+}
