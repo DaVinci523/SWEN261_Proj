@@ -31,6 +31,7 @@ export class AdminPage {
     }
 
   deleteNeed(need: Need): void { 
+    this.needs = this.needs.filter(n => n !== need);
     this.adminPageService.deleteNeedID(need.id).subscribe( needs => 
       this.needs = this.needs.filter(n => n !== needs));
   }

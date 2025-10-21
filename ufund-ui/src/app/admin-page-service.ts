@@ -61,8 +61,10 @@ export class AdminPageService {
   }
 
   deleteNeedID(needId: number): Observable<any> {
-      return this.http.delete<Need>(`${this.needsUrl}/${needId}`).pipe(tap(_ => this.log(`deleted need id=${needId}`)),
-      catchError(this.handleError<Need>('deleteNeed')));
+      return this.http.delete<Need>(`${this.needsUrl}/${needId}`).pipe(
+        tap(_ => this.log(`deleted need id=${needId}`)),
+      catchError(this.handleError<Need>('deleteNeed'))
+    );
   }
 
 }
