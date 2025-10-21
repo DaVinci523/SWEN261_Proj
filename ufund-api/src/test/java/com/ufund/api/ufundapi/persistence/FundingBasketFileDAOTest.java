@@ -59,7 +59,7 @@ public class FundingBasketFileDAOTest {
     @Test
     public void testGetNeeds() {
         // Invoke
-        Need[] needs = fundingBasketFileDAO.getNeeds();
+        Need[] needs = fundingBasketFileDAO.getNeeds("user1");
         // Analyze
         assertEquals(needs.length,testNeeds.length); // checks that both lists are of equal length
         for (int i = 0; i < testNeeds.length;++i) 
@@ -69,7 +69,7 @@ public class FundingBasketFileDAOTest {
    @Test 
    public void testDeleteNeedType() {
         // Invoke
-        boolean result = assertDoesNotThrow(() -> fundingBasketFileDAO.deleteNeedType("board"),"Unexpected exception thrown");
+        boolean result = assertDoesNotThrow(() -> fundingBasketFileDAO.deleteNeedType("user1", "board"),"Unexpected exception thrown");
 
         // Analzye
         assertEquals(result,true);
@@ -77,13 +77,13 @@ public class FundingBasketFileDAOTest {
         // of the test needs array - 1 (because of the delete)
         // Because needs attribute of FundingBasketFileDAO is package private
         // we can access it directly
-        assertEquals(fundingBasketFileDAO.needs.size(),testNeeds.length-1);
+        assertEquals(testNeeds.length-1, fundingBasketFileDAO.getNeeds("user1").length);
    }
 
     @Test
     public void testSearchNeeds() throws IOException {
         // Invoke
-        Need[] needs = fundingBasketFileDAO.searchNeeds("La");
+        Need[] needs = fundingBasketFileDAO.searchNeeds("user1", "La");
         // Analyze
         // Assert that testSearchNeeds should give back array of 1 Need
         // being just Lab Kit that meets search criteria
@@ -94,7 +94,7 @@ public class FundingBasketFileDAOTest {
    @Test 
    public void testDeleteNeedTypeNull() {
         // Invoke
-        boolean result = assertDoesNotThrow(() -> fundingBasketFileDAO.deleteNeedType(null),"Unexpected exception thrown");
+        boolean result = assertDoesNotThrow(() -> fundingBasketFileDAO.deleteNeedType("user1", null),"Unexpected exception thrown");
 
         // Analzye
         assertEquals(result,false);
@@ -102,13 +102,13 @@ public class FundingBasketFileDAOTest {
         // of the test needs array - 1 (because of the delete)
         // Because needs attribute of FundingBasketFileDAO is package private
         // we can access it directly
-        assertEquals(fundingBasketFileDAO.needs.size(),testNeeds.length);
+        assertEquals(testNeeds.length, fundingBasketFileDAO.getNeeds("user1").length);
    }    
 
    @Test 
    public void testDeleteNeedTypeNumbers() {
         // Invoke
-        boolean result = assertDoesNotThrow(() -> fundingBasketFileDAO.deleteNeedType("3294022"),"Unexpected exception thrown");
+        boolean result = assertDoesNotThrow(() -> fundingBasketFileDAO.deleteNeedType("user1", "3294022"),"Unexpected exception thrown");
 
         // Analzye
         assertEquals(result,false);
@@ -116,14 +116,14 @@ public class FundingBasketFileDAOTest {
         // of the test needs array - 1 (because of the delete)
         // Because needs attribute of FundingBasketFileDAO is package private
         // we can access it directly
-        assertEquals(fundingBasketFileDAO.needs.size(),testNeeds.length);
+        assertEquals(fundingBasketFileDAO.getNeeds("user1").length,testNeeds.length);
    }
 
    @Test 
    public void testDeleteNeedTypeSpecialCharacters() {
         // Invoke
         // Test many special characters and see if the program crashes or not. 
-        boolean result = assertDoesNotThrow(() -> fundingBasketFileDAO.deleteNeedType("!@#$%^&*()-_+=|~`';:><.,/"),"Unexpected exception thrown");
+        boolean result = assertDoesNotThrow(() -> fundingBasketFileDAO.deleteNeedType("user1", "!@#$%^&*()-_+=|~`';:><.,/"),"Unexpected exception thrown");
 
         // Analzye
         assertEquals(result,false);
@@ -131,24 +131,24 @@ public class FundingBasketFileDAOTest {
         // of the test needs array - 1 (because of the delete)
         // Because needs attribute of FundingBasketFileDAO is package private
         // we can access it directly
-        assertEquals(fundingBasketFileDAO.needs.size(),testNeeds.length);
+        assertEquals(fundingBasketFileDAO.getNeeds("user1").length,testNeeds.length);
    }
 
    @Test 
    public void testDeleteNeedTypeNotFound() {
             
         // Invoke
-        boolean result = assertDoesNotThrow(() -> fundingBasketFileDAO.deleteNeedType("box"),"Unexpected exception thrown");
+        boolean result = assertDoesNotThrow(() -> fundingBasketFileDAO.deleteNeed("user1", 999),"Unexpected exception thrown");
 
         // Analzye
         assertEquals(result,false);
-        assertEquals(fundingBasketFileDAO.needs.size(),testNeeds.length); // check for no change in length
+        assertEquals(fundingBasketFileDAO.getNeeds("user1").length,testNeeds.length); // check for no change in length
    } 
    
    @Test
     public void testGetNeed() throws IOException {
         // Invoke
-        Need need = fundingBasketFileDAO.getNeed(1);
+        Need need = fundingBasketFileDAO.getNeed("user1", 1);
 
         // Analzye
         assertEquals(need,testNeeds[0]);
@@ -157,7 +157,7 @@ public class FundingBasketFileDAOTest {
     @Test
     public void testGetNeedNotFound() throws IOException {
         // Invoke
-        Need need = fundingBasketFileDAO.getNeed(69);
+        Need need = fundingBasketFileDAO.getNeed("user1", 69);
 
         // Analzye
         assertEquals(need, null);
@@ -166,7 +166,7 @@ public class FundingBasketFileDAOTest {
     @Test
     public void testDeleteNeed() {
         // Invoke
-        boolean result = assertDoesNotThrow(() -> fundingBasketFileDAO.deleteNeed(1),
+        boolean result = assertDoesNotThrow(() -> fundingBasketFileDAO.deleteNeed("user1", 1),
                             "Unexpected exception thrown");
 
         // Analzye
@@ -175,19 +175,19 @@ public class FundingBasketFileDAOTest {
         // of the test heroes array - 1 (because of the delete)
         // Because heroes attribute of HeroFileDAO is package private
         // we can access it directly
-        assertEquals(fundingBasketFileDAO.needs.size(),testNeeds.length-1);
+        assertEquals(fundingBasketFileDAO.getNeeds("user1").length,testNeeds.length-1);
     }
 
     @Test
     public void testDeleteNeedNotFound() {
         // Invoke
-        boolean result = assertDoesNotThrow(() -> fundingBasketFileDAO.deleteNeed(999),
+        boolean result = assertDoesNotThrow(() -> fundingBasketFileDAO.deleteNeed("user1", 999),
                             "Unexpected exception thrown");
 
         // Analzye
         assertEquals(result,false);
         // If nothing was deleted, the length stays the same.
-        assertEquals(fundingBasketFileDAO.needs.size(),testNeeds.length);
+        assertEquals(fundingBasketFileDAO.getNeeds("user1").length,testNeeds.length);
     }
 
     @Test
@@ -196,12 +196,12 @@ public class FundingBasketFileDAOTest {
         Need need = new Need(3, "Oscilloscope", 50.00, 3, "Scope");
 
         // Invoke
-        Need result = assertDoesNotThrow(() -> fundingBasketFileDAO.updateNeed(need),
+        Need result = assertDoesNotThrow(() -> fundingBasketFileDAO.updateNeed("user1", need),
                                 "Unexpected exception thrown");
 
         // Analyze
         assertNotNull(result);
-        Need actual = fundingBasketFileDAO.getNeed(need.getId());
+        Need actual = fundingBasketFileDAO.getNeed("user1", need.getId());
         assertEquals(actual,need);
     }
 
@@ -211,7 +211,7 @@ public class FundingBasketFileDAOTest {
         Need need = new Need(99, "Oscilloscope", 50.00, 3, "Scope");
 
         // Invoke
-        Need result = assertDoesNotThrow(() -> fundingBasketFileDAO.updateNeed(need),
+        Need result = assertDoesNotThrow(() -> fundingBasketFileDAO.updateNeed("user1", need),
                                                 "Unexpected exception thrown");
 
         // Analyze
@@ -221,7 +221,7 @@ public class FundingBasketFileDAOTest {
     @Test
     public void testDeleteNeedName() {
         // Invoke
-        boolean result = assertDoesNotThrow(() -> fundingBasketFileDAO.deleteNeedName("board"),
+        boolean result = assertDoesNotThrow(() -> fundingBasketFileDAO.deleteNeedName("user1", "board"),
                             "Unexpected exception thrown");
 
         // Analzye
@@ -230,18 +230,18 @@ public class FundingBasketFileDAOTest {
         // of the test heroes array - 1 (because of the delete)
         // Because heroes attribute of HeroFileDAO is package private
         // we can access it directly
-        assertEquals(fundingBasketFileDAO.needs.size(),testNeeds.length-1);
+        assertEquals(fundingBasketFileDAO.getNeeds("user1").length,testNeeds.length-1);
     }
 
     @Test 
    public void testDeleteNeedNameNotFound() {
             
         // Invoke
-        boolean result = assertDoesNotThrow(() -> fundingBasketFileDAO.deleteNeedName("wires"),"Unexpected exception thrown");
+        boolean result = assertDoesNotThrow(() -> fundingBasketFileDAO.deleteNeedName("user1", "wires"),"Unexpected exception thrown");
 
         // Analzye
         assertEquals(result,false);
-        assertEquals(fundingBasketFileDAO.needs.size(),testNeeds.length); // check for no change in length
+        assertEquals(fundingBasketFileDAO.getNeeds("user1").length,testNeeds.length); // check for no change in length
    }  
 
    @Test
@@ -249,7 +249,7 @@ public class FundingBasketFileDAOTest {
         // Setup
         Need need = new Need(102,"Banana-Plug", 5.50, 3, "plug");
         // Invoke
-        Need result = assertDoesNotThrow(() -> fundingBasketFileDAO.createdNeed(need),"Unexpected exception thrown");
+        Need result = assertDoesNotThrow(() -> fundingBasketFileDAO.createdNeed("user1", need),"Unexpected exception thrown");
         // Analyze
         assertNotNull(result);
         assertEquals(need.getName(),result.getName());
@@ -263,7 +263,7 @@ public class FundingBasketFileDAOTest {
 
         Need need = new Need(1, "Wires", 20.00, 5, "cord");
         // Invoke
-        Need result = assertDoesNotThrow(() -> fundingBasketFileDAO.createdNeed(need),"Unexpected exception thrown");
+        Need result = assertDoesNotThrow(() -> fundingBasketFileDAO.createdNeed("user1", need),"Unexpected exception thrown");
         // Analyze
         assertNull(result);
     }
@@ -272,24 +272,25 @@ public class FundingBasketFileDAOTest {
     @Test
     public void testDeleteAllSuccess() {
         // Invoke
-        Boolean result = assertDoesNotThrow(() -> fundingBasketFileDAO.deleteAll(), "Unexpected exception thrown");
+        Boolean result = assertDoesNotThrow(() -> fundingBasketFileDAO.deleteAll("user1"), "Unexpected exception thrown");
 
         // Analyze
         assertEquals(true, result);
-        assertEquals(0, fundingBasketFileDAO.needs.size());
+        assertEquals(0, fundingBasketFileDAO.getNeeds("user1").length);
     }
 
     @Test
     public void testDeleteAllWhenAlreadyEmpty() {
         // Setup
-        fundingBasketFileDAO.needs.clear();
+        assertDoesNotThrow(() -> fundingBasketFileDAO.deleteAll("user1"),
+        "Unexpected exception thrown");
 
         // Invoke
-        boolean result = assertDoesNotThrow(() -> fundingBasketFileDAO.deleteAll(), "Unexpected exception thrown");
+        boolean result = assertDoesNotThrow(() -> fundingBasketFileDAO.deleteAll("user1"), "Unexpected exception thrown");
 
         // Analyze
         assertEquals(true,result);
-        assertEquals(0, fundingBasketFileDAO.needs.size());
+        assertEquals(0, fundingBasketFileDAO.getNeeds("user1").length);
     }
 
 }
