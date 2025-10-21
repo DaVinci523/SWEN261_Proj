@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { User } from '../user';
 
 @Component({
   selector: 'app-helper-page',
@@ -7,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './helper-page.css'
 })
 export class HelperPage {
-
+  constructor(public user: User) {}
 }

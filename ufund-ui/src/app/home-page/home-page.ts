@@ -18,9 +18,9 @@ export class HomePage {
   // Method for handling the page navigation
   goToPage(){
     if(this.user.isLoggedIn()) {
-          this.router.navigate(['/page']);
+          this.goToCheckout();
     } else {
-      this.router.navigate(['/login']);
+      this.goToLogin();
     }
   }
 
