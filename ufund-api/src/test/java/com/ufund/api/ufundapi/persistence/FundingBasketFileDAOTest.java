@@ -17,11 +17,15 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import com.ufund.api.ufundapi.model.FundingBasketDataWrapper;
 import com.ufund.api.ufundapi.model.Need;
+import com.ufund.api.ufundapi.model.User;
 
 import java.io.File;
-import java.io.IOException; 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map; 
 
 /**
  * Test the FundingBasketFileDAO class
@@ -49,10 +53,13 @@ public class FundingBasketFileDAOTest {
         testNeeds[1] = new Need(2, "Breadboard", 10, 1, "board");
         testNeeds[2] = new Need(3, "Lab Kit", 100, 3, "kit");
 
-        when(mockObjectMapper
-                .readValue(new File("doesnt_matter.txt"), Need[].class))
-                    .thenReturn(testNeeds);
+        User user1 = new User("user1", testNeeds);
 
+        FundingBasketDataWrapper wrapper = new FundingBasketDataWrapper(Arrays.asList(user1));
+
+        when(mockObjectMapper.readValue(new File("doesnt_matter.txt"), FundingBasketDataWrapper.class))
+            .thenReturn(wrapper);
+        
         fundingBasketFileDAO = new FundingBasketFileDAO("doesnt_matter.txt", mockObjectMapper);
     }
     
