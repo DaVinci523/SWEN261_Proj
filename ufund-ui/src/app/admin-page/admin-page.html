@@ -1,4 +1,6 @@
 <app-nav-bar></app-nav-bar>
+
+<!-- checks if current user is an admin -->
 @if(this.user.getCurrentUserRole() == 'admin') {
     <h2>Admin</h2>    
 
@@ -6,78 +8,99 @@
     <!-- https://www.w3schools.com/howto/howto_css_two_columns.asp -->
 
         <div class="container">
+
+            <!-- left column displays the needs cupboard -->
             <div class="column">
                 <h3>Needs Cupoard:</h3>
 
+                <!-- interates through every need in the needs cupboard -->
                 @for (need of needs; track need.id) {
                 
+                <!-- list item for a single need--> 
                 <li>
                     <span class="data-container">
                 <span id="need-variables">
+                    <!-- all attributes utilize interpolation to display -->
                     <span class="identifier variable">Id: [{{need.id}}]</span> 
                     <span class="variable">Name: [{{need.name}}]</span>
                     <span class="variable">Value: [${{need.value}}]</span>
                     <span class="variable">Quantity: [{{need.quantity}}]</span>
                     <span class="variable">Type: ["{{need.type}}"]</span>
+
+                    <!-- delete button attached to every need to immediately remvove it from the needs cupboard -->
                     <button type = button class="delete" (click) = deleteNeed(need)> Delete Need </button>
-                     <button type="button" class="update"
+                     
+                    <!-- update button attacked to every need to update it in the needs cupboard -->
+                    <!-- uses inputs from right column as parameters for updated attributes-->
+                    <button type="button" class="update"
             (click)= "updateNeed(need, needName.value, needValue.valueAsNumber, 
             needQuant.valueAsNumber, needType. value);">Update Need</button>     
                 </span>
                 </span>
                 </li>
-                } @empty {
+                }
+                <!-- notifies the user if the needs cupboard is empty ---> 
+                @empty {
                     <li>There are no items.</li>
                 }
 
 
 
             </div>
+
+            <!-- right column displays the inputs to add/update a need -->
             <div class ="column">
                 <h3>Edit Need:</h3>
+
+                <!-- input box for name input -->
                 <div class="flex-container">
                     <div class="flex-item-left">Need Name: </div>
                     
                     <div class= "padding"> </div>
 
+                    <!-- name input is saved in needName -->
                     <input type="text" id="username" name="username" #needName placeholder="Enter need name">
                 </div>
                 
                 <div class = "padding"> </div>
 
+                <!-- input box for quantity input -->
                 <div class="flex-container">
                     <div class="flex-item-left">Quantity: </div>
                     
                     <div class= "padding"> </div>
                     
+                    <!-- quantity input is saved in needQuant -->
                     <input type="number" #needQuant placeholder="Enter quantity">
                 </div>
 
                 <div class = "padding"> </div>
 
+                <!-- input box for value input -->
                 <div class="flex-container">
                     <div class="flex-item-left">Value: </div>
                     
                     <div class= "padding"> </div>
                     
+                    <!-- value input is saved in needValue -->
                     <input type="number" #needValue placeholder="Enter value">
                 </div>
 
                 <div class = "padding"> </div>
 
+                <!-- input box for type input -->
                 <div class="flex-container">
                     <div class="flex-item-left">Type: </div>
                     
                     <div class= "padding"> </div>
                     
+                    <!-- type input is saved in needType -->
                     <input type="text" #needType placeholder="Enter type">
                 </div>
 
                 <div class = "padding"> </div>
-    <!--
-                <button type="button" class="clear"
-            (click)="updateNeed(need)">Update</button>
-            -->
+
+                <!-- add button to add a need to the needs cupboard -->
                 <button type="button" class="add"
             (click)= "createNeed(needName.value, needValue.valueAsNumber, 
             needQuant.valueAsNumber, needType. value);">Add Need</button>
@@ -87,5 +110,6 @@
     
         </div>
 } @else {
+    <!-- notifies user that they are restricted from seeing the admin page -->
     <div class="restricted">Restricted</div>
 }

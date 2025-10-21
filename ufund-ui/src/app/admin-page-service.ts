@@ -15,9 +15,20 @@ export class AdminPageService {
 
   constructor(private http: HttpClient,  private MessageService: MessageService) {}
 
+  /** 
+   * Log a NeedService message with the MessageService 
+   *
+   * @param message - message to be sent 
+   */
   private log(message: string) {
     this.MessageService.add(`NeedService: ${message}`);
   }
+
+  // HTTP options for POST and PUT requests
+  httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  };
+
 
   /**
    * Handle Http operation that failed.
@@ -40,34 +51,69 @@ export class AdminPageService {
     };
   }
 
+
+  /**
+   * gets the needs from the back-end
+   * 
+   * @returns returns the GET request observable
+   */
   getNeeds(): Observable<Need[]> {
+
+    // sends a GET request to the needsUrl
     return this.http.get<Need[]>(this.needsUrl);
   }
 
+
+  /**
+   * updates a single need in the needs cupboard
+   * 
+   * @param need - need to be updated
+   * @param name - name of updated need
+   * @param value - value of updated need
+   * @param quantity - quantity of updated need
+   * @param type - type of updated need
+   * 
+   * @returns returns the PUT request observable
+   */
   updateNeed(need:any, name: string, value: number, quantity: number, type: string):Observable<any>{
+    
+    // creates the new need object with updated values
     const updatedNeed: Need = {id: need.id, name, value, quantity, type};
     
+    // sends a PUT request to the needsUrl with the updated need object
     return this.http.put<Need>(this.needsUrl, updatedNeed).pipe(
       tap(_ => this.log(`updated need id=${need.id}`)),
       catchError(this.handleError<any>('updateNeed'))
     );
   } 
 
-  httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-  };
 
-
+  /**
+   * creates a single need in the needs cupboard
+   * 
+   * @param need - need to be created
+   * @returns returns the POST request observable
+   */
   createNeed(need: any): Observable<any> {
-       return this.http.post<Need>(this.needsUrl, need, this.httpOptions).pipe(
-        tap((newNeed: Need) => this.log(`added need w/ id=${newNeed.id}`)),
-        catchError(this.handleError<Need>('addNeed'))
+
+    // sends a POST request to the needsUrl with the need object
+    return this.http.post<Need>(this.needsUrl, need, this.httpOptions).pipe(
+      tap((newNeed: Need) => this.log(`added need w/ id=${newNeed.id}`)),
+      catchError(this.handleError<Need>('addNeed'))
       );
   }
 
+  /**
+   * deletes a single need from the needs cupboard
+   * 
+   * @param needId - id of need to be deleted
+   * @returns returns the DELETE request observable
+   */
   deleteNeedID(needId: number): Observable<any> {
-      return this.http.delete<Need>(`${this.needsUrl}/${needId}`).pipe(
-        tap(_ => this.log(`deleted need id=${needId}`)),
+
+    // sends a DELETE request to the needsUrl with the need's id
+    return this.http.delete<Need>(`${this.needsUrl}/${needId}`).pipe(
+      tap(_ => this.log(`deleted need id=${needId}`)),
       catchError(this.handleError<Need>('deleteNeed'))
     );
   }
