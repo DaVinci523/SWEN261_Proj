@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 
 import java.io.IOException;
 
@@ -328,9 +330,10 @@ public class FundingBasketControllerTest {
     public void testCreateNeed() throws IOException {  // createNeed may throw IOException
         // Setup
         Need need = new Need(67,"Breadboard", 25.30, 2, "board");
+
         // when createdNeed is called, return true simulating successful
         // creation and save
-        when(mockfundingBasketService.createdNeed(USERNAME, org.mockito.Mockito.any(Need.class))).thenReturn(need);
+        when(mockfundingBasketService.createdNeed(eq(USERNAME), any(Need.class))).thenReturn(need);
 
 
         // Invoke
@@ -349,7 +352,7 @@ public class FundingBasketControllerTest {
         Need need = new Need(67,"Wire", 9.82, 5, "cord");
         // when createdNeed is called, return false simulating failed
         // creation and save
-        when(mockfundingBasketService.createdNeed(USERNAME, org.mockito.Mockito.any(Need.class))).thenReturn(null);
+        when(mockfundingBasketService.createdNeed(eq(USERNAME), org.mockito.Mockito.any(Need.class))).thenReturn(null);
 
 
         // Invoke
@@ -368,7 +371,7 @@ public class FundingBasketControllerTest {
 
 
         // When createdNeed is called on the Mock FundingBasketDAO, throw an IOException
-        when(mockfundingBasketService.createdNeed(USERNAME, org.mockito.Mockito.any(Need.class))).thenThrow(new IOException());
+        when(mockfundingBasketService.createdNeed(eq(USERNAME), org.mockito.Mockito.any(Need.class))).thenThrow(new IOException());
 
 
         // Invoke
@@ -425,4 +428,19 @@ public class FundingBasketControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,response.getStatusCode());
     }
 
+    @Test
+    public void testGetUsers() throws IOException {
+        Need[] emptyNeeds = new Need[0];
+        User[] users = new User[]{
+            new User("user1", emptyNeeds),
+            new User("user2", emptyNeeds)
+        };
+
+        when(mockfundingBasketService.getUsers()).thenReturn(users);
+
+        ResponseEntity<User[]> response = fundingBasketController.getUsers();
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(users, response.getBody());
+    }
 }
