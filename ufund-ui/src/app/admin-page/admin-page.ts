@@ -53,6 +53,7 @@ export class AdminPage {
     this.adminPageService.createNeed({ name, value, quantity, type } as Need)
       .subscribe(need => {
         this.needs.push(need);
+        window.location.reload();;
       });
     }
   
@@ -69,7 +70,9 @@ export class AdminPage {
 
     // calls the deleteNeedID function from adminPageService, accessing the need's id and subscribing to the observable
     this.adminPageService.deleteNeedID(need.id).subscribe( needs => 
-      this.needs = this.needs.filter(n => n !== needs));
+      {this.needs = this.needs.filter(n => n !== needs);
+         window.location.reload();
+      });
   }
 
 
@@ -89,7 +92,8 @@ export class AdminPage {
 
     // calls the updateNeed function from adminPageService, subscribing to the observable
     this.adminPageService.updateNeed(need, name, value, quantity, type).subscribe(needs => 
-      this.needs = this.needs.filter(n => n !== needs));
+      {this.needs = this.needs.filter(n => n !== needs);
+      window.location.reload();});
   }
 
 
