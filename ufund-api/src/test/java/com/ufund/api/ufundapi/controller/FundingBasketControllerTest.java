@@ -4,12 +4,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 
 import java.io.IOException;
 
 import com.ufund.api.ufundapi.persistence.FundingBasketDAO;
 import com.ufund.api.ufundapi.service.FundingBasketService;
 import com.ufund.api.ufundapi.model.Need;
+import com.ufund.api.ufundapi.model.User;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -26,6 +29,8 @@ import org.springframework.http.ResponseEntity;
 public class FundingBasketControllerTest {
     private FundingBasketController fundingBasketController;
     private FundingBasketService mockfundingBasketService;
+
+    private static final String USERNAME = "user";
 
     /**
      * Before each test, create a new FundingBasketController object and inject
@@ -46,10 +51,10 @@ public class FundingBasketControllerTest {
         needs[1] = new Need(2, "Breadboard", 10, 1, "board");
 
         // When getNeeds is called return the needs created above
-        when(mockfundingBasketService.getNeeds()).thenReturn(needs);
+        when(mockfundingBasketService.getNeeds(USERNAME)).thenReturn(needs);
 
         // Invoke
-        ResponseEntity<Need[]> response = fundingBasketController.getNeeds();
+        ResponseEntity<Need[]> response = fundingBasketController.getNeeds(USERNAME);
 
         // Analyze
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -60,10 +65,10 @@ public class FundingBasketControllerTest {
     public void testGetNeedsHandleException() throws IOException { // getHeroes may throw IOException
         // Setup
         // When getNeeds is called on the Mock FundingBasketDAO, throw an IOException
-        doThrow(new IOException()).when(mockfundingBasketService).getNeeds();
+        doThrow(new IOException()).when(mockfundingBasketService).getNeeds(USERNAME);
 
         // Invoke
-        ResponseEntity<Need[]> response = fundingBasketController.getNeeds();
+        ResponseEntity<Need[]> response = fundingBasketController.getNeeds(USERNAME);
 
         // Analyze
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,response.getStatusCode());
@@ -73,10 +78,10 @@ public class FundingBasketControllerTest {
     public void testGetNeedsNull() throws IOException {
         // Setup
         // When getNeeds is called and returns null, simulating no needs found
-        when(mockfundingBasketService.getNeeds()).thenReturn(null);
+        when(mockfundingBasketService.getNeeds(USERNAME)).thenReturn(null);
 
         // Invoke
-        ResponseEntity<Need[]> response = fundingBasketController.getNeeds();
+        ResponseEntity<Need[]> response = fundingBasketController.getNeeds(USERNAME);
 
         // Analyze
         assertEquals(HttpStatus.NO_CONTENT,response.getStatusCode());
@@ -90,9 +95,9 @@ public class FundingBasketControllerTest {
         needs[0] = new Need(1, "Lab Kit", 20.00, 5, "kit");
         needs[2] = new Need(3, "Lab Extinguisher", 150.00, 1, "safety");
         //When search heres is classed with "La" return the two Needs created above
-        when(mockfundingBasketService.searchNeeds(searchString)).thenReturn(needs);
+        when(mockfundingBasketService.searchNeeds(USERNAME, searchString)).thenReturn(needs);
 
-        ResponseEntity<Need[]> response = fundingBasketController.searchNeeds(searchString);
+        ResponseEntity<Need[]> response = fundingBasketController.searchNeeds(USERNAME, searchString);
         assertEquals(HttpStatus.OK,response.getStatusCode());
         assertEquals(needs,response.getBody());
 
@@ -102,9 +107,9 @@ public class FundingBasketControllerTest {
     public void testSearchNeedsHandleException() throws IOException {
         String searchString = "bread";
         //when searchNeeds is called, IOException is thrown
-        doThrow(new IOException()).when(mockfundingBasketService).searchNeeds(searchString);
+        doThrow(new IOException()).when(mockfundingBasketService).searchNeeds(USERNAME, searchString);
         //begin
-        ResponseEntity<Need[]> response = fundingBasketController.searchNeeds(searchString);
+        ResponseEntity<Need[]> response = fundingBasketController.searchNeeds(USERNAME, searchString);
         //Test
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,response.getStatusCode());
     }
@@ -115,10 +120,10 @@ public class FundingBasketControllerTest {
         // Setup
         String needType = "board";
         // when deleteNeedType is called return true, simulating successful deletion
-        when(mockfundingBasketService.deleteNeedType(needType)).thenReturn(true);
+        when(mockfundingBasketService.deleteNeedType(USERNAME, needType)).thenReturn(true);
 
         // Invoke
-        ResponseEntity<Need> response = fundingBasketController.deleteNeedType(needType);
+        ResponseEntity<Need> response = fundingBasketController.deleteNeedType(USERNAME, needType);
 
         // Analyze
         assertEquals(HttpStatus.OK,response.getStatusCode());
@@ -129,10 +134,10 @@ public class FundingBasketControllerTest {
         // Setup
         String needType = "board";
         // when deleteNeedType is called return false, simulating failed deletion
-        when(mockfundingBasketService.deleteNeedType(needType)).thenReturn(false);
+        when(mockfundingBasketService.deleteNeedType(USERNAME, needType)).thenReturn(false);
 
         // Invoke
-        ResponseEntity<Need> response = fundingBasketController.deleteNeedType(needType);
+        ResponseEntity<Need> response = fundingBasketController.deleteNeedType(USERNAME, needType);
 
         // Analyze
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
@@ -143,10 +148,10 @@ public class FundingBasketControllerTest {
         // Setup
         String needType = "board";
         // When deleteNeedType is called on the Mock FundingBasketDAO, throw an IOException
-        doThrow(new IOException()).when(mockfundingBasketService).deleteNeedType(needType);
+        doThrow(new IOException()).when(mockfundingBasketService).deleteNeedType(USERNAME, needType);
 
         // Invoke
-        ResponseEntity<Need> response = fundingBasketController.deleteNeedType(needType);
+        ResponseEntity<Need> response = fundingBasketController.deleteNeedType(USERNAME, needType);
 
         // Analyze
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
@@ -157,10 +162,10 @@ public class FundingBasketControllerTest {
         // Setup
         Need need = new Need(99, "Silicon Wafer", 800, 5, "Electronics");
         // When the same id is passed in, our mock Hero DAO will return the Hero object
-        when(mockfundingBasketService.getNeed(need.getId())).thenReturn(need);
+        when(mockfundingBasketService.getNeed(USERNAME, need.getId())).thenReturn(need);
 
         // Invoke
-        ResponseEntity<Need> response = fundingBasketController.getNeed(need.getId());
+        ResponseEntity<Need> response = fundingBasketController.getNeed(USERNAME, need.getId());
 
         // Analyze
         assertEquals(HttpStatus.OK,response.getStatusCode());
@@ -173,10 +178,10 @@ public class FundingBasketControllerTest {
         int needId = 99;
         // When the same id is passed in, our mock Hero DAO will return null, simulating
         // no hero found
-        when(mockfundingBasketService.getNeed(needId)).thenReturn(null);
+        when(mockfundingBasketService.getNeed(USERNAME, needId)).thenReturn(null);
 
         // Invoke
-        ResponseEntity<Need> response = fundingBasketController.getNeed(needId);
+        ResponseEntity<Need> response = fundingBasketController.getNeed(USERNAME, needId);
 
         // Analyze
         assertEquals(HttpStatus.NOT_FOUND,response.getStatusCode());
@@ -187,10 +192,10 @@ public class FundingBasketControllerTest {
         // Setup
         int needId = 99;
         // When getHero is called on the Mock Hero DAO, throw an IOException
-        doThrow(new IOException()).when(mockfundingBasketService).getNeed(needId);
+        doThrow(new IOException()).when(mockfundingBasketService).getNeed(USERNAME, needId);
 
         // Invoke
-        ResponseEntity<Need> response = fundingBasketController.getNeed(needId);
+        ResponseEntity<Need> response = fundingBasketController.getNeed(USERNAME, needId);
 
         // Analyze
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,response.getStatusCode());
@@ -202,10 +207,10 @@ public class FundingBasketControllerTest {
         // Setup
         int needId = 1;
         // when deleteHero is called return true, simulating successful deletion
-        when(mockfundingBasketService.deleteNeed(needId)).thenReturn(true);
+        when(mockfundingBasketService.deleteNeed(USERNAME, needId)).thenReturn(true);
 
         // Invoke
-        ResponseEntity<Need> response = fundingBasketController.deleteNeedId(needId);
+        ResponseEntity<Need> response = fundingBasketController.deleteNeedId(USERNAME, needId);
 
         // Analyze
         assertEquals(HttpStatus.OK,response.getStatusCode());
@@ -216,10 +221,10 @@ public class FundingBasketControllerTest {
         // Setup
         int needId = 1;
         // when deleteHero is called return false, simulating failed deletion
-        when(mockfundingBasketService.deleteNeed(needId)).thenReturn(false);
+        when(mockfundingBasketService.deleteNeed(USERNAME, needId)).thenReturn(false);
 
         // Invoke
-        ResponseEntity<Need> response = fundingBasketController.deleteNeedId(needId);
+        ResponseEntity<Need> response = fundingBasketController.deleteNeedId(USERNAME, needId);
 
         // Analyze
         assertEquals(HttpStatus.NOT_FOUND,response.getStatusCode());
@@ -230,10 +235,10 @@ public class FundingBasketControllerTest {
         // Setup
         int needId = 1;
         // When deleteHero is called on the Mock Hero DAO, throw an IOException
-        doThrow(new IOException()).when(mockfundingBasketService).deleteNeed(needId);
+        doThrow(new IOException()).when(mockfundingBasketService).deleteNeed(USERNAME, needId);
 
         // Invoke
-        ResponseEntity<Need> response = fundingBasketController.deleteNeedId(needId);
+        ResponseEntity<Need> response = fundingBasketController.deleteNeedId(USERNAME, needId);
 
         // Analyze
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,response.getStatusCode());
@@ -245,12 +250,12 @@ public class FundingBasketControllerTest {
         Need need = new Need(1, "Lab Kit", 20.0, 0, "Kit");
         // when updateHero is called, return true simulating successful
         // update and save
-        when(mockfundingBasketService.updateNeed(need)).thenReturn(need);
-        ResponseEntity<Need> response = fundingBasketController.updateNeed(need);
+        when(mockfundingBasketService.updateNeed(USERNAME, need)).thenReturn(need);
+        ResponseEntity<Need> response = fundingBasketController.updateNeed(USERNAME, need);
         need.setName("Microscope");
 
         // Invoke
-        response = fundingBasketController.updateNeed(need);
+        response = fundingBasketController.updateNeed(USERNAME, need);
         // Analyze
         assertEquals(HttpStatus.OK,response.getStatusCode());
         assertEquals(need,response.getBody());
@@ -262,10 +267,10 @@ public class FundingBasketControllerTest {
         Need need = new Need(99, "Lab Kit", 20.0, 0, "Kit");
         // when updateHero is called, return true simulating successful
         // update and save
-        when(mockfundingBasketService.updateNeed(need)).thenReturn(null);
+        when(mockfundingBasketService.updateNeed(USERNAME, need)).thenReturn(null);
 
         // Invoke
-        ResponseEntity<Need> response = fundingBasketController.updateNeed(need);
+        ResponseEntity<Need> response = fundingBasketController.updateNeed(USERNAME, need);
 
         // Analyze
         assertEquals(HttpStatus.NOT_FOUND,response.getStatusCode());
@@ -276,10 +281,10 @@ public class FundingBasketControllerTest {
         // Setup
         Need need = new Need(99, "Lab Kit", 20.0, 0, "Kit");
         // When updateHero is called on the Mock Hero DAO, throw an IOException
-        doThrow(new IOException()).when(mockfundingBasketService).updateNeed(need);
+        doThrow(new IOException()).when(mockfundingBasketService).updateNeed(USERNAME, need);
 
         // Invoke
-        ResponseEntity<Need> response = fundingBasketController.updateNeed(need);
+        ResponseEntity<Need> response = fundingBasketController.updateNeed(USERNAME, need);
 
         // Analyze
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,response.getStatusCode());
@@ -288,10 +293,10 @@ public class FundingBasketControllerTest {
     @Test
     public void testDeleteNeedName() throws IOException { // deleteHero may throw IOException
         // when deleteHero is called return true, simulating successful deletion
-        when(mockfundingBasketService.deleteNeedName("Kit")).thenReturn(true);
+        when(mockfundingBasketService.deleteNeedName(USERNAME, "Kit")).thenReturn(true);
 
         // Invoke
-        ResponseEntity<Need> response = fundingBasketController.deleteNeedName("Kit");
+        ResponseEntity<Need> response = fundingBasketController.deleteNeedName(USERNAME, "Kit");
 
         // Analyze
         assertEquals(HttpStatus.OK,response.getStatusCode());
@@ -300,10 +305,10 @@ public class FundingBasketControllerTest {
     @Test
     public void testDeleteNeedNameNotFound() throws IOException { // deleteHero may throw IOException
         // when deleteHero is called return false, simulating failed deletion
-        when(mockfundingBasketService.deleteNeedName("Kit")).thenReturn(false);
+        when(mockfundingBasketService.deleteNeedName(USERNAME, "Kit")).thenReturn(false);
 
         // Invoke
-        ResponseEntity<Need> response = fundingBasketController.deleteNeedName("Kit");
+        ResponseEntity<Need> response = fundingBasketController.deleteNeedName(USERNAME, "Kit");
 
         // Analyze
         assertEquals(HttpStatus.NOT_FOUND,response.getStatusCode());
@@ -312,10 +317,10 @@ public class FundingBasketControllerTest {
     @Test
     public void testDeleteNeedNameHandleException() throws IOException { // deleteHero may throw IOException
         // When deleteHero is called on the Mock Hero DAO, throw an IOException
-        doThrow(new IOException()).when(mockfundingBasketService).deleteNeedName("Kit");
+        doThrow(new IOException()).when(mockfundingBasketService).deleteNeedName(USERNAME, "Kit");
 
         // Invoke
-        ResponseEntity<Need> response = fundingBasketController.deleteNeedName("Kit");
+        ResponseEntity<Need> response = fundingBasketController.deleteNeedName(USERNAME, "Kit");
 
         // Analyze
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,response.getStatusCode());
@@ -325,13 +330,14 @@ public class FundingBasketControllerTest {
     public void testCreateNeed() throws IOException {  // createNeed may throw IOException
         // Setup
         Need need = new Need(67,"Breadboard", 25.30, 2, "board");
+
         // when createdNeed is called, return true simulating successful
         // creation and save
-        when(mockfundingBasketService.createdNeed(org.mockito.Mockito.any(Need.class))).thenReturn(need);
+        when(mockfundingBasketService.createdNeed(eq(USERNAME), any(Need.class))).thenReturn(need);
 
 
         // Invoke
-        ResponseEntity<Need> response = fundingBasketController.createNeed(need);
+        ResponseEntity<Need> response = fundingBasketController.createNeed(USERNAME, need);
 
 
         // Analyze
@@ -346,11 +352,11 @@ public class FundingBasketControllerTest {
         Need need = new Need(67,"Wire", 9.82, 5, "cord");
         // when createdNeed is called, return false simulating failed
         // creation and save
-        when(mockfundingBasketService.createdNeed(org.mockito.Mockito.any(Need.class))).thenReturn(null);
+        when(mockfundingBasketService.createdNeed(eq(USERNAME), org.mockito.Mockito.any(Need.class))).thenReturn(null);
 
 
         // Invoke
-        ResponseEntity<Need> response = fundingBasketController.createNeed(need);
+        ResponseEntity<Need> response = fundingBasketController.createNeed(USERNAME, need);
 
 
         // Analyze
@@ -365,11 +371,11 @@ public class FundingBasketControllerTest {
 
 
         // When createdNeed is called on the Mock FundingBasketDAO, throw an IOException
-        when(mockfundingBasketService.createdNeed(org.mockito.Mockito.any(Need.class))).thenThrow(new IOException());
+        when(mockfundingBasketService.createdNeed(eq(USERNAME), org.mockito.Mockito.any(Need.class))).thenThrow(new IOException());
 
 
         // Invoke
-        ResponseEntity<Need> response = fundingBasketController.createNeed(need);
+        ResponseEntity<Need> response = fundingBasketController.createNeed(USERNAME, need);
 
 
         // Analyze
@@ -381,11 +387,11 @@ public class FundingBasketControllerTest {
     @Test
     public void testDeleteAll() throws IOException { // deleteAll may throw IOException
         // when deleteAll is called return true, simulating successful deletion
-        when(mockfundingBasketService.deleteAll()).thenReturn(true);
+        when(mockfundingBasketService.deleteAll(USERNAME)).thenReturn(true);
 
 
         // Invoke
-        ResponseEntity<Need> response = fundingBasketController.deleteAll();
+        ResponseEntity<Need> response = fundingBasketController.deleteAll(USERNAME);
 
 
         // Analyze
@@ -396,11 +402,11 @@ public class FundingBasketControllerTest {
     @Test
     public void testDeleteAllNotFound() throws IOException { // deleteAll may throw IOException
         // when deleteAll is called return false, simulating failed deletion
-        when(mockfundingBasketService.deleteAll()).thenReturn(false);
+        when(mockfundingBasketService.deleteAll(USERNAME)).thenReturn(false);
 
 
         // Invoke
-        ResponseEntity<Need> response = fundingBasketController.deleteAll();
+        ResponseEntity<Need> response = fundingBasketController.deleteAll(USERNAME);
 
 
         // Analyze
@@ -411,15 +417,30 @@ public class FundingBasketControllerTest {
     @Test
     public void testDeleteAllHandleException() throws IOException { // deleteAll may throw IOException
         // When deleteAll is called on the Mock FundingBasket DAO, throw an IOException
-        doThrow(new IOException()).when(mockfundingBasketService).deleteAll();
+        doThrow(new IOException()).when(mockfundingBasketService).deleteAll(USERNAME);
 
 
         // Invoke
-        ResponseEntity<Need> response = fundingBasketController.deleteAll();
+        ResponseEntity<Need> response = fundingBasketController.deleteAll(USERNAME);
 
 
         // Analyze
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,response.getStatusCode());
     }
 
+    @Test
+    public void testGetUsers() throws IOException {
+        Need[] emptyNeeds = new Need[0];
+        User[] users = new User[]{
+            new User("user1", emptyNeeds),
+            new User("user2", emptyNeeds)
+        };
+
+        when(mockfundingBasketService.getUsers()).thenReturn(users);
+
+        ResponseEntity<User[]> response = fundingBasketController.getUsers();
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(users, response.getBody());
+    }
 }
