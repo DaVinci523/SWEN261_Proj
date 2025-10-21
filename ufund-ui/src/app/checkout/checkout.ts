@@ -49,21 +49,42 @@ export class Checkout implements OnInit{
     console.log(this.needsCupboard);
     try{
       this.userNeeds.forEach((userNeed) => { // loop through every userNeed
+        console.log("USERNEED")
+        console.log(userNeed);
         this.needsCupboard.forEach((cupboardNeed) => {
           if (cupboardNeed.id == userNeed.id){ // update NeedsCupbard needs
             cupboardNeed.quantity -= userNeed.quantity;
+            console.log("CUPBOARD")
+            console.log(cupboardNeed)
             this.needsCupboardService.updateNeed(cupboardNeed).subscribe();
+
+            this.deleteNeed(userNeed);
           }
         });
 
-        this.fundingBasketService.deleteNeed(this.userName, userNeed.id).subscribe(); // delete need in funding basket
       });
       
-      window.location.reload(); // reload the page
+      this.saveAll();
+      //window.location.reload(); // reload the page
 
     } catch (error){
       console.log("ERROR: " + error);
     }
 
   }
+
+  deleteNeed(need: Need): void {
+    this.userNeeds = this.userNeeds.filter(n => n !== need); // removes the given need in the front end by re-defining the list by only filetering in needs that weren't given
+    this.fundingBasketService.deleteNeed(this.userName, need.id).subscribe();
+  }
+
+  saveAll(): void {
+    if (this.userNeeds) {
+      for ( const need of this.userNeeds){ // update every need in the user's funding basket
+      this.fundingBasketService.updateNeed(this.userName, need)
+        .subscribe();
+      }
+    }
+  }
+  
 }
