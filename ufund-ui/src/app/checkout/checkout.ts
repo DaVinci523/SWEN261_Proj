@@ -61,11 +61,16 @@ export class Checkout implements OnInit{
             this.deleteNeed(userNeed);
           }
         });
+        console.log("BASKET");
+        console.log(this.userNeeds);
+        console.log("NEEDCUP");
+        console.log(this.needsCupboard);
+
+        this.saveAll();
 
       });
       
-      this.saveAll();
-      //window.location.reload(); // reload the page
+      window.location.reload(); // reload the page
 
     } catch (error){
       console.log("ERROR: " + error);

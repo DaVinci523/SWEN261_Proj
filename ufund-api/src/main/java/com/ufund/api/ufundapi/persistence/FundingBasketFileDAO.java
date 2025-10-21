@@ -161,6 +161,7 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
         List<User> usersList = Arrays.asList(usersArray);
         FundingBasketDataWrapper wrappedList = new FundingBasketDataWrapper(usersList);
 
+        objectMapper.writeValue(new File(filename), wrappedList);
         //use the object mapper to serialize jave objects to JSON 
         //Issues will raise an IOException
         objectMapper.writeValue(new File(filename), wrappedList);
