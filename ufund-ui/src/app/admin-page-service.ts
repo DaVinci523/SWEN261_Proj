@@ -54,7 +54,6 @@ export class AdminPageService {
 
 
   createNeed(need: any): Observable<any> {
-      const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
        return this.http.post<Need>(this.needsUrl, need, this.httpOptions).pipe(
         tap((newNeed: Need) => this.log(`added need w/ id=${newNeed.id}`)),
         catchError(this.handleError<Need>('addNeed'))
@@ -62,7 +61,8 @@ export class AdminPageService {
   }
 
   deleteNeedID(needId: number): Observable<any> {
-      return this.http.delete<any>(`${this.needsUrl}/${needId}`);
+      return this.http.delete<Need>(`${this.needsUrl}/${needId}`).pipe(tap(_ => this.log(`deleted need id=${needId}`)),
+      catchError(this.handleError<Need>('deleteNeed')));
   }
 
 }
