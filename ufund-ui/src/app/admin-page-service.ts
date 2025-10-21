@@ -44,8 +44,13 @@ export class AdminPageService {
     return this.http.get<Need[]>(this.needsUrl);
   }
 
-  updateNeed(need:any ):Observable<any>{
-    return this.http.put<any>(this.needsUrl, need);
+  updateNeed(need:any, name: string, value: number, quantity: number, type: string):Observable<any>{
+    const updatedNeed: Need = {id: need.id, name, value, quantity, type};
+    
+    return this.http.put<Need>(this.needsUrl, updatedNeed).pipe(
+      tap(_ => this.log(`updated need id=${need.id}`)),
+      catchError(this.handleError<any>('updateNeed'))
+    );
   } 
 
   httpOptions = {

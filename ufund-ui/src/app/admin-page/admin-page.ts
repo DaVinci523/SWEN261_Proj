@@ -36,8 +36,10 @@ export class AdminPage {
       this.needs = this.needs.filter(n => n !== needs));
   }
 
-  updateNeed(need: Need): void {
-    this.adminPageService.updateNeed(need).subscribe();
+  updateNeed(need: Need, name: string, value: number, quantity: number, type: string): void {
+    this.needs = this.needs.filter(n => n !== need);
+    this.adminPageService.updateNeed(need, name, value, quantity, type).subscribe(needs => 
+      this.needs = this.needs.filter(n => n !== needs));
   }
 
   ngOnInit(): void {

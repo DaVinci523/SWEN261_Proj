@@ -20,6 +20,9 @@
                     <span class="variable">Quantity: [{{need.quantity}}]</span>
                     <span class="variable">Type: ["{{need.type}}"]</span>
                     <button type = button class="delete" (click) = deleteNeed(need)> Delete Need </button>
+                     <button type="button" class="update"
+            (click)= "updateNeed(need, needName.value, needValue.valueAsNumber, 
+            needQuant.valueAsNumber, needType. value);">Update Need</button>     
                 </span>
                 </span>
                 </li>
@@ -78,6 +81,8 @@
                 <button type="button" class="add"
             (click)= "createNeed(needName.value, needValue.valueAsNumber, 
             needQuant.valueAsNumber, needType. value);">Add Need</button>
+
+                          
             </div>
     
         </div>
