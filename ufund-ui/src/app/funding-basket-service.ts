@@ -45,7 +45,7 @@ console.log("RUNNING")
     const url = `${this.needsUrl}/${userName}`;
 
     return this.http.post<Need>(url, need, this.httpOptions)/*.pipe(
-      tap((newHero: Need) => this.log(`added need w/ id=${newNeed.id}`)),
+      tap((newNeed: Need) => this.log(`added need w/ id=${newNeed.id}`)),
       catchError(this.handleError<Need>('addNeed'))
     );*/
   }
