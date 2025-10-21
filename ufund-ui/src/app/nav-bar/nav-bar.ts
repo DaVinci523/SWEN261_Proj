@@ -31,7 +31,11 @@ export class NavBar {
     this.router.navigate(['/login']);
   }
   goToHelper(){
-    this.router.navigate(['/helper']);
+    if(this.user.isLoggedIn()) {
+      this.router.navigate(['/helper']);
+    } else {
+      this.router.navigate(['/login']);
+    }
   }
   onUserIconClick() {
     if (this.user.isLoggedIn()) {

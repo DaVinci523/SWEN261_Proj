@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 
 import { FundingBasketService } from '../funding-basket-service';
 import { NeedsCupboardService } from '../needs-cupboard-service';
 
 import { Need } from '../need';
+import { User } from '../user';
 
 @Component({
   selector: 'app-checkout',
@@ -16,6 +17,9 @@ export class Checkout implements OnInit{
     private fundingBasketService: FundingBasketService,
     private needsCupboardService: NeedsCupboardService
   ) { }
+
+  user = inject(User);
+  currentUser: string | null = null; 
 
   userNeeds: Need[] = []; // the front-end container for the user's needs
   needsCupboard: Need[] = [];
@@ -32,6 +36,7 @@ export class Checkout implements OnInit{
 
   ngOnInit(): void { // initiates getNeeds
     this.getNeeds(); 
+    this.currentUser = this.user.getCurrentUser();
   }
   
   // Get all needs in the funding basket, (done)
