@@ -23,7 +23,6 @@ export class FundingBasket implements OnInit{
 
   ngOnInit(): void { // initiates getNeeds
     this.getNeeds(); 
-    
   }
 
   add(name: string, value: number, quantity: number, type: string): void {

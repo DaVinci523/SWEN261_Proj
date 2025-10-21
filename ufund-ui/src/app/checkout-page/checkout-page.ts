@@ -7,5 +7,6 @@ import { Component } from '@angular/core';
   styleUrl: './checkout-page.css'
 })
 export class CheckoutPage {
+  
 
 }
