@@ -68,7 +68,7 @@ export class Checkout implements OnInit{
 
         this.saveAll();
 
-      });
+      }); 
       
       window.location.reload(); // reload the page
 
