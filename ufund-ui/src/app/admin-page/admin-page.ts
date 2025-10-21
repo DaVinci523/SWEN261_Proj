@@ -23,6 +23,7 @@ export class AdminPage {
     if (!name) { 
       return; 
     }
+    console.log(value, quantity);
     this.adminPageService.createNeed({ name, value, quantity, type } as Need)
       .subscribe(need => {
         this.needs.push(need);
