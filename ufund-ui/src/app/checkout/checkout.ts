@@ -50,14 +50,20 @@ export class Checkout implements OnInit{
     try{
       this.userNeeds.forEach((userNeed) => { // loop through every userNeed
         this.needsCupboard.forEach((cupboardNeed) => {
-          if (cupboardNeed.id == userNeed.id){
+          if (cupboardNeed.id == userNeed.id){ // update NeedsCupbard needs
             cupboardNeed.quantity -= userNeed.quantity;
             this.needsCupboardService.updateNeed(cupboardNeed).subscribe();
           }
         });
+
+        this.fundingBasketService.deleteNeed(this.userName, userNeed.id).subscribe(); // delete need in funding basket
       });
+      
+      window.location.reload(); // reload the page
+
     } catch (error){
       console.log("ERROR: " + error);
     }
+
   }
 }
