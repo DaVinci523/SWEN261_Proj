@@ -161,6 +161,7 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
         List<User> usersList = Arrays.asList(usersArray);
         FundingBasketDataWrapper wrappedList = new FundingBasketDataWrapper(usersList);
 
+        objectMapper.writeValue(new File(filename), wrappedList); // Fixes angular checkout bug by writing to the file twice as to clear excess data.
         //use the object mapper to serialize jave objects to JSON 
         //Issues will raise an IOException
         objectMapper.writeValue(new File(filename), wrappedList);
@@ -272,10 +273,13 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
             swapCurrentUser(userName);
             boolean exists = currentUserNeeds.values().stream().anyMatch(n -> n.getName().equalsIgnoreCase(need.getName()) || n.getId() == (need.getId()));
             if (exists){
-                return null;
+                Need toUpdate = currentUserNeeds.get(need.getId());
+                int newQuantity = toUpdate.getQuantity() + 1;
+                toUpdate.setQuantity(newQuantity);
+                return updateNeed(userName, toUpdate);
             }
 
-            Need newNeed = new Need(need.getId(),need.getName(), need.getValue(), need.getQuantity(), need.getType());
+            Need newNeed = new Need(need.getId(),need.getName(), need.getValue(), 1, need.getType());
             // add the newly created need to the (currentUserNeeds) Map
             currentUserNeeds.put(need.getId(), newNeed);
 

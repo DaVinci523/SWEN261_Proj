@@ -23,6 +23,8 @@ public class FundingBasketServiceTest {
     private FundingBasketDAO mockDAO;
     private FundingBasketServiceImplementation service;
 
+    private static final String USERNAME = "user1";
+
     /**
      * Initialize the mock DAO and service before each test
      */
@@ -42,11 +44,11 @@ public class FundingBasketServiceTest {
             new Need(2, "Breadboard", 12.0, 3, "board")
         };
 
-        when(mockDAO.getNeeds()).thenReturn(expected);
-        Need[] actual = service.getNeeds();
+        when(mockDAO.getNeeds(USERNAME)).thenReturn(expected);
+        Need[] actual = service.getNeeds(USERNAME);
 
         assertArrayEquals(expected, actual);
-        verify(mockDAO, times(1)).getNeeds();
+        verify(mockDAO, times(1)).getNeeds(USERNAME);
     }
 
     /**
@@ -56,11 +58,11 @@ public class FundingBasketServiceTest {
     @Test
     public void testGetNeed() throws IOException {
         Need expected = new Need(1, "Sensor", 3.5, 4, "component");
-        when(mockDAO.getNeed(1)).thenReturn(expected);
-        Need actual = service.getNeed(1);
+        when(mockDAO.getNeed(USERNAME, 1)).thenReturn(expected);
+        Need actual = service.getNeed(USERNAME, 1);
 
         assertEquals(expected, actual);
-        verify(mockDAO, times(1)).getNeed(1);
+        verify(mockDAO, times(1)).getNeed(USERNAME, 1);
     }
 
     /**
@@ -74,11 +76,11 @@ public class FundingBasketServiceTest {
             new Need(2, "Lab Coat", 15.0, 5, "apparel")
         };
 
-        when(mockDAO.searchNeeds(searchTerm)).thenReturn(expected);
-        Need[] actual = service.searchNeeds(searchTerm);
+        when(mockDAO.searchNeeds(USERNAME, searchTerm)).thenReturn(expected);
+        Need[] actual = service.searchNeeds(USERNAME, searchTerm);
 
         assertArrayEquals(expected,actual);
-        verify(mockDAO, times(1)).searchNeeds(searchTerm);
+        verify(mockDAO, times(1)).searchNeeds(USERNAME, searchTerm);
     }
 
     /**
@@ -87,11 +89,11 @@ public class FundingBasketServiceTest {
     @Test
     public void testCreateNeed() throws IOException {
         Need newNeed = new Need(3, "Resistor", 0.10, 100, "component");
-        when(mockDAO.createdNeed(newNeed)).thenReturn(newNeed);
+        when(mockDAO.createdNeed(USERNAME, newNeed)).thenReturn(newNeed);
 
-        Need result = service.createdNeed(newNeed);
+        Need result = service.createdNeed(USERNAME, newNeed);
         assertEquals(newNeed, result);
-        verify(mockDAO, times(1)).createdNeed(newNeed);
+        verify(mockDAO, times(1)).createdNeed(USERNAME, newNeed);
     }
 
     /**
@@ -100,11 +102,11 @@ public class FundingBasketServiceTest {
     @Test
     public void testUpdateNeed() throws IOException {
         Need updated = new Need(2, "Updated Board", 14.0, 2, "board");
-        when(mockDAO.updateNeed(updated)).thenReturn(updated);
-        Need result = service.updateNeed(updated);
+        when(mockDAO.updateNeed(USERNAME, updated)).thenReturn(updated);
+        Need result = service.updateNeed(USERNAME, updated);
 
         assertEquals(updated, result);
-        verify(mockDAO, times(1)).updateNeed(updated);
+        verify(mockDAO, times(1)).updateNeed(USERNAME, updated);
     }
 
     /**
@@ -112,11 +114,11 @@ public class FundingBasketServiceTest {
      */
     @Test
     public void testDeleteNeed() throws IOException {
-        when(mockDAO.deleteNeed(1)).thenReturn(true);
-        boolean result = service.deleteNeed(1);
+        when(mockDAO.deleteNeed(USERNAME,1)).thenReturn(true);
+        boolean result = service.deleteNeed(USERNAME, 1);
 
         assertTrue(result);
-        verify(mockDAO, times(1)).deleteNeed(1);
+        verify(mockDAO, times(1)).deleteNeed(USERNAME, 1);
     }
 
     /**
@@ -124,11 +126,11 @@ public class FundingBasketServiceTest {
      */
     @Test
     public void testDeleteNeedType() throws IOException {
-        when(mockDAO.deleteNeedType("board")).thenReturn(true);
-        boolean result = service.deleteNeedType("board");
+        when(mockDAO.deleteNeedType(USERNAME, "board")).thenReturn(true);
+        boolean result = service.deleteNeedType(USERNAME, "board");
 
         assertTrue(result);
-        verify(mockDAO, times(1)).deleteNeedType("board");
+        verify(mockDAO, times(1)).deleteNeedType(USERNAME, "board");
     }
 
     /**
@@ -136,11 +138,11 @@ public class FundingBasketServiceTest {
      */
     @Test
     public void testDeleteAll() throws IOException {
-        when(mockDAO.deleteAll()).thenReturn(true);
-        boolean result = service.deleteAll();
+        when(mockDAO.deleteAll(USERNAME)).thenReturn(true);
+        boolean result = service.deleteAll(USERNAME);
 
         assertTrue(result);
-        verify(mockDAO, times(1)).deleteAll();
+        verify(mockDAO, times(1)).deleteAll(USERNAME);
     }
 
     /**
@@ -148,10 +150,10 @@ public class FundingBasketServiceTest {
      */
     @Test
     public void testDeleteNeedName() throws IOException {
-        when(mockDAO.deleteNeedName("Wire")).thenReturn(true);
-        boolean result = service.deleteNeedName("Wire");
+        when(mockDAO.deleteNeedName(USERNAME, "Wire")).thenReturn(true);
+        boolean result = service.deleteNeedName(USERNAME, "Wire");
 
         assertTrue(result);
-        verify(mockDAO, times(1)).deleteNeedName("Wire");
+        verify(mockDAO, times(1)).deleteNeedName(USERNAME, "Wire");
     }
 }
