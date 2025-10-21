@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 import java.io.IOException;
 
 import com.ufund.api.ufundapi.persistence.NeedsCupboardDAO;
+import com.ufund.api.ufundapi.service.NeedsCupboardService;
 import com.ufund.api.ufundapi.model.Need;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -24,7 +25,7 @@ import org.springframework.http.ResponseEntity;
 @Tag("Controller-tier")
 public class NeedsCupboardControllerTest {
     private NeedsCupboardController needsCupboardController;
-    private NeedsCupboardDAO mockNeedsCupboardDAO;
+    private NeedsCupboardService mockNeedsCupboardService;
 
     /**
      * Before each test, create a new NeedsCupboardController object and inject
@@ -32,8 +33,8 @@ public class NeedsCupboardControllerTest {
      */
     @BeforeEach
     public void setupNeedsCupboardController() {
-        mockNeedsCupboardDAO = mock(NeedsCupboardDAO.class);
-        needsCupboardController = new NeedsCupboardController(mockNeedsCupboardDAO);
+        mockNeedsCupboardService = mock(NeedsCupboardService.class);
+        needsCupboardController = new NeedsCupboardController(mockNeedsCupboardService);
     }
 
     // getNeeds() Tests
@@ -45,7 +46,7 @@ public class NeedsCupboardControllerTest {
         needs[1] = new Need(2, "Breadboard", 10, 1, "board");
 
         // When getNeeds is called return the needs created above
-        when(mockNeedsCupboardDAO.getNeeds()).thenReturn(needs);
+        when(mockNeedsCupboardService.getAllNeeds()).thenReturn(needs);
 
         // Invoke
         ResponseEntity<Need[]> response = needsCupboardController.getNeeds();
@@ -59,7 +60,7 @@ public class NeedsCupboardControllerTest {
     public void testGetNeedsHandleException() throws IOException { // getHeroes may throw IOException
         // Setup
         // When getNeeds is called on the Mock NeedsCupboardDAO, throw an IOException
-        doThrow(new IOException()).when(mockNeedsCupboardDAO).getNeeds();
+        doThrow(new IOException()).when(mockNeedsCupboardService).getAllNeeds();
 
         // Invoke
         ResponseEntity<Need[]> response = needsCupboardController.getNeeds();
@@ -76,7 +77,7 @@ public class NeedsCupboardControllerTest {
         needs[0] = new Need(1, "Lab Kit", 20.00, 5, "kit");
         needs[2] = new Need(3, "Lab Extinguisher", 150.00, 1, "safety");
         //When search heres is classed with "La" return the two Needs created above
-        when(mockNeedsCupboardDAO.searchNeeds(searchString)).thenReturn(needs);
+        when(mockNeedsCupboardService.searchNeeds(searchString)).thenReturn(needs);
 
         ResponseEntity<Need[]> response = needsCupboardController.searchNeeds(searchString);
         assertEquals(HttpStatus.OK,response.getStatusCode());
@@ -88,7 +89,7 @@ public class NeedsCupboardControllerTest {
     public void testSearchNeedsHandleException() throws IOException {
         String searchString = "bread";
         //when searchNeeds is called, IOException is thrown
-        doThrow(new IOException()).when(mockNeedsCupboardDAO).searchNeeds(searchString);
+        doThrow(new IOException()).when(mockNeedsCupboardService).searchNeeds(searchString);
         //begin
         ResponseEntity<Need[]> response = needsCupboardController.searchNeeds(searchString);
         //Test
@@ -101,7 +102,7 @@ public class NeedsCupboardControllerTest {
         // Setup
         String needType = "board";
         // when deleteNeedType is called return true, simulating successful deletion
-        when(mockNeedsCupboardDAO.deleteNeedType(needType)).thenReturn(true);
+        when(mockNeedsCupboardService.deleteNeedByType(needType)).thenReturn(true);
 
         // Invoke
         ResponseEntity<Need> response = needsCupboardController.deleteNeedType(needType);
@@ -115,7 +116,7 @@ public class NeedsCupboardControllerTest {
         // Setup
         String needType = "board";
         // when deleteNeedType is called return false, simulating failed deletion
-        when(mockNeedsCupboardDAO.deleteNeedType(needType)).thenReturn(false);
+        when(mockNeedsCupboardService.deleteNeedByType(needType)).thenReturn(false);
 
         // Invoke
         ResponseEntity<Need> response = needsCupboardController.deleteNeedType(needType);
@@ -129,7 +130,7 @@ public class NeedsCupboardControllerTest {
         // Setup
         String needType = "board";
         // When deleteNeedType is called on the Mock NeedsCupboardDAO, throw an IOException
-        doThrow(new IOException()).when(mockNeedsCupboardDAO).deleteNeedType(needType);
+        doThrow(new IOException()).when(mockNeedsCupboardService).deleteNeedByType(needType);
 
         // Invoke
         ResponseEntity<Need> response = needsCupboardController.deleteNeedType(needType);
@@ -143,7 +144,7 @@ public class NeedsCupboardControllerTest {
         // Setup
         Need need = new Need(99, "Silicon Wafer", 800, 5, "Electronics");
         // When the same id is passed in, our mock Hero DAO will return the Hero object
-        when(mockNeedsCupboardDAO.getNeed(need.getId())).thenReturn(need);
+        when(mockNeedsCupboardService.getNeedById(need.getId())).thenReturn(need);
 
         // Invoke
         ResponseEntity<Need> response = needsCupboardController.getNeed(need.getId());
@@ -159,7 +160,7 @@ public class NeedsCupboardControllerTest {
         int needId = 99;
         // When the same id is passed in, our mock Hero DAO will return null, simulating
         // no hero found
-        when(mockNeedsCupboardDAO.getNeed(needId)).thenReturn(null);
+        when(mockNeedsCupboardService.getNeedById(needId)).thenReturn(null);
 
         // Invoke
         ResponseEntity<Need> response = needsCupboardController.getNeed(needId);
@@ -173,7 +174,7 @@ public class NeedsCupboardControllerTest {
         // Setup
         int needId = 99;
         // When getHero is called on the Mock Hero DAO, throw an IOException
-        doThrow(new IOException()).when(mockNeedsCupboardDAO).getNeed(needId);
+        doThrow(new IOException()).when(mockNeedsCupboardService).getNeedById(needId);
 
         // Invoke
         ResponseEntity<Need> response = needsCupboardController.getNeed(needId);
@@ -188,7 +189,7 @@ public class NeedsCupboardControllerTest {
         // Setup
         int needId = 99;
         // when deleteHero is called return true, simulating successful deletion
-        when(mockNeedsCupboardDAO.deleteNeed(needId)).thenReturn(true);
+        when(mockNeedsCupboardService.deleteNeedById(needId)).thenReturn(true);
 
         // Invoke
         ResponseEntity<Need> response = needsCupboardController.deleteNeedId(needId);
@@ -202,7 +203,7 @@ public class NeedsCupboardControllerTest {
         // Setup
         int needId = 99;
         // when deleteHero is called return false, simulating failed deletion
-        when(mockNeedsCupboardDAO.deleteNeed(needId)).thenReturn(false);
+        when(mockNeedsCupboardService.deleteNeedById(needId)).thenReturn(false);
 
         // Invoke
         ResponseEntity<Need> response = needsCupboardController.deleteNeedId(needId);
@@ -216,7 +217,7 @@ public class NeedsCupboardControllerTest {
         // Setup
         int needId = 99;
         // When deleteHero is called on the Mock Hero DAO, throw an IOException
-        doThrow(new IOException()).when(mockNeedsCupboardDAO).deleteNeed(needId);
+        doThrow(new IOException()).when(mockNeedsCupboardService).deleteNeedById(needId);
 
         // Invoke
         ResponseEntity<Need> response = needsCupboardController.deleteNeedId(needId);

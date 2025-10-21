@@ -19,11 +19,13 @@
                     <span class="identifier variable">Id: [{{need.id}}]</span> 
                     <span class="variable">Name: [{{need.name}}]</span>
                     <span class="variable">Value: [${{need.value}}]</span>
-                    <span class="variable">Quantity: [{{need.quantity}}]</span>
+                    <span *ngIf="need.quantity <= 0" class="variable">Quantity: Surplus</span>
+                    <span *ngIf="need.quantity > 0" class="variable">Quantity: {{need.quantity}}</span>
                     <span class="variable">Type: ["{{need.type}}"]</span>
+                    
                 </span>
                 <span id="fund">
-                    <button type="button" class="fund" title="Add to Cart" >Add to Cart</button>   
+                    <button id="moveToFund"type="button" (click)="moveToFunding(need)" class="fund" title="Add to Cart">Add to Cart</button>   
                 </span>
             </span>
         </li>

@@ -17,13 +17,13 @@ export class FundingBasket implements OnInit{
   displayValue: number = 69;
   userName: String = "helper123"; // TO-DO: Set to the name of the currently logged in user
 
+  
   getNeeds(): void { // gets the needs from the REST api by running a program in the needService
     this.fundingBasketService.getNeeds(this.userName).subscribe(userNeeds => this.userNeeds = userNeeds);
   }
 
   ngOnInit(): void { // initiates getNeeds
     this.getNeeds(); 
-    
   }
 
   add(name: string, value: number, quantity: number, type: string): void {
@@ -48,21 +48,27 @@ export class FundingBasket implements OnInit{
     //this.fundingBasketService.increaseQuantity(need).subscribe();
     need.quantity++;; // temporary visual, does NOT affect the data.json file
     this.fundingBasketService.updateNeed(this.userName, need)
-        .subscribe();
+        .subscribe(() => this.getNeeds());
   }
 
   decreaseQuantity(need: Need): void {
     //this.fundingBasketService.increaseQuantity(need).subscribe();
     need.quantity--; // temporary visual, does NOT affect the data.json file
+    if (need.quantity == 0){
+      this.fundingBasketService.deleteNeed(this.userName, need.id).subscribe(() => {
+      window.location.reload();});
+    }
+    else{
     this.fundingBasketService.updateNeed(this.userName, need)
-        .subscribe();
+        .subscribe(() => this.getNeeds());
+    }
   }
 
   saveAll(): void {
     if (this.userNeeds) {
       for ( const need of this.userNeeds){ // update every need in the user's funding basket
       this.fundingBasketService.updateNeed(this.userName, need)
-        .subscribe();
+        .subscribe(() => this.getNeeds());
       }
     }
   }

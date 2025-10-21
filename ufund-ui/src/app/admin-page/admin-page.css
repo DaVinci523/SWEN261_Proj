@@ -14,10 +14,17 @@ https://www.w3schools.com/howto/howto_css_two_columns.asp
   padding: 10px;
 }
 
+span.data-container {
+    display: grid;
+    grid-template-columns: 80% 20%;
+    padding: 1.5%;
+}
 
 li{
     list-style-type:none;
-    border: 4 px black; 
+    border: 2px solid black;
+    width: 90%;
+    
 }
 
 .restricted {
