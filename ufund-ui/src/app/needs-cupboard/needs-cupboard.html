@@ -25,7 +25,8 @@
                     
                 </span>
                 <span id="fund">
-                    <button id="moveToFund"type="button" (click)="moveToFunding(need)" class="fund" title="Add to Cart">Add to Cart</button>   
+                    <button *ngIf="need.quantity > 0" id="moveToFund"type="button" (click)="moveToFunding(need)" class="fund" title="Add to Cart">Add to Cart</button>  
+                    <button *ngIf="need.quantity <= 0" id="moveToFund"type="button" (click)="moveToFunding(need)" class="fund" title="Donate Extra">Dontate Extra</button> 
                 </span>
             </span>
         </li>
