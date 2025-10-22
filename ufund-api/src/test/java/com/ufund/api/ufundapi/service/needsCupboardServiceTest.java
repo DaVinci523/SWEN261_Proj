@@ -109,4 +109,76 @@ public class needsCupboardServiceTest {
         assertThrows(IOException.class, () -> service.deleteNeedById(99));
         verify(mockDAO).deleteNeed(99);
     }
+
+    /**
+     * Tests that searchNeeds() retrieves Need objects matching a given name
+     */
+    @Test
+    public void testSearchNeeds() throws IOException {
+        Need[] expected = {
+            new Need(1, "Wire", 5.0, 10, "cord")
+        };
+
+        when(mockDAO.searchNeeds("Wire")).thenReturn(expected);
+
+        Need[] actual = service.searchNeeds("Wire");
+
+        assertArrayEquals(expected, actual);
+        verify(mockDAO).searchNeeds("Wire");
+    }
+
+    /**
+     * Tests that updateNeed() updates a Need through the DAO
+     */
+    @Test
+    public void testUpdateNeed() throws IOException {
+        Need toUpdate = new Need(2, "BreadBoard", 12.0, 3, "board");
+        Need updated = new Need(2, "BreadBoard", 12.0, 3, "board");
+
+        when(mockDAO.updateNeed(toUpdate)).thenReturn(updated);
+
+        Need result = service.updateNeed(toUpdate);
+
+        assertEquals(updated, result);
+        verify(mockDAO).updateNeed(toUpdate);
+    }
+
+    /**
+     * Tests that deleteNeedByType() removes all Needs of a given type
+     */
+    @Test
+    public void testDeleteNeedByType() throws IOException {
+        when(mockDAO.deleteNeedType("board")).thenReturn(true);
+
+        boolean result = service.deleteNeedByType("board");
+
+        assertTrue(result);
+        verify(mockDAO).deleteNeedType("board");
+    }
+
+    /**
+     * Tests that deleteNeedByName() removes a Need with a given name
+     */
+    @Test
+    public void testDeleteNeedByName() throws IOException {
+        when(mockDAO.deleteNeedName("Wire")).thenReturn(true);
+
+        boolean result = service.deleteNeedByName("Wire");
+
+        assertTrue(result);
+        verify(mockDAO).deleteNeedName("Wire");
+    }
+
+    /**
+     * Tests that deleteAllNeeds() removes all Needs in the DAO
+     */
+    @Test
+    public void testDeleteAllNeeds() throws IOException {
+        when(mockDAO.deleteAll()).thenReturn(true);
+
+        boolean result = service.deleteAllNeeds();
+
+        assertTrue(result);
+        verify(mockDAO).deleteAll();
+    }
 }
