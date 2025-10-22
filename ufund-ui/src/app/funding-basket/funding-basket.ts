@@ -65,6 +65,7 @@ export class FundingBasket implements OnInit {
         .subscribe(() => {this.getNeeds();
           window.location.reload();
         });
+
   }
 
   decreaseQuantity(need: Need): void {

@@ -99,7 +99,7 @@ export class Checkout implements OnInit{
     if (this.userNeeds) {
       for ( const need of this.userNeeds){ // update every need in the user's funding basket
       this.fundingBasketService.updateNeed(this.userName, need)
-        .subscribe();
+        .subscribe(() => {window.location.reload();});
       }
     }
   }
