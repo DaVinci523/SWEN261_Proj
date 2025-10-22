@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.ufund.api.ufundapi.model.Need;
+import com.ufund.api.ufundapi.model.User;
 import com.ufund.api.ufundapi.persistence.FundingBasketDAO;
 import com.ufund.api.ufundapi.service.FundingBasketServiceImplementation;
 
@@ -155,5 +156,27 @@ public class FundingBasketServiceTest {
 
         assertTrue(result);
         verify(mockDAO, times(1)).deleteNeedName(USERNAME, "Wire");
+    }
+
+    /**
+     * Tests that getUsers() returns all users correctly
+     */
+    @Test
+    public void testGetUsers() throws IOException {
+        User[] expected = {
+            new User("user1", new Need[] {
+                new Need(1, "Wire", 5.0, 10, "cord")
+            }),
+            new User("user2", new Need[] {
+                new Need(2, "Breadboard", 12.0, 3, "board")
+            })
+        };
+
+        when(mockDAO.getUsers()).thenReturn(expected);
+
+        User[] actual = service.getUsers();
+
+        assertArrayEquals(expected, actual);
+        verify(mockDAO, times(1)).getUsers();
     }
 }
