@@ -225,4 +225,129 @@ public class NeedsCupboardControllerTest {
         // Analyze
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,response.getStatusCode());
     }
+
+    /**
+     * createNeed() Tests
+     */
+    @Test
+    public void testCreateNeed() throws IOException {
+        //Setup
+        Need newNeed = new Need(101, "Battery", 12.0, 2, "power");
+        when(mockNeedsCupboardService.createNeed(newNeed)).thenReturn(newNeed);
+
+        // Invoke
+        ResponseEntity<Need> response = needsCupboardController.createNeed(newNeed);
+
+        //Analyze
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(newNeed, response.getBody());
+    }
+
+    @Test
+    public void testCreateNeedConflict() throws IOException {
+        //Setup
+        Need newNeed = new Need(101, "Battery", 12.0, 2, "power");
+        when(mockNeedsCupboardService.createNeed(newNeed)).thenReturn(null);
+
+        // Invoke
+        ResponseEntity<Need> response = needsCupboardController.createNeed(newNeed);
+
+        //Analyze
+        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+    }
+
+    @Test
+    public void testCreateNeedHandleException() throws IOException {
+        //Setup
+        Need newNeed = new Need(101, "Battery", 12.0, 2, "power");
+        doThrow(new IOException()).when(mockNeedsCupboardService).createNeed(newNeed);
+
+        // Invoke
+        ResponseEntity<Need> response = needsCupboardController.createNeed(newNeed);
+
+        //Analyze
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
+
+    /**
+     * updateNeed tests
+     */
+    @Test
+    public void testUpdateNeed() throws IOException {
+        //Setup
+        Need updatedNeed = new Need(101, "Battery", 12.0, 2, "power");
+        when(mockNeedsCupboardService.updateNeed(updatedNeed)).thenReturn(updatedNeed);
+
+        //Invoke
+        ResponseEntity<Need> response = needsCupboardController.updateNeed(updatedNeed);
+
+        // Analyze
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(updatedNeed, response.getBody());
+    }
+
+    @Test
+    public void testUpdateNeedNotFound() throws IOException {
+        //Setup
+        Need updatedNeed = new Need(101, "Battery", 12.0, 2, "power");
+        when(mockNeedsCupboardService.updateNeed(updatedNeed)).thenReturn(null);
+
+        //Invoke
+        ResponseEntity<Need> response = needsCupboardController.updateNeed(updatedNeed);
+
+        // Analyze
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    public void testUpdateNeedHandleException() throws IOException {
+        //Setup
+        Need updatedNeed = new Need(101, "Battery", 12.0, 2, "power");
+        doThrow(new IOException()).when(mockNeedsCupboardService).updateNeed(updatedNeed);
+
+        //Invoke
+        ResponseEntity<Need> response = needsCupboardController.updateNeed(updatedNeed);
+
+        // Analyze
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
+
+    /**
+     * deleteAll tests
+     */
+    @Test
+    public void testDeleteAll() throws IOException {
+        // when deleteAllNeeds is called return true
+        when(mockNeedsCupboardService.deleteAllNeeds()).thenReturn(true);
+
+        //Invoke
+        ResponseEntity<Need> response = needsCupboardController.deleteAll();
+
+        //Analyze
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    public void testDeleteAllNotFound() throws IOException {
+        // simulate no needs to delete and return false
+        when(mockNeedsCupboardService.deleteAllNeeds()).thenReturn(false);
+
+        //Invoke
+        ResponseEntity<Need> response = needsCupboardController.deleteAll();
+
+        //Analyze
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    public void testDeleteAllHandleException() throws IOException {
+        // when deleteAllNeeds is called return true
+        doThrow(new IOException()).when(mockNeedsCupboardService).deleteAllNeeds();
+
+        //Invoke
+        ResponseEntity<Need> response = needsCupboardController.deleteAll();
+
+        //Analyze
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
 }

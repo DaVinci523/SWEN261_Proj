@@ -1,7 +1,1 @@
-[
-    {"id":4,"name":"Microscope","value":-100.0,"quantity":-4,"type":"kit"},
-    {"id":5,"name":"BreadBoard","value":10.0,"quantity":4,"type":"boards"},
-    {"id":6,"name":"Lab Kit","value":-100.0,"quantity":3,"type":"kit"},
-    {"id":7,"name":"Oscilloscope","value":-100.0,"quantity":2,"type":"kit"},
-    {"id":8,"name":"Lab Box","value":-100.0,"quantity":0,"type":"box"}
-]
+[{"id":5,"name":"","value":0.0,"quantity":0,"type":""},{"id":6,"name":"Lab Kit","value":-100.0,"quantity":3,"type":"kit"},{"id":8,"name":"Lab Box","value":-100.0,"quantity":0,"type":"box"},{"id":9,"name":"Microscope","value":49.99,"quantity":3,"type":"scope"}]
