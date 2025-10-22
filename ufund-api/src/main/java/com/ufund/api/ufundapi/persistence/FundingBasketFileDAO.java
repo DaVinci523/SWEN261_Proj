@@ -63,6 +63,10 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
 
             currentUserNeeds = new TreeMap<>();
 
+            if(!users.containsKey(userName)){ // create a new user with an empty needs list if the userName is not part of the table
+                users.put(userName, new Need[0]);
+            }
+
             try{
                 for (Need need : users.get(currentUser)){
                     currentUserNeeds.put(need.getId(), need);
