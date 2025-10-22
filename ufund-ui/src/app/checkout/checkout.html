@@ -20,13 +20,14 @@
         @for (userNeed of userNeeds; track userNeed.id) {
 
         <!--Show the surplus message if the user and cupboard needs are matching and the userNeed's quantity would bring the cupboardNeed's quantity past 0-->
-        <li *ngIf="(userNeed.id == cupboardNeed.id) && ((userNeed.quantity - cupboardNeed.quantity) < 0)">
+        @if ((userNeed.id == cupboardNeed.id) && ((userNeed.quantity - cupboardNeed.quantity) > 0)) {
             <span class="data-container">
                 <span id="need-variables">
                     <span class="variable">Your [{{userNeed.name}}] support will bring us over our goal. <br> --- | Click [Checkout] if you would like to procceed. | ---</span>               
                 </span>
             </span>
-        </li>
+        }
+            
         }
     } 
     @empty {

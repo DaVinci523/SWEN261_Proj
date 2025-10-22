@@ -62,7 +62,10 @@ export class FundingBasket implements OnInit {
     //this.fundingBasketService.increaseQuantity(need).subscribe();
     need.quantity++;; // temporary visual, does NOT affect the data.json file
     this.fundingBasketService.updateNeed(this.userName, need)
-        .subscribe(() => this.getNeeds());
+        .subscribe(() => 
+          {this.getNeeds();
+            window.location.reload();
+          });
   }
 
   decreaseQuantity(need: Need): void {
