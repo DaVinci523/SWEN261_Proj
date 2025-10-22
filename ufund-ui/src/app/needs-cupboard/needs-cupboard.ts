@@ -13,7 +13,7 @@ import { User } from '../user';
 })
  export class NeedsCupboard implements OnInit{  
   constructor(private needsCupboardService: NeedsCupboardService, private fundingBasketService: FundingBasketService, private user: User) { }
-  userName = 'helper123';
+  userName: String = 'helper123';
   needs: Need[] = [];
   searchTerm = '';
   buttonText: String = "Add to Cart";
@@ -51,7 +51,8 @@ import { User } from '../user';
   moveToFunding(need: Need): void{
     this.fundingBasketService.addNeed(this.userName,need).subscribe(() => {
       window.location.reload();
-    });
+        this.needs.push(need);
+      });
   }
 
 }
