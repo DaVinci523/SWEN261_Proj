@@ -28,6 +28,12 @@ export class User {
     }
   }
 
+  /**
+   * "Logs in a user" which stores the current user logged in.
+   * @param username Username of the user
+   * @param password Password for username
+   * @returns 
+   */
   login(username: string, password: string): boolean {
     if (!username || !password) { return false; }
     this.loggedIn = true;
@@ -38,6 +44,9 @@ export class User {
     return true;
   }
 
+  /**
+   * "Logs out a user" which clears the current user logged in.
+   */
   logout(): void {
     this.loggedIn = false;
     this.currentUser = null;
@@ -45,10 +54,18 @@ export class User {
     sessionStorage.removeItem(this.USER_KEY);
   }
 
+  /**
+   * Get the current user logged in
+   * @returns Current user (their username) logged in
+   */
   getCurrentUser(): string | null { 
     return this.currentUser;
    }
 
+   /**
+    * Get the role (admin / helper) of the current user logged in
+    * @returns The logged in user's role
+    */
   getCurrentUserRole(): Role | null {
     const u = this.currentUser;
     if (!u || u.trim() === '') {
@@ -61,6 +78,9 @@ export class User {
     return 'helper';
   }
 
+  /**
+   * @returns If a user is logged in
+   */
   isLoggedIn(): boolean { 
     return this.loggedIn; 
   }

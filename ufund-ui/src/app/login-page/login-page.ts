@@ -14,7 +14,10 @@ export class LoginPage {
   username = '';
   password = '';
   
-
+  /**
+   * When the user clicks the login button, the username entered will store
+   * into the user service and direct the user to their corresponding page
+   */
   onLogin(): void {
     if (!this.username || !this.password) {
       return;
