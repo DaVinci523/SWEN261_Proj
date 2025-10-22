@@ -211,58 +211,123 @@ This section describes the web interface and flow; this is how the user views an
       * Creates array of Needs from tree map for needs that contain "text".
       * if "text" is null, array will contain all needs in the treemap.
     * save()
-      * 
+      * Saves Needs from map into file
+      *@return true, if written successfully
     * load()
-      * 
+      * Load from JSON into the map
+      * Increment id after all have been read in
+      * @return true if read successfully
     * getNeeds()
       * @return getNeedsArray
       * Returns an array of all needs in the JSON.
     * searchNeeds()
-      * 
+      * Search for needs containing text passed in
+      * @param String text
+      * @return getNeedsArray that contains text
     * getNeed()
-      * 
+      * Returns single need with id
+      * @param int id id to search for 
+      * @return need if found, null if no id in needs JSON
     * createNeed()
-      * 
+      * @param need: the input object containing the name, value, quantity, and type
+      * @return the new need with a generated id
+      * @throws I/O exception if an error occured while saving the new Need to storage
     * updateNeed()
-      * 
+      * Update need's contents, ie name, value, quantity, type
+      * @param  Need need
+      * @return Need updated need
     * deleteNeed()
-      * 
+      * Delete need at specified id
+      * @param int id
+      * @return true if file was updated succesfully
+      * @return false, if deletion failed 
     * deleteNeedType()
-      * 
+      * Delete all needs of specific type
+      * Seemed liike using a removeIf is the best way to do this 
+      * since you cant iterate through a tree map and delete things without throwing error.
+      * @param int id
+      * @return true if file was updated succesfully
+      * @return false, if deletion failed
     * deleteAll()
-      * 
+      * Delete all needs
+      * @return true if file was updated succesfully
+      * @return false, if deletion failed
     * deleteNeedName()
-      * 
+      * Delete all needs of specific name
+      * @return true if file was updated succesfully
+      * @return false, if deletion failed 
 
   * FundingBasketFileDAO.java - the working logic behind our application for accessing the Needs Cupboard. 
     * swapCurrentUser()
-      * 
+      * Swaps the current user to the specified userName, setting their respective data
+      * @param userName the user that will be swapped to
+      * @return
     * getUsersArray()
-      * 
+      *  Create array of Users from tree map
+      * @return Array of Users, could be null 
     * getNeedsArray()
-      * 
+      *  Create array of Needs from tree map
+      * @param userName the user this method will get the needs of
+      * @return Array of Needs, could be null
     * save()
-      * 
+      * Saves Needs from map into file
+      *@return true, if written successfully
     * load()
-      * 
+      * Load from JSON into the map
+      * Increment through every user, adding their name and their funding basket to the TreeMap
+      * @return true if read successfully
+    * getUsers()
+      * Returns array of all users
+      * @return getNeedsArray
     * getNeeds()
-      * 
+      * Returns array of all needs for a specified user
+      * @param userName the user this method will modify
+      * @return getNeedsArray 
     * searchNeeds()
-      * 
+      * Search for needs containing text passed in
+      * @param userName the user this method will modify
+      * @param String text
+      * @return getNeedsArray that contains text 
     * getNeed()
-      * 
+      * Returns single need with id
+      * @param userName the user this method will modify
+      * @param int id id to search for 
+      * @return need if found, null if no id in needs JSON 
     * createNeed()
-      * 
+      * Creates a new Need object and a new User if one was not present
+      * @param userName: the name of the user the new need belongs to
+      * @param need: the input object containing the id, name, value, quantity, and type
+      * @return the new need
+      * @throws I/O exception if an error occured while saving the new Need to storage
     * updateNeed()
-      * 
+      * Update need's contents, ie name, value, quantity, type
+      * @param userName the user this method will modify
+      * @param  Need need
+      * @return Need updated need
     * deleteNeed()
-      * 
+      * Delete need at specified id
+      * @param userName the user this method will modify
+      * @param int id
+      * @return true if file was updated succesfully
+      * @return false, if deletion failed
     * deleteNeedType()
-      * 
+      * Delete all needs of specific type
+      * Seemed liike using a removeIf is the best way to do this 
+      * since you cant iterate through a tree map and delete things without throwing error.
+      * @param userName the user this method will modify
+      * @param string type
+      * @return true if file was updated succesfully
+      * @return false, if deletion failed 
     * deleteAll()
-      * 
+      * Delete all needs
+      * @param userName the user this method will modify
+      * @return true if file was updated succesfully
+      * @return false, if deletion failed 
     * deleteNeedName()
-      * 
+      * Delete all needs of specific name
+      * @param userName the user this method will modify
+      * @return true if file was updated succesfully
+      * @return false, if deletion failed
 
 
 > _**[Sprint 2, 3 & 4]** Provide a summary of this tier of your architecture. This
