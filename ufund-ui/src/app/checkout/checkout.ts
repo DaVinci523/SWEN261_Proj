@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 
 import { FundingBasketService } from '../funding-basket-service';
 import { NeedsCupboardService } from '../needs-cupboard-service';
+import { Router } from '@angular/router';
 
 import { Need } from '../need';
 import { User } from '../user';
@@ -14,17 +15,18 @@ import { User } from '../user';
 })
 export class Checkout implements OnInit{
   constructor(
+    private router: Router,
     private fundingBasketService: FundingBasketService,
     private needsCupboardService: NeedsCupboardService
   ) { }
 
   user = inject(User);
-  currentUser: string | null = null; 
+  currentUser: string | null = null;
+  userName: string = '';  // TO-DO: Set to the name of the currently logged in user 
+
 
   userNeeds: Need[] = []; // the front-end container for the user's needs
   needsCupboard: Need[] = [];
-  userName: String = "helper123"; // TO-DO: Set to the name of the currently logged in user
-
   nameOnCard: string = "";
   cardNumber: string = "";
   address: string = "";
@@ -34,9 +36,14 @@ export class Checkout implements OnInit{
     this.needsCupboardService.getNeeds().subscribe(needsCupboard => this.needsCupboard = needsCupboard); // retrieve needsCupboard Needs  }
   }
 
-  ngOnInit(): void { // initiates getNeeds
-    this.getNeeds(); 
+  ngOnInit(): void {
     this.currentUser = this.user.getCurrentUser();
+    if (!this.currentUser) {
+      this.router.navigate(['/login'], { queryParams: { returnUrl: '/checkout' } });
+      return;
+    }
+    this.userName = this.currentUser;
+    this.getNeeds();
   }
   
   // Get all needs in the funding basket, (done)

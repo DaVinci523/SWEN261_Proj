@@ -1,29 +1,43 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, OnInit, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { Need } from '../need';
 import { FundingBasketService } from '../funding-basket-service';
-import { HttpClient } from '@angular/common/http';
+import { User } from '../user';
 
 @Component({
   selector: 'app-funding-basket',
   standalone: false,
   templateUrl: './funding-basket.html',
-  styleUrl: './funding-basket.css'
+  styleUrls: ['./funding-basket.css']
 })
-export class FundingBasket implements OnInit{
-  constructor(private fundingBasketService: FundingBasketService) { }
-  userNeeds: Need[] = []; // the front-end container for the user's needs
-  needQuantity: number = 30; // A placeholder for dev testing adding new needs
-  displayValue: number = 69;
-  userName: String = "helper123"; // TO-DO: Set to the name of the currently logged in user
+export class FundingBasket implements OnInit {
+  constructor(
+    private fundingBasketService: FundingBasketService,
+    private router: Router
+  ) {}
 
-  
-  getNeeds(): void { // gets the needs from the REST api by running a program in the needService
-    this.fundingBasketService.getNeeds(this.userName).subscribe(userNeeds => this.userNeeds = userNeeds);
+  user = inject(User);
+
+  userNeeds: Need[] = [];
+  needQuantity = 30;
+  displayValue = 69;
+
+  currentUser: string | null = null;
+  userName: string = '';
+
+  ngOnInit(): void {
+    this.currentUser = this.user.getCurrentUser();
+    if (!this.currentUser) {
+      this.router.navigate(['/login'], { queryParams: { returnUrl: '/checkout' } });
+      return;
+    }
+    this.userName = this.currentUser;
+    this.getNeeds();
   }
 
-  ngOnInit(): void { // initiates getNeeds
-    this.getNeeds(); 
+  getNeeds(): void {
+    this.fundingBasketService.getNeeds(this.userName)
+      .subscribe(needs => this.userNeeds = needs);
   }
 
   add(name: string, value: number, quantity: number, type: string): void {

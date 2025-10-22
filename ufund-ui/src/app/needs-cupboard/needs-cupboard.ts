@@ -1,22 +1,42 @@
-import { Component, OnInit } from '@angular/core';
-import {Need} from '../need';
+import { Component, OnInit, inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { Need } from '../need';
 import { NeedsCupboardService } from '../needs-cupboard-service';
-import { HttpClient } from '@angular/common/http';
 import { FundingBasketService } from '../funding-basket-service';
-import { LoginPage } from '../login-page/login-page';
 import { User } from '../user';
+
 @Component({
   selector: 'app-needs-cupboard',
   standalone: false,
   templateUrl: './needs-cupboard.html',
-  styleUrl: './needs-cupboard.css'
+  styleUrls: ['./needs-cupboard.css']
 })
- export class NeedsCupboard implements OnInit{  
-  constructor(private needsCupboardService: NeedsCupboardService, private fundingBasketService: FundingBasketService, private user: User) { }
-  userName: String = 'helper123';
+export class NeedsCupboard implements OnInit {
+  constructor(
+    private needsCupboardService: NeedsCupboardService,
+    private fundingBasketService: FundingBasketService,
+    private router: Router
+  ) {}
+
+  user = inject(User);
+
+  userName: string = '';
   needs: Need[] = [];
   searchTerm = '';
-  buttonText: String = "Add to Cart";
+  buttonText: string = 'Add to Cart';
+
+  ngOnInit(): void {
+    const u = this.user.getCurrentUser();
+    if (!u) {
+      this.router.navigate(['/login'], { queryParams: { returnUrl: '/needs' } });
+      return;
+    }
+    this.userName = u;
+    this.getNeeds();
+
+    const saved = localStorage.getItem('buttonText');
+    if (saved) this.buttonText = saved;
+  }
 
   getNeeds(): void {
     const term = this.searchTerm.trim();
@@ -26,14 +46,6 @@ import { User } from '../user';
     method.subscribe(needs => this.needs = needs);
   }
  
-  ngOnInit(): void {
-    this.getNeeds();
-    const savedName = localStorage.getItem('buttonText');
-    if (savedName) {
-      this.buttonText = savedName;
-    }
-  }
-
   add(name: string): void {
     name = name.trim();
     if (!name) { return; }
