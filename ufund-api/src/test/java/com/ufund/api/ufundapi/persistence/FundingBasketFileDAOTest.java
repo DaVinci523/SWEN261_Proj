@@ -261,8 +261,9 @@ public class FundingBasketFileDAOTest {
         assertNotNull(result);
         assertEquals(need.getName(),result.getName());
         assertEquals(need.getValue(),result.getValue());
-        assertEquals(need.getQuantity(),result.getQuantity());
+        assertEquals(1,result.getQuantity());
         assertEquals(need.getType(),result.getType());
+        assertEquals(need.getId(), result.getId());
     }
 
     @Test
@@ -272,7 +273,12 @@ public class FundingBasketFileDAOTest {
         // Invoke
         Need result = assertDoesNotThrow(() -> fundingBasketFileDAO.createdNeed("user1", need),"Unexpected exception thrown");
         // Analyze
-        assertNull(result);
+        assertNotNull(result);
+        assertEquals(need.getId(), result.getId());
+        assertEquals(need.getName(), result.getName());
+        assertEquals(6, result.getQuantity());
+        assertEquals(need.getValue(), result.getValue());
+        assertEquals(need.getType(), result.getType());
     }
 
 
