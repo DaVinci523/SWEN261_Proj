@@ -51,19 +51,23 @@ This section describes the features of the application.
 
 
 ## Application Domain
+<img width="780" height="517" alt="Screenshot 2025-10-22 195258" src="https://github.com/user-attachments/assets/8557fdfb-d1e2-436e-979e-70dda7686842" />
 
 >The application is organized around a navigation bar that appears on every page, giving users quick access to key pages: myResearch (the >homepage), Login, Needs, and Checkout. New users begin on the homepage, which briefly explains the purpose of the app and provides a clear call to >action button that takes them to the Needs Page. From there, users always have the nav bar to move between pages, while the homepage acts as the >welcoming hub.
 >
 >The primary flow is present on the Need Page and Checkout Page. The Need Page has a split layout where the left panel lists all available needs in >the “need cupboard,” and the right panel shows the user’s current “funding basket.” Users can add items from the cupboard to their basket and >adjust their quantities. Proceeding to the Checkout Page, they again see a similar layout with basket contents on the left and payment inputs on >the right. Filling out the payment fields and clicking checkout submits the purchase which makes the system remove the purchased quantities from >the need cupboard, clears the user’s basket, and sends the user back to the homepage. If a user logs in with the username “admin,” they’re taken >to the Admin Page, which has the similar split layout with the left side displaying the current contents of the need cupboard, while the right >side provides controls to add, edit, or remove needs.
 
 
-<img width="700" height="543" alt="Team1DomainAnalysis2 drawio" src="https://github.com/user-attachments/assets/4761c2de-7beb-43d9-9579-60b06b449997" />
+
 
 
 
 
 
 ## Architecture and Design
+<img width="789" height="382" alt="image" src="https://github.com/user-attachments/assets/0dd1fdc1-ee4d-45e4-aa4e-b58a8b22dd17" />
+
+
 
 This section describes the application architecture.
 
@@ -97,6 +101,7 @@ This section describes the application architecture.
 >* _A single class diagram of the entire system will not be effective. You may start with one, but will be need to break it down into smaller sections to account for requirements of each of the Tier static models below._
  >* _Correct labeling of relationships with proper notation for the relationship type, multiplicities, and navigation information will be important._
  >* _Include other details such as attributes and method signatures that you think are needed to support the level of detail in your discussion._
+<img width="6467" height="2197" alt="Team1a-CTRL_SWEN261_UI_Overview drawio" src="https://github.com/user-attachments/assets/dc678bcb-0558-41a4-99ab-a934c3bbad5f" />
 
 ### ViewModel Tier
 
@@ -348,6 +353,7 @@ This section describes the application architecture.
 
 >_**[Sprint 2, 3 & 4]** **Include images of your code coverage report.** If there are any anomalies, discuss
 > those._
+<img width="821" height="718" alt="Screenshot 2025-10-22 195501" src="https://github.com/user-attachments/assets/b3654d8a-6a0f-4898-b659-39e9f3e06d84" />
 
 ## Ongoing Rationale
 >_**[Sprint 1, 2, 3 & 4]** Throughout the project, provide a time stamp **(yyyy/mm/dd): Sprint # and description** of any _**mayor**_ team decisions or design milestones/changes and corresponding justification._
