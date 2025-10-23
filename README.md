@@ -71,6 +71,10 @@ To run tests on all the tiers in isolation do this:
 4. ...
 5. ...
 
+## User Authentication
+Ufund Manager => username: admin, password: (can be anything)
+Helper => username: (can be anything), password: (can be anything)
+
 ## License
 
 MIT License
