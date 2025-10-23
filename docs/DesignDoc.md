@@ -101,7 +101,6 @@ This section describes the application architecture.
 >* _A single class diagram of the entire system will not be effective. You may start with one, but will be need to break it down into smaller sections to account for requirements of each of the Tier static models below._
  >* _Correct labeling of relationships with proper notation for the relationship type, multiplicities, and navigation information will be important._
  >* _Include other details such as attributes and method signatures that you think are needed to support the level of detail in your discussion._
-<img width="6467" height="2197" alt="Team1a-CTRL_SWEN261_UI_Overview drawio" src="https://github.com/user-attachments/assets/dc678bcb-0558-41a4-99ab-a934c3bbad5f" />
 
 ### ViewModel Tier
 
