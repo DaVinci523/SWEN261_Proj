@@ -36,13 +36,11 @@ An online U-Fund system built in Java **24**
 - For the application to run the needs.json should have at least the following data: 
 []
 
-- Bugs: Needs still remain in funding basket even after their corresponding need is removed from the needs cupboard.
-
-- Disclaimers: 
+2. Bugs & Disclaimers:  The following are features that are currently bugged, and planned to be resolved in Sprint 3: 
+- Needs still remain in funding basket even after their corresponding need is removed from the needs cupboard.
 - For users, there is no set password for them. The program will accept any value. This is planned to be updated in Sprint 3.
 - In the admin page, if the data fields are empty when updating a need, the respective fields will be empty. The same goes for adding a need, the only requirement for adding is the need's name. (to update a need you would have to enter all the fields even if you only want to update one field.)
-
-
+- Regarding quantity and surplus, our cupboard currently shows the manager's needs that are remaining, counting down for every user that supports it. Then in surplus, the visual changes to "Surplus" instead of showing the negative values. We plan to change this functionality to display, for example 8/10 when not in surplus so that later on when the requested needs increas, say from 10-20, the application will display 13/20 where the previous surplus was 13/10.
 
 ## How to test it
 
