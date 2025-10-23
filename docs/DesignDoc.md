@@ -179,7 +179,8 @@ This section describes the application architecture.
 > _At appropriate places as part of this narrative provide **one** or more updated and **properly labeled**
 > static models (UML class diagrams) with some details such as associations (connections) between classes, and critical attributes and methods. (**Be sure** to revisit the Static **UML Review Sheet** to ensure your class diagrams are using correct format and syntax.)_
 > 
-![Replace with your ViewModel Tier class diagram 1, etc.](model-placeholder.png)
+<img width="929" height="716" alt="image" src="https://github.com/user-attachments/assets/5b448ef0-0130-4b9a-8a35-b2a5519c4efe" />
+
 
 ### Model Tier
 >Our Model tier consists of a Need.java file that contains our need object. Each need object has an identification (id), name, value (or the cost), >type (what type of item it is), and quantity. There are getter and setters for each of the variables above.
@@ -324,7 +325,8 @@ This section describes the application architecture.
       * @return false, if deletion failed
 
 
-![Replace with your Model Tier class diagram 1, etc.](model-placeholder.png)
+<img width="577" height="314" alt="image" src="https://github.com/user-attachments/assets/d446a249-bbec-44d8-9212-d4616f936bea" />
+
 
 ## OO Design Principles
 >Sprint 1: The two Object Oriented Design principles that the CTRL team is championing throughout the design and implementation are Low Coupling >and Open/Close. The Low Coupling principle is implemented into the design through there being only one connection. The Open/Close principle is >utilized as our program is designed to grow over time. As of Sprint 1 the foundational code has been written and we will be able to add new >functionality without modifying what is already there.
