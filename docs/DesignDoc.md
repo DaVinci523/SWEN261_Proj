@@ -324,7 +324,8 @@ This section describes the application architecture.
       * @return false, if deletion failed
 
 
-<img width="577" height="314" alt="image" src="https://github.com/user-attachments/assets/d446a249-bbec-44d8-9212-d4616f936bea" />
+<img width="593" height="332" alt="image" src="https://github.com/user-attachments/assets/8b54f6bd-9360-4a56-a755-d61547f1c1f3" />
+
 
 
 ## OO Design Principles
