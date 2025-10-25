@@ -61,7 +61,7 @@ export class FundingBasketService {
 
   /** PUT: update the need's visibility on the server */
   changeNeedVisibility(userName: String, id: number, visible: boolean): Observable<any> {
-    const url = `${this.needsUrl}/${userName}/${id}/?visible=${visible}`;
+    const url = `${this.needsUrl}/${userName}/${id}/visible/?visible=${visible}`;
 
     return this.http.put(url, this.httpOptions)/*.pipe(
       tap(_ => this.log(`updated hero id=${hero.id}`)),
