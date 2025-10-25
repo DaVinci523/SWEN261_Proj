@@ -43,33 +43,6 @@ export class FundingBasket implements OnInit {
     this.needsCupboardService.getNeeds().subscribe(cupNeed => this.needsCupboard = cupNeed);
   }
 
-  // updateNeeds(): boolean{ 
-  //   try{
-  //     console.log(this.userNeeds)
-  //     this.userNeeds.forEach((userNeed) => { // loop through every userNeed
-  //       console.log("USERNEED")
-  //       console.log(userNeed);
-  //       this.needsCupboard.forEach((cupboardNeed) => {
-  //         if (cupboardNeed.id == userNeed.id && !cupboardNeed.visible && userNeed.visible){ // update NeedsCupbard needs if both are of same id, and both are visible.
-  //           console.log("CUPBOARD")
-  //           console.log(cupboardNeed)
-  //           this.fundingBasketService.changeNeedVisibility(this.userName, userNeed.id, false);
-  //         }
-  //       });
-
-  //       this.saveAll();
-
-  //     }); 
-            
-  //     return true;
-
-  //   } catch (error){
-  //     console.log("ERROR: " + error);
-      
-  //     return false;
-  //   }
-  // }
-
   add(name: string, value: number, quantity: number, type: string): void {
     this.displayValue = value;
     var id = this.needQuantity;

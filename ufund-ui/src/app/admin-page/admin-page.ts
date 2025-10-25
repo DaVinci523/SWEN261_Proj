@@ -79,10 +79,7 @@ export class AdminPage {
     //   });
 
     // removes the need by tagging its visibility to false
-    this.adminPageService.changeNeedVisibility(need.id, false).subscribe(); //needs => 
-    //   {this.needs = this.needs.filter(n => n !== needs);
-    //      window.location.reload();
-    //   });
+    this.adminPageService.changeNeedVisibility(need.id, false).subscribe();
 
     this.usernames.forEach(username => {
       console.log("WORKING");
