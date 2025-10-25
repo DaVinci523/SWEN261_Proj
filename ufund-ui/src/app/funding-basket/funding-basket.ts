@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Need } from '../need';
 import { FundingBasketService } from '../funding-basket-service';
+import { NeedsCupboardService } from '../needs-cupboard-service';
 import { User } from '../user';
 
 @Component({
@@ -13,12 +14,14 @@ import { User } from '../user';
 export class FundingBasket implements OnInit {
   constructor(
     private fundingBasketService: FundingBasketService,
+    private needsCupboardService: NeedsCupboardService,
     private router: Router
   ) {}
 
   user = inject(User);
 
   userNeeds: Need[] = [];
+  needsCupboard: Need[] = [];
   needQuantity = 30;
   displayValue = 69;
 
@@ -33,11 +36,46 @@ export class FundingBasket implements OnInit {
     }
     this.userName = this.currentUser;
     this.getNeeds();
+    this.updateNeeds();
   }
 
   getNeeds(): void {
-    this.fundingBasketService.getNeeds(this.userName)
-      .subscribe(needs => this.userNeeds = needs);
+    this.fundingBasketService.getNeeds(this.userName).subscribe(userNeeds => this.userNeeds = userNeeds);
+    this.needsCupboardService.getNeeds().subscribe(cupNeed => this.needsCupboard = cupNeed);
+  }
+
+  updateNeeds(): void{
+    console.log("RUNNING")
+
+    console.log("USERNEEDS")
+    console.log(this.userNeeds);
+    console.log("CUPBOARD")
+    console.log(this.needsCupboard);
+    try{
+      this.userNeeds.forEach((userNeed) => { // loop through every userNeed
+        console.log("USERNEED")
+        console.log(userNeed);
+        this.needsCupboard.forEach((cupboardNeed) => {
+          if (cupboardNeed.id == userNeed.id && !cupboardNeed.visible && userNeed.visible){ // update NeedsCupbard needs if both are of same id, and both are visible.
+            console.log("CUPBOARD")
+            console.log(cupboardNeed)
+            this.fundingBasketService.changeNeedVisibility(this.userName, userNeed.id, false);
+          }
+        });
+        console.log("BASKET");
+        console.log(this.userNeeds);
+        console.log("NEEDCUP");
+        console.log(this.needsCupboard);
+
+        this.saveAll();
+
+      }); 
+      
+      //window.location.reload(); // reload the page
+
+    } catch (error){
+      console.log("ERROR: " + error);
+    }
   }
 
   add(name: string, value: number, quantity: number, type: string): void {

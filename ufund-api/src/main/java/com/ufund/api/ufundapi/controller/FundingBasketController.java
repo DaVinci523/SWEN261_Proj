@@ -193,6 +193,37 @@ public class FundingBasketController {
     }
 
     /**
+     * Handles HTTP PUT requests to the "/needs"
+     * @param userName: the user to update
+     * @param id: the id of the need to be updated
+     * @param visible: the visibility state to set the need
+     * @return a Response entity containing HttpStatus.OK if the update was successful,
+     * a HttpStatus.NOT_FOUND if need doesn't exist
+     * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+     */
+    @PutMapping("/{userName}/{id}/visible/")
+    public ResponseEntity<Need> updateNeedVisibility(@PathVariable String userName, @PathVariable int id, @RequestParam boolean visible){
+        LOG.info("PUT /funding_basket_needs/" + userName + "/" + id + "/visible/?visible=" + visible );
+        
+        try {
+
+            Need need = fundingBasketService.getNeed(userName, id);
+            need.setVisiblity(visible); // set the retireved need's visibility
+
+            Need updated = fundingBasketService.updateNeed(userName, need);
+            System.out.println(updated);
+            if (updated != null) {
+                return new ResponseEntity<Need>(updated, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
      * Handles HTTP DELETE requests to the "/needs"
      * @param userName: the user to delete from
      * @param id , id of need to be deleted

@@ -69,10 +69,16 @@ export class AdminPage {
     this.needs = this.needs.filter(n => n !== need);
 
     // calls the deleteNeedID function from adminPageService, accessing the need's id and subscribing to the observable
-    this.adminPageService.deleteNeedID(need.id).subscribe( needs => 
-      {this.needs = this.needs.filter(n => n !== needs);
-         window.location.reload();
-      });
+    // this.adminPageService.deleteNeedID(need.id).subscribe( needs => 
+    //   {this.needs = this.needs.filter(n => n !== needs);
+    //      window.location.reload();
+    //   });
+
+    // removes the need by tagging its visibility to false
+    this.adminPageService.changeNeedVisibility(need.id, false).subscribe(); //needs => 
+    //   {this.needs = this.needs.filter(n => n !== needs);
+    //      window.location.reload();
+    //   });
   }
 
 
@@ -91,7 +97,7 @@ export class AdminPage {
     this.needs = this.needs.filter(n => n !== need);
 
     // calls the updateNeed function from adminPageService, subscribing to the observable
-    this.adminPageService.updateNeed(need, name, value, quantity, type).subscribe(needs => 
+    this.adminPageService.updateNeed(need, name, value, quantity, type, true).subscribe(needs => 
       {this.needs = this.needs.filter(n => n !== needs);
       window.location.reload();});
   }

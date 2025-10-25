@@ -13,13 +13,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Need {
     private static final Logger LOG = Logger.getLogger(Need.class.getName());
     
-    static final String STRINGIFY = "Need [id=%d, name=%s, value=%f, quantity=%d, type=%s]";
+    static final String STRINGIFY = "Need [id=%d, name=%s, value=%f, quantity=%d, type=%s, visible=%b]";
 
     @JsonProperty("id") private int id;
     @JsonProperty("name") private String name;
     @JsonProperty("value") private double value;
     @JsonProperty("quantity") private int quantity;
     @JsonProperty("type") private String type;
+    @JsonProperty("visible") private boolean visible;
     /**
      * Create a Need with given id, name, and value
      * @param id Id of the created Need
@@ -31,12 +32,13 @@ public class Need {
      * value, i.e. 0 for int
      */
     public Need(@JsonProperty("id") int id, @JsonProperty("name") String name, @JsonProperty("value") double value,
-     @JsonProperty("quantity") int quantity, @JsonProperty("type") String type){
+     @JsonProperty("quantity") int quantity, @JsonProperty("type") String type, @JsonProperty("visible") boolean visible){
             this.id = id;
             this.name = name;
             this.value = value;
             this.quantity = quantity;
             this.type = type;
+            this.visible = visible;
 
     }
 
@@ -90,12 +92,24 @@ public class Need {
      * @param type
      */
     public void setType(String type) {this.type = type;}
+    
+    /**
+     * retrieves need's visibility
+     * @return visible
+     */
+    
+    public boolean getVisiblity() {return visible;}
+    /**
+     * Set visibility of this need
+     * @param visible
+     */
+    public void setVisiblity(boolean visible) {this.visible = visible;}
 
     /**
      * @return String representation of a Need
      */
     @Override
     public String toString(){
-        return String.format(STRINGIFY, id, name, value, quantity, type);
+        return String.format(STRINGIFY, id, name, value, quantity, type, visible);
     }
 }

@@ -75,10 +75,10 @@ export class AdminPageService {
    * 
    * @returns returns the PUT request observable
    */
-  updateNeed(need:any, name: string, value: number, quantity: number, type: string):Observable<any>{
+  updateNeed(need:any, name: string, value: number, quantity: number, type: string, visible: boolean):Observable<any>{
     
     // creates the new need object with updated values
-    const updatedNeed: Need = {id: need.id, name, value, quantity, type};
+    const updatedNeed: Need = {id: need.id, name, value, quantity, type, visible};
     
     // sends a PUT request to the needsUrl with the updated need object
     return this.http.put<Need>(this.needsUrl, updatedNeed).pipe(
@@ -87,6 +87,15 @@ export class AdminPageService {
     );
   } 
 
+  /** PUT: update the need's visibility on the server */
+  changeNeedVisibility( id: number, visible: boolean): Observable<any> {
+    const url = `${this.needsUrl}/${id}/visible/?visible=${visible}`;
+
+    return this.http.put(url, this.httpOptions).pipe(
+      tap(_ => this.log(`updated need id=${id}`)),
+      catchError(this.handleError<any>('updateNeed'))
+    );
+  }
 
   /**
    * creates a single need in the needs cupboard

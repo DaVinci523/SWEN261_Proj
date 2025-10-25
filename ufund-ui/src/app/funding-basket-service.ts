@@ -43,11 +43,21 @@ export class FundingBasketService {
     //);
   }
 
-  /** PUT: update the hero on the server */
+  /** PUT: update the need on the server */
   updateNeed(userName: String, need: Need): Observable<any> {
     const url = `${this.needsUrl}/${userName}`;
 
     return this.http.put(url, need, this.httpOptions)/*.pipe(
+      tap(_ => this.log(`updated hero id=${hero.id}`)),
+      catchError(this.handleError<any>('updateHero'))
+    );*/
+  }
+
+  /** PUT: update the need's visibility on the server */
+  changeNeedVisibility(userName: String, id: number, visible: boolean): Observable<any> {
+    const url = `${this.needsUrl}/${userName}/${id}/?visible=${visible}`;
+
+    return this.http.put(url, this.httpOptions)/*.pipe(
       tap(_ => this.log(`updated hero id=${hero.id}`)),
       catchError(this.handleError<any>('updateHero'))
     );*/

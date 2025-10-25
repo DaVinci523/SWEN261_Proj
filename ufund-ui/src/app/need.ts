@@ -4,4 +4,5 @@ export interface Need {
     value: number;
     quantity: number;
     type: string;
+    visible: boolean;
 }
