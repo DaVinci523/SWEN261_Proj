@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AdminPageService } from '../admin-page-service'; 
 import { Need } from '../need';
 import { User } from '../user';
+import { FundingBasketService } from '../funding-basket-service';
 
 @Component({
   selector: 'app-admin-page',
@@ -15,11 +16,13 @@ export class AdminPage {
 
   constructor(
     private adminPageService:AdminPageService, // adminPageService to connect to REST API back-end      
+    private fundingBasketService: FundingBasketService,
     public user: User // current user of the application
   ){}  
 
   needs:Need[] = []; // front-end container for all needs in cupboard
-  
+  usernames:String[] = [];
+
   /**
    * gets all needs from back-end
    */
@@ -27,6 +30,7 @@ export class AdminPage {
 
     // calls the getNeeds function from adminPageService and subscribes to the observable
     this.adminPageService.getNeeds().subscribe(needs => this.needs = needs);
+    this.fundingBasketService.getUserNames().subscribe(usernames => this.usernames = usernames);
   }
 
 
@@ -79,6 +83,24 @@ export class AdminPage {
     //   {this.needs = this.needs.filter(n => n !== needs);
     //      window.location.reload();
     //   });
+
+    this.usernames.forEach(username => {
+      console.log("WORKING");
+      
+      this.fundingBasketService.getNeeds(username).subscribe(basketNeeds => {
+        basketNeeds.forEach((basketNeed:Need) => {
+          console.log(this.fundingBasketService.getNeeds(username));
+          console.log("LOOPING");
+          console.log(need);
+          console.log(basketNeed);
+          if(need.id == basketNeed.id){
+            console.log("CHANGINGNEED");
+            this.fundingBasketService.changeNeedVisibility(username, basketNeed.id, false).subscribe();
+          }
+        })
+      });
+    });
+
   }
 
 

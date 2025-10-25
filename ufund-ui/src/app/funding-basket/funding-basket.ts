@@ -36,7 +36,6 @@ export class FundingBasket implements OnInit {
     }
     this.userName = this.currentUser;
     this.getNeeds();
-    this.updateNeeds();
   }
 
   getNeeds(): void {
@@ -44,39 +43,32 @@ export class FundingBasket implements OnInit {
     this.needsCupboardService.getNeeds().subscribe(cupNeed => this.needsCupboard = cupNeed);
   }
 
-  updateNeeds(): void{
-    console.log("RUNNING")
+  // updateNeeds(): boolean{ 
+  //   try{
+  //     console.log(this.userNeeds)
+  //     this.userNeeds.forEach((userNeed) => { // loop through every userNeed
+  //       console.log("USERNEED")
+  //       console.log(userNeed);
+  //       this.needsCupboard.forEach((cupboardNeed) => {
+  //         if (cupboardNeed.id == userNeed.id && !cupboardNeed.visible && userNeed.visible){ // update NeedsCupbard needs if both are of same id, and both are visible.
+  //           console.log("CUPBOARD")
+  //           console.log(cupboardNeed)
+  //           this.fundingBasketService.changeNeedVisibility(this.userName, userNeed.id, false);
+  //         }
+  //       });
 
-    console.log("USERNEEDS")
-    console.log(this.userNeeds);
-    console.log("CUPBOARD")
-    console.log(this.needsCupboard);
-    try{
-      this.userNeeds.forEach((userNeed) => { // loop through every userNeed
-        console.log("USERNEED")
-        console.log(userNeed);
-        this.needsCupboard.forEach((cupboardNeed) => {
-          if (cupboardNeed.id == userNeed.id && !cupboardNeed.visible && userNeed.visible){ // update NeedsCupbard needs if both are of same id, and both are visible.
-            console.log("CUPBOARD")
-            console.log(cupboardNeed)
-            this.fundingBasketService.changeNeedVisibility(this.userName, userNeed.id, false);
-          }
-        });
-        console.log("BASKET");
-        console.log(this.userNeeds);
-        console.log("NEEDCUP");
-        console.log(this.needsCupboard);
+  //       this.saveAll();
 
-        this.saveAll();
+  //     }); 
+            
+  //     return true;
 
-      }); 
+  //   } catch (error){
+  //     console.log("ERROR: " + error);
       
-      //window.location.reload(); // reload the page
-
-    } catch (error){
-      console.log("ERROR: " + error);
-    }
-  }
+  //     return false;
+  //   }
+  // }
 
   add(name: string, value: number, quantity: number, type: string): void {
     this.displayValue = value;

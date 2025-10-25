@@ -27,6 +27,12 @@ export class FundingBasketService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
+  getUserNames(): Observable<any> {
+    const url = `${this.needsUrl}/usernames`;
+
+    return this.http.get(url);
+  }
+
     /** GET needs from the server */
   getNeeds(userName: String): Observable<any> {
     const url = `${this.needsUrl}/${userName}/needs`;

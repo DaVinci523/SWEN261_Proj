@@ -68,6 +68,35 @@ public class FundingBasketController {
     }
 
     /**
+     * Handles HTTP GET requests to the "/users"
+     * @return a Response entity containing HttpStatus.OK if the array of users is returned,
+     * a HttpStatus.NO_CONTENT if the returned data is null
+     * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+     */
+    @GetMapping("/usernames")
+    public ResponseEntity<String[]> getUsernames(){
+        LOG.info("GET /funding_basket_needs/usernames");
+        try {
+            User user[] = fundingBasketService.getUsers(); // get the usernames of every user
+            String[] usernames = new String[user.length];
+            for(int i = 0; i < user.length; i++){
+                usernames[i] = user[i].getName();
+            }
+
+            if (user != null){
+                return new ResponseEntity<>(usernames,HttpStatus.OK); 
+            }
+            else{
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        }
+        catch(IOException e) {
+            LOG.log(Level.SEVERE,e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }   
+    }
+
+    /**
      * Handles HTTP GET requests to the "/needs/id"
      * @param userName: the user to search in
      * @param id: the searched objects id
