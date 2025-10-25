@@ -283,7 +283,7 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
                 return updateNeed(userName, toUpdate);
             }
 
-            Need newNeed = new Need(need.getId(),need.getName(), need.getValue(), 1, need.getType(), need.getVisiblity());
+            Need newNeed = new Need(need.getId(),need.getName(), need.getValue(), 1, need.getType(), need.getVisible());
             // add the newly created need to the (currentUserNeeds) Map
             currentUserNeeds.put(need.getId(), newNeed);
 

@@ -175,7 +175,7 @@ public class NeedsCupboardController {
         try {
 
             Need need = needsCupboardService.getNeedById(id);
-            need.setVisiblity(visible); // set the retireved need's visibility
+            need.setVisible(visible); // set the retireved need's visibility
 
             Need updated = needsCupboardService.updateNeed(need);
             System.out.println(updated);

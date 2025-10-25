@@ -166,7 +166,7 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
             if (exists){
                 return null;
             }
-            Need newNeed = new Need(nextId(),need.getName(), need.getValue(), need.getQuantity(), need.getType(), need.getVisiblity());
+            Need newNeed = new Need(nextId(),need.getName(), need.getValue(), need.getQuantity(), need.getType(), need.getVisible());
             needs.put(newNeed.getId(),newNeed);
             save();
             return newNeed;

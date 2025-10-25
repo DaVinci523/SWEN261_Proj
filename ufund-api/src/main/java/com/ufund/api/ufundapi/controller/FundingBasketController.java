@@ -237,7 +237,7 @@ public class FundingBasketController {
         try {
 
             Need need = fundingBasketService.getNeed(userName, id);
-            need.setVisiblity(visible); // set the retireved need's visibility
+            need.setVisible(visible); // set the retireved need's visibility
 
             Need updated = fundingBasketService.updateNeed(userName, need);
             System.out.println(updated);

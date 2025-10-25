@@ -98,12 +98,12 @@ public class Need {
      * @return visible
      */
     
-    public boolean getVisiblity() {return visible;}
+    public boolean getVisible() {return visible;}
     /**
      * Set visibility of this need
      * @param visible
      */
-    public void setVisiblity(boolean visible) {this.visible = visible;}
+    public void setVisible(boolean visible) {this.visible = visible;}
 
     /**
      * @return String representation of a Need
