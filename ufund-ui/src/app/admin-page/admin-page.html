@@ -25,7 +25,7 @@
                                     <span class="identifier variable">Id: [{{need.id}}]</span> 
                                     <span class="variable">Name: [{{need.name}}]</span>
                                     <span class="variable">Value: [${{need.value}}]</span>
-                                    <span class="variable">Quantity: [{{need.quantity}}]</span>
+                                    <span class="variable">Quantity: [{{need.currentQuantity}}/{{need.maxQuantity}}]</span>
                                     <span class="variable">Type: ["{{need.type}}"]</span>
 
                                     <!-- delete button attached to every need to immediately remvove it from the needs cupboard -->
@@ -33,7 +33,7 @@
                                     
                                     <!-- update button attacked to every need to update it in the needs cupboard -->
                                     <!-- uses inputs from right column as parameters for updated attributes-->
-                                    <button type="button" class="update" (click)= "updateNeed(need, needName.value, needValue.valueAsNumber, needQuant.valueAsNumber, needType. value);">Update Need</button>     
+                                    <button type="button" class="update" (click)= "updateNeed(need, needName.value, needValue.valueAsNumber, need.currentQuantity, needQuant.valueAsNumber, needType.value);">Update Need</button>     
                                 </span>
                             </span>
                         </li>

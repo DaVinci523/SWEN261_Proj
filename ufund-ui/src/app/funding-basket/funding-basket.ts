@@ -43,6 +43,7 @@ export class FundingBasket implements OnInit {
     this.needsCupboardService.getNeeds().subscribe(cupNeed => this.needsCupboard = cupNeed);
   }
 
+  // add a Need
   add(name: string, value: number, quantity: number, type: string): void {
     this.displayValue = value;
     var id = this.needQuantity;
@@ -50,7 +51,7 @@ export class FundingBasket implements OnInit {
     if (!name) { 
       return; 
     }
-    this.fundingBasketService.addNeed(this.userName, { id, name, value, quantity, type } as Need)
+    this.fundingBasketService.addNeed(this.userName, { id, name, value, currentQuantity: 0, maxQuantity: 1, type, visible: true } as Need)
       .subscribe(need => {
         this.userNeeds.push(need);
       });
@@ -63,7 +64,7 @@ export class FundingBasket implements OnInit {
 
   increaseQuantity(need: Need): void {
     //this.fundingBasketService.increaseQuantity(need).subscribe();
-    need.quantity++;; // temporary visual, does NOT affect the data.json file
+    need.maxQuantity++;; // temporary visual, does NOT affect the data.json file
     this.fundingBasketService.updateNeed(this.userName, need)
         .subscribe(() => {this.getNeeds();
           window.location.reload();
@@ -73,8 +74,8 @@ export class FundingBasket implements OnInit {
 
   decreaseQuantity(need: Need): void {
     //this.fundingBasketService.increaseQuantity(need).subscribe();
-    need.quantity--; // temporary visual, does NOT affect the data.json file
-    if (need.quantity == 0){
+    need.maxQuantity--; // temporary visual, does NOT affect the data.json file
+    if (need.maxQuantity == 0){
       this.fundingBasketService.deleteNeed(this.userName, need.id).subscribe(() => {
       window.location.reload();});
     }

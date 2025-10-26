@@ -70,15 +70,16 @@ export class AdminPageService {
    * @param need - need to be updated
    * @param name - name of updated need
    * @param value - value of updated need
-   * @param quantity - quantity of updated need
+   * @param currentQuantity - currentQuantity of updated need
+   * @param maxQuantity - currentQuantity of updated need
    * @param type - type of updated need
    * 
    * @returns returns the PUT request observable
    */
-  updateNeed(need:any, name: string, value: number, quantity: number, type: string, visible: boolean):Observable<any>{
+  updateNeed(need:any, name: string, value: number, currentQuantity: number, maxQuantity: number, type: string, visible: boolean):Observable<any>{
     
     // creates the new need object with updated values
-    const updatedNeed: Need = {id: need.id, name, value, quantity, type, visible};
+    const updatedNeed: Need = {id: need.id, name, value, currentQuantity, maxQuantity, type, visible};
     
     // sends a PUT request to the needsUrl with the updated need object
     return this.http.put<Need>(this.needsUrl, updatedNeed).pipe(

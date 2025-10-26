@@ -19,7 +19,7 @@
                     <span id="quantity-inputs">
                         <button type="button" class="change-quantity" title="decrease need quantity" (click)="decreaseQuantity(need)">[v]</button>
                         <button type="button" class="change-quantity" title="increase need quantity" (click)="increaseQuantity(need)">[^]</button>
-                        <input type="number" class="manual-quantity" [(ngModel)]="need.quantity" (input)="saveAll()"/> 
+                        <input type="number" class="manual-quantity" [(ngModel)]="need.maxQuantity" (input)="saveAll()"/> 
                         
                         
                     </span>

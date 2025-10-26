@@ -18,7 +18,8 @@ public class Need {
     @JsonProperty("id") private int id;
     @JsonProperty("name") private String name;
     @JsonProperty("value") private double value;
-    @JsonProperty("quantity") private int quantity;
+    @JsonProperty("currentQuantity") int currentQuantity;
+    @JsonProperty("maxQuantity") int maxQuantity;
     @JsonProperty("type") private String type;
     @JsonProperty("visible") private boolean visible;
     /**
@@ -32,11 +33,12 @@ public class Need {
      * value, i.e. 0 for int
      */
     public Need(@JsonProperty("id") int id, @JsonProperty("name") String name, @JsonProperty("value") double value,
-     @JsonProperty("quantity") int quantity, @JsonProperty("type") String type, @JsonProperty("visible") boolean visible){
+     @JsonProperty("currentQuantity") int currentQuantity, @JsonProperty("maxQuantity") int maxQuantity, @JsonProperty("type") String type, @JsonProperty("visible") boolean visible){
             this.id = id;
             this.name = name;
             this.value = value;
-            this.quantity = quantity;
+            this.currentQuantity = currentQuantity;
+            this.maxQuantity = maxQuantity;
             this.type = type;
             this.visible = visible;
 
@@ -71,21 +73,36 @@ public class Need {
      * @return name of need
      */
     public double getValue() {return value;}
+    
     /**
-    * retrieves quantity of need
-    * @return quantity
+    * retrieves currentQuantity of need
+    * @return currentQuantity
     */
-    public int getQuantity() {return quantity;}
+    public int getCurrentQuantity() {return currentQuantity;}
+
+    /**
+    * retrieves currentQuantity of need
+    * @return maxQuantity
+    */
+    public int getMaxQuantity() {return maxQuantity;}
+
     /**
      * retrieves type of need
      * @return type
      */
     public String getType() {return type;}
+
     /**
-     * Set quantity of this need
-     * @param quantity
+     * Set currentQuantity of this need
+     * @param currentQuantity
      */
-    public void setQuantity(int quantity) {this.quantity = quantity;}
+    public void setCurrentQuantity(int currentQuantity) {this.currentQuantity = currentQuantity;}
+
+    /**
+     * Set currentQuantity of this need
+     * @param maxQuantity
+     */
+    public void setMaxQuantity(int maxQuantity) {this.maxQuantity = maxQuantity;}
 
     /**
      * Set type of this need 
@@ -110,6 +127,6 @@ public class Need {
      */
     @Override
     public String toString(){
-        return String.format(STRINGIFY, id, name, value, quantity, type, visible);
+        return String.format(STRINGIFY, id, name, value, currentQuantity, maxQuantity, type, visible);
     }
 }

@@ -54,7 +54,7 @@ export class AdminPage {
     }
 
     // calls the createNeed function, passing the parameters as a Need object, subscribing to the observable
-    this.adminPageService.createNeed({ name, value, quantity, type } as Need)
+    this.adminPageService.createNeed({ name, value, type, currentQuantity: 0, maxQuantity: quantity, visible: true} as Need)
       .subscribe(need => {
         this.needs.push(need);
         window.location.reload();;
@@ -107,16 +107,17 @@ export class AdminPage {
    * @param need - the need to be updated
    * @param name - the updated name of the need
    * @param value - the updated value of the need
-   * @param quantity - the updated quantity of the need
+   * @param currentQuantity - the current quantity of the need
+   * @param maxQuantity - the updated maxQuantity of the need
    * @param type - the updated type of the need   
    */ 
-  updateNeed(need: Need, name: string, value: number, quantity: number, type: string): void {
+  updateNeed(need: Need, name: string, value: number, currentQuantity: number, maxQuantity: number, type: string): void {
     
     // updates the needs list after changing the parameter need
     this.needs = this.needs.filter(n => n !== need);
 
     // calls the updateNeed function from adminPageService, subscribing to the observable
-    this.adminPageService.updateNeed(need, name, value, quantity, type, true).subscribe(needs => 
+    this.adminPageService.updateNeed(need, name, value, currentQuantity, maxQuantity, type, true).subscribe(needs => 
       {this.needs = this.needs.filter(n => n !== needs);
       window.location.reload();});
   }
