@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { AdminPageService } from '../admin-page-service'; 
 import { Need } from '../need';
 import { User } from '../user';
-import { FundingBasketService } from '../funding-basket-service';
 
 @Component({
   selector: 'app-admin-page',
@@ -16,7 +15,6 @@ export class AdminPage {
 
   constructor(
     private adminPageService:AdminPageService, // adminPageService to connect to REST API back-end      
-    private fundingBasketService: FundingBasketService,
     public user: User // current user of the application
   ){}  
 
@@ -30,7 +28,6 @@ export class AdminPage {
 
     // calls the getNeeds function from adminPageService and subscribes to the observable
     this.adminPageService.getNeeds().subscribe(needs => this.needs = needs);
-    this.fundingBasketService.getUserNames().subscribe(usernames => this.usernames = usernames);
   }
 
 
@@ -40,7 +37,7 @@ export class AdminPage {
    *
    * @param name - name of the need
    * @param value - value of the need
-   * @param quantity - quantity of the need
+   * @param quantity - maxQuantity of the need
    * @param type - type of the need
    */
   createNeed(name: string, value: number, quantity: number, type: string): void {
@@ -52,40 +49,27 @@ export class AdminPage {
     if (!name) { 
       return; 
     }
+    else{
 
-    // // checks through every cupboard need and if it matches the newly created need's name and that need is not visible, then set the visibility of that need to true.
-     this.needs.forEach(need => {
-      if(need.name == name && !need.visible){
-        
-        // adds the need back in by tagging its visibility to true
-        this.adminPageService.changeNeedVisibility(need.id, true).subscribe();
-
-    //     // updates all funding basket users to the appropriate visibility
-    //     this.usernames.forEach(username => {
+      // checks through every cupboard need and if it matches the newly created need's name and that need is not visible, then set the visibility of that need to true.
+      this.needs.forEach(need => {
+        if(need.name.toLowerCase == name.toLowerCase && !need.visible){ // check names ignoring case and whitespace
           
-    //       this.fundingBasketService.getNeeds(username).subscribe(basketNeeds => {
-    //         basketNeeds.forEach((basketNeed:Need) => {
-              
-    //           if(need.id == basketNeed.id){
-    //             this.fundingBasketService.changeNeedVisibility(username, basketNeed.id, true).subscribe();
-    //           }
-    //         })
-    //       });
+          // adds the need back in by tagging its visibility to true
+          this.adminPageService.changeNeedVisibility(need.id, true).subscribe();
 
-    //     });
+        }
+      });
 
-      }
-     });
-
-    // calls the createNeed function, passing the parameters as a Need object, subscribing to the observable
-    this.adminPageService.createNeed({ name, value, type, currentQuantity: 0, maxQuantity: quantity, visible: true} as Need)
-      .subscribe(need => {
-        this.needs.push(need);
-        window.location.reload();;
+      // calls the createNeed function, passing the parameters as a Need object, subscribing to the observable
+      this.adminPageService.createNeed({ name, value, type, currentQuantity: 0, maxQuantity: quantity, visible: true} as Need)
+        .subscribe(need => {
+          this.needs.push(need);
+          window.location.reload();
       });
     }
   
-
+  }
   /** 
    * deletes a need both from the needs list and the back-end
    * 
@@ -96,6 +80,7 @@ export class AdminPage {
     // updates the needs list once the need has been deleted
     this.needs = this.needs.filter(n => n !== need);
 
+    // Old functionality of actually deleting the need
     // calls the deleteNeedID function from adminPageService, accessing the need's id and subscribing to the observable
     // this.adminPageService.deleteNeedID(need.id).subscribe( needs => 
     //   {this.needs = this.needs.filter(n => n !== needs);
@@ -104,20 +89,6 @@ export class AdminPage {
 
     // removes the need by tagging its visibility to false
     this.adminPageService.changeNeedVisibility(need.id, false).subscribe();
-
-    // // updates all funding basket users to the appropriate visibility
-    // this.usernames.forEach(username => {
-      
-    //   this.fundingBasketService.getNeeds(username).subscribe(basketNeeds => {
-    //     basketNeeds.forEach((basketNeed:Need) => {
-          
-    //       if(need.id == basketNeed.id){
-    //         this.fundingBasketService.changeNeedVisibility(username, basketNeed.id, false).subscribe();
-    //       }
-    //     })
-    //   });
-
-    // });
 
   }
 
@@ -134,6 +105,19 @@ export class AdminPage {
    */ 
   updateNeed(need: Need, name: string, value: number, currentQuantity: number, maxQuantity: number, type: string): void {
     
+    if(!name){ // if any of the other variables are not set, then don't change them.
+      name = need.name;
+    }
+    if(!value){
+      value = need.value;
+    }
+    if(!maxQuantity){
+      maxQuantity = need.maxQuantity;
+    }
+    if(!type){
+      type = need.type;
+    }
+
     // updates the needs list after changing the parameter need
     this.needs = this.needs.filter(n => n !== need);
 
