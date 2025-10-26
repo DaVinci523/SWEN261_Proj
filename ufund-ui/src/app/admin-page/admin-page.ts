@@ -53,6 +53,30 @@ export class AdminPage {
       return; 
     }
 
+    // // checks through every cupboard need and if it matches the newly created need's name and that need is not visible, then set the visibility of that need to true.
+     this.needs.forEach(need => {
+      if(need.name == name && !need.visible){
+        
+        // adds the need back in by tagging its visibility to true
+        this.adminPageService.changeNeedVisibility(need.id, true).subscribe();
+
+    //     // updates all funding basket users to the appropriate visibility
+    //     this.usernames.forEach(username => {
+          
+    //       this.fundingBasketService.getNeeds(username).subscribe(basketNeeds => {
+    //         basketNeeds.forEach((basketNeed:Need) => {
+              
+    //           if(need.id == basketNeed.id){
+    //             this.fundingBasketService.changeNeedVisibility(username, basketNeed.id, true).subscribe();
+    //           }
+    //         })
+    //       });
+
+    //     });
+
+      }
+     });
+
     // calls the createNeed function, passing the parameters as a Need object, subscribing to the observable
     this.adminPageService.createNeed({ name, value, type, currentQuantity: 0, maxQuantity: quantity, visible: true} as Need)
       .subscribe(need => {
@@ -81,22 +105,19 @@ export class AdminPage {
     // removes the need by tagging its visibility to false
     this.adminPageService.changeNeedVisibility(need.id, false).subscribe();
 
-    this.usernames.forEach(username => {
-      console.log("WORKING");
+    // // updates all funding basket users to the appropriate visibility
+    // this.usernames.forEach(username => {
       
-      this.fundingBasketService.getNeeds(username).subscribe(basketNeeds => {
-        basketNeeds.forEach((basketNeed:Need) => {
-          console.log(this.fundingBasketService.getNeeds(username));
-          console.log("LOOPING");
-          console.log(need);
-          console.log(basketNeed);
-          if(need.id == basketNeed.id){
-            console.log("CHANGINGNEED");
-            this.fundingBasketService.changeNeedVisibility(username, basketNeed.id, false).subscribe();
-          }
-        })
-      });
-    });
+    //   this.fundingBasketService.getNeeds(username).subscribe(basketNeeds => {
+    //     basketNeeds.forEach((basketNeed:Need) => {
+          
+    //       if(need.id == basketNeed.id){
+    //         this.fundingBasketService.changeNeedVisibility(username, basketNeed.id, false).subscribe();
+    //       }
+    //     })
+    //   });
+
+    // });
 
   }
 
