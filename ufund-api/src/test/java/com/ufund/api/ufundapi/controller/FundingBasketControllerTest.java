@@ -46,8 +46,8 @@ public class FundingBasketControllerTest {
     public void testGetNeeds() throws IOException { // getHeroes may throw IOException
         // Setup
         Need[] needs = new Need[2];
-        needs[0] = new Need(1, "Wires", 20.00, 5, "cord");
-        needs[1] = new Need(2, "Breadboard", 10, 1, "board");
+        needs[0] = new Need(1, "Wires", 20.00, 0, 5, "cord", true);
+        needs[1] = new Need(2, "Breadboard", 10, 0, 1, "board", true);
 
         // When getNeeds is called return the needs created above
         when(mockfundingBasketService.getNeeds(USERNAME)).thenReturn(needs);
@@ -91,8 +91,8 @@ public class FundingBasketControllerTest {
     public void testSearchNeeds() throws IOException{
         String searchString = "La";
         Need[] needs = new Need[3];
-        needs[0] = new Need(1, "Lab Kit", 20.00, 5, "kit");
-        needs[2] = new Need(3, "Lab Extinguisher", 150.00, 1, "safety");
+        needs[0] = new Need(1, "Lab Kit", 20.00, 0, 5, "kit", true);
+        needs[2] = new Need(3, "Lab Extinguisher", 150.00, 0, 1, "safety", true);
         //When search heres is classed with "La" return the two Needs created above
         when(mockfundingBasketService.searchNeeds(USERNAME, searchString)).thenReturn(needs);
 
@@ -159,7 +159,7 @@ public class FundingBasketControllerTest {
     @Test
     public void testGetNeed() throws IOException {  // getHero may throw IOException
         // Setup
-        Need need = new Need(99, "Silicon Wafer", 800, 5, "Electronics");
+        Need need = new Need(99, "Silicon Wafer", 800, 0, 5, "Electronics", true);
         // When the same id is passed in, our mock Hero DAO will return the Hero object
         when(mockfundingBasketService.getNeed(USERNAME, need.getId())).thenReturn(need);
 
@@ -246,7 +246,7 @@ public class FundingBasketControllerTest {
     @Test
     public void testUpdateNeed() throws IOException { // updateHero may throw IOException
         // Setup
-        Need need = new Need(1, "Lab Kit", 20.0, 0, "Kit");
+        Need need = new Need(1, "Lab Kit", 20.0, 0, 0, "Kit", true);
         // when updateHero is called, return true simulating successful
         // update and save
         when(mockfundingBasketService.updateNeed(USERNAME, need)).thenReturn(need);
@@ -263,7 +263,7 @@ public class FundingBasketControllerTest {
     @Test
     public void testUpdateNeedFailed() throws IOException { // updateNeed may throw IOException
         // Setup
-        Need need = new Need(99, "Lab Kit", 20.0, 0, "Kit");
+        Need need = new Need(99, "Lab Kit", 20.0, 0, 0, "Kit", true);
         // when updateHero is called, return true simulating successful
         // update and save
         when(mockfundingBasketService.updateNeed(USERNAME, need)).thenReturn(null);
@@ -278,7 +278,7 @@ public class FundingBasketControllerTest {
     @Test
     public void testUpdateHeroHandleException() throws IOException { // updateHero may throw IOException
         // Setup
-        Need need = new Need(99, "Lab Kit", 20.0, 0, "Kit");
+        Need need = new Need(99, "Lab Kit", 20.0, 0, 0, "Kit", true);
         // When updateHero is called on the Mock Hero DAO, throw an IOException
         doThrow(new IOException()).when(mockfundingBasketService).updateNeed(USERNAME, need);
 
@@ -328,7 +328,7 @@ public class FundingBasketControllerTest {
     @Test
     public void testCreateNeed() throws IOException {  // createNeed may throw IOException
         // Setup
-        Need need = new Need(67,"Breadboard", 25.30, 2, "board");
+        Need need = new Need(67,"Breadboard", 25.30, 0, 2, "board", true);
         // when createdNeed is called, return true simulating successful
         // creation and save
         when(mockfundingBasketService.createdNeed(eq(USERNAME), org.mockito.Mockito.any(Need.class))).thenReturn(need);
@@ -347,7 +347,7 @@ public class FundingBasketControllerTest {
     @Test
     public void testCreateNeedFailed() throws IOException {  // createNeed may throw IOException
         // Setup
-        Need need = new Need(67,"Wire", 9.82, 5, "cord");
+        Need need = new Need(67,"Wire", 9.82, 0, 5, "cord", true);
         // when createdNeed is called, return false simulating failed
         // creation and save
         when(mockfundingBasketService.createdNeed(eq(USERNAME), org.mockito.Mockito.any(Need.class))).thenReturn(null);
@@ -365,7 +365,7 @@ public class FundingBasketControllerTest {
     @Test
     public void testCreateNeedHandleException() throws IOException {  // createNeed may throw IOException
         // Setup
-        Need need = new Need(67,"Microscope", 299.99, 1, "scope");
+        Need need = new Need(67,"Microscope", 299.99, 0, 1, "scope", true);
 
 
         // When createdNeed is called on the Mock FundingBasketDAO, throw an IOException

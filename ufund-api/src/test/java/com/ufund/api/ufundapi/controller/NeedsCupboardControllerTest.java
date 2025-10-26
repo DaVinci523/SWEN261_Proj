@@ -42,8 +42,8 @@ public class NeedsCupboardControllerTest {
     public void testGetNeeds() throws IOException { // getHeroes may throw IOException
         // Setup
         Need[] needs = new Need[2];
-        needs[0] = new Need(1, "Wires", 20.00, 5, "cord");
-        needs[1] = new Need(2, "Breadboard", 10, 1, "board");
+        needs[0] = new Need(1, "Wires", 20.00, 0, 5, "cord", true);
+        needs[1] = new Need(2, "Breadboard", 10, 0, 1, "board", true);
 
         // When getNeeds is called return the needs created above
         when(mockNeedsCupboardService.getAllNeeds()).thenReturn(needs);
@@ -74,8 +74,8 @@ public class NeedsCupboardControllerTest {
     public void testSearchNeeds() throws IOException{
         String searchString = "La";
         Need[] needs = new Need[3];
-        needs[0] = new Need(1, "Lab Kit", 20.00, 5, "kit");
-        needs[2] = new Need(3, "Lab Extinguisher", 150.00, 1, "safety");
+        needs[0] = new Need(1, "Lab Kit", 20.00, 0, 5, "kit", true);
+        needs[2] = new Need(3, "Lab Extinguisher", 150.00, 0, 1, "safety", true);
         //When search heres is classed with "La" return the two Needs created above
         when(mockNeedsCupboardService.searchNeeds(searchString)).thenReturn(needs);
 
@@ -142,7 +142,7 @@ public class NeedsCupboardControllerTest {
     @Test
     public void testGetNeed() throws IOException {  // getHero may throw IOException
         // Setup
-        Need need = new Need(99, "Silicon Wafer", 800, 5, "Electronics");
+        Need need = new Need(99, "Silicon Wafer", 800, 0, 5, "Electronics", true);
         // When the same id is passed in, our mock Hero DAO will return the Hero object
         when(mockNeedsCupboardService.getNeedById(need.getId())).thenReturn(need);
 
@@ -232,7 +232,7 @@ public class NeedsCupboardControllerTest {
     @Test
     public void testCreateNeed() throws IOException {
         //Setup
-        Need newNeed = new Need(101, "Battery", 12.0, 2, "power");
+        Need newNeed = new Need(101, "Battery", 12.0, 0, 2, "power", true);
         when(mockNeedsCupboardService.createNeed(newNeed)).thenReturn(newNeed);
 
         // Invoke
@@ -246,7 +246,7 @@ public class NeedsCupboardControllerTest {
     @Test
     public void testCreateNeedConflict() throws IOException {
         //Setup
-        Need newNeed = new Need(101, "Battery", 12.0, 2, "power");
+        Need newNeed = new Need(101, "Battery", 12.0, 0, 2, "power", true);
         when(mockNeedsCupboardService.createNeed(newNeed)).thenReturn(null);
 
         // Invoke
@@ -259,7 +259,7 @@ public class NeedsCupboardControllerTest {
     @Test
     public void testCreateNeedHandleException() throws IOException {
         //Setup
-        Need newNeed = new Need(101, "Battery", 12.0, 2, "power");
+        Need newNeed = new Need(101, "Battery", 12.0, 0, 2, "power", true);
         doThrow(new IOException()).when(mockNeedsCupboardService).createNeed(newNeed);
 
         // Invoke
@@ -275,7 +275,7 @@ public class NeedsCupboardControllerTest {
     @Test
     public void testUpdateNeed() throws IOException {
         //Setup
-        Need updatedNeed = new Need(101, "Battery", 12.0, 2, "power");
+        Need updatedNeed = new Need(101, "Battery", 12.0, 0, 2, "power", true);
         when(mockNeedsCupboardService.updateNeed(updatedNeed)).thenReturn(updatedNeed);
 
         //Invoke
@@ -289,7 +289,7 @@ public class NeedsCupboardControllerTest {
     @Test
     public void testUpdateNeedNotFound() throws IOException {
         //Setup
-        Need updatedNeed = new Need(101, "Battery", 12.0, 2, "power");
+        Need updatedNeed = new Need(101, "Battery", 12.0, 0, 2, "power", true);
         when(mockNeedsCupboardService.updateNeed(updatedNeed)).thenReturn(null);
 
         //Invoke
@@ -302,7 +302,7 @@ public class NeedsCupboardControllerTest {
     @Test
     public void testUpdateNeedHandleException() throws IOException {
         //Setup
-        Need updatedNeed = new Need(101, "Battery", 12.0, 2, "power");
+        Need updatedNeed = new Need(101, "Battery", 12.0, 0, 2, "power", true);
         doThrow(new IOException()).when(mockNeedsCupboardService).updateNeed(updatedNeed);
 
         //Invoke

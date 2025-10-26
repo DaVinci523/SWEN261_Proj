@@ -41,8 +41,8 @@ public class FundingBasketServiceTest {
     @Test
     public void testGetNeeds() throws IOException {
         Need[] expected = {
-            new Need(1, "Wires", 5.0, 10, "cord"),
-            new Need(2, "Breadboard", 12.0, 3, "board")
+            new Need(1, "Wires", 5.0, 0, 10, "cord", true),
+            new Need(2, "Breadboard", 12.0, 0, 3, "board", true)
         };
 
         when(mockDAO.getNeeds(USERNAME)).thenReturn(expected);
@@ -58,7 +58,7 @@ public class FundingBasketServiceTest {
      */
     @Test
     public void testGetNeed() throws IOException {
-        Need expected = new Need(1, "Sensor", 3.5, 4, "component");
+        Need expected = new Need(1, "Sensor", 3.5, 0, 4, "component", true);
         when(mockDAO.getNeed(USERNAME, 1)).thenReturn(expected);
         Need actual = service.getNeed(USERNAME, 1);
 
@@ -73,8 +73,8 @@ public class FundingBasketServiceTest {
     public void testSearchNeeds() throws IOException {
         String searchTerm = "Lab";
         Need[] expected = {
-            new Need(1, "Lab Kit", 20.0, 2, "kit"),
-            new Need(2, "Lab Coat", 15.0, 5, "apparel")
+            new Need(1, "Lab Kit", 20.0, 0, 2, "kit", true),
+            new Need(2, "Lab Coat", 15.0, 0, 5, "apparel", true)
         };
 
         when(mockDAO.searchNeeds(USERNAME, searchTerm)).thenReturn(expected);
@@ -89,7 +89,7 @@ public class FundingBasketServiceTest {
      */
     @Test
     public void testCreateNeed() throws IOException {
-        Need newNeed = new Need(3, "Resistor", 0.10, 100, "component");
+        Need newNeed = new Need(3, "Resistor", 0.10, 0, 100, "component", true);
         when(mockDAO.createdNeed(USERNAME, newNeed)).thenReturn(newNeed);
 
         Need result = service.createdNeed(USERNAME, newNeed);
@@ -102,7 +102,7 @@ public class FundingBasketServiceTest {
      */
     @Test
     public void testUpdateNeed() throws IOException {
-        Need updated = new Need(2, "Updated Board", 14.0, 2, "board");
+        Need updated = new Need(2, "Updated Board", 14.0, 0, 2, "board", true);
         when(mockDAO.updateNeed(USERNAME, updated)).thenReturn(updated);
         Need result = service.updateNeed(USERNAME, updated);
 
@@ -165,10 +165,10 @@ public class FundingBasketServiceTest {
     public void testGetUsers() throws IOException {
         User[] expected = {
             new User("user1", new Need[] {
-                new Need(1, "Wire", 5.0, 10, "cord")
+                new Need(1, "Wire", 5.0, 0, 10, "cord", true)
             }),
             new User("user2", new Need[] {
-                new Need(2, "Breadboard", 12.0, 3, "board")
+                new Need(2, "Breadboard", 12.0, 0, 3, "board", true)
             })
         };
 

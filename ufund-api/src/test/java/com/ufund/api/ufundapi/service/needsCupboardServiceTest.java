@@ -42,8 +42,8 @@ public class needsCupboardServiceTest {
     @Test
     public void testGetAllNeeds() throws IOException {
         Need[] expected = {
-            new Need(1, "Wire", 5.0, 10, "cord"),
-            new Need(2, "BreadBoard", 10.0, 2, "board")
+            new Need(1, "Wire", 5.0, 0, 10, "cord", true),
+            new Need(2, "BreadBoard", 10.0, 0, 2, "board", true)
         };
 
         when(mockDAO.getNeeds()).thenReturn(expected);
@@ -59,7 +59,7 @@ public class needsCupboardServiceTest {
      */
     @Test
     public void testGetNeedById() throws IOException {
-        Need expected = new Need(1, "Sensor", 3.5, 4, "component");
+        Need expected = new Need(1, "Sensor", 3.5, 0, 4, "component", true);
 
         when(mockDAO.getNeed(1)).thenReturn(expected);
         Need actual = service.getNeedById(1);
@@ -74,8 +74,8 @@ public class needsCupboardServiceTest {
      */
     @Test
     public void testCreateNeed() throws IOException {
-        Need toCreate = new Need(0, "Battery", 12.0, 1, "power");
-        Need created = new Need(5, "Battery", 12.0, 1, "power");
+        Need toCreate = new Need(0, "Battery", 12.0, 0, 1, "power", true);
+        Need created = new Need(5, "Battery", 12.0, 0, 1, "power", true);
 
         when(mockDAO.createdNeed(toCreate)).thenReturn(created);
 
@@ -116,7 +116,7 @@ public class needsCupboardServiceTest {
     @Test
     public void testSearchNeeds() throws IOException {
         Need[] expected = {
-            new Need(1, "Wire", 5.0, 10, "cord")
+            new Need(1, "Wire", 5.0, 0, 10, "cord", true)
         };
 
         when(mockDAO.searchNeeds("Wire")).thenReturn(expected);
@@ -132,8 +132,8 @@ public class needsCupboardServiceTest {
      */
     @Test
     public void testUpdateNeed() throws IOException {
-        Need toUpdate = new Need(2, "BreadBoard", 12.0, 3, "board");
-        Need updated = new Need(2, "BreadBoard", 12.0, 3, "board");
+        Need toUpdate = new Need(2, "BreadBoard", 12.0, 0, 3, "board", true);
+        Need updated = new Need(2, "BreadBoard", 12.0, 0, 3, "board", true);
 
         when(mockDAO.updateNeed(toUpdate)).thenReturn(updated);
 

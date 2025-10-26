@@ -39,9 +39,9 @@ public class NeedsCupboardFileDAOTest {
     public void setup() throws IOException {
         mockObjectMapper = mock(ObjectMapper.class);
         testNeeds = new Need[] {
-            new Need(1, "Wire", 5.0, 10, "cord"),
-            new Need(2, "BreadBoard", 10.0, 2, "board"),
-            new Need(3, "Sensor", 3.5, 4, "component")
+            new Need(1, "Wire", 5.0, 0, 10, "cord", true),
+            new Need(2, "BreadBoard", 10.0, 0, 2, "board", true),
+            new Need(3, "Sensor", 3.5, 0, 4, "component", true)
         };
 
         // Mock the ObjectMapper to return our testNeeds array
@@ -96,7 +96,7 @@ public class NeedsCupboardFileDAOTest {
      */
     @Test
     public void testCreateNeed() throws IOException {
-        Need newNeed = new Need(0, "Battery", 12.0, 1, "power");
+        Need newNeed = new Need(0, "Battery", 12.0, 0, 1, "power", true);
         Need result = dao.createdNeed(newNeed);
         assertNotNull(result);
         assertEquals(newNeed.getName(), result.getName());
@@ -109,7 +109,7 @@ public class NeedsCupboardFileDAOTest {
      */
     @Test
     public void testUpdateNeed() throws IOException {
-        Need updated = new Need(2, "Updated Board", 15.0, 5, "board");
+        Need updated = new Need(2, "Updated Board", 15.0, 0, 5, "board", true);
         Need result = dao.updateNeed(updated);
         assertEquals(updated, result);
         assertEquals(updated, dao.getNeed(2));
@@ -120,7 +120,7 @@ public class NeedsCupboardFileDAOTest {
      */
     @Test
     public void testUpdateNeedNotFound() throws IOException {
-        Need updated = new Need(999, "NonExistent", 0.0, 0, "none");
+        Need updated = new Need(999, "NonExistent", 0.0, 0, 0, "none", true);
         Need result = dao.updateNeed(updated);
         assertNull(result);
     }
