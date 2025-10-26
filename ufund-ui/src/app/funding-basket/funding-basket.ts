@@ -4,6 +4,7 @@ import { Need } from '../need';
 import { FundingBasketService } from '../funding-basket-service';
 import { NeedsCupboardService } from '../needs-cupboard-service';
 import { User } from '../user';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-funding-basket',
@@ -41,30 +42,47 @@ export class FundingBasket implements OnInit {
   getNeeds(): void {
     this.fundingBasketService.getNeeds(this.userName).subscribe((userNeeds) => {
       this.userNeeds = userNeeds;
+      
+      //var updated = false;
 
       this.needsCupboardService.getNeeds().subscribe(cupNeeds => {
         this.needsCupboard = cupNeeds;
-        
+
+        var updateCalls: any[] = [];
+
         // Update the data for each of the current user's needs to be the same as the cupboards data
         this.userNeeds.forEach(userNeed => {
           this.needsCupboard.forEach((cupboardNeed:Need) => { //loop through the cupboard's needs
               
               if(userNeed.id == cupboardNeed.id){ // update the respective data for each userNeed
-                this.fundingBasketService.updateNeed( this.userName, { 
-                  id: cupboardNeed.id, 
-                  name: cupboardNeed.name, 
-                  value: cupboardNeed.value, 
-                  currentQuantity: userNeed.currentQuantity, 
-                  maxQuantity: userNeed.maxQuantity, 
-                  type: cupboardNeed.type, 
-                  visible: cupboardNeed.visible
-                } as Need).subscribe();
+                if(userNeed !== cupboardNeed){ // update only if there is a discrepency
+                  //updated = true;
+                  updateCalls.push(this.fundingBasketService.updateNeed( this.userName, { 
+                    id: cupboardNeed.id, 
+                    name: cupboardNeed.name, 
+                    value: cupboardNeed.value, 
+                    currentQuantity: userNeed.currentQuantity, 
+                    maxQuantity: userNeed.maxQuantity, 
+                    type: cupboardNeed.type, 
+                    visible: cupboardNeed.visible
+                  } as Need)); // reload the page after updating
+                }
               }
           });
         });
 
+        if (updateCalls.length > 0) {
+          forkJoin(updateCalls).subscribe(() => {
+            // Refresh data after all updates complete
+            this.fundingBasketService.getNeeds(this.userName).subscribe((userNeeds) => this.userNeeds = userNeeds);
+            this.needsCupboardService.getNeeds().subscribe(cupNeeds => this.needsCupboard = cupNeeds);
+          });
+        }
+
       });
+
       
+
     });
   }
 

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Need {
     private static final Logger LOG = Logger.getLogger(Need.class.getName());
     
-    static final String STRINGIFY = "Need [id=%d, name=%s, value=%f, quantity=%d, type=%s, visible=%b]";
+    static final String STRINGIFY = "Need [id=%d, name=%s, value=%f, currentQuantity=%d, maxQuantity=%d,type=%s, visible=%b]";
 
     @JsonProperty("id") private int id;
     @JsonProperty("name") private String name;
