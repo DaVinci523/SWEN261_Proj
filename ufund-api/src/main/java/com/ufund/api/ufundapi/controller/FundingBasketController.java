@@ -46,7 +46,7 @@ public class FundingBasketController {
     }
 
     /**
-     * Handles HTTP GET requests to the "/users"
+     * Handles HTTP GET requests to "/funding_basket_needs/users"
      * @return a Response entity containing HttpStatus.OK if the array of users is returned,
      * a HttpStatus.NO_CONTENT if the returned data is null
      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
@@ -68,7 +68,7 @@ public class FundingBasketController {
     }
 
     /**
-     * Handles HTTP GET requests to the "/users"
+     * Handles HTTP GET requests to "funding_basket_needs/usernames"
      * @return a Response entity containing HttpStatus.OK if the array of users is returned,
      * a HttpStatus.NO_CONTENT if the returned data is null
      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
@@ -97,7 +97,7 @@ public class FundingBasketController {
     }
 
     /**
-     * Handles HTTP GET requests to the "/needs/id"
+     * Handles HTTP GET requests to "/funding_basket_needs/userName/id"
      * @param userName: the user to search in
      * @param id: the searched objects id
      * @return a Response entity containing HttpStatus.OK if the search was successful,
@@ -123,7 +123,7 @@ public class FundingBasketController {
     }
 
     /**
-     * Handles HTTP GET requests to the "userName/needs"
+     * Handles HTTP GET requests to "/funding_basket_needs/userName/needs"
      * @param userName: the user to retrieve from
      * @return a Response entity containing HttpStatus.OK if the array of needs is returned,
      * a HttpStatus.NO_CONTENT if the returned data is null
@@ -148,7 +148,7 @@ public class FundingBasketController {
     }
 
     /**
-     * Handles HTTP GET requests to the "/needs/?name= "name""
+     * Handles HTTP GET requests to "/funding_basket_needs/userName/?name= "name""
      * @param userName: the user to search from
      * @param name , check if need contains String name
      * @return a Response entity containing HttpStatus.OK if the search was successful,
@@ -168,7 +168,7 @@ public class FundingBasketController {
     }
 
     /**
-     * Handles HTTP POST requests to the "/needs"
+     * Handles HTTP POST requests to "/funding_basket_needs/userName "need""
      * @param userName: the user to create in
      * @param need: the object to be created
      * @return a Response entity containing HttpStatus.CREATED if the creation was successful,
@@ -196,7 +196,7 @@ public class FundingBasketController {
     }
 
     /**
-     * Handles HTTP PUT requests to the "/needs"
+     * Handles HTTP PUT requests to "/funding_basket_needs/userName "need""
      * @param userName: the user to update
      * @param need: the object to be updated
      * @return a Response entity containing HttpStatus.OK if the update was successful,
@@ -222,7 +222,7 @@ public class FundingBasketController {
     }
 
     /**
-     * Handles HTTP PUT requests to the "/needs"
+     * Handles HTTP PUT requests to "/funding_basket_needs/userName/id/visible/"visible""
      * @param userName: the user to update
      * @param id: the id of the need to be updated
      * @param visible: the visibility state to set the need
@@ -253,7 +253,7 @@ public class FundingBasketController {
     }
 
     /**
-     * Handles HTTP DELETE requests to the "/needs"
+     * Handles HTTP DELETE requests to "/funding_basket_needs/userName/id"
      * @param userName: the user to delete from
      * @param id , id of need to be deleted
      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
@@ -280,7 +280,7 @@ public class FundingBasketController {
     }
 
     /**
-     * Handles HTTP DELETE requests to the "/needs"
+     * Handles HTTP DELETE requests to "/funding_basket_needs/userName/type/type"
      * @param userName: the user to delete from
      * @param type , type of need to be deleted
      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
@@ -306,7 +306,7 @@ public class FundingBasketController {
     }
     
     /**
-     * Handles HTTP DELETE requests to the "/needs"
+     * Handles HTTP DELETE requests to "/funding_basket_needs/userName"
      * @param userName: the user to delete from
      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
      * a HttpStatus.NOT_FOUND if a need of id doesn't exist
@@ -329,7 +329,7 @@ public class FundingBasketController {
     } 
 
     /**
-     * Handles HTTP DELETE requests to the "/needs"
+     * Handles HTTP DELETE requests to "/funding_basket_needs/name/"name""
      * @param userName: the user to delete from
      * @param name , string to check if name contains
      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,

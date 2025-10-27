@@ -139,6 +139,15 @@ This section describes the application architecture.
       * a HttpStatus.NOT_FOUND if need doesn't exist
       * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
       * Updates a need given its (id, name, value, quantity, and type). It will update the data at the specified id.
+  * updateNeedVisibility()
+      * Handles HTTP PUT requests to the "/needs/visibile/"visible""
+      * @param userName: the user to update
+      * @param id: the id of the need to be updated
+      * @param visible: the visibility state to set the need
+      * @return a Response entity containing HttpStatus.OK if the update was successful,
+      * a HttpStatus.NOT_FOUND if need doesn't exist
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured.
+      * Updates a need's (visibile) attribute to true/false
   * deleteNeed()
       * Handles HTTP DELETE requests to the "/needs"
       * @param id , id of need to be deleted
@@ -162,15 +171,90 @@ This section describes the application architecture.
   * deleteNeedName()
       * Handles HTTP DELETE requests to the "/needs"
       * @param name , string to check if name contains
-      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
+      * @return a Response entity containing HttpStatus.OK if the deletion was successful,
       * a HttpStatus.NOT_FOUND if a need of id doesn't exist
       * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
       * Deletes needs given it contains the specified name.
     
 * FundingBasketController.java - Handles HTTP requests from the model tier for the Funding Basket.
-  * Contains the same methods with the addition of a getUsers() method that retrieves all users with funding baskets. 
-  * For the other methods in NeedsCupboard.java, functions similarly, with the addition of a @param userName to access only the funding basket of the specified user. 
-    * For example, if all methods were called with the userName = helper123, then only helper123's funding basket will be accessed and modified. So, if an admin were logged in, they would see no items in the funding basket because their username is not in the funding basket. 
+  * getUsers()
+      * Handles HTTP GET requests to "/funding_basket_needs/users"
+      * @return a Response entity containing HttpStatus.OK if the array of users is returned,
+      * a HttpStatus.NO_CONTENT if the returned data is null
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured.
+  * getUsernames()
+      * Handles HTTP GET requests to "/funding_basket_needs/usernames"
+      * @return a Response entity containing HttpStatus.OK if the array of users is returned,
+      * a HttpStatus.NO_CONTENT if the returned data is null
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+  * getNeed()
+      * Handles HTTP GET requests to "/funding_basket_needs/userName/id"
+      * @param userName: the user to search in
+      * @param id: the searched objects id
+      * @return a Response entity containing HttpStatus.OK if the search was successful,
+      * a HttpStatus.NOT_FOUND if the search fails due to a non existent id
+      *  HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+  * getNeeds()
+      * Handles HTTP GET requests to "/funding_basket_needs/userName/needs"
+      * @param userName: the user to retrieve from
+      * @return a Response entity containing HttpStatus.OK if the array of needs is returned,
+      * a HttpStatus.NO_CONTENT if the returned data is null
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+  * searchNeeds()
+      * Handles HTTP GET requests to "/funding_basket_needs/userName/?name= "name""
+      * @param userName: the user to search from
+      * @param name , check if need contains String name
+      * @return a Response entity containing HttpStatus.OK if the search was successful,
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+  * createNeed()
+      * Handles HTTP POST requests to "/funding_basket_needs/userName "need""
+      * @param userName: the user to create in
+      * @param need: the object to be created
+      * @return a Response entity containing HttpStatus.CREATED if the creation was successful,
+      * a HttpStatus.CONFLICT if the creation fails due to a conflict, or a HttpStatus.INTERNAL_SERVER_ERROR
+      * if an I/O error occured. 
+  * updateNeed()
+      * Handles HTTP PUT requests to "/funding_basket_needs/userName "need""
+      * @param userName: the user to update
+      * @param need: the object to be updated
+      * @return a Response entity containing HttpStatus.OK if the update was successful,
+      * a HttpStatus.NOT_FOUND if need doesn't exist
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+  * updateNeedVisibility()
+      * Handles HTTP PUT requests to "/funding_basket_needs/userName/id/visible/"visible""
+      * @param userName: the user to update
+      * @param id: the id of the need to be updated
+      * @param visible: the visibility state to set the need
+      * @return a Response entity containing HttpStatus.OK if the update was successful,
+      * a HttpStatus.NOT_FOUND if need doesn't exist
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+  * deleteNeedId()
+      * Handles HTTP DELETE requests to "/funding_basket_needs/userName/id"
+      * @param userName: the user to delete from
+      * @param id , id of need to be deleted
+      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
+      * a HttpStatus.NOT_FOUND if a need of id doesn't exist
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured.
+  * deleteNeedType()
+      * Handles HTTP DELETE requests to "/funding_basket_needs/userName/type/type"
+      * @param userName: the user to delete from
+      * @param type , type of need to be deleted
+      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
+      * a HttpStatus.NOT_FOUND if a need of id doesn't exist
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+  * deleteAll()
+      * Handles HTTP DELETE requests to "/funding_basket_needs/userName"
+      * @param userName: the user to delete from
+      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
+      * a HttpStatus.NOT_FOUND if a need of id doesn't exist
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+  * deleteNeedName()
+      * Handles HTTP DELETE requests to "/funding_basket_needs/name/"name""
+      * @param userName: the user to delete from
+      * @param name , string to check if name contains
+      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
+      * a HttpStatus.NOT_FOUND if a need of id doesn't exist
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
 
 > _**[Sprint 4]** Provide a summary of this tier of your architecture. This
 > section will follow the same instructions that are given for the View
