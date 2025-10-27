@@ -29,7 +29,7 @@ export class User {
   }
 
   private getCreds(): CredStore{
-    const raw = localStorage.getItem(this.CREDS_KEY);
+    const raw = sessionStorage.getItem(this.CREDS_KEY);
     let store = {};
     if (raw !== null) {
       const parsed = JSON.parse(raw);
@@ -41,7 +41,7 @@ export class User {
   }
 
   private setCreds(creds: CredStore) {
-    localStorage.setItem(this.CREDS_KEY, JSON.stringify(creds));
+    sessionStorage.setItem(this.CREDS_KEY, JSON.stringify(creds));
   }
 
   private getRoleFor(uname: string): Role {
