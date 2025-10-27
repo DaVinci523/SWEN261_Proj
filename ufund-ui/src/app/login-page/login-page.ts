@@ -9,7 +9,7 @@ import { User } from '../user';
   styleUrls: ['./login-page.css']   // note: styleUrls (plural)
 })
 export class LoginPage {
-  constructor(private router: Router, private user: User) {}
+  constructor(private router: Router, public user: User) {}
 
   username = '';
   password = '';
