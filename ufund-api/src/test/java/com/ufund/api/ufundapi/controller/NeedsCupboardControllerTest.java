@@ -312,6 +312,52 @@ public class NeedsCupboardControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
 
+    //updateNeedVisibility() Tests
+    //  @Test
+    // public void testUpdateNeedVisibility() throws IOException { // updateNeed may throw IOException
+    //     // Setup
+    //     Need need = new Need(1, "Lab Kit", 20.0, 0, 0, "Kit", true);
+    //     // when updateNeed is called, return true simulating successful
+    //     // update and save
+    //     when(mockNeedsCupboardService.updateNeedVisibility(need.getId(), false));
+    //     ResponseEntity<Need> response = needsCupboardController.updateNeedVisibility(need.getId(), false);
+
+    //     // Invoke
+    //     response = needsCupboardController.updateNeedVisibility(need.getId(), false);
+    //     // Analyze
+    //     assertEquals(HttpStatus.OK,response.getStatusCode());
+    //     assertEquals(need,response.getBody());
+    // }
+
+    // @Test
+    // public void testUpdateNeedVisibilityFailed() throws IOException { // updateNeed may throw IOException
+    //     // Setup
+    //     Need need = new Need(99, "Lab Kit", 20.0, 0, 0, "Kit", true);
+    //     // when updateNeed is called, return true simulating successful
+    //     // update and save
+    //     when(mockNeedsCupboardService.updateNeedVisibility(need.getId(), true));
+
+    //     // Invoke
+    //     ResponseEntity<Need> response = needsCupboardController.updateNeedVisibility(need.getId(), true);
+
+    //     // Analyze
+    //     assertEquals(HttpStatus.NOT_FOUND,response.getStatusCode());
+    // }
+
+    // @Test
+    // public void testUpdateNeedVisibilityHandleException() throws IOException { // updateNeed may throw IOException
+    //     // Setup
+    //     Need need = new Need(99, "Lab Kit", 20.0, 0, 0, "Kit", true);
+    //     // When updateNeed is called on the Mock Need DAO, throw an IOException
+    //     doThrow(new IOException()).when(mockNeedsCupboardService).updateNeedVisibility(need.getId(), true);
+
+    //     // Invoke
+    //     ResponseEntity<Need> response = needsCupboardController.updateNeedVisibility(need.getId(), true);
+
+    //     // Analyze
+    //     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,response.getStatusCode());
+    // }
+
     /**
      * deleteAll tests
      */
@@ -346,6 +392,43 @@ public class NeedsCupboardControllerTest {
 
         //Invoke
         ResponseEntity<Need> response = needsCupboardController.deleteAll();
+
+        //Analyze
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
+
+    // deleteNeedName() Tests
+    @Test
+    public void testDeleteNeedName() throws IOException {
+        // when deleteAllNeeds is called return true
+        when(mockNeedsCupboardService.deleteNeedByName("Microscope")).thenReturn(true);
+
+        //Invoke
+        ResponseEntity<Need> response = needsCupboardController.deleteNeedName("Microscope");
+
+        //Analyze
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    public void testDeleteNeedNameNotFound() throws IOException {
+        // simulate no needs to delete and return false
+        when(mockNeedsCupboardService.deleteNeedByName("Microscope")).thenReturn(false);
+
+        //Invoke
+        ResponseEntity<Need> response = needsCupboardController.deleteNeedName("Microscope");
+
+        //Analyze
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    public void testDeleteNeedNameHandleException() throws IOException{
+        // when DeleteNeedName is called return true
+        doThrow(new IOException()).when(mockNeedsCupboardService).deleteNeedByName("Lab");
+
+        //Invoke
+        ResponseEntity<Need> response = needsCupboardController.deleteNeedName("Lab");
 
         //Analyze
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());

@@ -103,6 +103,13 @@ public class NeedsCupboardFileDAOTest {
         assertEquals(newNeed.getValue(), result.getValue());
         assertEquals(newNeed.getType(), result.getType());
     }
+    
+    @Test
+    public void testCreateNeedNotExist() throws IOException {
+        Need newNeed = new Need(0, "Flattery", 12.0, 0, 1, "power", true);
+        Need result = dao.createdNeed(newNeed);
+        assertNull(result);
+    }
 
     /**
      * Tests that updateNeed updates an existing need
@@ -156,6 +163,12 @@ public class NeedsCupboardFileDAOTest {
         }
     }
 
+    @Test
+    public void testDeleteNeedTypeFalse() throws IOException {
+        boolean result = dao.deleteNeedType("rabbit");
+        assertFalse(result);
+    }
+
     /**
      * Test deleteAll clears all needs
      */
@@ -176,5 +189,11 @@ public class NeedsCupboardFileDAOTest {
         for (Need n : dao.getNeeds()){
             assertFalse(n.getName().contains("Wire"));
         }
+    }
+
+    @Test
+    public void testDeleteNeedNameFalse() throws IOException {
+        boolean result = dao.deleteNeedName("Cobra");
+        assertFalse(result);
     }
 }

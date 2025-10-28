@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -62,7 +63,22 @@ public class FundingBasketFileDAOTest {
         
         fundingBasketFileDAO = new FundingBasketFileDAO("doesnt_matter.txt", mockObjectMapper);
     }
-    
+
+    // @Test
+    // public void testGetUsers(){
+    //     testNeeds = new Need[3];
+    //     testNeeds[0] = new Need(1, "Wires", 20.00, 0, 5, "cord", true);
+    //     testNeeds[1] = new Need(2, "Breadboard", 10, 0, 1, "board", true);
+    //     testNeeds[2] = new Need(3, "Lab Kit", 100, 0, 3, "kit", true);
+
+    //     User user1 = new User("user1", testNeeds);
+    //     User[] users = new User[2];
+
+    //     users[0] = user1;
+        
+    //     assertEquals(fundingBasketFileDAO.getUsers(), users);
+    // }
+
     @Test
     public void testGetNeeds() {
         // Invoke
