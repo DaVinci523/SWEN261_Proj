@@ -36,18 +36,93 @@ public class FundingBasketControllerTest {
      * a mock FundingBasketDAO
      */
     @BeforeEach
-    public void setupHeroController() {
+    public void setupNeedController() {
         mockfundingBasketService = mock(FundingBasketService.class);
         fundingBasketController = new FundingBasketController(mockfundingBasketService);
     }
 
+    // getUsers() Tests
+    @Test
+    public void testGetUsers() throws IOException { // getUsers may throw IOException
+        // Setup
+        User[] users = new User[2];
+        
+        Need[] usrNeeds = {new Need(1, "Wires", 20.00, 0, 5, "cord", true)};
+
+        users[0] = new User("helper123", usrNeeds);
+        users[1] = new User("helper456", usrNeeds);
+
+        // When getUsers is called return the users created above
+        when(mockfundingBasketService.getUsers()).thenReturn(users);
+
+        // Invoke
+        ResponseEntity<User[]> response = fundingBasketController.getUsers();
+
+        // Analyze
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(users, response.getBody());
+    }
+
+    @Test
+    public void testGetUsersFalse() throws IOException { // getUsers may throw IOException
+        // Setup
+
+        // When getUsers is called return the users created above
+        when(mockfundingBasketService.getUsers()).thenReturn(null);
+
+        // Invoke
+        ResponseEntity<User[]> response = fundingBasketController.getUsers();
+
+        // Analyze
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+    }
+
+    @Test
+    public void testGetUsersException() throws IOException { // getUsers may throw IOException
+        // Setup
+
+        // When getUsers is called return the users created above
+        doThrow(new IOException()).when(mockfundingBasketService.getUsers());
+
+        // Invoke
+        ResponseEntity<User[]> response = fundingBasketController.getUsers();
+
+        // Analyze
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
+
+    // getUsernames() Test
+    // @Test
+    // public void testGetUsernames() throws IOException { // getUsers may throw IOException
+    //     // Setup
+    //     User[] users = new User[2];
+        
+    //     Need[] usrNeeds = {new Need(1, "Wires", 20.00, 0, 5, "cord", true)};
+
+    //     users[0] = new User("helper123", usrNeeds);
+    //     users[1] = new User("helper456", usrNeeds);
+
+    //     // When getNeeds is called return the needs created above
+    //     when(mockfundingBasketService.getUsers()).thenReturn(users);
+
+    //     ResponseEntity<User[]> response = fundingBasketController.getUsers();
+
+    //     String[] usernames = new String[users.length];
+    //         for(int i = 0; i < users.length; i++){
+    //             usernames[i] = users[i].getName();
+    //         }
+
+    //     // Analyze
+    //     assertEquals(usernames, response.getStatusCode());
+    // }
+
     // getNeeds() Tests
     @Test
-    public void testGetNeeds() throws IOException { // getHeroes may throw IOException
+    public void testGetNeeds() throws IOException { // getNeeds may throw IOException
         // Setup
         Need[] needs = new Need[2];
-        needs[0] = new Need(1, "Wires", 20.00, 5, "cord");
-        needs[1] = new Need(2, "Breadboard", 10, 1, "board");
+        needs[0] = new Need(1, "Wires", 20.00, 0, 5, "cord", true);
+        needs[1] = new Need(2, "Breadboard", 10, 0, 1, "board", true);
 
         // When getNeeds is called return the needs created above
         when(mockfundingBasketService.getNeeds(USERNAME)).thenReturn(needs);
@@ -61,7 +136,7 @@ public class FundingBasketControllerTest {
     }
 
     @Test
-    public void testGetNeedsHandleException() throws IOException { // getHeroes may throw IOException
+    public void testGetNeedsHandleException() throws IOException { // getNeeds may throw IOException
         // Setup
         // When getNeeds is called on the Mock FundingBasketDAO, throw an IOException
         doThrow(new IOException()).when(mockfundingBasketService).getNeeds(USERNAME);
@@ -91,8 +166,8 @@ public class FundingBasketControllerTest {
     public void testSearchNeeds() throws IOException{
         String searchString = "La";
         Need[] needs = new Need[3];
-        needs[0] = new Need(1, "Lab Kit", 20.00, 5, "kit");
-        needs[2] = new Need(3, "Lab Extinguisher", 150.00, 1, "safety");
+        needs[0] = new Need(1, "Lab Kit", 20.00, 0, 5, "kit", true);
+        needs[2] = new Need(3, "Lab Extinguisher", 150.00, 0, 1, "safety", true);
         //When search heres is classed with "La" return the two Needs created above
         when(mockfundingBasketService.searchNeeds(USERNAME, searchString)).thenReturn(needs);
 
@@ -157,10 +232,10 @@ public class FundingBasketControllerTest {
     }
 
     @Test
-    public void testGetNeed() throws IOException {  // getHero may throw IOException
+    public void testGetNeed() throws IOException {  // getNeed may throw IOException
         // Setup
-        Need need = new Need(99, "Silicon Wafer", 800, 5, "Electronics");
-        // When the same id is passed in, our mock Hero DAO will return the Hero object
+        Need need = new Need(99, "Silicon Wafer", 800, 0, 5, "Electronics", true);
+        // When the same id is passed in, our mock Need DAO will return the Need object
         when(mockfundingBasketService.getNeed(USERNAME, need.getId())).thenReturn(need);
 
         // Invoke
@@ -172,11 +247,11 @@ public class FundingBasketControllerTest {
     }
 
     @Test
-    public void testGetNeedNotFound() throws Exception { // createHero may throw IOException
+    public void testGetNeedNotFound() throws Exception { // createNeed may throw IOException
         // Setup
         int needId = 99;
-        // When the same id is passed in, our mock Hero DAO will return null, simulating
-        // no hero found
+        // When the same id is passed in, our mock Need DAO will return null, simulating
+        // no Need found
         when(mockfundingBasketService.getNeed(USERNAME, needId)).thenReturn(null);
 
         // Invoke
@@ -187,10 +262,10 @@ public class FundingBasketControllerTest {
     }
 
     @Test
-    public void testGetNeedHandleException() throws Exception { // createHero may throw IOException
+    public void testGetNeedHandleException() throws Exception { // createNeed may throw IOException
         // Setup
         int needId = 99;
-        // When getHero is called on the Mock Hero DAO, throw an IOException
+        // When getNeed is called on the Mock Need DAO, throw an IOException
         doThrow(new IOException()).when(mockfundingBasketService).getNeed(USERNAME, needId);
 
         // Invoke
@@ -202,10 +277,10 @@ public class FundingBasketControllerTest {
 
     
     @Test
-    public void testDeleteNeed() throws IOException { // deleteHero may throw IOException
+    public void testDeleteNeed() throws IOException { // deleteNeed may throw IOException
         // Setup
         int needId = 1;
-        // when deleteHero is called return true, simulating successful deletion
+        // when deleteNeed is called return true, simulating successful deletion
         when(mockfundingBasketService.deleteNeed(USERNAME, needId)).thenReturn(true);
 
         // Invoke
@@ -216,10 +291,10 @@ public class FundingBasketControllerTest {
     }
 
     @Test
-    public void testDeleteNeedNotFound() throws IOException { // deleteHero may throw IOException
+    public void testDeleteNeedNotFound() throws IOException { // deleteNeed may throw IOException
         // Setup
         int needId = 1;
-        // when deleteHero is called return false, simulating failed deletion
+        // when deleteNeed is called return false, simulating failed deletion
         when(mockfundingBasketService.deleteNeed(USERNAME, needId)).thenReturn(false);
 
         // Invoke
@@ -230,10 +305,10 @@ public class FundingBasketControllerTest {
     }
 
     @Test
-    public void testDeleteNeedHandleException() throws IOException { // deleteHero may throw IOException
+    public void testDeleteNeedHandleException() throws IOException { // deleteNeed may throw IOException
         // Setup
         int needId = 1;
-        // When deleteHero is called on the Mock Hero DAO, throw an IOException
+        // When deleteNeed is called on the Mock Need DAO, throw an IOException
         doThrow(new IOException()).when(mockfundingBasketService).deleteNeed(USERNAME, needId);
 
         // Invoke
@@ -244,10 +319,10 @@ public class FundingBasketControllerTest {
     }
 
     @Test
-    public void testUpdateNeed() throws IOException { // updateHero may throw IOException
+    public void testUpdateNeed() throws IOException { // updateNeed may throw IOException
         // Setup
-        Need need = new Need(1, "Lab Kit", 20.0, 0, "Kit");
-        // when updateHero is called, return true simulating successful
+        Need need = new Need(1, "Lab Kit", 20.0, 0, 0, "Kit", true);
+        // when updateNeed is called, return true simulating successful
         // update and save
         when(mockfundingBasketService.updateNeed(USERNAME, need)).thenReturn(need);
         ResponseEntity<Need> response = fundingBasketController.updateNeed(USERNAME, need);
@@ -263,8 +338,8 @@ public class FundingBasketControllerTest {
     @Test
     public void testUpdateNeedFailed() throws IOException { // updateNeed may throw IOException
         // Setup
-        Need need = new Need(99, "Lab Kit", 20.0, 0, "Kit");
-        // when updateHero is called, return true simulating successful
+        Need need = new Need(99, "Lab Kit", 20.0, 0, 0, "Kit", true);
+        // when updateNeed is called, return true simulating successful
         // update and save
         when(mockfundingBasketService.updateNeed(USERNAME, need)).thenReturn(null);
 
@@ -276,10 +351,10 @@ public class FundingBasketControllerTest {
     }
 
     @Test
-    public void testUpdateHeroHandleException() throws IOException { // updateHero may throw IOException
+    public void testUpdateNeedHandleException() throws IOException { // updateNeed may throw IOException
         // Setup
-        Need need = new Need(99, "Lab Kit", 20.0, 0, "Kit");
-        // When updateHero is called on the Mock Hero DAO, throw an IOException
+        Need need = new Need(99, "Lab Kit", 20.0, 0, 0, "Kit", true);
+        // When updateNeed is called on the Mock Need DAO, throw an IOException
         doThrow(new IOException()).when(mockfundingBasketService).updateNeed(USERNAME, need);
 
         // Invoke
@@ -288,10 +363,56 @@ public class FundingBasketControllerTest {
         // Analyze
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,response.getStatusCode());
     }
+
+    // //updateNeedVisibility() Tests
+    //  @Test
+    // public void testUpdateNeedVisibility() throws IOException { // updateNeed may throw IOException
+    //     // Setup
+    //     Need need = new Need(1, "Lab Kit", 20.0, 0, 0, "Kit", true);
+    //     // when updateNeed is called, return true simulating successful
+    //     // update and save
+    //     when(fundingBasketController.updateNeedVisibility(USERNAME, need.getId(), false)).thenReturn(new Need(1, "Lab Kit", 20.0, 0, 0, "Kit", false));
+    //     ResponseEntity<Need> response = fundingBasketController.updateNeedVisibility(USERNAME, need.getId(), false);
+
+    //     // Invoke
+    //     response = fundingBasketController.updateNeedVisibility(USERNAME, need.getId(), false);
+    //     // Analyze
+    //     assertEquals(HttpStatus.OK,response.getStatusCode());
+    //     assertEquals(need,response.getBody());
+    // }
+
+    // @Test
+    // public void testUpdateNeedVisibilityFailed() throws IOException { // updateNeed may throw IOException
+    //     // Setup
+    //     Need need = new Need(99, "Lab Kit", 20.0, 0, 0, "Kit", true);
+    //     // when updateNeed is called, return true simulating successful
+    //     // update and save
+    //     when(fundingBasketController.updateNeedVisibility(USERNAME, need.getId(), true)).thenReturn(null);
+
+    //     // Invoke
+    //     ResponseEntity<Need> response = fundingBasketController.updateNeedVisibility(USERNAME, need.getId(), true);
+
+    //     // Analyze
+    //     assertEquals(HttpStatus.NOT_FOUND,response.getStatusCode());
+    // }
+
+    // @Test
+    // public void testUpdateNeedVisibilityHandleException() throws IOException { // updateNeed may throw IOException
+    //     // Setup
+    //     Need need = new Need(99, "Lab Kit", 20.0, 0, 0, "Kit", true);
+    //     // When updateNeed is called on the Mock Need DAO, throw an IOException
+    //     doThrow(new IOException()).when(fundingBasketController).updateNeedVisibility(USERNAME, need.getId(), true);
+
+    //     // Invoke
+    //     ResponseEntity<Need> response = fundingBasketController.updateNeedVisibility(USERNAME, need.getId(), true);
+
+    //     // Analyze
+    //     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,response.getStatusCode());
+    // }
     
     @Test
-    public void testDeleteNeedName() throws IOException { // deleteHero may throw IOException
-        // when deleteHero is called return true, simulating successful deletion
+    public void testDeleteNeedName() throws IOException { // deleteNeed may throw IOException
+        // when deleteNeed is called return true, simulating successful deletion
         when(mockfundingBasketService.deleteNeedName(USERNAME, "Kit")).thenReturn(true);
 
         // Invoke
@@ -302,8 +423,8 @@ public class FundingBasketControllerTest {
     }
 
     @Test
-    public void testDeleteNeedNameNotFound() throws IOException { // deleteHero may throw IOException
-        // when deleteHero is called return false, simulating failed deletion
+    public void testDeleteNeedNameNotFound() throws IOException { // deleteNeed may throw IOException
+        // when deleteNeed is called return false, simulating failed deletion
         when(mockfundingBasketService.deleteNeedName(USERNAME, "Kit")).thenReturn(false);
 
         // Invoke
@@ -314,8 +435,8 @@ public class FundingBasketControllerTest {
     }
 
     @Test
-    public void testDeleteNeedNameHandleException() throws IOException { // deleteHero may throw IOException
-        // When deleteHero is called on the Mock Hero DAO, throw an IOException
+    public void testDeleteNeedNameHandleException() throws IOException { // deleteNeed may throw IOException
+        // When deleteNeed is called on the Mock Need DAO, throw an IOException
         doThrow(new IOException()).when(mockfundingBasketService).deleteNeedName(USERNAME, "Kit");
 
         // Invoke
@@ -328,7 +449,7 @@ public class FundingBasketControllerTest {
     @Test
     public void testCreateNeed() throws IOException {  // createNeed may throw IOException
         // Setup
-        Need need = new Need(67,"Breadboard", 25.30, 2, "board");
+        Need need = new Need(67,"Breadboard", 25.30, 0, 2, "board", true);
         // when createdNeed is called, return true simulating successful
         // creation and save
         when(mockfundingBasketService.createdNeed(eq(USERNAME), org.mockito.Mockito.any(Need.class))).thenReturn(need);
@@ -347,7 +468,7 @@ public class FundingBasketControllerTest {
     @Test
     public void testCreateNeedFailed() throws IOException {  // createNeed may throw IOException
         // Setup
-        Need need = new Need(67,"Wire", 9.82, 5, "cord");
+        Need need = new Need(67,"Wire", 9.82, 0, 5, "cord", true);
         // when createdNeed is called, return false simulating failed
         // creation and save
         when(mockfundingBasketService.createdNeed(eq(USERNAME), org.mockito.Mockito.any(Need.class))).thenReturn(null);
@@ -365,7 +486,7 @@ public class FundingBasketControllerTest {
     @Test
     public void testCreateNeedHandleException() throws IOException {  // createNeed may throw IOException
         // Setup
-        Need need = new Need(67,"Microscope", 299.99, 1, "scope");
+        Need need = new Need(67,"Microscope", 299.99, 0, 1, "scope", true);
 
 
         // When createdNeed is called on the Mock FundingBasketDAO, throw an IOException

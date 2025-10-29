@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -49,9 +50,9 @@ public class FundingBasketFileDAOTest {
         mockObjectMapper = mock(ObjectMapper.class);
 
         testNeeds = new Need[3];
-        testNeeds[0] = new Need(1, "Wires", 20.00, 5, "cord");
-        testNeeds[1] = new Need(2, "Breadboard", 10, 1, "board");
-        testNeeds[2] = new Need(3, "Lab Kit", 100, 3, "kit");
+        testNeeds[0] = new Need(1, "Wires", 20.00, 0, 5, "cord", true);
+        testNeeds[1] = new Need(2, "Breadboard", 10, 0, 1, "board", true);
+        testNeeds[2] = new Need(3, "Lab Kit", 100, 0, 3, "kit", true);
 
         User user1 = new User("user1", testNeeds);
 
@@ -62,7 +63,22 @@ public class FundingBasketFileDAOTest {
         
         fundingBasketFileDAO = new FundingBasketFileDAO("doesnt_matter.txt", mockObjectMapper);
     }
-    
+
+    // @Test
+    // public void testGetUsers(){
+    //     testNeeds = new Need[3];
+    //     testNeeds[0] = new Need(1, "Wires", 20.00, 0, 5, "cord", true);
+    //     testNeeds[1] = new Need(2, "Breadboard", 10, 0, 1, "board", true);
+    //     testNeeds[2] = new Need(3, "Lab Kit", 100, 0, 3, "kit", true);
+
+    //     User user1 = new User("user1", testNeeds);
+    //     User[] users = new User[2];
+
+    //     users[0] = user1;
+        
+    //     assertEquals(fundingBasketFileDAO.getUsers(), users);
+    // }
+
     @Test
     public void testGetNeeds() {
         // Invoke
@@ -200,7 +216,7 @@ public class FundingBasketFileDAOTest {
     @Test
     public void testUpdateNeed() throws IOException {
         // Setup
-        Need need = new Need(3, "Oscilloscope", 50.00, 3, "Scope");
+        Need need = new Need(3, "Oscilloscope", 50.00, 0, 3, "Scope", true);
 
         // Invoke
         Need result = assertDoesNotThrow(() -> fundingBasketFileDAO.updateNeed("user1", need),
@@ -215,7 +231,7 @@ public class FundingBasketFileDAOTest {
     @Test
     public void testUpdateNeedNotFound() {
         // Setup
-        Need need = new Need(99, "Oscilloscope", 50.00, 3, "Scope");
+        Need need = new Need(99, "Oscilloscope", 50.00, 0, 3, "Scope", true);
 
         // Invoke
         Need result = assertDoesNotThrow(() -> fundingBasketFileDAO.updateNeed("user1", need),
@@ -254,14 +270,15 @@ public class FundingBasketFileDAOTest {
    @Test
     public void testCreateNeed() {
         // Setup
-        Need need = new Need(102,"Banana-Plug", 5.50, 3, "plug");
+        Need need = new Need(102,"Banana-Plug", 5.50, 0, 3, "plug", true);
         // Invoke
         Need result = assertDoesNotThrow(() -> fundingBasketFileDAO.createdNeed("user1", need),"Unexpected exception thrown");
         // Analyze
         assertNotNull(result);
         assertEquals(need.getName(),result.getName());
         assertEquals(need.getValue(),result.getValue());
-        assertEquals(1,result.getQuantity());
+        assertEquals(0,result.getCurrentQuantity());
+        assertEquals(1,result.getMaxQuantity());
         assertEquals(need.getType(),result.getType());
         assertEquals(need.getId(), result.getId());
     }
@@ -269,14 +286,15 @@ public class FundingBasketFileDAOTest {
     @Test
     public void testCreateNeedAlreadyExists() {
 
-        Need need = new Need(1, "Wires", 20.00, 5, "cord");
+        Need need = new Need(1, "Wires", 20.00, 0, 5, "cord", true);
         // Invoke
         Need result = assertDoesNotThrow(() -> fundingBasketFileDAO.createdNeed("user1", need),"Unexpected exception thrown");
         // Analyze
         assertNotNull(result);
         assertEquals(need.getId(), result.getId());
         assertEquals(need.getName(), result.getName());
-        assertEquals(6, result.getQuantity());
+        assertEquals(0,result.getCurrentQuantity());
+        assertEquals(6,result.getMaxQuantity());
         assertEquals(need.getValue(), result.getValue());
         assertEquals(need.getType(), result.getType());
     }

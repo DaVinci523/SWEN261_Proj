@@ -64,8 +64,8 @@ export class Checkout implements OnInit{
         console.log("USERNEED")
         console.log(userNeed);
         this.needsCupboard.forEach((cupboardNeed) => {
-          if (cupboardNeed.id == userNeed.id){ // update NeedsCupbard needs
-            cupboardNeed.quantity -= userNeed.quantity;
+          if (cupboardNeed.id == userNeed.id && cupboardNeed.visible && userNeed.visible){ // update NeedsCupbard needs if both are of same id, and both are visible.
+            cupboardNeed.currentQuantity += userNeed.maxQuantity;
             console.log("CUPBOARD")
             console.log(cupboardNeed)
             this.needsCupboardService.updateNeed(cupboardNeed).subscribe();

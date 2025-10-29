@@ -243,7 +243,7 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
     /**
      * Returns single need with id
      * @param userName the user this method will modify
-     * @param int id id to search for 
+     * @param id id to search for 
      * @return need if found, null if no id in needs JSON
      */
     @Override
@@ -278,12 +278,12 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
             boolean exists = currentUserNeeds.values().stream().anyMatch(n -> n.getName().equalsIgnoreCase(need.getName()) || n.getId() == (need.getId()));
             if (exists){
                 Need toUpdate = currentUserNeeds.get(need.getId());
-                int newQuantity = toUpdate.getQuantity() + 1;
-                toUpdate.setQuantity(newQuantity);
+                int newQuantity = toUpdate.getMaxQuantity() + 1;
+                toUpdate.setMaxQuantity(newQuantity);
                 return updateNeed(userName, toUpdate);
             }
 
-            Need newNeed = new Need(need.getId(),need.getName(), need.getValue(), 1, need.getType());
+            Need newNeed = new Need(need.getId(),need.getName(), need.getValue(), 0, 1, need.getType(), need.getVisible());
             // add the newly created need to the (currentUserNeeds) Map
             currentUserNeeds.put(need.getId(), newNeed);
 
