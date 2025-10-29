@@ -106,7 +106,7 @@ public class NeedsCupboardFileDAOTest {
     
     @Test
     public void testCreateNeedNotExist() throws IOException {
-        Need newNeed = new Need(0, "Flattery", 12.0, 0, 1, "power", true);
+        Need newNeed = new Need(0, "Wire", 12.0, 0, 1, "power", true);
         Need result = dao.createdNeed(newNeed);
         assertNull(result);
     }

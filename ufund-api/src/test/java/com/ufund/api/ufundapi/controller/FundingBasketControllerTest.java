@@ -52,7 +52,7 @@ public class FundingBasketControllerTest {
         users[0] = new User("helper123", usrNeeds);
         users[1] = new User("helper456", usrNeeds);
 
-        // When getNeeds is called return the needs created above
+        // When getUsers is called return the users created above
         when(mockfundingBasketService.getUsers()).thenReturn(users);
 
         // Invoke
@@ -67,7 +67,7 @@ public class FundingBasketControllerTest {
     public void testGetUsersFalse() throws IOException { // getUsers may throw IOException
         // Setup
 
-        // When getNeeds is called return the needs created above
+        // When getUsers is called return the users created above
         when(mockfundingBasketService.getUsers()).thenReturn(null);
 
         // Invoke
@@ -76,6 +76,45 @@ public class FundingBasketControllerTest {
         // Analyze
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
     }
+
+    @Test
+    public void testGetUsersException() throws IOException { // getUsers may throw IOException
+        // Setup
+
+        // When getUsers is called return the users created above
+        doThrow(new IOException()).when(mockfundingBasketService.getUsers());
+
+        // Invoke
+        ResponseEntity<User[]> response = fundingBasketController.getUsers();
+
+        // Analyze
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
+
+    // getUsernames() Test
+    // @Test
+    // public void testGetUsernames() throws IOException { // getUsers may throw IOException
+    //     // Setup
+    //     User[] users = new User[2];
+        
+    //     Need[] usrNeeds = {new Need(1, "Wires", 20.00, 0, 5, "cord", true)};
+
+    //     users[0] = new User("helper123", usrNeeds);
+    //     users[1] = new User("helper456", usrNeeds);
+
+    //     // When getNeeds is called return the needs created above
+    //     when(mockfundingBasketService.getUsers()).thenReturn(users);
+
+    //     ResponseEntity<User[]> response = fundingBasketController.getUsers();
+
+    //     String[] usernames = new String[users.length];
+    //         for(int i = 0; i < users.length; i++){
+    //             usernames[i] = users[i].getName();
+    //         }
+
+    //     // Analyze
+    //     assertEquals(usernames, response.getStatusCode());
+    // }
 
     // getNeeds() Tests
     @Test
