@@ -20,8 +20,8 @@ export class NeedsCupboardService {
       private MessageService: MessageService){}
 
   /** GET needs from the server */
-  getNeeds(): Observable<Need[]> {
-    return this.http.get<Need[]>(this.needsUrl);
+  getNeeds(): Observable<any> {
+    return this.http.get(this.needsUrl);
   }
 
   httpOptions = {

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AdminPageService } from '../admin-page-service'; 
 import { Need } from '../need';
 import { User } from '../user';
+import { FundingBasketService } from '../funding-basket-service';
 
 @Component({
   selector: 'app-admin-page',
@@ -15,6 +16,7 @@ export class AdminPage {
 
   constructor(
     private adminPageService:AdminPageService, // adminPageService to connect to REST API back-end      
+    private fundingBasketService: FundingBasketService,
     public user: User // current user of the application
   ){}  
 
@@ -28,6 +30,7 @@ export class AdminPage {
 
     // calls the getNeeds function from adminPageService and subscribes to the observable
     this.adminPageService.getNeeds().subscribe(needs => this.needs = needs);
+    this.fundingBasketService.getUserNames().subscribe(usernames => this.usernames = usernames); // gets all the usernames
   }
 
 
@@ -68,6 +71,8 @@ export class AdminPage {
           window.location.reload();
       });
     }
+
+    //this.saveAll();
   
   }
   /** 
@@ -89,6 +94,8 @@ export class AdminPage {
 
     // removes the need by tagging its visibility to false
     this.adminPageService.changeNeedVisibility(need.id, false).subscribe();
+
+    //this.saveAll();
 
   }
 
@@ -124,8 +131,12 @@ export class AdminPage {
     // calls the updateNeed function from adminPageService, subscribing to the observable
     this.adminPageService.updateNeed(need, name, value, currentQuantity, maxQuantity, type, true).subscribe(needs => 
       {this.needs = this.needs.filter(n => n !== needs);
-      window.location.reload();});
-  }
+      window.location.reload();
+    });
+
+    //this.saveAll();
+    
+  }      
 
 
   /*
@@ -137,8 +148,36 @@ export class AdminPage {
     this.getNeeds();
   }
 
-  
+  /**
+   * Update the data for each of user's needs to be the same as the cupboards data
+   */
+    // ------------Commented Out because the baskets already handle their own updates------------
+  // saveAll(): void{
 
-  
+  //   this.usernames.forEach(userName => {
+  //     this.fundingBasketService.getNeeds(userName).subscribe( fundingNeeds => {
+  //       fundingNeeds.forEach((userNeed : Need) => { // loop through individual needs
+  //         this.needs.forEach((cupboardNeed:Need) => { //loop through the cupboard's needs
+              
+  //             if(userNeed.id == cupboardNeed.id){ // update the respective data for each userNeed
+  //               if(userNeed !== cupboardNeed){ // update only if there is a discrepency
+  //                 //updated = true;
+  //                 this.fundingBasketService.updateNeed( userName, { 
+  //                   id: cupboardNeed.id, 
+  //                   name: cupboardNeed.name, 
+  //                   value: cupboardNeed.value, 
+  //                   currentQuantity: userNeed.currentQuantity, 
+  //                   maxQuantity: userNeed.maxQuantity, 
+  //                   type: cupboardNeed.type, 
+  //                   visible: cupboardNeed.visible
+  //                 } as Need).subscribe();
+  //               }
+  //             }
+
+  //         });
+  //       });
+  //     });
+  //   });
+  // }
 
 }
