@@ -52,15 +52,7 @@ public class Review {
         return rating;
     }
 
-    // Setters to allow review editing //
-    public void setReviewText(String reviewText){
-        this.reviewText = reviewText;
-    }
-
-    public void setRating(int rating){
-        this.rating = rating;
-    }
-
+    
     /**
      * @return the String representation of a review
      */

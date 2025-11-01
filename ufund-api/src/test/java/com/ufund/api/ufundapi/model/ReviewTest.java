@@ -30,18 +30,6 @@ public class ReviewTest {
         assertEquals(expected_rating, review.getRating());
     }
 
-    @Test
-    public void testSetRating(){
-        // Setup
-        Review review = new Review(1, "ajp", "Good website", 4);
-        int expected_rating = 3;
-
-        // Invoke
-        review.setRating(expected_rating);
-
-        // Analyze
-        assertEquals(expected_rating, review.getRating());
-    }
 
     @Test
     public void testToString() {
