@@ -110,7 +110,7 @@ public class ReviewController {
      /**
      * Delete all the reviews
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("")
     public ResponseEntity<Review> deleteAllReviews() {
         LOG.info("DELETE /reviews");
         try {
