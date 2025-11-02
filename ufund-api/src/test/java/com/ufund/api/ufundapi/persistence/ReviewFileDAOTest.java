@@ -77,18 +77,21 @@ public class ReviewFileDAOTest {
      * Test getReview() retrieves a review by ID
      */
     @Test
-    public void testGetReview() throws IOException {
-        Review review = reviewFileDAO.getReview(1);
-        assertEquals(testReviews[0], review);
+    public void testGetReviewsByRating() throws IOException {
+        Review[] reviews = reviewFileDAO.getReviewsByRating(5);
+        assertEquals(1, reviews.length);
+        assertEquals("user1", reviews[0].getUserName());
+        assertEquals(5, reviews[0].getRating());
     }
 
     /**
      * Test getReview returns null when the review does not exist
      */
     @Test
-    public void testGetReviewNotFound() throws IOException {
-        Review review = reviewFileDAO.getReview(999);
-        assertNull(review);
+    public void testGetReviewsByRatingNoneFound() throws IOException {
+        Review[] reviews = reviewFileDAO.getReviewsByRating(1);
+        assertNotNull(reviews);
+        assertEquals(0, reviews.length);
     }
 
     /**

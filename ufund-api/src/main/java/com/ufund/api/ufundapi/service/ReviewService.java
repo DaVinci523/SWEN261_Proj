@@ -17,12 +17,12 @@ public interface ReviewService {
     Review[] getReviews() throws IOException;
 
     /**
-     * Gets a single review by its id
-     * @param id the unique id of the review
-     * @return the Review if it exists or null if it doesn't
+     * Gets all reviews with a specific rating
+     * @param rating the rating to filer by
+     * @return  an arrray of reviews with the same rating
      * @throws IOException if an I/O error happens
      */
-    Review getReview(int id) throws IOException;
+    Review[] getReviewsByRating(int rating) throws IOException;
 
     /**
      * Create a new review

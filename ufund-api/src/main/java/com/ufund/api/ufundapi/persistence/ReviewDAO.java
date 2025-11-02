@@ -15,11 +15,11 @@ public interface ReviewDAO {
     Review[] getReviews() throws IOException;
 
     /**
-     * Returns a single review by its id
-     * @param id the id to search for
-     * @return the review if it exists or null if it does not
+     * Returns all reviews of a certain rating
+     * @param rating the rating value to filter reviews by
+     * @return an array of reviews that have the same rating as the parameter
      */
-    Review getReview(int id) throws IOException;
+    Review[] getReviewsByRating(int rating) throws IOException;
 
     /**
      * Create a new Review object
@@ -41,5 +41,6 @@ public interface ReviewDAO {
      * @return true if the file was updated successfully or false if it was not
      */
     boolean deleteAll() throws IOException;
+
 
 }

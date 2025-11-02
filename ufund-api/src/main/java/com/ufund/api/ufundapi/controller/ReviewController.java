@@ -54,15 +54,15 @@ public class ReviewController {
     /**
      * Get a review by its id
      */
-    @GetMapping("/{id}")
-    public ResponseEntity<Review> getReview(@PathVariable int id) {
-        LOG.info("Get /reviews/" + id);
+    @GetMapping("/rating/{rating}")
+    public ResponseEntity<Review[]> getReviewsByRating(@PathVariable int rating) {
+        LOG.info("Get /reviews/rating/" + rating);
         try {
-            Review review = reviewService.getReview(id);
-            if (review != null){
-                return new ResponseEntity<>(review, HttpStatus.OK);
+            Review[] reviews = reviewService.getReviewsByRating(rating);
+            if (reviews.length > 0){
+                return new ResponseEntity<>(reviews, HttpStatus.OK);
             } else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
         } catch (IOException e) {
             LOG.log(Level.SEVERE, e.getLocalizedMessage());

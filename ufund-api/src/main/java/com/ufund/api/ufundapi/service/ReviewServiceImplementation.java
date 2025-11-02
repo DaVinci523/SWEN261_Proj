@@ -27,8 +27,8 @@ public class ReviewServiceImplementation implements ReviewService {
     }
 
     @Override
-    public Review getReview(int id) throws IOException {
-        return reviewDAO.getReview(id);
+    public Review[] getReviewsByRating(int rating) throws IOException {
+        return reviewDAO.getReviewsByRating(rating);
     }
 
     @Override

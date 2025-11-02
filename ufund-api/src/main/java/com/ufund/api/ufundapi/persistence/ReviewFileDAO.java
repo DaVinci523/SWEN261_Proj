@@ -99,9 +99,9 @@ public class ReviewFileDAO implements ReviewDAO{
      * @return the review if it exists or null if it does not
      */
     @Override
-    public Review getReview(int id) throws IOException {
+    public Review[] getReviewsByRating(int rating) throws IOException {
         synchronized (reviews) {
-            return reviews.getOrDefault(id, null);
+            return reviews.values().stream().filter(r -> r.getRating() == rating).toArray(Review[]::new);
         }
     }
 
