@@ -19,18 +19,22 @@ public class NeedTest {
         int expected_id = 99;
         String expected_name = "Breadboard";
         double expected_value = 30.0;
-        int expected_quantity = 6;
+        int expected_current_quantity = 6;
+        int expected_max_quantity = 7;
         String expected_type = "board";
+        boolean expected_visible = true;
 
         // Invoke
-        Need need = new Need(expected_id, expected_name, expected_value, expected_quantity, expected_type);
+        Need need = new Need(expected_id, expected_name, expected_value, expected_current_quantity, expected_max_quantity, expected_type, expected_visible);
 
         // Analyze
         assertEquals(expected_id,need.getId());
         assertEquals(expected_name,need.getName());
         assertEquals(expected_value,need.getValue());
-        assertEquals(expected_quantity,need.getQuantity());
+        assertEquals(expected_current_quantity,need.getCurrentQuantity());
+        assertEquals(expected_max_quantity,need.getMaxQuantity());
         assertEquals(expected_type,need.getType());
+        assertEquals(expected_visible, need.getVisible());
     }
 
     @Test
@@ -39,9 +43,11 @@ public class NeedTest {
         int id = 99;
         String name = "Breadboard";
         double value = 30.0;
-        int quantity = 6;
+        int currentQuantity = 0;
+        int maxQuantity = 6;
         String type = "board";
-        Need need = new Need(id, name, value, quantity, type);
+        boolean visible = true;
+        Need need = new Need(id, name, value, currentQuantity, maxQuantity, type, visible);
 
         Double expected_value = 40.0;
 
@@ -53,22 +59,45 @@ public class NeedTest {
     }
 
     @Test
-    public void testQuantity() {
+    public void testCurrentQuantity() {
         // Setup
         int id = 99;
         String name = "Breadboard";
         double value = 30.0;
-        int quantity = 6;
+        int currentQuantity = 0;
+        int maxQuantity = 6;
         String type = "board";
-        Need need = new Need(id, name, value, quantity, type);
+        boolean visible = true;
+        Need need = new Need(id, name, value, currentQuantity, maxQuantity, type, visible);
 
         int expected_quantity = 7;
 
         // Invoke
-        need.setQuantity(expected_quantity);
+        need.setCurrentQuantity(expected_quantity);
 
         // Analyze
-        assertEquals(expected_quantity,need.getQuantity());
+        assertEquals(expected_quantity,need.getCurrentQuantity());
+    }
+
+    @Test
+    public void testMaxQuantity() {
+        // Setup
+        int id = 99;
+        String name = "Breadboard";
+        double value = 30.0;
+        int currentQuantity = 5;
+        int maxQuantity = 6;
+        String type = "board";
+        boolean visible = true;
+        Need need = new Need(id, name, value, currentQuantity, maxQuantity, type, visible);
+
+        int expected_quantity = 7;
+
+        // Invoke
+        need.setMaxQuantity(expected_quantity);
+
+        // Analyze
+        assertEquals(expected_quantity,need.getMaxQuantity());
     }
 
     @Test
@@ -77,9 +106,11 @@ public class NeedTest {
         int id = 99;
         String name = "Breadboard";
         double value = 30.0;
-        int quantity = 6;
+        int currentQuantity = 0;
+        int maxQuantity = 6;
         String type = "board";
-        Need need = new Need(id, name, value, quantity, type);
+        boolean visible = true;
+        Need need = new Need(id, name, value, currentQuantity, maxQuantity, type, visible);
 
         String expected_type = "breadboard";
 
@@ -96,9 +127,11 @@ public class NeedTest {
         int id = 99;
         String name = "Breadboard";
         double value = 30.0;
-        int quantity = 6;
+        int currentQuantity = 0;
+        int maxQuantity = 6;
         String type = "board";
-        Need need = new Need(id, name, value, quantity, type);
+        boolean visible = true;
+        Need need = new Need(id, name, value, currentQuantity, maxQuantity, type, visible);
 
         String expected_name = "Circuit Board";
 
@@ -115,10 +148,12 @@ public class NeedTest {
         int id = 99;
         String name = "Breadboard";
         double value = 30.0;
-        int quantity = 6;
+        int currentQuantity = 0;
+        int maxQuantity = 6;
         String type = "board";
-        String expected_string = String.format(Need.STRINGIFY,id,name, value, quantity, type);
-        Need need = new Need(id, name, value, quantity, type);
+        boolean visible = true;
+        String expected_string = String.format(Need.STRINGIFY,id,name, value, currentQuantity, maxQuantity, type, visible);
+        Need need = new Need(id, name, value, currentQuantity, maxQuantity, type, visible);
 
         // Invoke
         String actual_string = need.toString();
