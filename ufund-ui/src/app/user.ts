@@ -52,6 +52,51 @@ export class User {
     return 'helper';
   }
 
+  userExists(username: string): boolean {
+    if (username == null) {
+      return false;
+    }
+
+    const uname = username.trim();
+    if (!uname) {
+      return false;
+    }
+
+    const creds = this.getCreds();
+    if (creds[uname] !== undefined) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  createUser(username: string, password: string): boolean {
+    if (username == null) {
+      return false;
+    }
+    if (password == null) {
+      return false;
+    }
+
+    const uname = username.trim();
+    if (!uname) {
+      return false;
+    }
+    if (!password) {
+      return false;
+    }
+
+    const creds = this.getCreds();
+    if (creds[uname]) {
+      return false;
+    }
+
+    const role = this.getRoleFor(uname);
+    creds[uname] = { password: password, role: role };
+    this.setCreds(creds);
+    return true;
+  }
+
   /** 
    * "Logs in a user" which stores the current user logged in.
    * @param username Username of the user
@@ -63,25 +108,22 @@ export class User {
       return false;
     }
     if (!password) {
-       return false;
+      return false;
     }
 
     const uname = username.trim();
-    if (!uname) { 
+    if (!uname) {
       return false;
     }
 
     const creds = this.getCreds();
-    const exists = (creds as CredStore)[uname];
+    const rec = creds[uname];
 
-    if (exists === undefined) {
-      const role = this.getRoleFor(uname);
-      (creds as CredStore)[uname] = { password: password, role: role };
-      this.setCreds(creds as CredStore);
-    } else {
-      if (exists.password !== password) {
-        return false;
-      }
+    if (!rec) {
+      return false;
+    }
+    if (rec.password !== password) {
+      return false;
     }
 
     this.loggedIn = true;

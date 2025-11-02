@@ -16,6 +16,9 @@
       <button class="login-button" type="submit" [disabled]="!username || !password">
         Login
       </button>
+      <button class="login-button" type="button" (click)="onCreateUser()" [disabled]="!username || !password">
+          Create account
+      </button>
     </form>
   </div>
 } @else {
