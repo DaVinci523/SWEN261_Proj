@@ -40,6 +40,15 @@ public interface ReviewService {
      */
     boolean deleteReview(int id) throws IOException;
 
+
+    /**
+     * Delete any reviews by the username
+     * @param userName the username whose reviews are being deleted
+     * @return true if the file was updated successfully or false if it was not
+     * @throws IOException if an I/O error happens
+     */
+    boolean deleteReviewsByUsername(String userName) throws IOException;
+
     /**
      * Delete all reviews
      * @return true if all review were deleted

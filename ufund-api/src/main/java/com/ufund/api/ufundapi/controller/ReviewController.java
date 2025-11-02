@@ -107,6 +107,25 @@ public class ReviewController {
         }
     }
 
+
+    /**
+     * Delete any reviews from a specific username
+     */
+    @DeleteMapping("/user/{userName}")
+    public ResponseEntity<Review> deleteReviewsByUsername(@PathVariable String userName) {
+        LOG.info("DELETE /reviews/user/" + userName);
+        try {
+            if (reviewService.deleteReviewsByUsername(userName)) {
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
      /**
      * Delete all the reviews
      */

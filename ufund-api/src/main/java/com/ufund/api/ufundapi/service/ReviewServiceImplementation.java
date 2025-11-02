@@ -42,6 +42,11 @@ public class ReviewServiceImplementation implements ReviewService {
     }
 
     @Override
+    public boolean deleteReviewsByUsername(String userName) throws IOException {
+        return reviewDAO.deleteReviewsByUsername(userName);
+    }
+
+    @Override
     public boolean deleteAll() throws IOException {
         return reviewDAO.deleteAll();
     }

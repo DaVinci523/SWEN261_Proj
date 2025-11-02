@@ -139,6 +139,23 @@ public class ReviewFileDAO implements ReviewDAO{
     }
 
     /**
+     * Deletes any reviews from the given username
+     * @param userName the username whose reviews should be deleted
+     * @return true if the file was updated sucessfully or false if it was not
+     * @throws IOException
+     */
+    @Override
+    public boolean deleteReviewsByUsername(String userName) throws IOException {
+        synchronized (reviews) {
+            boolean removedAny = reviews.values().removeIf(r -> r.getUserName().equals(userName));
+            if (removedAny) {
+                return save();
+            }
+            return false;
+        }
+    }
+
+    /**
      * Delete all reviews
      * @return true if the file was updated successfully or false if it was not
      */
