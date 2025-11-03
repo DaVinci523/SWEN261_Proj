@@ -96,11 +96,30 @@ public class NeedsCupboardController {
      * @return a Response entity containing HttpStatus.OK if the search was successful,
      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
      */
-    @GetMapping("/")
-    public ResponseEntity<Need[]> searchNeeds(@RequestParam String name){
-        LOG.info("GET /needs/?name=" + name);
+    @GetMapping("/name/{name}")
+    public ResponseEntity<Need[]> searchNeeds(@PathVariable String name){
+        LOG.info("GET /needs/name/" + name);
         try {
             Need[] needs = needsCupboardService.searchNeeds(name);
+            return new ResponseEntity<Need[]>(needs, HttpStatus.OK);
+        }
+        catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Handles HTTP GET requests to the "/needs/?type= "type""
+     * @param text , check if need type contains String text
+     * @return a Response entity containing HttpStatus.OK if the search was successful,
+     * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+     */
+    @GetMapping("/type/{type}")
+    public ResponseEntity<Need[]> searchNeedsType(@PathVariable String type){
+        LOG.info("GET /needs/type/" + type);
+        try {
+            Need[] needs = needsCupboardService.searchNeedsType(type);
             return new ResponseEntity<Need[]>(needs, HttpStatus.OK);
         }
         catch (IOException e) {

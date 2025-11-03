@@ -135,6 +135,26 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
             return getNeedsArray(text);
         }
     }
+    /**
+     * Searches for needs based of the type of the needs
+     * 
+     * @param text
+     * @return List of needs that are of the specific type
+     * @throws IOException
+     */
+    public Need[] searchNeedsType(String text) throws IOException{
+        ArrayList<Need> needsArrayList = new ArrayList<>();
+
+        for (Need need : needs.values()){
+            if (text == null || need.getType().contains(text)){
+                needsArrayList.add(need);
+            }
+        }
+        Need[] needsArray = new Need[needsArrayList.size()];
+        needsArrayList.toArray(needsArray);
+        return needsArray;
+
+    }
 
     /**
      * Returns single need with id

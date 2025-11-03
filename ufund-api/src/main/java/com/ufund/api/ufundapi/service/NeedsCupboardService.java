@@ -12,6 +12,8 @@ public interface NeedsCupboardService {
 
     Need[] searchNeeds(String name) throws IOException;
 
+    Need[] searchNeedsType(String text) throws IOException;
+
     Need createNeed(Need need) throws IOException;
 
     Need updateNeed(Need need) throws IOException;
@@ -23,4 +25,5 @@ public interface NeedsCupboardService {
     boolean deleteAllNeeds() throws IOException;
 
     boolean deleteNeedByName(String name) throws IOException;
+
 }

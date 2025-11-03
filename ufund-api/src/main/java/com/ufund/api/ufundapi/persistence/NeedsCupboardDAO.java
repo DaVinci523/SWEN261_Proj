@@ -22,6 +22,7 @@ public interface NeedsCupboardDAO {
      */
     Need[] searchNeeds(String text) throws IOException;
 
+    Need[] searchNeedsType(String text) throws IOException;
     /**
      * Returns single need with id
      * @param int id id to search for 
