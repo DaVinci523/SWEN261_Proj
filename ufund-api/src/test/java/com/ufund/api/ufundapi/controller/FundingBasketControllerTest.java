@@ -82,7 +82,7 @@ public class FundingBasketControllerTest {
         // Setup
 
         // When getUsers is called return the users created above
-        doThrow(new IOException()).when(mockfundingBasketService.getUsers());
+        doThrow(new IOException()).when(mockfundingBasketService).getUsers();
 
         // Invoke
         ResponseEntity<User[]> response = fundingBasketController.getUsers();

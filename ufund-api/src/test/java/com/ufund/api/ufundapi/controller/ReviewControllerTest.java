@@ -105,4 +105,78 @@ public class ReviewControllerTest {
         ResponseEntity<Review> response = controller.deleteReview(1);
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
+
+    @Test
+    public void testGetReviewsByRatingSuccess() throws IOException {
+        Review[] reviews = { new Review(1, "A", "Great!", 5)};
+        when(mockService.getReviewsByRating(5)).thenReturn(reviews);
+
+        ResponseEntity<Review[]> response = controller.getReviewsByRating(5);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(reviews, response.getBody());
+    }
+
+    @Test
+    public void testGetReviewsByRatingNoContent() throws IOException {
+        when(mockService.getReviewsByRating(5)).thenReturn(new Review[0]);
+
+        ResponseEntity<Review[]> response = controller.getReviewsByRating(5);
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+    }
+
+    @Test
+    public void testGetReviewsByRatingHandlesException() throws IOException {
+        when(mockService.getReviewsByRating(5)).thenThrow(new IOException());
+
+        ResponseEntity<Review[]> response = controller.getReviewsByRating(5);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
+
+    @Test
+    public void testDeleteReviewByUsernameSuccess() throws IOException {
+        when(mockService.deleteReviewsByUsername("A")).thenReturn(true);
+
+        ResponseEntity<Review> response = controller.deleteReviewsByUsername("A");
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    public void testDeleteReviewByUsernameNotFound() throws IOException {
+        when(mockService.deleteReviewsByUsername("A")).thenReturn(false);
+
+        ResponseEntity<Review> response = controller.deleteReviewsByUsername("A");
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    public void testDeleteReviewByUsernameHandlesException() throws IOException {
+        when(mockService.deleteReviewsByUsername("A")).thenThrow(new IOException());
+
+        ResponseEntity<Review> response = controller.deleteReviewsByUsername("A");
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
+
+    @Test
+    public void testDeleteAllReviewsSuccess() throws IOException {
+        when(mockService.deleteAll()).thenReturn(true);
+
+        ResponseEntity<Review> response = controller.deleteAllReviews();
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    public void testDeleteAllReviewsNotFound() throws IOException {
+        when(mockService.deleteAll()).thenReturn(false);
+
+        ResponseEntity<Review> response = controller.deleteAllReviews();
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    public void testDeleteAllReviewsHandlesException() throws IOException {
+        when(mockService.deleteAll()).thenThrow(new IOException());
+
+        ResponseEntity<Review> response = controller.deleteAllReviews();
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
 }

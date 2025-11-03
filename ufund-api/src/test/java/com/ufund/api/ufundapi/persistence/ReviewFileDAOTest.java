@@ -151,4 +151,28 @@ public class ReviewFileDAOTest {
         // Verify the reviews are empty
         assertEquals(0, reviewFileDAO.getReviews().length);
     }
+
+    @Test
+    public void testDeleteReviewsByUsername() throws IOException {
+        boolean result = reviewFileDAO.deleteReviewsByUsername("user2");
+        assertTrue(result);
+
+        // Verify that save() was called
+        verify(mockObjectMapper, atLeastOnce()).writeValue(any(File.class), any(Review[].class));
+
+        // Verify the review was removed
+        Review[] remaining = reviewFileDAO.getReviews();
+        for (Review r : remaining) {
+            assertNotEquals("user2", r.getUserName());
+        }
+    }
+
+    @Test
+    public void testDeleteReviewsByUsernameNoneFound() throws IOException {
+        boolean result = reviewFileDAO.deleteReviewsByUsername("nonexistant");
+        assertFalse(result);
+
+        // Save should not be called here
+        verify(mockObjectMapper, never()).writeValue(any(File.class), any(Review[].class));
+    }
 }

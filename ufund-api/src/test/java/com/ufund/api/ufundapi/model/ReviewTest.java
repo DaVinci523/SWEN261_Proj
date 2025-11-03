@@ -48,4 +48,27 @@ public class ReviewTest {
         assertEquals(expected_string, actual_string);
     }
 
+    @Test
+    public void testGetters() {
+        Review review = new Review(2, "userXman", "Nice site", 4);
+
+        assertEquals(2, review.getId());
+        assertEquals("userXman", review.getUserName());
+        assertEquals("Nice site", review.getReviewText());
+        assertEquals(4, review.getRating());
+    }
+
+    @Test
+    public void testEdgeCases() {
+        Review review = new Review(0, "", "", 0);
+
+        assertEquals(0, review.getId());
+        assertEquals("", review.getUserName());
+        assertEquals("", review.getReviewText());
+        assertEquals(0, review.getRating());
+
+        String expectedString = String.format(Review.STRINGIFY, 0, "", 0, "");
+        assertEquals(expectedString, review.toString());
+    }
+
 }

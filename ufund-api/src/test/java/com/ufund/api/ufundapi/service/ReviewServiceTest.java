@@ -83,4 +83,37 @@ public class ReviewServiceTest {
         assertTrue(result);
         verify(mockDAO).deleteAll();
     }
+
+    @Test
+    public void testDeleteReviewsByUsername() throws IOException {
+        when(mockDAO.deleteReviewsByUsername("A")).thenReturn(true);
+
+        boolean result = service.deleteReviewsByUsername("A");
+        assertTrue(result);
+
+        verify(mockDAO).deleteReviewsByUsername("A");
+    }
+
+    @Test
+    public void testDeleteReviewsByUsernameNoneFound() throws IOException {
+        when(mockDAO.deleteReviewsByUsername("nonexistent")).thenReturn(false);
+
+        boolean result = service.deleteReviewsByUsername("nonexistent");
+        assertTrue(!result);
+
+        verify(mockDAO).deleteReviewsByUsername("nonexistent");
+    }
+
+    @Test
+    public void testGetReviewsThrowsIOException() throws IOException {
+        when(mockDAO.getReviews()).thenThrow(new IOException("File error"));
+
+        try {
+            service.getReviews();
+        } catch (IOException e) {
+            assertEquals("File error", e.getMessage());
+        }
+
+        verify(mockDAO).getReviews();
+    }
 }
