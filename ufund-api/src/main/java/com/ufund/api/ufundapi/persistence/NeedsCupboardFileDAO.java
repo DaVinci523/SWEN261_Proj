@@ -276,4 +276,42 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
      }
     }
 
+    /**
+     * Search for need based on it quantity
+     * Needs with less than or equal passed in quantity show
+     */
+    @Override
+    public Need[] searchNeedsQunatity(int qnt) throws IOException {
+         ArrayList<Need> needsArrayList = new ArrayList<>();
+
+        for (Need need : needs.values()){
+            int needQNT = need.getCurrentQuantity();
+            if (qnt == needQNT || qnt > needQNT ){
+                needsArrayList.add(need);
+            }
+        }
+        Need[] needsArray = new Need[needsArrayList.size()];
+        needsArrayList.toArray(needsArray);
+        return needsArray;
+    }
+
+    /**
+     * Search for need based on its value
+     * Needs with less than or equal passed in value show
+     */
+    @Override
+    public Need[] searchNeedsValue(double val) throws IOException {
+        ArrayList<Need> needsArrayList = new ArrayList<>();
+
+        for (Need need : needs.values()){
+            double needQNT = need.getValue();
+            if (val == needQNT){
+                needsArrayList.add(need);
+            }
+        }
+        Need[] needsArray = new Need[needsArrayList.size()];
+        needsArrayList.toArray(needsArray);
+        return needsArray;
+    }
+
 }
