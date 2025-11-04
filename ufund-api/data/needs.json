@@ -1,1 +1,7 @@
-[{"id":4,"name":"Microscope","value":300.0,"currentQuantity":0,"maxQuantity":10,"type":"kit","visible":true},{"id":5,"name":"BreadBoard","value":10.0,"currentQuantity":8,"maxQuantity":8,"type":"boards","visible":true},{"id":6,"name":"Lab Kit","value":8.0,"currentQuantity":1,"maxQuantity":4,"type":"kit","visible":true},{"id":7,"name":"Oscilloscope","value":500.0,"currentQuantity":0,"maxQuantity":2,"type":"kit","visible":true},{"id":8,"name":"Lab Box","value":30.0,"currentQuantity":0,"maxQuantity":3,"type":"box","visible":true}]
+[
+    {"id":4,"name":"Microscope","value":300.0,"currentQuantity":0,"maxQuantity":10,"type":"kit","visible":true},
+    {"id":5,"name":"BreadBoard","value":10.0,"currentQuantity":7,"maxQuantity":8,"type":"boards","visible":true},
+    {"id":6,"name":"Lab Kit","value":8.0,"currentQuantity":1,"maxQuantity":4,"type":"kit","visible":true},
+    {"id":7,"name":"Oscilloscope","value":500.0,"currentQuantity":0,"maxQuantity":2,"type":"kit","visible":true},
+    {"id":8,"name":"Lab Box","value":30.0,"currentQuantity":0,"maxQuantity":3,"type":"box","visible":true}
+]
