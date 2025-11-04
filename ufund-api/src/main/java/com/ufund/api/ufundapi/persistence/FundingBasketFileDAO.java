@@ -6,11 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
-import java.util.logging.Logger;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -31,7 +28,6 @@ import com.ufund.api.ufundapi.model.User;
  */
 @Component 
 public class FundingBasketFileDAO implements FundingBasketDAO {
-    private static final Logger LOG = Logger.getLogger(FundingBasketDAO.class.getName());
     Map<Integer,Need> currentUserNeeds; // a map of needs used to access the current user's Map<Integer, Need>
     Map<String,Need[]> users; // users are mapped to username:needs
     private ObjectMapper objectMapper;

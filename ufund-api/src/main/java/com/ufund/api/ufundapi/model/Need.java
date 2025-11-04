@@ -1,8 +1,5 @@
 package com.ufund.api.ufundapi.model;
 
-import java.util.logging.Logger;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -10,9 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author CTRL
  */
 
-public class Need {
-    private static final Logger LOG = Logger.getLogger(Need.class.getName());
-    
+public class Need {    
     static final String STRINGIFY = "Need [id=%d, name=%s, value=%f, currentQuantity=%d, maxQuantity=%d,type=%s, visible=%b]";
 
     @JsonProperty("id") private int id;

@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.logging.Logger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -24,7 +23,6 @@ import com.ufund.api.ufundapi.model.Need;
  */
 @Component 
 public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
-    private static final Logger LOG = Logger.getLogger(NeedsCupboardDAO.class.getName());
     Map<Integer,Need> needs;
     private ObjectMapper objectMapper;
     private static int nextId;
