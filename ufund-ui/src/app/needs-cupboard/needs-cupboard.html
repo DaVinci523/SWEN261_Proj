@@ -1,36 +1,38 @@
 <div class="cupboard-page-container">
-    <div> 
-        <input
-            class="search"
-            placeholder="Search Needs…"
-            [(ngModel)]="searchTerm"
-            (input)="getNeeds()"   
-            />
-    </div>
     <div class="search-container">
-        <div class="searchbar"> 
+        <div class="search-name-container">  
             <input
-                class="search"
-                placeholder="Search Type…"
-                [(ngModel)]="typeTerm"
-                (input)="searchNeedsType()"   
+                class="search name"
+                placeholder="Search Needs…"
+                [(ngModel)]="searchTerm"
+                (input)="getNeeds()"   
                 />
         </div>
-        <div class="searchbar"> 
-            <input
-                class="search"
-                placeholder="Search Quantity..."        
-                [(ngModel)]="qtyTerm"
-                (input)="searchNeedsQuantity()"   
-                />
-        </div>
-        <div class="searchbar"> 
-            <input
-                class="search"
-                placeholder="Search Value..."        
-                [(ngModel)]="valTerm"
-                (input)="searchNeedsValue()"
-                />
+        <div class="special-searches-container">
+            <div class="searchbar"> 
+                <input
+                    class="search type"
+                    placeholder="Search Type…"
+                    [(ngModel)]="typeTerm"
+                    (input)="searchNeedsType()"   
+                    />
+            </div>
+            <div class="searchbar"> 
+                <input
+                    class="search quantity"
+                    placeholder="Search Quantity..."        
+                    [(ngModel)]="qtyTerm"
+                    (input)="searchNeedsQuantity()"   
+                    />
+            </div>
+            <div class="searchbar"> 
+                <input
+                    class="search value"
+                    placeholder="Search Value..."        
+                    [(ngModel)]="valTerm"
+                    (input)="searchNeedsValue()"
+                    />
+            </div>
         </div>
     </div>
 
