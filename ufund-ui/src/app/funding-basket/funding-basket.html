@@ -1,34 +1,35 @@
-<h1>My Need Contributions:</h1>
-<h2>Add Needs to the <u>FundingBasket</u></h2>    
 
+<div class="funding-basket-container">
+    <h1>Cart</h1>
 
-<ul class="userNeeds"><!--add all userneeds to a list-->
-    @for (need of userNeeds; track need.id) {
-        <!--<a routerLink="/detail/{{need.id}}">
-        <span class="badge">{{need.id}}</span> {{need.name}}
-        </a>--> <!--Route to the need's page if we decide on specifying that--> 
-        @if (need.visible){ <!--only show need if it is visible-->
-            <li>
-                <span class="data-container">
-                    <span id="need-variables">
-                        <!-- <span class="identifier variable">id: [{{need.id}}]</span>  -->
-                        <span class="variable">{{need.name}}</span>
-                        <span class="variable">${{need.value}}</span>
-                        <!-- <span class="variable">type: ["{{need.type}}"]</span> -->
+    <ul class="userNeeds"><!--add all userneeds to a list-->
+        @for (need of userNeeds; track need.id) {
+            <!--<a routerLink="/detail/{{need.id}}">
+            <span class="badge">{{need.id}}</span> {{need.name}}
+            </a>--> <!--Route to the need's page if we decide on specifying that--> 
+            @if (need.visible){ <!--only show need if it is visible-->
+                <li>
+                    <span class="data-container">
+                        <span id="need-variables">
+                            <!-- <span class="identifier variable">id: [{{need.id}}]</span>  -->
+                            <span class="variable">{{need.name}}</span>
+                            <span class="variable">${{need.value}}</span>
+                            <!-- <span class="variable">type: ["{{need.type}}"]</span> -->
+                        </span>
+                        <span id="quantity-inputs">
+                            <button type="button" class="change-quantity subtract" title="decrease need quantity" (click)="decreaseQuantity(need)">-</button>
+                            <input type="number" class="manual-quantity" [(ngModel)]="need.maxQuantity" (input)="saveAll()"/> 
+                            <button type="button" class="change-quantity add" title="increase need quantity" (click)="increaseQuantity(need)">+</button>
+                        </span>
+                        <span id="delete-column">
+                            <button type="button" class="delete" title="delete need" (click)="delete(need)">x</button>
+                        </span>
                     </span>
-                    <span id="quantity-inputs">
-                        <button type="button" class="change-quantity subtract" title="decrease need quantity" (click)="decreaseQuantity(need)">-</button>
-                        <input type="number" class="manual-quantity" [(ngModel)]="need.maxQuantity" (input)="saveAll()"/> 
-                        <button type="button" class="change-quantity add" title="increase need quantity" (click)="increaseQuantity(need)">+</button>
-                    </span>
-                    <span id="delete-column">
-                        <button type="button" class="delete" title="delete need" (click)="delete(need)">x</button>
-                    </span>
-                </span>
-            </li>
+                </li>
+            }
+        } 
+        @empty {
+            <li>There are no items.</li>
         }
-    } 
-    @empty {
-        <li>There are no items.</li>
-    }
-</ul>
+    </ul>
+</div>

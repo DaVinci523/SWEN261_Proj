@@ -1,20 +1,22 @@
-
-#funding-basket {
-    background-color: lightblue;
+div#helper-page-container {
+  display: grid;
+  grid-template-columns: 66% 33% ;
+  height: 100%;
 }
 
-#checkout {
-    background-color: lightgreen;
+#needs-cupboard {
+    background-color: white;
+}
+
+#funding-basket {
+    background-color: white;
+    border-left: 4px solid black;
 }
 
 div {
     width: 100%;
 }
 
-div#helper-page-container {
-  display: grid;
-  grid-template-columns: 66% 33% ;
-}
 
 .center-content {
     padding: 2% 10%;
@@ -33,7 +35,6 @@ div#helper-page-container {
 .left {
   left: 0;
   float: left;
-  background-color: lightgreen;
 }
 
 /* Control the right side */
