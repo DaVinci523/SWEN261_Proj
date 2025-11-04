@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import com.ufund.api.ufundapi.model.Need;
 import com.ufund.api.ufundapi.model.User;
 import com.ufund.api.ufundapi.persistence.FundingBasketDAO;
-import com.ufund.api.ufundapi.service.FundingBasketServiceImplementation;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;

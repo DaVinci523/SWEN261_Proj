@@ -1,6 +1,5 @@
 package com.ufund.api.ufundapi.model;
 
-import java.util.logging.Logger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -12,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author Anthony Pelto
  */
 public class Review {
-    private static final Logger LOG = Logger.getLogger(Review.class.getName());
     static final String STRINGIFY = "Review [id=%d, userName=%s, rating=%d, reviewText=%s]";
 
     @JsonProperty("id") private int id;
