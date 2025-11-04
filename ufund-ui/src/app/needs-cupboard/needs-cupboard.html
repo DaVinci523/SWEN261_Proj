@@ -9,6 +9,31 @@
             (input)="getNeeds()"   
             />
 </div>
+<div> 
+        <input
+            class="search"
+            placeholder="Search Type…"
+            [(ngModel)]="typeTerm"
+            (input)="searchNeedsType()"   
+            />
+</div>
+<div> 
+        <input
+            class="search"
+            placeholder="Search Quantity..."        
+            [(ngModel)]="qtyTerm"
+            (input)="searchNeedsQuantity()"   
+            />
+</div>
+
+<div> 
+        <input
+            class="search"
+            placeholder="Search Value..."        
+            [(ngModel)]="valTerm"
+            (input)="searchNeedsValue()"
+            />
+</div>
 
 <ul class="userNeeds"><!--add all userneeds to a list-->
     
