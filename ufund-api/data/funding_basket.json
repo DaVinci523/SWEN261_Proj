@@ -1,1 +1,19 @@
-{"users":[{"userName":"helper123","basket":[{"id":6,"name":"Lab Kit","value":9.0,"quantity":1,"type":"kit"}]},{"userName":"helper456","basket":[{"id":1,"name":"Microscope","value":30.0,"quantity":8,"type":"kit"},{"id":2,"name":"BreadBoard","value":10.0,"quantity":2,"type":"boards"}]}]}
+{
+    "users": [
+    {
+        "userName":"helper123",
+        "basket":[
+            {"id":4,"name":"Microscope","value":20.0,"quantity":2,"type":"kit"},
+            {"id":5,"name":"BreadBoard","value":10.0,"quantity":2,"type":"boards"},
+            {"id":6,"name":"Lab Kit","value":80.0,"quantity":1,"type":"kit"}
+        ]
+    },
+    {
+        "userName":"helper456",
+        "basket":[
+            {"id":1,"name":"Microscope","value":30.0,"quantity":8,"type":"kit"},
+            {"id":2,"name":"BreadBoard","value":10.0,"quantity":2,"type":"boards"}
+        ]
+    }
+    ]
+}
