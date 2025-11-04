@@ -12,7 +12,8 @@ div {
 }
 
 div#helper-page-container {
-  grid
+  display: grid;
+  grid-template-columns: 66% 33% ;
 }
 
 .center-content {
@@ -21,8 +22,9 @@ div#helper-page-container {
 
 /* Split the screen in half */
 .split {
+  grid-row: 1;
   height: 100%;
-  width: 50%;
+  width: 100%;
   position: relative;
   top: 0;
 }
