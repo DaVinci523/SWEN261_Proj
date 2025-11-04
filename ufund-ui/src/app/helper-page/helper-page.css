@@ -11,6 +11,10 @@ div {
     width: 100%;
 }
 
+div#helper-page-container {
+  grid
+}
+
 .center-content {
     padding: 2% 10%;
 }

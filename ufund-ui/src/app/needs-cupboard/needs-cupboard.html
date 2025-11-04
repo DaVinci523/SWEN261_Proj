@@ -17,12 +17,12 @@
             <li>
                 <span class="data-container">
                     <span id="need-variables">
-                        <span class="identifier variable">Id: [{{need.id}}]</span> 
-                        <span class="variable">Name: [{{need.name}}]</span>
-                        <span class="variable">Value: [${{need.value}}]</span>
+                        <!-- <span class="identifier variable">Id: [{{need.id}}]</span>  -->
+                        <span class="variable">{{need.name}}</span>
                         <span *ngIf="need.currentQuantity >= need.maxQuantity" class="variable">Quantity: Surplus</span>
                         <span *ngIf="need.currentQuantity < need.maxQuantity" class="variable">Quantity: {{need.currentQuantity}}/{{need.maxQuantity}}</span>
-                        <span class="variable">Type: ["{{need.type}}"]</span>
+                        <span class="variable">${{need.value}}</span>
+                        <!-- <span class="variable">Type: ["{{need.type}}"]</span> -->
                         
                     </span>
                     <span id="fund">
