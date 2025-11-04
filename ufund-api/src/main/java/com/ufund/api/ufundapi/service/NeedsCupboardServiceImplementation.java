@@ -71,4 +71,20 @@ public class NeedsCupboardServiceImplementation implements NeedsCupboardService{
         return needsCupboardDAO.deleteNeedName(name);
     }
 
+    @Override
+    public Need[] searchNeedsType(String text) throws IOException {
+        return needsCupboardDAO.searchNeedsType(text);
+    }
+
+    @Override
+    public Need[] searchNeedsQuantity(int qnt) throws IOException {
+        return needsCupboardDAO.searchNeedsQunatity(qnt);
+    }
+
+    @Override
+    public Need[] searchNeedsValue(double val) throws IOException {
+        return needsCupboardDAO.searchNeedsValue(val);
+    }
+   
+
 }
