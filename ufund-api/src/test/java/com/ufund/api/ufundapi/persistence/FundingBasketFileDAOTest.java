@@ -176,7 +176,7 @@ public class FundingBasketFileDAOTest {
         Need need = fundingBasketFileDAO.getNeed("user1", 69);
 
         // Analzye
-        assertEquals(need, null);
+        assertEquals(null, need);
     }
 
     @Test
@@ -186,7 +186,7 @@ public class FundingBasketFileDAOTest {
                             "Unexpected exception thrown");
 
         // Analzye
-        assertEquals(result,true);
+        assertEquals(true, result);
         // We check the internal tree map size against the length
         // of the test heroes array - 1 (because of the delete)
         // Because heroes attribute of HeroFileDAO is package private
@@ -201,7 +201,7 @@ public class FundingBasketFileDAOTest {
                             "Unexpected exception thrown");
 
         // Analzye
-        assertEquals(result,false);
+        assertEquals(false, result);
         // If nothing was deleted, the length stays the same.
         assertEquals(fundingBasketFileDAO.getNeeds("user1").length,testNeeds.length);
     }
@@ -218,7 +218,7 @@ public class FundingBasketFileDAOTest {
         // Analyze
         assertNotNull(result);
         Need actual = fundingBasketFileDAO.getNeed("user1", need.getId());
-        assertEquals(actual,need);
+        assertEquals(need, actual);
     }
 
     @Test
@@ -241,7 +241,7 @@ public class FundingBasketFileDAOTest {
                             "Unexpected exception thrown");
 
         // Analzye
-        assertEquals(result,true);
+        assertEquals(true, result);
         // We check the internal tree map size against the length
         // of the test heroes array - 1 (because of the delete)
         // Because heroes attribute of HeroFileDAO is package private
@@ -256,7 +256,7 @@ public class FundingBasketFileDAOTest {
         boolean result = assertDoesNotThrow(() -> fundingBasketFileDAO.deleteNeedName("user1", "wires"),"Unexpected exception thrown");
 
         // Analzye
-        assertEquals(result,false);
+        assertEquals(false, result);
         assertEquals(fundingBasketFileDAO.getNeeds("user1").length,testNeeds.length); // check for no change in length
    }  
 
