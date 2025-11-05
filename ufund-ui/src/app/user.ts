@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 export type Role = 'admin' | 'helper';
 export interface UserInfo { password: string; role: Role; }
+export interface PublicUserInfo { username: string; password: string; role: Role; }
 type CredStore = Record<string, UserInfo>;
 
 @Injectable({ providedIn: 'root' })
@@ -15,10 +16,13 @@ export class User {
   currentUser: string | null = null;
 
   constructor() {
-    // restore  session across tab refresh but not localhost open
-    const flag = sessionStorage.getItem(this.FLAG_KEY);
-    const user = sessionStorage.getItem(this.USER_KEY);
-
+  const creds = this.getCreds();
+    if (!creds['admin']) {
+      creds['admin'] = { password: 'admin', role: 'admin' };
+      this.setCreds(creds);
+    }
+    const flag = localStorage.getItem(this.FLAG_KEY);
+    const user = localStorage.getItem(this.USER_KEY);
     if (flag === 'true' && user) {
       this.loggedIn = true;
       this.currentUser = user;
@@ -28,8 +32,60 @@ export class User {
     }
   }
 
+
+  getAllUsers() {
+    const creds = this.getCreds(); //map
+    const list: PublicUserInfo[] = []; //store
+    const keys = Object.keys(creds); //usernames
+    let i = 0;
+    while (i < keys.length) {
+      const uname = keys[i];
+      const rec = creds[uname]; //record for that username
+      if (rec) {
+        list.push({ username: uname, password: rec.password, role: rec.role });
+      }
+      i++;
+    }
+    return list;
+  }
+
+  deleteUser(username: string): boolean {
+    if (!username) {
+      return false;
+    }
+    const uname = username.trim();
+    if (!uname) {
+      return false;
+    }
+
+    const lower = uname.toLowerCase();
+    if (lower == 'admin') {
+      return false;
+    }
+
+    const creds = this.getCreds();
+    if (!creds[uname]) {
+      return false;
+    }
+    delete creds[uname];
+    this.setCreds(creds);
+    if (this.currentUser == uname) {
+      this.logout();
+    }
+    return true;
+  }
+  
+  clearAllUsers(){
+    localStorage.removeItem(this.CREDS_KEY);
+
+    //readd admin
+    const seed: CredStore = {};
+    seed['admin'] = { password: 'admin', role: 'admin' };
+    this.setCreds(seed);
+  }
+
   private getCreds(): CredStore{
-    const raw = sessionStorage.getItem(this.CREDS_KEY);
+    const raw = localStorage.getItem(this.CREDS_KEY);
     let store = {};
     if (raw !== null) {
       const parsed = JSON.parse(raw);
@@ -41,7 +97,7 @@ export class User {
   }
 
   private setCreds(creds: CredStore) {
-    sessionStorage.setItem(this.CREDS_KEY, JSON.stringify(creds));
+    localStorage.setItem(this.CREDS_KEY, JSON.stringify(creds));
   }
 
   private getRoleFor(uname: string): Role {
@@ -128,8 +184,8 @@ export class User {
 
     this.loggedIn = true;
     this.currentUser = uname;
-    sessionStorage.setItem(this.FLAG_KEY, 'true');
-    sessionStorage.setItem(this.USER_KEY, uname);
+    localStorage.setItem(this.FLAG_KEY, 'true');
+    localStorage.setItem(this.USER_KEY, uname);
     return true;
   }
 
@@ -139,8 +195,8 @@ export class User {
   logout(): void {
     this.loggedIn = false;
     this.currentUser = null;
-    sessionStorage.removeItem(this.FLAG_KEY);
-    sessionStorage.removeItem(this.USER_KEY);
+    localStorage.removeItem(this.FLAG_KEY);
+    localStorage.removeItem(this.USER_KEY);
   }
 
   /**
