@@ -2,16 +2,16 @@ div#helper-page-container {
   display: grid;
   grid-template-columns: 66% 30% ;
   height: 100%;
+  background-color: #fff8e8;
 }
 
 #needs-cupboard {
-    background-color: white;
+
 }
 
 #funding-basket {
-    background-color: white;
     border-left: 4px solid black;
-    padding: 10% 6%;
+    padding: 6% 6%;
 }
 
 div {
@@ -26,8 +26,6 @@ div {
 /* Split the screen in half */
 .split {
   grid-row: 1;
-  height: 100%;
-  width: 100%;
   position: relative;
   top: 0;
 }
@@ -59,6 +57,7 @@ button.checkout {
   width: 80%;
   margin-left: 10%;
   margin-right: 10%;
+  margin-top: 5%;
   border: 2px solid black;
   text-align: center;
   height: 3em;

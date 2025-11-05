@@ -1,8 +1,8 @@
 div.cupboard-page-container {
     height: 100%;
     text-align: center;
-    margin-top: 5%;
     margin-bottom: 0%;
+    padding-top: 3%;
 }
 
 .search{
@@ -25,7 +25,9 @@ ul {
     margin-right:auto;
     font-size: 20px;
     width:98%;
+    height:450px;
     border-radius: 12px;
+    overflow-y: scroll;
 }
 
 li {
@@ -35,7 +37,7 @@ li {
     margin: 0.8em 0%;
     padding-left: 1em;
     padding-right: 1em;
-
+    background-color: white;
 }
 
 span.data-container {
@@ -45,8 +47,8 @@ span.data-container {
 }
 
 div.search-container {
-    border-bottom: 2px dashed black;
-    padding-bottom: 2%;
+    border-bottom: 3px solid black;
+    padding: 2%;
 }
 
 div.special-searches-container {

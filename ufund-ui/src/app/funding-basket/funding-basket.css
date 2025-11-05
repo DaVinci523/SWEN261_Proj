@@ -1,30 +1,35 @@
 h1,h2 {
     text-align: center;
+    text-color: white;
 }
 
 /* Containers */
 div.funding-basket-container {
     padding: 5%;
-    border: 2px solid black;
+    border: 8px solid black;
     border-radius: 24px;
+    background-color: white
 }
 
 ul {
     margin-left: auto;
     margin-right:auto;
+    height: 400px;
     width: 96%;
     padding: 0%;
-    border: 2px dashed black;
-    border-bottom: 0px;
+    border: 0px dashed black;
+    /* border-bottom: 0px; */
     border-radius: 12px;
-    font-size: 20px;
+    font-size: 18px;
+    overflow-y: scroll;
 }
 
 li {
     list-style-type:none;
-    border-bottom: 2px dashed black;
-    border-top: 0px;
-    border-radius: 12px;
+    border: 2px solid black;
+    border-radius: 4em;
+    margin: 3%;
+    padding-right: 0.2em;
 }
 
 span.data-container {
@@ -49,6 +54,7 @@ span#quantity-inputs {
     text-align: center;
     margin-top: auto;
     margin-bottom: auto;
+    min-width: 40%;
 }
 
 span#delete-column {
@@ -82,36 +88,37 @@ span.variable {
 
 input.manual-quantity {
     width: 3em;
-    padding: 3%;
+    padding: 2%;
     text-align: center;
     border: 2px solid black;
 }
 
 button.change-quantity {
-    width: 3em;
-    padding: 3%;
+    width: 2.1em;
+    padding: 2%;
     border: 2px solid black;
     text-align: center;
 }
 
 button.delete {
-    width: 3em;
-    height: 3em;
+    width: 2.5em;
+    height: 2.5em;
     float: center;
     border: 2px solid black;
-    border-radius: 12px;
+    border-radius: 18px;
+    margin: 15%;
     text-align: center;
     background-color: #ff6161;
 }
 
 button.change-quantity.subtract {
     border-left: 2px solid black;
-    border-bottom-left-radius: 12px;
-    border-top-left-radius: 12px;
+    border-bottom-left-radius: 2em;
+    border-top-left-radius: 2em;
 }
 
 button.change-quantity.add {
     border-right: 2px solid black;
-    border-bottom-right-radius: 12px;
-    border-top-right-radius: 12px;
+    border-bottom-right-radius: 2em;
+    border-top-right-radius: 2em;
 }
