@@ -1,11 +1,9 @@
-
-#funding-basket {
-    background-color: lightblue;
+#checkout-page-container {
+  display: grid;
+  grid-template-columns: 75% 25%;
 }
 
-#checkout {
-    background-color: lightgreen;
-}
+
 
 div {
     width: 100%;
@@ -17,8 +15,9 @@ div {
 
 /* Split the screen in half */
 .split {
+  grid-row: 1;
   height: 100%;
-  width: 50%;
+  width: 100%;
   position: relative;
   top: 0;
 }
@@ -27,14 +26,12 @@ div {
 .left {
   left: 0;
   float: left;
-  background-color: lightgreen;
 }
 
 /* Control the right side */
 .right {
   right: 0;
   float: right;
-  background-color: lightred;
 }
 
 .no-access {
