@@ -1,9 +1,8 @@
 package com.ufund.api.ufundapi.ai;
 
-import com.google.cloud.vertexai.VertexAI;
+import com.google.genai.Client;
+import com.google.genai.types.GenerateContentResponse;
 
 public class aiTest {
     
-    Client client = Client.builder.apiKey("AIzaSyCWWm-DV3OfiLWlIIKgu4u131AXgqFXzg0").build();
-
 }
