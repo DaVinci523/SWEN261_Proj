@@ -69,7 +69,7 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
         ArrayList<Need> needsArrayList = new ArrayList<>();
 
         for (Need need : needs.values()){
-            if (text == null || need.getName().contains(text)){
+            if (text == null || need.getName().toLowerCase().contains(text.toLowerCase())){
                 needsArrayList.add(need);
             }
         }
@@ -144,7 +144,7 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
         ArrayList<Need> needsArrayList = new ArrayList<>();
 
         for (Need need : needs.values()){
-            if (text == null || need.getType().contains(text)){
+            if (text == null || need.getType().toLowerCase().contains(text.toLowerCase())){
                 needsArrayList.add(need);
             }
         }
