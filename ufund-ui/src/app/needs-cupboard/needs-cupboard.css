@@ -1,5 +1,8 @@
-h1 {
+div.cupboard-page-container {
+    height: 100%;
     text-align: center;
+    margin-bottom: 0%;
+    padding-top: 3%;
 }
 
 .search{
@@ -10,39 +13,69 @@ h1 {
     margin: 0% 10%;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
-    border-radius: 15px;
+    border-radius: 24px;
     font-size: 20px;
 }
 
 /* Containers */
 ul {
     padding: 0%;
-    border-top: 2px solid black;
+    margin-top: 2%;
     margin-left:auto;
     margin-right:auto;
     font-size: 20px;
     width:98%;
+    height:450px;
+    border-radius: 12px;
+    overflow-y: scroll;
 }
 
 li {
     list-style-type:none;
     border: 2px solid black;
-    border-top: none;
+    border-radius: 48px;
+    margin: 0.8em 0%;
+    padding-left: 1em;
+    padding-right: 1em;
+    background-color: white;
 }
 
 span.data-container {
     display: grid;
-    grid-template-columns: 80% 20%;
+    grid-template-columns: 70% 30%;
     padding: 1%;
+}
+
+div.search-container {
+    border-bottom: 3px solid black;
+    padding: 2%;
+}
+
+div.special-searches-container {
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+    padding: auto;
+    text-align: center;
+    margin: 0% 15%;
+    width: 70%;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+
 }
 
 /* Grid Items */
 span#need-variables {
     grid-column: 1;
     display: grid;
-    grid-template-columns: 10% 22.5% 22.5% 22.5% 22.5%;
+    grid-template-columns: 33% 33% 33%;
     text-align: center;
     margin-bottom: auto;
+}
+
+div.searchbar {
+    grid-row: 1;
+    margin: 0%;
+    width: 100%;
 }
 
 /* Individual Data Elements */
@@ -50,20 +83,58 @@ span.variable {
     width: auto;
     text-align: center;
     padding: 1%;
-    border: 2px solid black;
     padding-top: 10%;
     padding-bottom: 10%;
 }
 
-span.identifier.variable {
+/* span.identifier.variable {
     width: auto;
     text-align: center;
     padding: 1%;
     border: 2px solid black;
     padding-top: 20%;
     padding-bottom: 10%;
+} */
+
+div.search-name-container {
+    width: 80%;
+    margin: auto 10%;
+    padding-left: 0%;
+    padding-right: 0%;
 }
 
+input.search.name {
+    margin: 0%;
+    width: 100%;
+
+}
+
+div.special-searches-container * {
+    width: 100%;
+    margin: 0%;
+    font-size: 18px;
+}
+
+input.search.type, input.search.quantity, input.search.value {
+    margin: 0%;
+    padding-left: 0em;
+    padding-right: 0em;
+    width: 100%;
+}
+
+input.search.type {
+    border-top-right-radius: 0%;
+    border-bottom-right-radius: 0%;
+}
+
+input.search.quantity {
+    border-radius: 0%;
+}
+
+input.search.value {
+    border-top-left-radius: 0%;
+    border-bottom-left-radius: 0%;
+}
 
 span#fund {
     grid-column: 2;
@@ -74,10 +145,10 @@ span#fund {
 }
 
 button.fund {
-    width: auto;
+    width: 100%;
     border: 2px solid black;
     text-align: center;
     height: 3em;
-    border-radius: 15px;
+    border-radius: 24px;
     font-size: 18px;
 }
