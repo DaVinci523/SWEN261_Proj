@@ -1,3 +1,14 @@
+h1 {
+    text-align: center;
+}
+
+div.checkout-container {
+    margin: 10% 5%;
+    padding: 10%;
+    border: 2px solid black;
+    border-radius: 24px;
+}
+
 button.checkout {
     width: 80%;
     height: 2.5em;

@@ -1,6 +1,6 @@
 div#helper-page-container {
   display: grid;
-  grid-template-columns: 66% 33% ;
+  grid-template-columns: 66% 30% ;
   height: 100%;
 }
 
@@ -11,6 +11,7 @@ div#helper-page-container {
 #funding-basket {
     background-color: white;
     border-left: 4px solid black;
+    padding: 10% 6%;
 }
 
 div {
