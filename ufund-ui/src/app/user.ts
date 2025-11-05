@@ -2,45 +2,190 @@ import { Injectable } from '@angular/core';
 
 export type Role = 'admin' | 'helper';
 export interface UserInfo { password: string; role: Role; }
+export interface PublicUserInfo { username: string; password: string; role: Role; }
+type CredStore = Record<string, UserInfo>;
 
 @Injectable({ providedIn: 'root' })
 export class User {
   private USER_KEY = 'auth_username';
   private FLAG_KEY = 'auth_loggedin';
+  private CREDS_KEY = 'auth_creds';  
 
   // auth session state
   loggedIn = false;
   currentUser: string | null = null;
 
   constructor() {
-    if (localStorage.getItem(this.FLAG_KEY) || localStorage.getItem(this.USER_KEY)) {
-      localStorage.removeItem(this.FLAG_KEY);
-      localStorage.removeItem(this.USER_KEY);
+  const creds = this.getCreds();
+    if (!creds['admin']) {
+      creds['admin'] = { password: 'admin', role: 'admin' };
+      this.setCreds(creds);
     }
-
-    // Restore from sessionStorage so refresh keeps it and new tabs won’t have it
-    const flag = sessionStorage.getItem(this.FLAG_KEY) === 'true';
-    const user = sessionStorage.getItem(this.USER_KEY);
-
-    if (flag && user) {
+    const flag = localStorage.getItem(this.FLAG_KEY);
+    const user = localStorage.getItem(this.USER_KEY);
+    if (flag === 'true' && user) {
       this.loggedIn = true;
       this.currentUser = user;
+    } else {
+      this.loggedIn = false;
+      this.currentUser = null;
     }
   }
 
-  /**
+
+  getAllUsers() {
+    const creds = this.getCreds(); //map
+    const list: PublicUserInfo[] = []; //store
+    const keys = Object.keys(creds); //usernames
+    let i = 0;
+    while (i < keys.length) {
+      const uname = keys[i];
+      const rec = creds[uname]; //record for that username
+      if (rec) {
+        list.push({ username: uname, password: rec.password, role: rec.role });
+      }
+      i++;
+    }
+    return list;
+  }
+
+  deleteUser(username: string): boolean {
+    if (!username) {
+      return false;
+    }
+    const uname = username.trim();
+    if (!uname) {
+      return false;
+    }
+
+    const lower = uname.toLowerCase();
+    if (lower == 'admin') {
+      return false;
+    }
+
+    const creds = this.getCreds();
+    if (!creds[uname]) {
+      return false;
+    }
+    delete creds[uname];
+    this.setCreds(creds);
+    if (this.currentUser == uname) {
+      this.logout();
+    }
+    return true;
+  }
+  
+  clearAllUsers(){
+    localStorage.removeItem(this.CREDS_KEY);
+
+    //readd admin
+    const seed: CredStore = {};
+    seed['admin'] = { password: 'admin', role: 'admin' };
+    this.setCreds(seed);
+  }
+
+  private getCreds(): CredStore{
+    const raw = localStorage.getItem(this.CREDS_KEY);
+    let store = {};
+    if (raw !== null) {
+      const parsed = JSON.parse(raw);
+      if (parsed) {
+        store = parsed;
+      }
+    }
+    return store;
+  }
+
+  private setCreds(creds: CredStore) {
+    localStorage.setItem(this.CREDS_KEY, JSON.stringify(creds));
+  }
+
+  private getRoleFor(uname: string): Role {
+    const lower = uname.toLowerCase();
+    if (lower === 'admin') {
+      return 'admin';
+    }
+    return 'helper';
+  }
+
+  userExists(username: string): boolean {
+    if (username == null) {
+      return false;
+    }
+
+    const uname = username.trim();
+    if (!uname) {
+      return false;
+    }
+
+    const creds = this.getCreds();
+    if (creds[uname] !== undefined) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  createUser(username: string, password: string): boolean {
+    if (username == null) {
+      return false;
+    }
+    if (password == null) {
+      return false;
+    }
+
+    const uname = username.trim();
+    if (!uname) {
+      return false;
+    }
+    if (!password) {
+      return false;
+    }
+
+    const creds = this.getCreds();
+    if (creds[uname]) {
+      return false;
+    }
+
+    const role = this.getRoleFor(uname);
+    creds[uname] = { password: password, role: role };
+    this.setCreds(creds);
+    return true;
+  }
+
+  /** 
    * "Logs in a user" which stores the current user logged in.
    * @param username Username of the user
    * @param password Password for username
    * @returns 
    */
   login(username: string, password: string): boolean {
-    if (!username || !password) { return false; }
-    this.loggedIn = true;
-    this.currentUser = username.trim();
+    if (!username) {
+      return false;
+    }
+    if (!password) {
+      return false;
+    }
 
-    sessionStorage.setItem(this.FLAG_KEY, 'true');
-    sessionStorage.setItem(this.USER_KEY, this.currentUser);
+    const uname = username.trim();
+    if (!uname) {
+      return false;
+    }
+
+    const creds = this.getCreds();
+    const rec = creds[uname];
+
+    if (!rec) {
+      return false;
+    }
+    if (rec.password !== password) {
+      return false;
+    }
+
+    this.loggedIn = true;
+    this.currentUser = uname;
+    localStorage.setItem(this.FLAG_KEY, 'true');
+    localStorage.setItem(this.USER_KEY, uname);
     return true;
   }
 
@@ -50,8 +195,8 @@ export class User {
   logout(): void {
     this.loggedIn = false;
     this.currentUser = null;
-    sessionStorage.removeItem(this.FLAG_KEY);
-    sessionStorage.removeItem(this.USER_KEY);
+    localStorage.removeItem(this.FLAG_KEY);
+    localStorage.removeItem(this.USER_KEY);
   }
 
   /**
@@ -67,15 +212,23 @@ export class User {
     * @returns The logged in user's role
     */
   getCurrentUserRole(): Role | null {
-    const u = this.currentUser;
-    if (!u || u.trim() === '') {
-       return null;
+    if (this.currentUser == null) {
+      return null;
     }
-    const name = u.trim().toLowerCase();
-    if (name === 'admin') { 
-      return 'admin'; 
+
+    const creds = this.getCreds();
+    const rec = creds[this.currentUser];
+
+    if (rec) {
+      return rec.role;
     }
-    return 'helper';
+
+    const lower = this.currentUser.toLowerCase();
+    let role: Role = 'helper';
+    if (lower === 'admin') {
+      role = 'admin';
+    }
+    return role;
   }
 
   /**

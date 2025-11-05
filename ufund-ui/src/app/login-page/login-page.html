@@ -1,19 +1,31 @@
 <app-nav-bar></app-nav-bar>
 
-<div class="center-page">
-  <form class="center-box" (ngSubmit)="onLogin()">
-    <div class="field">
-      <label for="username">Username</label>
-      <input id="username" name="username" [(ngModel)]="username" required />
-    </div>
+@if(!user.isLoggedIn()) {
+  <div class="center-page">
+    <form class="center-box" (ngSubmit)="onLogin()">
+      <div class="field">
+        <label for="username">Username</label>
+        <input id="username" name="username" [(ngModel)]="username" required />
+      </div>
 
-    <div class="field">
-      <label for="password">Password</label>
-      <input id="password" name="password" [(ngModel)]="password" type="password" required />
-    </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" name="password" [(ngModel)]="password" type="password" required />
+      </div>
 
-    <button class="login-button" type="submit" [disabled]="!username || !password">
-      Login
-    </button>
-  </form>
-</div>
+      <button class="login-button" type="submit" [disabled]="!username || !password">
+        Login
+      </button>
+      <button class="login-button" type="button" (click)="onCreateUser()" [disabled]="!username || !password">
+          Create account
+      </button>
+    </form>
+  </div>
+} @else {
+  <div class="center-page">
+    <p style="margin:0; text-align:center; font-size:0.95rem; opacity:0.85;">
+      You’re already logged in.
+    </p>
+  </div>
+}
+
