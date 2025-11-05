@@ -14,10 +14,10 @@ public interface FundingBasketService {
 
     /**
      * Returns array of all users
-     * @return getNeedsArray
+     * @return an Array of Users
      */
     User[] getUsers() throws IOException;
-    
+
     /**
      * Retrieves all Needs from the funding basket
      * 

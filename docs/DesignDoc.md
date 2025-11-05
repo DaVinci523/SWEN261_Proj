@@ -51,7 +51,7 @@ This section describes the features of the application.
 
 
 ## Application Domain
-<img width="780" height="517" alt="Screenshot 2025-10-22 195258" src="https://github.com/user-attachments/assets/8557fdfb-d1e2-436e-979e-70dda7686842" />
+<img width="780" height="517" alt="Application Domain Analysis" src="DomainAnalysis.png" />
 
 >The application is organized around a navigation bar that appears on every page, giving users quick access to key pages: myResearch (the >homepage), Login, Needs, and Checkout. New users begin on the homepage, which briefly explains the purpose of the app and provides a clear call to >action button that takes them to the Needs Page. From there, users always have the nav bar to move between pages, while the homepage acts as the >welcoming hub.
 >
@@ -65,7 +65,7 @@ This section describes the features of the application.
 
 
 ## Architecture and Design
-<img width="789" height="382" alt="image" src="https://github.com/user-attachments/assets/0dd1fdc1-ee4d-45e4-aa4e-b58a8b22dd17" />
+<img width="789" height="382" alt="Architecture Design" src="ArchitectureAndDesign.png" />
 
 
 
@@ -101,7 +101,7 @@ This section describes the application architecture.
 >* _A single class diagram of the entire system will not be effective. You may start with one, but will be need to break it down into smaller sections to account for requirements of each of the Tier static models below._
  >* _Correct labeling of relationships with proper notation for the relationship type, multiplicities, and navigation information will be important._
  >* _Include other details such as attributes and method signatures that you think are needed to support the level of detail in your discussion._
-<img width="6467" height="2197" alt="Team1a-CTRL_SWEN261_UI_Overview drawio" src="https://github.com/user-attachments/assets/4483c69e-678d-4908-96a2-9589f6ea04f8" />
+<img width="6467" height="2197" alt="View Tier Architecture" src="ViewTierArchitecture.png" />
 
 ### ViewModel Tier
 
@@ -139,6 +139,15 @@ This section describes the application architecture.
       * a HttpStatus.NOT_FOUND if need doesn't exist
       * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
       * Updates a need given its (id, name, value, quantity, and type). It will update the data at the specified id.
+  * updateNeedVisibility()
+      * Handles HTTP PUT requests to the "/needs/visibile/"visible""
+      * @param userName: the user to update
+      * @param id: the id of the need to be updated
+      * @param visible: the visibility state to set the need
+      * @return a Response entity containing HttpStatus.OK if the update was successful,
+      * a HttpStatus.NOT_FOUND if need doesn't exist
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured.
+      * Updates a need's (visibile) attribute to true/false
   * deleteNeed()
       * Handles HTTP DELETE requests to the "/needs"
       * @param id , id of need to be deleted
@@ -162,15 +171,90 @@ This section describes the application architecture.
   * deleteNeedName()
       * Handles HTTP DELETE requests to the "/needs"
       * @param name , string to check if name contains
-      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
+      * @return a Response entity containing HttpStatus.OK if the deletion was successful,
       * a HttpStatus.NOT_FOUND if a need of id doesn't exist
       * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
       * Deletes needs given it contains the specified name.
     
 * FundingBasketController.java - Handles HTTP requests from the model tier for the Funding Basket.
-  * Contains the same methods with the addition of a getUsers() method that retrieves all users with funding baskets. 
-  * For the other methods in NeedsCupboard.java, functions similarly, with the addition of a @param userName to access only the funding basket of the specified user. 
-    * For example, if all methods were called with the userName = helper123, then only helper123's funding basket will be accessed and modified. So, if an admin were logged in, they would see no items in the funding basket because their username is not in the funding basket. 
+  * getUsers()
+      * Handles HTTP GET requests to "/funding_basket_needs/users"
+      * @return a Response entity containing HttpStatus.OK if the array of users is returned,
+      * a HttpStatus.NO_CONTENT if the returned data is null
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured.
+  * getUsernames()
+      * Handles HTTP GET requests to "/funding_basket_needs/usernames"
+      * @return a Response entity containing HttpStatus.OK if the array of users is returned,
+      * a HttpStatus.NO_CONTENT if the returned data is null
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+  * getNeed()
+      * Handles HTTP GET requests to "/funding_basket_needs/userName/id"
+      * @param userName: the user to search in
+      * @param id: the searched objects id
+      * @return a Response entity containing HttpStatus.OK if the search was successful,
+      * a HttpStatus.NOT_FOUND if the search fails due to a non existent id
+      *  HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+  * getNeeds()
+      * Handles HTTP GET requests to "/funding_basket_needs/userName/needs"
+      * @param userName: the user to retrieve from
+      * @return a Response entity containing HttpStatus.OK if the array of needs is returned,
+      * a HttpStatus.NO_CONTENT if the returned data is null
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+  * searchNeeds()
+      * Handles HTTP GET requests to "/funding_basket_needs/userName/?name= "name""
+      * @param userName: the user to search from
+      * @param name , check if need contains String name
+      * @return a Response entity containing HttpStatus.OK if the search was successful,
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+  * createNeed()
+      * Handles HTTP POST requests to "/funding_basket_needs/userName "need""
+      * @param userName: the user to create in
+      * @param need: the object to be created
+      * @return a Response entity containing HttpStatus.CREATED if the creation was successful,
+      * a HttpStatus.CONFLICT if the creation fails due to a conflict, or a HttpStatus.INTERNAL_SERVER_ERROR
+      * if an I/O error occured. 
+  * updateNeed()
+      * Handles HTTP PUT requests to "/funding_basket_needs/userName "need""
+      * @param userName: the user to update
+      * @param need: the object to be updated
+      * @return a Response entity containing HttpStatus.OK if the update was successful,
+      * a HttpStatus.NOT_FOUND if need doesn't exist
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+  * updateNeedVisibility()
+      * Handles HTTP PUT requests to "/funding_basket_needs/userName/id/visible/"visible""
+      * @param userName: the user to update
+      * @param id: the id of the need to be updated
+      * @param visible: the visibility state to set the need
+      * @return a Response entity containing HttpStatus.OK if the update was successful,
+      * a HttpStatus.NOT_FOUND if need doesn't exist
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+  * deleteNeedId()
+      * Handles HTTP DELETE requests to "/funding_basket_needs/userName/id"
+      * @param userName: the user to delete from
+      * @param id , id of need to be deleted
+      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
+      * a HttpStatus.NOT_FOUND if a need of id doesn't exist
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured.
+  * deleteNeedType()
+      * Handles HTTP DELETE requests to "/funding_basket_needs/userName/type/type"
+      * @param userName: the user to delete from
+      * @param type , type of need to be deleted
+      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
+      * a HttpStatus.NOT_FOUND if a need of id doesn't exist
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+  * deleteAll()
+      * Handles HTTP DELETE requests to "/funding_basket_needs/userName"
+      * @param userName: the user to delete from
+      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
+      * a HttpStatus.NOT_FOUND if a need of id doesn't exist
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+  * deleteNeedName()
+      * Handles HTTP DELETE requests to "/funding_basket_needs/name/"name""
+      * @param userName: the user to delete from
+      * @param name , string to check if name contains
+      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
+      * a HttpStatus.NOT_FOUND if a need of id doesn't exist
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
 
 > _**[Sprint 4]** Provide a summary of this tier of your architecture. This
 > section will follow the same instructions that are given for the View
@@ -179,7 +263,7 @@ This section describes the application architecture.
 > _At appropriate places as part of this narrative provide **one** or more updated and **properly labeled**
 > static models (UML class diagrams) with some details such as associations (connections) between classes, and critical attributes and methods. (**Be sure** to revisit the Static **UML Review Sheet** to ensure your class diagrams are using correct format and syntax.)_
 > 
-<img width="929" height="716" alt="image" src="https://github.com/user-attachments/assets/5b448ef0-0130-4b9a-8a35-b2a5519c4efe" />
+<img width="929" height="716" alt="View Model Architecture" src="ViewModelTierArchitecture.png" />
 
 
 ### Model Tier
@@ -325,7 +409,7 @@ This section describes the application architecture.
       * @return false, if deletion failed
 
 
-<img width="593" height="332" alt="image" src="https://github.com/user-attachments/assets/8b54f6bd-9360-4a56-a755-d61547f1c1f3" />
+<img width="593" height="332" alt="Model Tier Architecture" src="ModelTierArchitecture.png" />
 
 
 
@@ -355,8 +439,8 @@ This section describes the application architecture.
 > code coverage met your targets._
 
 >_**[Sprint 2, 3 & 4]** **Include images of your code coverage report.** If there are any anomalies, discuss
-> those._
-<img width="821" height="718" alt="Screenshot 2025-10-22 195501" src="https://github.com/user-attachments/assets/b3654d8a-6a0f-4898-b659-39e9f3e06d84" />
+> those._W
+<img width="821" height="718" alt="General Code Coverage Reports" src="UnitTestingAndCodeCoverage.png" />
 
 ## Ongoing Rationale
 >_**[Sprint 1, 2, 3 & 4]** Throughout the project, provide a time stamp **(yyyy/mm/dd): Sprint # and description** of any _**mayor**_ team decisions or design milestones/changes and corresponding justification._

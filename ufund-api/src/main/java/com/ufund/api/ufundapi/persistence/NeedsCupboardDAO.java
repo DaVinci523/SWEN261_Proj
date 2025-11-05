@@ -21,6 +21,29 @@ public interface NeedsCupboardDAO {
      * @return getNeedsArray that contains text
      */
     Need[] searchNeeds(String text) throws IOException;
+    /**
+     * search for needs of certain type
+     * @param text - type of the need
+     * @return
+     * @throws IOException
+     */
+    Need[] searchNeedsType(String text) throws IOException;
+    
+    /**
+     * search for needs of with certain quantity or less
+     * @param qnt - search for quantiy
+     * @return
+     * @throws IOException
+     */
+    Need[] searchNeedsQunatity(int qnt) throws IOException;
+
+    /**
+     * search for needs of with certain value or less
+     * @param val - search for value
+     * @return
+     * @throws IOException
+     */
+    Need[] searchNeedsValue(double val) throws IOException;
 
     /**
      * Returns single need with id

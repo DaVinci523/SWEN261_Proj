@@ -42,7 +42,7 @@ export class AdminPage {
    *
    * @param name - name of the need
    * @param value - value of the need
-   * @param quantity - quantity of the need
+   * @param quantity - maxQuantity of the need
    * @param type - type of the need
    */
   createNeed(name: string, value: number, quantity: number, type: string): void {
@@ -54,16 +54,27 @@ export class AdminPage {
     if (!name) { 
       return; 
     }
+    else{
 
-    // calls the createNeed function, passing the parameters as a Need object, subscribing to the observable
-    this.adminPageService.createNeed({ name, value, quantity, type } as Need)
-      .subscribe(need => {
-        this.needs.push(need);
-        window.location.reload();;
+      // checks through every cupboard need and if it matches the newly created need's name and that need is not visible, then set the visibility of that need to true.
+      this.needs.forEach(need => {
+        if(need.name.toLowerCase == name.toLowerCase && !need.visible){ // check names ignoring case and whitespace
+          
+          // adds the need back in by tagging its visibility to true
+          this.adminPageService.changeNeedVisibility(need.id, true).subscribe();
+
+        }
+      });
+
+      // calls the createNeed function, passing the parameters as a Need object, subscribing to the observable
+      this.adminPageService.createNeed({ name, value, type, currentQuantity: 0, maxQuantity: quantity, visible: true} as Need)
+        .subscribe(need => {
+          this.needs.push(need);
+          window.location.reload();
       });
     }
   
-
+  }
   /** 
    * deletes a need both from the needs list and the back-end
    * 
@@ -74,11 +85,16 @@ export class AdminPage {
     // updates the needs list once the need has been deleted
     this.needs = this.needs.filter(n => n !== need);
 
+    // Old functionality of actually deleting the need
     // calls the deleteNeedID function from adminPageService, accessing the need's id and subscribing to the observable
-    this.adminPageService.deleteNeedID(need.id).subscribe( needs => 
-      {this.needs = this.needs.filter(n => n !== needs);
-         window.location.reload();
-      });
+    // this.adminPageService.deleteNeedID(need.id).subscribe( needs => 
+    //   {this.needs = this.needs.filter(n => n !== needs);
+    //      window.location.reload();
+    //   });
+
+    // removes the need by tagging its visibility to false
+    this.adminPageService.changeNeedVisibility(need.id, false).subscribe();
+
   }
 
 
@@ -88,16 +104,30 @@ export class AdminPage {
    * @param need - the need to be updated
    * @param name - the updated name of the need
    * @param value - the updated value of the need
-   * @param quantity - the updated quantity of the need
+   * @param currentQuantity - the current quantity of the need
+   * @param maxQuantity - the updated maxQuantity of the need
    * @param type - the updated type of the need   
    */ 
-  updateNeed(need: Need, name: string, value: number, quantity: number, type: string): void {
+  updateNeed(need: Need, name: string, value: number, currentQuantity: number, maxQuantity: number, type: string): void {
     
+    if(!name){ // if any of the other variables are not set, then don't change them.
+      name = need.name;
+    }
+    if(!value){
+      value = need.value;
+    }
+    if(!maxQuantity){
+      maxQuantity = need.maxQuantity;
+    }
+    if(!type){
+      type = need.type;
+    }
+
     // updates the needs list after changing the parameter need
     this.needs = this.needs.filter(n => n !== need);
 
     // calls the updateNeed function from adminPageService, subscribing to the observable
-    this.adminPageService.updateNeed(need, name, value, quantity, type).subscribe(needs => 
+    this.adminPageService.updateNeed(need, name, value, currentQuantity, maxQuantity, type, true).subscribe(needs => 
       {this.needs = this.needs.filter(n => n !== needs);
       window.location.reload();});
   }

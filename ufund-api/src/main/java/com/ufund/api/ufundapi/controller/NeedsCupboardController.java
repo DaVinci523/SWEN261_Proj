@@ -1,7 +1,6 @@
 package com.ufund.api.ufundapi.controller;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,12 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.net.http.HttpResponse.ResponseInfo;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 // Final Imports will be our NeedsCupboardDAO interface & our Need model
-import com.ufund.api.ufundapi.persistence.NeedsCupboardDAO;
 import com.ufund.api.ufundapi.service.NeedsCupboardService;
 import com.ufund.api.ufundapi.model.Need;
 
@@ -91,16 +88,73 @@ public class NeedsCupboardController {
     }
 
     /**
-     * Handles HTTP GET requests to the "/needs/?name= "name""
+     * Handles HTTP GET requests to the "/needs/name/" + name"
      * @param name , check if need contains String name
      * @return a Response entity containing HttpStatus.OK if the search was successful,
      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
      */
-    @GetMapping("/")
-    public ResponseEntity<Need[]> searchNeeds(@RequestParam String name){
-        LOG.info("GET /needs/?name=" + name);
+    @GetMapping("/name/{name}")
+    public ResponseEntity<Need[]> searchNeeds(@PathVariable String name){
+        LOG.info("GET /needs/name/" + name);
         try {
             Need[] needs = needsCupboardService.searchNeeds(name);
+            return new ResponseEntity<Need[]>(needs, HttpStatus.OK);
+        }
+        catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Handles HTTP GET requests to the "/needs/type/" + type"
+     * @param text , check if need type contains String text
+     * @return a Response entity containing HttpStatus.OK if the search was successful,
+     * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+     */
+    @GetMapping("/type/{type}")
+    public ResponseEntity<Need[]> searchNeedsType(@PathVariable String type){
+        LOG.info("GET /needs/type/" + type);
+        try {
+            Need[] needs = needsCupboardService.searchNeedsType(type);
+            return new ResponseEntity<Need[]>(needs, HttpStatus.OK);
+        }
+        catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Handles HTTP GET requests to the "/needs/quantity/" + val"
+     * @param val , integer of quantity to compare to
+     * @return a Response entity containing HttpStatus.OK if the search was successful,
+     * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+     */
+    @GetMapping("/quantity/{val}")
+    public ResponseEntity<Need[]> searchNeedsQuantity(@PathVariable Integer val){
+        LOG.info("GET /needs/quantity/" + val);
+        try {
+            Need[] needs = needsCupboardService.searchNeedsQuantity(val);
+            return new ResponseEntity<Need[]>(needs, HttpStatus.OK);
+        }
+        catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Handles HTTP GET requests to the "/needs/value/" + val"
+     * @param val , integer of value to compare to
+     * @return a Response entity containing HttpStatus.OK if the search was successful,
+     * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+     */
+    @GetMapping("/value/{val}")
+    public ResponseEntity<Need[]> searchNeedsValue(@PathVariable Double val){
+        LOG.info("GET /needs/value/" + val);
+        try {
+            Need[] needs = needsCupboardService.searchNeedsValue(val);
             return new ResponseEntity<Need[]>(needs, HttpStatus.OK);
         }
         catch (IOException e) {
@@ -148,6 +202,37 @@ public class NeedsCupboardController {
         
         try {
             Need updated = needsCupboardService.updateNeed(need);
+            if (updated != null) {
+                return new ResponseEntity<Need>(updated, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Handles HTTP PUT requests to the "/needs"
+     * @param userName: the user to update
+     * @param id: the id of the need to be updated
+     * @param visible: the visibility state to set the need
+     * @return a Response entity containing HttpStatus.OK if the update was successful,
+     * a HttpStatus.NOT_FOUND if need doesn't exist
+     * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+     */
+    @PutMapping("/{id}/visible/")
+    public ResponseEntity<Need> updateNeedVisibility(@PathVariable int id, @RequestParam boolean visible){
+        LOG.info("PUT /needs/" + id + "/visible/?visible=" + visible );
+        
+        try {
+
+            Need need = needsCupboardService.getNeedById(id);
+            need.setVisible(visible); // set the retireved need's visibility
+
+            Need updated = needsCupboardService.updateNeed(need);
+            System.out.println(updated);
             if (updated != null) {
                 return new ResponseEntity<Need>(updated, HttpStatus.OK);
             } else {

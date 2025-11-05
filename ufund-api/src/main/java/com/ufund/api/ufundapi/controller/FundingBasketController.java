@@ -1,7 +1,6 @@
 package com.ufund.api.ufundapi.controller;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,11 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.net.http.HttpResponse.ResponseInfo;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.ufund.api.ufundapi.persistence.FundingBasketDAO;
 import com.ufund.api.ufundapi.service.FundingBasketService;
 import com.ufund.api.ufundapi.model.Need;
 import com.ufund.api.ufundapi.model.User;
@@ -46,7 +43,7 @@ public class FundingBasketController {
     }
 
     /**
-     * Handles HTTP GET requests to the "/users"
+     * Handles HTTP GET requests to "/funding_basket_needs/users"
      * @return a Response entity containing HttpStatus.OK if the array of users is returned,
      * a HttpStatus.NO_CONTENT if the returned data is null
      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
@@ -68,7 +65,36 @@ public class FundingBasketController {
     }
 
     /**
-     * Handles HTTP GET requests to the "/needs/id"
+     * Handles HTTP GET requests to "funding_basket_needs/usernames"
+     * @return a Response entity containing HttpStatus.OK if the array of users is returned,
+     * a HttpStatus.NO_CONTENT if the returned data is null
+     * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+     */
+    @GetMapping("/usernames")
+    public ResponseEntity<String[]> getUsernames(){
+        LOG.info("GET /funding_basket_needs/usernames");
+        try {
+            User user[] = fundingBasketService.getUsers(); // get the usernames of every user
+            String[] usernames = new String[user.length];
+            for(int i = 0; i < user.length; i++){
+                usernames[i] = user[i].getName();
+            }
+
+            if (user != null){
+                return new ResponseEntity<>(usernames,HttpStatus.OK); 
+            }
+            else{
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        }
+        catch(IOException e) {
+            LOG.log(Level.SEVERE,e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }   
+    }
+
+    /**
+     * Handles HTTP GET requests to "/funding_basket_needs/userName/id"
      * @param userName: the user to search in
      * @param id: the searched objects id
      * @return a Response entity containing HttpStatus.OK if the search was successful,
@@ -94,7 +120,7 @@ public class FundingBasketController {
     }
 
     /**
-     * Handles HTTP GET requests to the "userName/needs"
+     * Handles HTTP GET requests to "/funding_basket_needs/userName/needs"
      * @param userName: the user to retrieve from
      * @return a Response entity containing HttpStatus.OK if the array of needs is returned,
      * a HttpStatus.NO_CONTENT if the returned data is null
@@ -119,7 +145,7 @@ public class FundingBasketController {
     }
 
     /**
-     * Handles HTTP GET requests to the "/needs/?name= "name""
+     * Handles HTTP GET requests to "/funding_basket_needs/userName/?name= "name""
      * @param userName: the user to search from
      * @param name , check if need contains String name
      * @return a Response entity containing HttpStatus.OK if the search was successful,
@@ -139,7 +165,7 @@ public class FundingBasketController {
     }
 
     /**
-     * Handles HTTP POST requests to the "/needs"
+     * Handles HTTP POST requests to "/funding_basket_needs/userName "need""
      * @param userName: the user to create in
      * @param need: the object to be created
      * @return a Response entity containing HttpStatus.CREATED if the creation was successful,
@@ -167,7 +193,7 @@ public class FundingBasketController {
     }
 
     /**
-     * Handles HTTP PUT requests to the "/needs"
+     * Handles HTTP PUT requests to "/funding_basket_needs/userName "need""
      * @param userName: the user to update
      * @param need: the object to be updated
      * @return a Response entity containing HttpStatus.OK if the update was successful,
@@ -193,7 +219,38 @@ public class FundingBasketController {
     }
 
     /**
-     * Handles HTTP DELETE requests to the "/needs"
+     * Handles HTTP PUT requests to "/funding_basket_needs/userName/id/visible/"visible""
+     * @param userName: the user to update
+     * @param id: the id of the need to be updated
+     * @param visible: the visibility state to set the need
+     * @return a Response entity containing HttpStatus.OK if the update was successful,
+     * a HttpStatus.NOT_FOUND if need doesn't exist
+     * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+     */
+    @PutMapping("/{userName}/{id}/visible/")
+    public ResponseEntity<Need> updateNeedVisibility(@PathVariable String userName, @PathVariable int id, @RequestParam boolean visible){
+        LOG.info("PUT /funding_basket_needs/" + userName + "/" + id + "/visible/?visible=" + visible );
+        
+        try {
+
+            Need need = fundingBasketService.getNeed(userName, id);
+            need.setVisible(visible); // set the retireved need's visibility
+
+            Need updated = fundingBasketService.updateNeed(userName, need);
+            System.out.println(updated);
+            if (updated != null) {
+                return new ResponseEntity<Need>(updated, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Handles HTTP DELETE requests to "/funding_basket_needs/userName/id"
      * @param userName: the user to delete from
      * @param id , id of need to be deleted
      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
@@ -220,7 +277,7 @@ public class FundingBasketController {
     }
 
     /**
-     * Handles HTTP DELETE requests to the "/needs"
+     * Handles HTTP DELETE requests to "/funding_basket_needs/userName/type/type"
      * @param userName: the user to delete from
      * @param type , type of need to be deleted
      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
@@ -246,7 +303,7 @@ public class FundingBasketController {
     }
     
     /**
-     * Handles HTTP DELETE requests to the "/needs"
+     * Handles HTTP DELETE requests to "/funding_basket_needs/userName"
      * @param userName: the user to delete from
      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
      * a HttpStatus.NOT_FOUND if a need of id doesn't exist
@@ -269,7 +326,7 @@ public class FundingBasketController {
     } 
 
     /**
-     * Handles HTTP DELETE requests to the "/needs"
+     * Handles HTTP DELETE requests to "/funding_basket_needs/name/"name""
      * @param userName: the user to delete from
      * @param name , string to check if name contains
      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,

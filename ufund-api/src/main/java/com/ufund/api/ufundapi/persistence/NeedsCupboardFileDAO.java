@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.logging.Logger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -24,7 +23,6 @@ import com.ufund.api.ufundapi.model.Need;
  */
 @Component 
 public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
-    private static final Logger LOG = Logger.getLogger(NeedsCupboardDAO.class.getName());
     Map<Integer,Need> needs;
     private ObjectMapper objectMapper;
     private static int nextId;
@@ -135,6 +133,26 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
             return getNeedsArray(text);
         }
     }
+    /**
+     * Searches for needs based of the type of the needs
+     * 
+     * @param text
+     * @return List of needs that are of the specific type
+     * @throws IOException
+     */
+    public Need[] searchNeedsType(String text) throws IOException{
+        ArrayList<Need> needsArrayList = new ArrayList<>();
+
+        for (Need need : needs.values()){
+            if (text == null || need.getType().contains(text)){
+                needsArrayList.add(need);
+            }
+        }
+        Need[] needsArray = new Need[needsArrayList.size()];
+        needsArrayList.toArray(needsArray);
+        return needsArray;
+
+    }
 
     /**
      * Returns single need with id
@@ -166,7 +184,7 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
             if (exists){
                 return null;
             }
-            Need newNeed = new Need(nextId(),need.getName(), need.getValue(), need.getQuantity(), need.getType());
+            Need newNeed = new Need(nextId(),need.getName(), need.getValue(), need.getCurrentQuantity(), need.getMaxQuantity(),need.getType(), need.getVisible());
             needs.put(newNeed.getId(),newNeed);
             save();
             return newNeed;
@@ -254,6 +272,44 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
             else 
                 return false;
      }
+    }
+
+    /**
+     * Search for need based on it quantity
+     * Needs with less than or equal passed in quantity show
+     */
+    @Override
+    public Need[] searchNeedsQunatity(int qnt) throws IOException {
+         ArrayList<Need> needsArrayList = new ArrayList<>();
+
+        for (Need need : needs.values()){
+            int needQNT = need.getCurrentQuantity();
+            if (qnt == needQNT || qnt > needQNT ){
+                needsArrayList.add(need);
+            }
+        }
+        Need[] needsArray = new Need[needsArrayList.size()];
+        needsArrayList.toArray(needsArray);
+        return needsArray;
+    }
+
+    /**
+     * Search for need based on its value
+     * Needs with less than or equal passed in value show
+     */
+    @Override
+    public Need[] searchNeedsValue(double val) throws IOException {
+        ArrayList<Need> needsArrayList = new ArrayList<>();
+
+        for (Need need : needs.values()){
+            double needQNT = need.getValue();
+            if (val == needQNT){
+                needsArrayList.add(need);
+            }
+        }
+        Need[] needsArray = new Need[needsArrayList.size()];
+        needsArrayList.toArray(needsArray);
+        return needsArray;
     }
 
 }

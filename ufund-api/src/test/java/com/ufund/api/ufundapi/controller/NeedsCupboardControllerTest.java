@@ -7,7 +7,6 @@ import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 
-import com.ufund.api.ufundapi.persistence.NeedsCupboardDAO;
 import com.ufund.api.ufundapi.service.NeedsCupboardService;
 import com.ufund.api.ufundapi.model.Need;
 
@@ -42,8 +41,8 @@ public class NeedsCupboardControllerTest {
     public void testGetNeeds() throws IOException { // getHeroes may throw IOException
         // Setup
         Need[] needs = new Need[2];
-        needs[0] = new Need(1, "Wires", 20.00, 5, "cord");
-        needs[1] = new Need(2, "Breadboard", 10, 1, "board");
+        needs[0] = new Need(1, "Wires", 20.00, 0, 5, "cord", true);
+        needs[1] = new Need(2, "Breadboard", 10, 0, 1, "board", true);
 
         // When getNeeds is called return the needs created above
         when(mockNeedsCupboardService.getAllNeeds()).thenReturn(needs);
@@ -74,8 +73,8 @@ public class NeedsCupboardControllerTest {
     public void testSearchNeeds() throws IOException{
         String searchString = "La";
         Need[] needs = new Need[3];
-        needs[0] = new Need(1, "Lab Kit", 20.00, 5, "kit");
-        needs[2] = new Need(3, "Lab Extinguisher", 150.00, 1, "safety");
+        needs[0] = new Need(1, "Lab Kit", 20.00, 0, 5, "kit", true);
+        needs[2] = new Need(3, "Lab Extinguisher", 150.00, 0, 1, "safety", true);
         //When search heres is classed with "La" return the two Needs created above
         when(mockNeedsCupboardService.searchNeeds(searchString)).thenReturn(needs);
 
@@ -142,7 +141,7 @@ public class NeedsCupboardControllerTest {
     @Test
     public void testGetNeed() throws IOException {  // getHero may throw IOException
         // Setup
-        Need need = new Need(99, "Silicon Wafer", 800, 5, "Electronics");
+        Need need = new Need(99, "Silicon Wafer", 800, 0, 5, "Electronics", true);
         // When the same id is passed in, our mock Hero DAO will return the Hero object
         when(mockNeedsCupboardService.getNeedById(need.getId())).thenReturn(need);
 
@@ -232,7 +231,7 @@ public class NeedsCupboardControllerTest {
     @Test
     public void testCreateNeed() throws IOException {
         //Setup
-        Need newNeed = new Need(101, "Battery", 12.0, 2, "power");
+        Need newNeed = new Need(101, "Battery", 12.0, 0, 2, "power", true);
         when(mockNeedsCupboardService.createNeed(newNeed)).thenReturn(newNeed);
 
         // Invoke
@@ -246,7 +245,7 @@ public class NeedsCupboardControllerTest {
     @Test
     public void testCreateNeedConflict() throws IOException {
         //Setup
-        Need newNeed = new Need(101, "Battery", 12.0, 2, "power");
+        Need newNeed = new Need(101, "Battery", 12.0, 0, 2, "power", true);
         when(mockNeedsCupboardService.createNeed(newNeed)).thenReturn(null);
 
         // Invoke
@@ -259,7 +258,7 @@ public class NeedsCupboardControllerTest {
     @Test
     public void testCreateNeedHandleException() throws IOException {
         //Setup
-        Need newNeed = new Need(101, "Battery", 12.0, 2, "power");
+        Need newNeed = new Need(101, "Battery", 12.0, 0, 2, "power", true);
         doThrow(new IOException()).when(mockNeedsCupboardService).createNeed(newNeed);
 
         // Invoke
@@ -275,7 +274,7 @@ public class NeedsCupboardControllerTest {
     @Test
     public void testUpdateNeed() throws IOException {
         //Setup
-        Need updatedNeed = new Need(101, "Battery", 12.0, 2, "power");
+        Need updatedNeed = new Need(101, "Battery", 12.0, 0, 2, "power", true);
         when(mockNeedsCupboardService.updateNeed(updatedNeed)).thenReturn(updatedNeed);
 
         //Invoke
@@ -289,7 +288,7 @@ public class NeedsCupboardControllerTest {
     @Test
     public void testUpdateNeedNotFound() throws IOException {
         //Setup
-        Need updatedNeed = new Need(101, "Battery", 12.0, 2, "power");
+        Need updatedNeed = new Need(101, "Battery", 12.0, 0, 2, "power", true);
         when(mockNeedsCupboardService.updateNeed(updatedNeed)).thenReturn(null);
 
         //Invoke
@@ -302,7 +301,7 @@ public class NeedsCupboardControllerTest {
     @Test
     public void testUpdateNeedHandleException() throws IOException {
         //Setup
-        Need updatedNeed = new Need(101, "Battery", 12.0, 2, "power");
+        Need updatedNeed = new Need(101, "Battery", 12.0, 0, 2, "power", true);
         doThrow(new IOException()).when(mockNeedsCupboardService).updateNeed(updatedNeed);
 
         //Invoke
@@ -311,6 +310,52 @@ public class NeedsCupboardControllerTest {
         // Analyze
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
+
+    //updateNeedVisibility() Tests
+    //  @Test
+    // public void testUpdateNeedVisibility() throws IOException { // updateNeed may throw IOException
+    //     // Setup
+    //     Need need = new Need(1, "Lab Kit", 20.0, 0, 0, "Kit", true);
+    //     // when updateNeed is called, return true simulating successful
+    //     // update and save
+    //     when(mockNeedsCupboardService.updateNeedVisibility(need.getId(), false));
+    //     ResponseEntity<Need> response = needsCupboardController.updateNeedVisibility(need.getId(), false);
+
+    //     // Invoke
+    //     response = needsCupboardController.updateNeedVisibility(need.getId(), false);
+    //     // Analyze
+    //     assertEquals(HttpStatus.OK,response.getStatusCode());
+    //     assertEquals(need,response.getBody());
+    // }
+
+    // @Test
+    // public void testUpdateNeedVisibilityFailed() throws IOException { // updateNeed may throw IOException
+    //     // Setup
+    //     Need need = new Need(99, "Lab Kit", 20.0, 0, 0, "Kit", true);
+    //     // when updateNeed is called, return true simulating successful
+    //     // update and save
+    //     when(mockNeedsCupboardService.updateNeedVisibility(need.getId(), true));
+
+    //     // Invoke
+    //     ResponseEntity<Need> response = needsCupboardController.updateNeedVisibility(need.getId(), true);
+
+    //     // Analyze
+    //     assertEquals(HttpStatus.NOT_FOUND,response.getStatusCode());
+    // }
+
+    // @Test
+    // public void testUpdateNeedVisibilityHandleException() throws IOException { // updateNeed may throw IOException
+    //     // Setup
+    //     Need need = new Need(99, "Lab Kit", 20.0, 0, 0, "Kit", true);
+    //     // When updateNeed is called on the Mock Need DAO, throw an IOException
+    //     doThrow(new IOException()).when(mockNeedsCupboardService).updateNeedVisibility(need.getId(), true);
+
+    //     // Invoke
+    //     ResponseEntity<Need> response = needsCupboardController.updateNeedVisibility(need.getId(), true);
+
+    //     // Analyze
+    //     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,response.getStatusCode());
+    // }
 
     /**
      * deleteAll tests
@@ -346,6 +391,43 @@ public class NeedsCupboardControllerTest {
 
         //Invoke
         ResponseEntity<Need> response = needsCupboardController.deleteAll();
+
+        //Analyze
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
+
+    // deleteNeedName() Tests
+    @Test
+    public void testDeleteNeedName() throws IOException {
+        // when deleteAllNeeds is called return true
+        when(mockNeedsCupboardService.deleteNeedByName("Microscope")).thenReturn(true);
+
+        //Invoke
+        ResponseEntity<Need> response = needsCupboardController.deleteNeedName("Microscope");
+
+        //Analyze
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    public void testDeleteNeedNameNotFound() throws IOException {
+        // simulate no needs to delete and return false
+        when(mockNeedsCupboardService.deleteNeedByName("Microscope")).thenReturn(false);
+
+        //Invoke
+        ResponseEntity<Need> response = needsCupboardController.deleteNeedName("Microscope");
+
+        //Analyze
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    public void testDeleteNeedNameHandleException() throws IOException{
+        // when DeleteNeedName is called return true
+        doThrow(new IOException()).when(mockNeedsCupboardService).deleteNeedByName("Lab");
+
+        //Invoke
+        ResponseEntity<Need> response = needsCupboardController.deleteNeedName("Lab");
 
         //Analyze
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());

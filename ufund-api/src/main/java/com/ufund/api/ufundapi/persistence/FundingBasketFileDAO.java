@@ -6,11 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
-import java.util.logging.Logger;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -31,7 +28,6 @@ import com.ufund.api.ufundapi.model.User;
  */
 @Component 
 public class FundingBasketFileDAO implements FundingBasketDAO {
-    private static final Logger LOG = Logger.getLogger(FundingBasketDAO.class.getName());
     Map<Integer,Need> currentUserNeeds; // a map of needs used to access the current user's Map<Integer, Need>
     Map<String,Need[]> users; // users are mapped to username:needs
     private ObjectMapper objectMapper;
@@ -243,7 +239,7 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
     /**
      * Returns single need with id
      * @param userName the user this method will modify
-     * @param int id id to search for 
+     * @param id id to search for 
      * @return need if found, null if no id in needs JSON
      */
     @Override
@@ -278,12 +274,12 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
             boolean exists = currentUserNeeds.values().stream().anyMatch(n -> n.getName().equalsIgnoreCase(need.getName()) || n.getId() == (need.getId()));
             if (exists){
                 Need toUpdate = currentUserNeeds.get(need.getId());
-                int newQuantity = toUpdate.getQuantity() + 1;
-                toUpdate.setQuantity(newQuantity);
+                int newQuantity = toUpdate.getMaxQuantity() + 1;
+                toUpdate.setMaxQuantity(newQuantity);
                 return updateNeed(userName, toUpdate);
             }
 
-            Need newNeed = new Need(need.getId(),need.getName(), need.getValue(), 1, need.getType());
+            Need newNeed = new Need(need.getId(),need.getName(), need.getValue(), 0, 1, need.getType(), need.getVisible());
             // add the newly created need to the (currentUserNeeds) Map
             currentUserNeeds.put(need.getId(), newNeed);
 
