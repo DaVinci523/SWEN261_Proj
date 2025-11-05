@@ -3,7 +3,6 @@ package com.ufund.api.ufundapi.service;
 import org.junit.jupiter.api.BeforeEach;
 
 import com.ufund.api.ufundapi.persistence.NeedsCupboardDAO;
-import com.ufund.api.ufundapi.service.NeedsCupboardServiceImplementation;
 
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
-import java.io.IOError;
 import java.io.IOException;
 
 /**

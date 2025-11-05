@@ -1,9 +1,6 @@
 package com.ufund.api.ufundapi.service;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +14,6 @@ import com.ufund.api.ufundapi.persistence.NeedsCupboardDAO;
  */
 @Service
 public class NeedsCupboardServiceImplementation implements NeedsCupboardService{
-    private static final Logger LOG = Logger.getLogger(NeedsCupboardServiceImplementation.class.getName());
 
     private final NeedsCupboardDAO needsCupboardDAO;
 

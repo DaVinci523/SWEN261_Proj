@@ -1,10 +1,6 @@
 package com.ufund.api.ufundapi.model;
 
-import java.util.logging.Logger;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.ufund.api.ufundapi.model.Need;
 
 /**
  * Represents an individual user, each has:
@@ -13,8 +9,6 @@ import com.ufund.api.ufundapi.model.Need;
  * @author CTRL
  */
 public class User {
-    private static final Logger LOG = Logger.getLogger(User.class.getName());
-
     static final String STRINGIFY = "User [name=%s, needs=%s]";
 
     @JsonProperty("userName") private String name;

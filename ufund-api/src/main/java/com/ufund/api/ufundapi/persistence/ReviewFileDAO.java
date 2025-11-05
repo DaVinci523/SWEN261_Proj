@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -18,7 +17,6 @@ import com.ufund.api.ufundapi.model.Review;
  */
 @Component
 public class ReviewFileDAO implements ReviewDAO{
-    private static final Logger LOG = Logger.getLogger(ReviewDAO.class.getName());
     private Map<Integer, Review> reviews;
     private ObjectMapper objectMapper;
     private static int nextId;
