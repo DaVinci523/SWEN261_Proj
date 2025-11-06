@@ -29,7 +29,7 @@ div#admin-editor {
 ul {
   display: grid;
   grid-template-columns: 50% 50%;
-  grid-template-rows: repeat(3);
+  grid-template-rows: repeat(auto-fill, fit-content);
   padding: 0%;
   margin-top: 2%;
   margin-left:auto;
@@ -43,7 +43,7 @@ ul {
 
 div.users-list ul {
   height: 200px;
-  grid-template-rows: repeat(1, 5em);
+  grid-template-rows: repeat(auto-fill, fit-content);
   overflow-y: scroll;
 }
 
@@ -55,7 +55,7 @@ li {
   margin: 0.6em 0%;
   padding: 1em;
   font-size: 16px;
-  
+
   background-color: white;
 }
 
@@ -80,13 +80,18 @@ li {
 
 
 span.data-container {
-    display: grid;
-    grid-template-rows: 60% 20%;
-    padding: 0% 1.5%;
+  display: grid;
+  grid-template-rows: 60% 20%;
+  padding: 0% 1.5%;
 }
 
 span.variable {
   padding: 0em 0.5em;
+}
+
+span.variable *{
+  width: 100%;
+  word-break: break-all;
 }
 
 span#modification-buttons {

@@ -17,7 +17,7 @@ button {
 
 ul {
     margin-left: auto;
-    margin-right:auto;
+    margin-right: auto;
     height: 400px;
     width: 96%;
     padding: 0%;
@@ -88,6 +88,7 @@ span.variable {
     text-align: center;
     padding: 1%;
     padding-left: 1em;
+    word-break: break-all;
 }
 
 input.manual-quantity {

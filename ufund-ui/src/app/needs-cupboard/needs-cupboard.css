@@ -89,6 +89,7 @@ span.variable {
     padding: 1%;
     padding-top: 10%;
     padding-bottom: 10%;
+    word-break: break-all;
 }
 
 div.search-name-container {
