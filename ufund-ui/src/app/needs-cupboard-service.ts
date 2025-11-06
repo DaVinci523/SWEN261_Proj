@@ -44,13 +44,48 @@ export class NeedsCupboardService {
       // if not search term, return empty need array.
       return of([]);
     }
-    return this.http.get<Need[]>(`${this.needsUrl}/?name=${term}`).pipe(
+    return this.http.get<Need[]>(`${this.needsUrl}/name/${term}`).pipe(
       tap(x => x.length ?
          this.log(`found needs matching "${term}"`) :
          this.log(`no needs matching "${term}"`)),
       catchError(this.handleError<Need[]>('searchNeeds', []))
     );
   }
+
+  /* GET needs whose type contains search term */
+  searchNeedsType(term: string): Observable<Need[]> {
+    if (!term.trim()) {
+      // if not search term, return empty need array.
+      return of([]);
+    }
+    return this.http.get<Need[]>(`${this.needsUrl}/type/${term}`).pipe(
+      tap(x => x.length ?
+         this.log(`found needs matching "${term}"`) :
+         this.log(`no needs matching "${term}"`)),
+      catchError(this.handleError<Need[]>('searchNeeds', []))
+    );
+  }
+
+  /* GET needs whose quanity is equal or less than search term */
+  searchNeedsQuantity(term: number): Observable<Need[]> {
+    return this.http.get<Need[]>(`${this.needsUrl}/quantity/${term}`).pipe(
+      tap(x => x.length ?
+         this.log(`found needs matching "${term}"`) :
+         this.log(`no needs matching "${term}"`)),
+      catchError(this.handleError<Need[]>('searchNeeds', []))
+    );
+  }
+
+  /* GET needs whose quanity is equal or less than search term */
+  searchNeedsValue(term: number): Observable<Need[]> {
+    return this.http.get<Need[]>(`${this.needsUrl}/value/${term}`).pipe(
+      tap(x => x.length ?
+         this.log(`found needs matching "${term}"`) :
+         this.log(`no needs matching "${term}"`)),
+      catchError(this.handleError<Need[]>('searchNeeds', []))
+    );
+  }
+
 
   //////// Save methods //////////
 

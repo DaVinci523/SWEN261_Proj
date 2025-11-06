@@ -1,39 +1,66 @@
+<div class="cupboard-page-container">
+    <div class="search-container">
+        <div class="search-name-container">  
+            <input
+                class="search name"
+                placeholder="Search Needs…"
+                [(ngModel)]="searchTerm"
+                (input)="getNeeds()"   
+                />
+        </div>
+        <div class="special-searches-container">
+            <div class="searchbar"> 
+                <input
+                    class="search type"
+                    placeholder="Search Type…"
+                    [(ngModel)]="typeTerm"
+                    (input)="searchNeedsType()"   
+                    />
+            </div>
+            <div class="searchbar"> 
+                <input
+                    class="search quantity"
+                    placeholder="Search Quantity..."        
+                    [(ngModel)]="qtyTerm"
+                    (input)="searchNeedsQuantity()"   
+                    />
+            </div>
+            <div class="searchbar"> 
+                <input
+                    class="search value"
+                    placeholder="Search Value..."        
+                    [(ngModel)]="valTerm"
+                    (input)="searchNeedsValue()"
+                    />
+            </div>
+        </div>
+    </div>
 
-<h1>Needs Cupboard</h1>
-
-<div> 
-        <input
-            class="search"
-            placeholder="Search Needs…"
-            [(ngModel)]="searchTerm"
-            (input)="getNeeds()"   
-            />
-</div>
-
-<ul class="userNeeds"><!--add all userneeds to a list-->
-    
-    @for (need of needs; track need.id) {
-        @if (need.visible){ <!--only show need if it is visible-->
-            <li>
-                <span class="data-container">
-                    <span id="need-variables">
-                        <span class="identifier variable">Id: [{{need.id}}]</span> 
-                        <span class="variable">Name: [{{need.name}}]</span>
-                        <span class="variable">Value: [${{need.value}}]</span>
-                        <span *ngIf="need.currentQuantity >= need.maxQuantity" class="variable">Quantity: Surplus</span>
-                        <span *ngIf="need.currentQuantity < need.maxQuantity" class="variable">Quantity: {{need.currentQuantity}}/{{need.maxQuantity}}</span>
-                        <span class="variable">Type: ["{{need.type}}"]</span>
-                        
+    <ul class="userNeeds"><!--add all userneeds to a list-->
+        
+        @for (need of needs; track need.id) {
+            @if (need.visible){ <!--only show need if it is visible-->
+                <li>
+                    <span class="data-container">
+                        <span id="need-variables">
+                            <!-- <span class="identifier variable">Id: [{{need.id}}]</span>  -->
+                            <span class="variable">{{need.name}}</span>
+                            <span *ngIf="need.currentQuantity >= need.maxQuantity" class="variable">Quantity: Surplus</span>
+                            <span *ngIf="need.currentQuantity < need.maxQuantity" class="variable">Quantity: {{need.currentQuantity}}/{{need.maxQuantity}}</span>
+                            <span class="variable">${{need.value}}</span>
+                            <!-- <span class="variable">Type: ["{{need.type}}"]</span> -->
+                            
+                        </span>
+                        <span id="fund">
+                            <button *ngIf="need.currentQuantity < need.maxQuantity" id="moveToFund"type="button" (click)="moveToFunding(need)" class="fund" title="Add to Cart">Add to Cart</button>  
+                            <button *ngIf="need.currentQuantity >= need.maxQuantity" id="moveToFund"type="button" (click)="moveToFunding(need)" class="fund" title="Donate Extra">Dontate Extra</button> 
+                        </span>
                     </span>
-                    <span id="fund">
-                        <button *ngIf="need.currentQuantity < need.maxQuantity" id="moveToFund"type="button" (click)="moveToFunding(need)" class="fund" title="Add to Cart">Add to Cart</button>  
-                        <button *ngIf="need.currentQuantity >= need.maxQuantity" id="moveToFund"type="button" (click)="moveToFunding(need)" class="fund" title="Donate Extra">Dontate Extra</button> 
-                    </span>
-                </span>
-            </li>
+                </li>
+            }
+        } 
+        @empty {
+            <li>There are no items.</li>
         }
-    } 
-    @empty {
-        <li>There are no items.</li>
-    }
-</ul>
+    </ul>
+</div>

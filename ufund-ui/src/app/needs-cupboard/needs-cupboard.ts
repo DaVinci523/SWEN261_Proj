@@ -14,6 +14,7 @@ import { interval, Subscription } from 'rxjs';
 })
 export class NeedsCupboard implements OnInit, OnDestroy {
   private getNeedsSubscription: Subscription;
+  quantityTerm: any;
 
   constructor(
     private needsCupboardService: NeedsCupboardService,
@@ -31,6 +32,9 @@ export class NeedsCupboard implements OnInit, OnDestroy {
   userName: string = '';
   needs: Need[] = [];
   searchTerm = '';
+  typeTerm = '';
+  qtyTerm: number | null = null;
+  valTerm: number | null = null;
   buttonText: string = 'Add to Cart';
   /**
    * Initialization
@@ -61,6 +65,7 @@ export class NeedsCupboard implements OnInit, OnDestroy {
 
   /**
    * Gathers full list of needs in needs cupboard JSON
+   * If search bar has contents return needs of that name
    */
   getNeeds(): void {
     const term = this.searchTerm.trim();
@@ -69,6 +74,51 @@ export class NeedsCupboard implements OnInit, OnDestroy {
     : this.needsCupboardService.getNeeds();
     method.subscribe(needs => this.needs = needs);
   }
+
+  /**
+   * Search for needs based off type
+   */
+  searchNeedsType(): void{
+    const typeTerm = this.typeTerm.trim();
+    const method = typeTerm
+    ? this.needsCupboardService.searchNeedsType(typeTerm)
+    : this.needsCupboardService.getNeeds();
+    method.subscribe(needs => this.needs = needs);
+
+  }
+
+   /**
+   * Search for needs based off quantity
+   */
+  searchNeedsQuantity(): void{
+    const qtyTerm = this.qtyTerm;
+    if (this.qtyTerm === null || this.qtyTerm === undefined) {
+    this.getNeeds();
+    return;
+  }
+  const method = qtyTerm
+  ? this.needsCupboardService.searchNeedsQuantity(this.qtyTerm)
+  : this.needsCupboardService.getNeeds();
+  method.subscribe(needs => this.needs = needs);
+  }
+
+   /**
+   * Search for needs based off value
+   */
+  searchNeedsValue(): void{
+    const valTerm = this.valTerm;
+    if (this.valTerm === null || this.valTerm === undefined) {
+    this.getNeeds();
+    return;
+  }
+  const method = valTerm
+  ? this.needsCupboardService.searchNeedsValue(this.valTerm)
+  : this.needsCupboardService.getNeeds();
+  method.subscribe(needs => this.needs = needs);
+
+  }
+
+  
   /**
    * add new need to backend
    * @param name 

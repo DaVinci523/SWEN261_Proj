@@ -1,14 +1,16 @@
-
-#funding-basket {
-    background-color: lightblue;
+#checkout-page-container {
+  display: grid;
+  grid-template-columns: 75% 25%;
+  background-color: #fff8e8;
 }
 
-#checkout {
-    background-color: lightgreen;
+#funding-basket{
+  padding: 5%;
+  padding-bottom: 0%;
 }
 
 div {
-    width: 100%;
+    width: auto;
 }
 
 .center-content {
@@ -17,24 +19,24 @@ div {
 
 /* Split the screen in half */
 .split {
-  height: 100%;
-  width: 50%;
+  grid-row: 1;
+  height: 80%;
+  width: auto;
   position: relative;
   top: 0;
+  background-color: #fff8e8;
 }
 
 /* Control the left side */
 .left {
   left: 0;
   float: left;
-  background-color: lightgreen;
 }
 
 /* Control the right side */
 .right {
   right: 0;
   float: right;
-  background-color: lightred;
 }
 
 .no-access {

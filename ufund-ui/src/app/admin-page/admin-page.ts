@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AdminPageService } from '../admin-page-service'; 
 import { Need } from '../need';
-import { User } from '../user';
+import { User, PublicUserInfo } from '../user';
 import { FundingBasketService } from '../funding-basket-service';
 
 @Component({
@@ -13,6 +13,8 @@ import { FundingBasketService } from '../funding-basket-service';
 
 
 export class AdminPage {
+  usernameToRemove = '';
+  users: PublicUserInfo[] = [];
 
   constructor(
     private adminPageService:AdminPageService, // adminPageService to connect to REST API back-end      
@@ -23,6 +25,10 @@ export class AdminPage {
   needs:Need[] = []; // front-end container for all needs in cupboard
   usernames:String[] = [];
 
+  refresh(): void {
+    this.users = this.user.getAllUsers();
+  }
+  
   /**
    * gets all needs from back-end
    */
@@ -146,8 +152,38 @@ export class AdminPage {
     
     // calls the getNeeds function to populate needs
     this.getNeeds();
+    this.refresh();
   }
 
+  
+  removeAUser(): void {
+    const u = this.usernameToRemove.trim();
+    if (!u) {
+      alert('Enter a username to remove.');
+      return;
+    }
+    const ok = window.confirm('Delete user "' + u + '"?');
+    if (!ok) { return; }
+
+    const done = this.user.deleteUser(u);
+    if (done) {
+      alert('Deleted "' + u);
+      this.usernameToRemove = '';
+      this.refresh();
+    } else {
+      alert('User not found.');
+    }
+  }
+
+  clearAll(): void {
+    const ok = window.confirm('Delete ALL users? This cannot be undone.');
+    if (!ok) { return; }
+    this.user.clearAllUsers();
+    alert('All users deleted.');
+    this.refresh();
+  }
+
+}
   /**
    * Update the data for each of user's needs to be the same as the cupboards data
    */
@@ -179,5 +215,3 @@ export class AdminPage {
   //     });
   //   });
   // }
-
-}

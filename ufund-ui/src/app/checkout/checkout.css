@@ -1,6 +1,23 @@
+h1 {
+    text-align: center;
+}
+
+div.checkout-container {
+    margin: 20% 1%;
+    padding: 10%;
+    border: 8px solid black;
+    border-radius: 24px;
+    background-color: white;
+}
+
 button.checkout {
     width: 80%;
     height: 2.5em;
-    margin: 1em auto;
+    margin: 1em 11%;
     border-radius: 15px;
+}
+
+div.overflow-warnings {
+    overflow-y: scroll;
+    height: 350px;
 }
