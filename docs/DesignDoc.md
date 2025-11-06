@@ -256,7 +256,43 @@ This section describes the application architecture.
       * @param name , string to check if name contains
       * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
       * a HttpStatus.NOT_FOUND if a need of id doesn't exist
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured.
+   
+* ReviewController.java - Handles HTTP requests for reviews
+  * getReviews()
+      * Handles HTTP GET requests to "/reviews"
+      * @return a Response entity containing HttpStatus.OK if the array of reviews is successfully returned,
+      * an HttpStatus.NO_CONTENT if there are no reviews
+      * an HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured
+  * getReviewsByRating()
+      * Handles HTTP GET requests to "/reviews/rating/{rating}"
+      * @param rating: the rating value the reviews are filtered by
+      * @return a Response entity containing HttpStatus.OK if reviews with matching ratings are found
+      * a HttpStatus.NO_CONTENT if no reviews match the rating parameter
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurs
+  * createReview()
+      * Handles HTTP POST requests to "/reviews"
+      * @param review: the Review object to be created
+      * @return a Response entity containing HttpStatus.CREATED if the review is successfully created,
+      * HttpStatus.CONFLICT if the creation failed,
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured
+  * deleteReview()
+      * Handles HTTP DELETE requests to "/reviews/{id}"
+      * @param id: the id of the review that is being deleted
+      * @return a Response entity containing HttpStatus.OK if the review was deleted successfully,
+      * HttpStatus.NOT_FOUND if there is no review with the given id
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred
+  * deleteReviewsByUsername()
+      * Handles HTTP DELETE requests to "/reviews/user/{userName}"
+      * @param userName: the username of the user whose reviews should be deleted
+      * @return a Response entity containing HttpStatus.ok if the review was deleted successfully,
+      * HttpStatus.NOT_FOUND if there are no reviews from the given userName
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurs
+  * deleteAllReviews()
+      * Handles HTTP DELETE requests to "/reviews"
+      * @return a Response entity contatin HttpStatus.OK if all the reviews were deleted successfully,
+      * HttpStatus.NOT_FOUND if there are no reviews
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurs. 
 
 > _**[Sprint 4]** Provide a summary of this tier of your architecture. This
 > section will follow the same instructions that are given for the View
