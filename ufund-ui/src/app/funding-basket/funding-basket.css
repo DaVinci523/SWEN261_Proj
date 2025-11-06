@@ -11,6 +11,10 @@ div.funding-basket-container {
     background-color: white
 }
 
+button {
+    cursor: pointer;
+}
+
 ul {
     margin-left: auto;
     margin-right:auto;

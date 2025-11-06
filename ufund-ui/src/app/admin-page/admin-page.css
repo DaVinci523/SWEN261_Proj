@@ -1,30 +1,107 @@
 /*
 https://www.w3schools.com/howto/howto_css_two_columns.asp
 */
-.column {
+div.admin-page-container {
+  display: grid;
+  grid-template-columns: 75% 25%;
+  height: 100%;
+  width: 100%;
+  background-color: #fff8e8;
+}
+
+h2, h3{
+  text-align: center;
+}
+
+button {
+  cursor: pointer;
+}
+
+div#needs-cupboard {
+  
+}
+
+div#admin-editor {
+  border-left: 4px solid black;
+  padding: 1% 6%;
+}
+
+ul {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: repeat(3);
+  padding: 0%;
+  margin-top: 2%;
+  margin-left:auto;
+  margin-right:auto;
+  font-size: 20px;
+  width:98%;
+  height:450px;
+  border-radius: 12px;
+  overflow-y: scroll;
+}
+
+div.users-list ul {
+  height: 200px;
+  grid-template-rows: repeat(1, 5em);
+  overflow-y: scroll;
+}
+
+li {
+  grid-columns: 1;
+  list-style-type: none;
+  border: 2px solid black;
+  border-radius: 48px;
+  margin: 0.6em 0%;
+  padding: 1em;
+  font-size: 16px;
+  
+  background-color: white;
+}
+
+/* Split the screen in half */
+.split {
+  grid-row: 1;
+  position: relative;
+  top: 0;
+}
+
+/* Control the left side */
+.left {
+  left: 0;
   float: left;
-  width: 50%;
 }
 
-.flex-container {
-  display: flex;
+/* Control the right side */
+.right {
+  right: 0;
+  float: right;
 }
 
-.padding {
-  padding: 10px;
-}
 
 span.data-container {
     display: grid;
-    grid-template-columns: 80% 20%;
-    padding: 1.5%;
+    grid-template-rows: 60% 20%;
+    padding: 0% 1.5%;
 }
 
-li{
-    list-style-type:none;
-    border: 2px solid black;
-    width: 90%;
-    
+span.variable {
+  padding: 0em 0.5em;
+}
+
+span#modification-buttons {
+  padding: 0em 2em;
+}
+
+span#modification-buttons > * {
+  float: right;
+  margin-top: 0.2em;
+}
+
+div.user-management {
+  padding-top: 1em;
+  margin-top: 1em;
+  border-top: 2px solid black;
 }
 
 .restricted {

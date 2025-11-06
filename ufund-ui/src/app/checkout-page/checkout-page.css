@@ -1,12 +1,20 @@
 #checkout-page-container {
   display: grid;
+  height: 100%;
   grid-template-columns: 75% 25%;
   background-color: #fff8e8;
 }
 
 #funding-basket{
+  height: 90%;
   padding: 5%;
   padding-bottom: 0%;
+}
+
+#checkout {
+  height: 100.5%;
+  border-left: 4px solid black;
+  
 }
 
 div {
@@ -14,7 +22,7 @@ div {
 }
 
 .center-content {
-    padding: 2% 10%;
+    padding: 0% 10%;
 }
 
 /* Split the screen in half */
