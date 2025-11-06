@@ -17,6 +17,10 @@ div.cupboard-page-container {
     font-size: 20px;
 }
 
+button {
+    cursor: pointer;
+}
+
 /* Containers */
 ul {
     padding: 0%;
@@ -85,16 +89,8 @@ span.variable {
     padding: 1%;
     padding-top: 10%;
     padding-bottom: 10%;
+    word-break: break-all;
 }
-
-/* span.identifier.variable {
-    width: auto;
-    text-align: center;
-    padding: 1%;
-    border: 2px solid black;
-    padding-top: 20%;
-    padding-bottom: 10%;
-} */
 
 div.search-name-container {
     width: 80%;
