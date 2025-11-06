@@ -77,7 +77,9 @@ This section describes the application architecture.
 >Our Model tier consists of a Need.java file that contains our need object. Each need object has an identification (id), name, value (or the cost), >type (what type of item it is), and quantity. There are getter and setters for each of the variables above.
 >
 >Our Model tier also includes a User.java file that represents an individual user. Each user has a name and a funding basket (an array of needs). >The class has a constructor to initialize these fields and getters (getName(), getBasket()).
->Finally, we also have a FundingBasketDataWrapper.java file that wraps the collection of users for persistence and transport. It holds a single >field, a list of users, along with a constructor to set it and a getter (getUsers()). 
+>Finally, we also have a FundingBasketDataWrapper.java file that wraps the collection of users for persistence and transport. It holds a single >field, a list of users, along with a constructor to set it and a getter (getUsers()).
+>
+>Additionally, out Model tier contains a Review.java file that represents a review written by a user. Each review has a id, the username of the reviewer, the text content of the review, and an integer rating. The class includes a contains a constructor to initialze the various fields and getters for each field including: getId(), getUserName(), getReviewText(), and getRating().
 
 
 ### Overview of User Interface
