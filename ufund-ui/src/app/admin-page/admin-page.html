@@ -104,9 +104,11 @@
             <div class="users-list">
                 <h2>Current Users ({{ users.length }})</h2>
                 <ul>
-                    <li *ngFor="let u of users">
-                        <strong>{{ u.username }}</strong> — role: {{ u.role }}
-                    </li>
+                    @for (user of users; track user.username) {
+                        <li>
+                            <strong>{{user.username}}</strong> — role: {{ user.role }}
+                        </li>
+                    }
                 </ul>
             </div>
         
