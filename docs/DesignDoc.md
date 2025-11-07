@@ -451,6 +451,37 @@ This section describes the application architecture.
     * Creates a Review object using an id, userName, reviewText, and rating and parameters
     * Contains getters (getId() -> int, getUserName() -> String, getReviewText() -> String, getRating() -> int) as well as a (toString() -> String) override
     * This is used in ReviewFileDAO.java to hold data for reviews.
+  
+  * ReviewFileDAO.java - the working logic behind our application for accessing Reviews.
+    * getReviews()
+      * Loads all of the reviews from the persistance storage
+      * @return an array of all reviews stored in the JSON file
+    * getReviewsByRating
+      * Filters the list of reviews to only show those that have the same rating as specified
+      * @param int rating: the rating value to filter with
+      * @return an array of reviews with the same rating as the parameter
+    * createReview()
+      * Adds a new review into the JSON file and assigns it a unique id.
+      * @param Review review: the review object that is being added
+      * @return the new Review now with an id
+      * @throws I/O exception if an error ocurred
+    * deleteReview()
+      * Removes a review from the JSON based on its id
+      * @param int id: the id of the review to delete
+      * @return true if the review was deleted successfully or false if it was not
+    * deleteReviewByUsername()
+      * Removes all reviews from a specific user from the JSON
+      * @param String userName: the username of the user whose reviews should be deleted
+      * @return true if the review was deleted successfully or false if it was not
+    * deleteAll()
+      * Deletes all the reviews from the persistance storage
+      * @return true if the file was updated successfully or false if it failed
+    * save()
+      * Write the current list of reviews into the JSON file
+      * @return true if it was written successfully or false if it was not
+    * load()
+      * Loads all the reviews from the JSON file into the memory
+      * @return true if it read successfully
 
 
 <img width="593" height="332" alt="Model Tier Architecture" src="ModelTierArchitecture.png" />
