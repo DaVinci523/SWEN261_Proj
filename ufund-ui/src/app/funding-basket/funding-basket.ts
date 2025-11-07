@@ -17,7 +17,7 @@ export class FundingBasket implements OnInit, OnDestroy {
   private getNeedsSubscription: Subscription;
 
   constructor(
-    private fundingBasketService: FundingBasketService,
+    public fundingBasketService: FundingBasketService,
     private needsCupboardService: NeedsCupboardService,
     private router: Router,
   ) {
@@ -126,12 +126,15 @@ export class FundingBasket implements OnInit, OnDestroy {
     this.fundingBasketService.addNeed(this.userName, { id, name, value, currentQuantity: 0, maxQuantity: 1, type, visible: true } as Need)
       .subscribe(need => {
         this.userNeeds.push(need);
+        this.fundingBasketService.updateItemCount(this.userName);
       });
   }
 
   delete(need: Need): void {
     this.userNeeds = this.userNeeds.filter(n => n !== need); // removes the given need in the front end by re-defining the list by only filetering in needs that weren't given
-    this.fundingBasketService.deleteNeed(this.userName, need.id).subscribe();
+    this.fundingBasketService.deleteNeed(this.userName, need.id).subscribe(() => {
+      this.fundingBasketService.updateItemCount(this.userName);
+    });
   }
 
   increaseQuantity(need: Need): void {

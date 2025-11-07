@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { User } from '../user';
 
-
 @Component({
   selector: 'app-checkout-page',
   standalone: false,
