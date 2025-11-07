@@ -2,6 +2,6 @@ html, body {
     height: 100%; 
     margin: 0; 
     background-color: #fff8e8;
+    scroll-behavior: smooth; 
 }
 app-root { display:block; min-height:100%; }
-
