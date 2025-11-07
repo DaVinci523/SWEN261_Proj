@@ -29,13 +29,15 @@
         </svg>
       }
     </a>
-    <a class="icon-link" (click)="goToHelper()" aria-label="Needs List">
-       <img src="images/funding_basket_icon.png" alt="Needs List" />
-    </a>
-    <a class="icon-link" (click)="goToCheckout()" aria-label="Checkout">
-       <img src="images/checkout_icon.png" alt="Checkout" />
-       <span class="item-count-badge" *ngIf="cartItemCount > 0">{{ cartItemCount }}</span>
-    </a>
+    @if(user.isLoggedIn()) { <!--Show only if the user is logged in-->
+      <a class="icon-link" (click)="goToHelper()" aria-label="Needs List">
+        <img src="images/funding_basket_icon.png" alt="Needs List" />
+      </a>
+      <a class="icon-link" (click)="goToCheckout()" aria-label="Checkout">
+        <img src="images/checkout_icon.png" alt="Checkout" />
+        <span class="item-count-badge" *ngIf="cartItemCount > 0">{{ cartItemCount }}</span>
+      </a>
+    }
 
   </div>
 </nav>

@@ -1,0 +1,24 @@
+<app-nav-bar></app-nav-bar>
+
+<div id="reviews-container">
+    <ul class="userNeeds"><!--add all userneeds to a list-->
+        
+        @for (review of reviews; track review.id) {
+            <li>
+                <span class="data-container">
+                    <span id="review-variables">
+                        <span class="variable">{{review.userName}}</span>
+                        @for (  review of [review.rating]; track review ) {
+                            <img src="\images\Gold_Star.png" alt="Gold star" width="25" height="25"/>
+                        }
+                        <!-- <span class="variable">Type: ["{{need.type}}"]</span> -->
+                        
+                    </span>
+                </span>
+            </li>
+        } 
+        @empty {
+            <li>There are no items.</li>
+        }
+    </ul>
+</div>
