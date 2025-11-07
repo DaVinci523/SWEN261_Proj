@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, of } from 'rxjs';
+import { Observable, of, BehaviorSubject } from 'rxjs';
 
 import { Need } from './need';
 
@@ -15,6 +15,10 @@ import {MessageService} from './message';
 })
 export class FundingBasketService {
   private needsUrl = 'http://localhost:8080/funding_basket_needs';  // URL to web api
+
+  // BehaviorSubject used for tracking the items in the cart
+  private itemCountSubject = new BehaviorSubject<number>(0);
+  itemCount$ = this.itemCountSubject.asObservable();
 
   constructor(
     private http: HttpClient,
@@ -73,20 +77,45 @@ export class FundingBasketService {
   addNeed(userName: String, need: Need): Observable<Need> {
     const url = `${this.needsUrl}/${userName}`;
 
-    return this.http.post<Need>(url, need, this.httpOptions)/*.pipe(
-      tap((newNeed: Need) => this.log(`added need w/ id=${newNeed.id}`)),
-      catchError(this.handleError<Need>('addNeed'))
-    );*/
+    return this.http.post<Need>(url, need, this.httpOptions).pipe(
+      tap(_ => this.updateItemCount(userName)),
+      //catchError(this.handleError<Need>('addNeed'))
+    );
   }
 
   /** DELETE: delete the need from the server */
   deleteNeed(userName: String, id: number): Observable<Need> {
     const url = `${this.needsUrl}/${userName}/${id}`;
 
-    return this.http.delete<Need>(url, this.httpOptions)/*.pipe(
-      tap(_ => this.log(`deleted hero id=${id}`)),
-      catchError(this.handleError<Hero>('deleteHero'))
-    );*/
+    return this.http.delete<Need>(url, this.httpOptions).pipe(
+      tap(_ => this.updateItemCount(userName))
+      //catchError(this.handleError<Hero>('deleteHero'))
+    );
+  }
+
+  /**
+   * Refreshes and updates the observable item count 
+   */
+  updateItemCount(userName: String): void {
+    this.getNeeds(userName).subscribe({
+      next: (needs) => {
+        const total = needs.reduce((sum: number, need: any) => {
+          return sum + (need.maxQuantity ?? 0);
+        }, 0);
+        this.itemCountSubject.next(total);
+      },
+      error: (err) => {
+        console.error('Failed to update the cart count:', err);
+        this.itemCountSubject.next(0);
+      }
+    });
+  }
+
+  /**
+   * Return the current number of items in the cart
+   */
+  getCurrentItemCount(): number {
+    return this.itemCountSubject.value;
   }
 
   

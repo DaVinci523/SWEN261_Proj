@@ -1,6 +1,6 @@
 
 <div class="funding-basket-container">
-    <h1>Cart</h1>
+    <h1>Cart ({{ fundingBasketService.itemCount$ | async }})</h1>
 
     <ul class="userNeeds"><!--add all userneeds to a list-->
         @for (need of userNeeds; track need.id) {

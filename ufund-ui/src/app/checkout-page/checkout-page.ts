@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { User } from '../user';
+import { FundingBasketService } from '../funding-basket-service';
 
 
 @Component({

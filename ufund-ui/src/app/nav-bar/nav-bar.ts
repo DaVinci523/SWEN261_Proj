@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '../user';
+import { FundingBasketService } from '../funding-basket-service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -8,8 +9,24 @@ import { User } from '../user';
   templateUrl: './nav-bar.html',
   styleUrl: './nav-bar.css'
 })
-export class NavBar {
-  constructor(private router: Router, public user: User) {}
+export class NavBar  implements OnInit{
+  cartItemCount: number = 0;
+
+  constructor(private router: Router, public user: User, private fundingBasketService: FundingBasketService) {}
+
+  ngOnInit(): void {
+      if (this.user.isLoggedIn()) {
+        const username = this.user.getCurrentUser();
+        if (username) {
+          // Refresh the count 
+          this.fundingBasketService.updateItemCount(username);
+          // Subscribe to live count updates
+          this.fundingBasketService.itemCount$.subscribe(count => {
+            this.cartItemCount = count;
+        });
+        }
+      }
+  }
 
   /**
    * Navigates to homepage

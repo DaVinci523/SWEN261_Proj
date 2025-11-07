@@ -34,6 +34,7 @@
     </a>
     <a class="icon-link" (click)="goToCheckout()" aria-label="Checkout">
        <img src="images/checkout_icon.png" alt="Checkout" />
+       <span class="item-count-badge" *ngIf="cartItemCount > 0">{{ cartItemCount }}</span>
     </a>
 
   </div>
