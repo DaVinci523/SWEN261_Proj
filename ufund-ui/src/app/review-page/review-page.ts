@@ -23,6 +23,11 @@ Math: any;
     this.loadAll();
   }
 
+  getStars(rating: number): number[] { // returns an array of the size of the given rating, a helper function for the @for loop in review-page.html
+    return Array(rating).fill(0);
+  }
+
+
   loadAll(): void {
     const self = this;
     this.reviewService.getReviews().subscribe(function(list) {

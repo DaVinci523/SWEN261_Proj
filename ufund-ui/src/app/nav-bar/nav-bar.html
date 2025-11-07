@@ -30,6 +30,9 @@
       }
     </a>
     @if(user.isLoggedIn()) { <!--Show only if the user is logged in-->
+      <a class="icon-link reviews-button" (click)="goToReviews()">
+        <span>Reviews</span>
+      </a>
       <a class="icon-link" (click)="goToHelper()" aria-label="Needs List">
         <img src="images/funding_basket_icon.png" alt="Needs List" />
       </a>

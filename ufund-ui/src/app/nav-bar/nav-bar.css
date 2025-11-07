@@ -47,6 +47,20 @@
   text-decoration: none;
   cursor: pointer;
 }
+
+.reviews-button {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,.18);
+  background: #fff;
+  cursor: pointer;
+}
+.reviews-button:hover { 
+  background: #fff7e6; 
+  transform: translateY(-1px);
+  opacity: 1;
+}
+
 .icon-link img {
   width: 22px;
   height: 22px;
@@ -55,6 +69,11 @@
 }
 .icon-link:hover img,
 .icon-link:focus-visible img {
+  transform: translateY(-1px);
+  opacity: 1;
+}
+
+svg:hover {
   transform: translateY(-1px);
   opacity: 1;
 }

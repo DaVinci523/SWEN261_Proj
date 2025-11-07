@@ -4,17 +4,19 @@
     <ul class="userNeeds"><!--add all userneeds to a list-->
         
         @for (review of reviews; track review.id) {
-            <li>
-                <span class="data-container">
-                    <span id="review-variables">
+            <li class="row">
+                <div class="data-container">
+                    <div id="review-head" class="row">
                         <span class="variable">{{review.userName}}</span>
-                        @for (  review of [review.rating]; track review ) {
+                        <br>
+                        @for (review of getStars(review.rating); track review ) {
                             <img src="\images\Gold_Star.png" alt="Gold star" width="25" height="25"/>
                         }
-                        <!-- <span class="variable">Type: ["{{need.type}}"]</span> -->
-                        
-                    </span>
-                </span>
+                    </div>
+                    <div id="review-text" class="row">
+                        {{review.reviewText}}
+                    </div>
+                </div>
             </li>
         } 
         @empty {
