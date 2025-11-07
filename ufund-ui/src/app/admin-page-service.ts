@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Need } from './need';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {MessageService} from './message';
@@ -14,6 +14,19 @@ export class AdminPageService {
   private needsUrl = 'http://localhost:8080/needs';
 
   constructor(private http: HttpClient,  private MessageService: MessageService) {}
+  
+  // Add Behavior Subject // DOES NOTHING
+  static cupboardSubject = new BehaviorSubject([] as Need[]); 
+  // currentCupboard = AdminPageService.cupboardSubject.asObservable();
+
+  /**
+   * Updates the cupboard BehaviorSubject to the new given need cupboard
+   * @param newCupboard 
+   */ // DOES NOTHING
+  public static updateCurrentCupboard(newCupboard: Need[]){
+    AdminPageService.cupboardSubject.next(newCupboard);
+    console.log(AdminPageService.cupboardSubject);
+  }
 
   /** 
    * Log a NeedService message with the MessageService 
