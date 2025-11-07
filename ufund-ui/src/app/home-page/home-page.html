@@ -1,24 +1,70 @@
 <app-nav-bar></app-nav-bar>
-<div class="home-page">
 
-     <!-- Main Page content-->
-    <main class="main-content">
-        <!-- Left side of the page -->
-        <section class="left-section">
-            <h2>Vision Statement</h2>
-            <p>
-                Student research is one of the most important yet underappreciated drivers of advancement in society. From the World Wide Web to the the COVID 19 vaccine, countless breakthroughs have
-                have come from student researchers. At myResearch, we are seeking to help fund these innovators as they shape the future. Please consider joining
-                us in our goal so you can be a part of building a better tommorow. 
-            </p>
-            <img src="/images/swen-team-picture.jpg" alt="Team Picture">
-        </section>
+<div class="home">
+  <div class="overlay"></div>
+  <div class="content">
+    <h2 class="title">myResearch</h2>
+      <p class="description">
+        <span class="tagline">
+          <span class="prefix">Funding for students to</span>
+          <span class="dropping-texts">
+            <span>research</span>
+            <span>innovate</span>
+            <span>build</span>
+            <span>lead</span>
+          </span>
+        </span>
+      </p>
+      <div class="cta">
+        <button class="fund-now-button" (click)="goToPage()">Fund Now</button>
 
-        <!-- Right side: placeholder button -->
-         <section class="right-section">
-            <button class="fund-now-button" (click)="goToPage()">
-                Fund Now
-            </button>
-         </section>
-    </main>
+        <a class="scroll-hint"
+          href="#about"
+          (click)="scrollTo('about', $event)"
+          aria-label="Learn more about us">
+          <span>Learn more about us</span>
+          <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+  </div>
 </div>
+
+<section class="about" id="about">
+  <div class="about-inner">
+    <h3 class="about-heading">About Us</h3>
+
+    <div class="about-grid">
+      <img class="about-photo" src="/images/swen-team-picture.jpg">
+
+      <p class="about-text">
+        Student research is one of the most important yet underappreciated drivers of advancement in society.
+        From the World Wide Web to the COVID-19 vaccine, countless breakthroughs have come from student
+        researchers. At myResearch, we are seeking to help fund these innovators as they shape the future.
+        Please consider joining us in our goal so you can be a part of building a better tomorrow.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!--<section class="about">
+  <div class="about-inner">
+    <div class="about-text">
+      <h2>About Us</h2>
+      <p>
+        Student research is one of the most important yet underappreciated drivers of advancement in society. From the World Wide Web to the COVID-19 vaccine, countless breakthroughs have
+      come from student researchers. At myResearch, we are seeking to help fund these innovators as they shape the future. Please consider joining
+      us in our goal so you can be a part of building a better tomorrow.
+      ---------------
+        myResearch is a student-driven initiative that connects donors with emerging
+        research teams. We help fund ideas, showcase progress, and make it simple
+        for anyone to support innovation at the earliest stage.
+      </p>
+    </div>
+    <div class="team-image">
+      <img src="/images/swen-team-picture.jpg"/>
+    </div>
+  </div>
+</section>
+-->

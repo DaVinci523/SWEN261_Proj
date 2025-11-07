@@ -1,36 +1,42 @@
-<h1>Checkout</h1>
-<div> <!--This code allows to add to the list, this is mostly for testing it and should be edited or removed latter.-->
-    <div>
-        <label for="user-checkout-info">Name on Card: </label>
-        <input id="user-checkout-info" [(ngModel)]="nameOnCard" placeholder="name on card"/>
+<div class="checkout-container">
+    <h1>Checkout</h1>
+
+    <div class="checkout-data"> <!--This code allows to add to the list, this is mostly for testing it and should be edited or removed latter.-->
+        <!-- <div>
+            <label for="user-checkout-info">Name on Card: </label>
+            <input id="user-checkout-info" [(ngModel)]="nameOnCard" placeholder="name on card"/>
+        </div>
+        <div>
+            <label for="user-checkout-info">Card Number: </label>
+            <input id="user-checkout-info" [(ngModel)]="cardNumber" placeholder="card number"/>
+        </div>
+        <div>
+            <label for="user-checkout-info">Address: </label>
+            <input id="user-checkout-info" [(ngModel)]="address" placeholder="address"/>
+        </div> -->
+
+        <!--(click) passes input value to add() and then clears the input -->
+        <button type="button" class="checkout" (click)="checkout()">Checkout</button>
+
+        <div class="overflow-warnings">
+                @for (cupboardNeed of needsCupboard; track cupboardNeed.id) {
+                    @for (userNeed of userNeeds; track userNeed.id) {
+
+                        <!--Show the surplus message if the user and cupboard needs are matching and the userNeed's quantity would bring the cupboardNeed's quantity past 0-->
+                        @if ( (userNeed.id == cupboardNeed.id) && ((cupboardNeed.currentQuantity + userNeed.maxQuantity) > cupboardNeed.maxQuantity) && (userNeed.visible) && (cupboardNeed.visible) ) {
+                            <li>
+                                <span class="data-container">
+                                    <span id="need-variables">
+                                        <span class="variable"><b>Your [{{userNeed.name}}] support will bring us over our goal. </b><br> --- | Click (Checkout) if you would like to procceed. | ---</span>               
+                                    </span>
+                                </span>
+                            </li>
+                        }
+                    }
+                        
+                }            
+            @empty {
+            }
+        </div>
     </div>
-    <div>
-        <label for="user-checkout-info">Card Number: </label>
-        <input id="user-checkout-info" [(ngModel)]="cardNumber" placeholder="card number"/>
-    </div>
-    <div>
-        <label for="user-checkout-info">Address: </label>
-        <input id="user-checkout-info" [(ngModel)]="address" placeholder="address"/>
-    </div>
-
-    <!--(click) passes input value to add() and then clears the input -->
-  <button type="button" class="checkout" (click)="checkout()">Checkout</button>
-
-    @for (cupboardNeed of needsCupboard; track cupboardNeed.id) {
-        @for (userNeed of userNeeds; track userNeed.id) {
-
-        <!--Show the surplus message if the user and cupboard needs are matching and the userNeed's quantity would bring the cupboardNeed's quantity past 0-->
-        <li *ngIf="(userNeed.id == cupboardNeed.id) && ((cupboardNeed.currentQuantity + userNeed.maxQuantity) > cupboardNeed.maxQuantity)">
-
-            <span class="data-container">
-                <span id="need-variables">
-                    <span class="variable">Your [{{userNeed.name}}] support will bring us over our goal. <br> --- | Click [Checkout] if you would like to procceed. | ---</span>               
-                </span>
-            </span>
-        }
-            
-    }
-     
-    @empty {
-    }
 </div>
