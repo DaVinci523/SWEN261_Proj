@@ -18,7 +18,7 @@ export class LoginPage {
    * When the user clicks the login button, the username entered will store
    * into the user service and direct the user to their corresponding page
    */
-  onLogin(): void {
+  onLogin(skipConfirm: boolean = false): void {
     if (!this.username) {
       return;
     }
@@ -26,15 +26,17 @@ export class LoginPage {
       return;
     }
 
-    const proceed = window.confirm('Log in as "' + this.username + '"?');
-    if (!proceed) {
-      return;
+    if (!skipConfirm) {
+      const proceed = window.confirm('Log in as "' + this.username + '"?');
+      if (!proceed) {
+        return;
+      }
     }
+
 
     const ok = this.user.login(this.username, this.password);
 
     if (ok) {
-      alert('Welcome, ' + this.username + '!');
       const role = this.user.getCurrentUserRole();
       if (role === 'admin') {
         this.router.navigate(['/admin']);
@@ -68,7 +70,8 @@ export class LoginPage {
 
     const created = this.user.createUser(this.username, this.password);
     if (created) {
-      alert('Account created! You can now log in.');
+      alert('Account created! Logging you in now.');
+      this.onLogin(true);
     } else {
       alert('Account could not be created.');
     }
