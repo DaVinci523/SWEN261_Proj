@@ -32,4 +32,11 @@ export class HomePage {
   goToAdmin(){
      this.router.navigate(['/admin']);
   }
+
+  scrollTo(id: string, e?: Event) {
+    e?.preventDefault();
+    const el = document.getElementById(id);
+    el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 }
+

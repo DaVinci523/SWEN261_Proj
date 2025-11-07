@@ -41,7 +41,7 @@ export class FundingBasketService {
   getNeeds(userName: String): Observable<any> {
     const url = `${this.needsUrl}/${userName}/needs`;
 
-    return this.http.get(url);
+    return this.http.get<any>(url);
   }
 
   /** GET need by id. Will 404 if id not found */
