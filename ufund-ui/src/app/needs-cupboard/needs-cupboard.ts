@@ -51,11 +51,32 @@ export class NeedsCupboard implements OnInit {
    * If search bar has contents return needs of that name
    */
   getNeeds(): void {
-    const term = this.searchTerm.trim();
-    const method = term
-    ? this.needsCupboardService.searchNeeds(term)
-    : this.needsCupboardService.getNeeds();
-    method.subscribe(needs => this.needs = needs);
+    var method : any;
+    if(this.searchTerm != null){
+      const term = this.searchTerm.trim();
+      method = term
+      ? this.needsCupboardService.searchNeeds(term)
+      : this.needsCupboardService.getNeeds();
+    }
+    else if(this.typeTerm != null){
+      const term = this.typeTerm.trim();
+      method = term
+      ? this.needsCupboardService.searchNeedsType(term)
+      : this.needsCupboardService.getNeeds();
+    }
+    else if(this.qtyTerm != null){
+      const term = this.qtyTerm;
+      method = term
+      ? this.needsCupboardService.searchNeedsQuantity(term)
+      : this.needsCupboardService.getNeeds();
+    }
+    else if(this.valTerm != null){
+      const term = this.valTerm;
+      method = term
+      ? this.needsCupboardService.searchNeedsValue(term)
+      : this.needsCupboardService.getNeeds();
+    }
+    method.subscribe((needs: Need[]) => this.needs = needs);
   }
 
   /**

@@ -3,6 +3,7 @@
         <div class="search-name-container">  
             <input
                 class="search name"
+                title="Only one search can be done at a time. The most recent is applied"
                 placeholder="Search Needs…"
                 [(ngModel)]="searchTerm"
                 (input)="getNeeds()"   
@@ -12,6 +13,7 @@
             <div class="searchbar"> 
                 <input
                     class="search type"
+                    title="Only one search can be done at a time. The most recent is applied"
                     placeholder="Search Type…"
                     [(ngModel)]="typeTerm"
                     (input)="searchNeedsType()"   
@@ -20,6 +22,7 @@
             <div class="searchbar"> 
                 <input
                     class="search quantity"
+                    title="Only one search can be done at a time. The most recent is applied"
                     placeholder="Search Quantity..."        
                     [(ngModel)]="qtyTerm"
                     (input)="searchNeedsQuantity()"   
@@ -28,6 +31,7 @@
             <div class="searchbar"> 
                 <input
                     class="search value"
+                    title="Only one search can be done at a time. The most recent is applied"
                     placeholder="Search Value..."        
                     [(ngModel)]="valTerm"
                     (input)="searchNeedsValue()"
