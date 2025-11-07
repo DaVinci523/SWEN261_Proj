@@ -3,6 +3,7 @@ import { AdminPageService } from '../admin-page-service';
 import { Need } from '../need';
 import { User, PublicUserInfo } from '../user';
 import { FundingBasketService } from '../funding-basket-service';
+import { interval, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-admin-page',
@@ -16,17 +17,35 @@ export class AdminPage {
   usernameToRemove = '';
   users: PublicUserInfo[] = [];
 
+  private getNeedsSubscription: Subscription;
+  
   constructor(
     private adminPageService:AdminPageService, // adminPageService to connect to REST API back-end      
     private fundingBasketService: FundingBasketService,
-    public user: User // current user of the application
-  ){}  
+    public user: User, // current user of the application
+  ){
+    // Continuously call getNeeds on set intervals (ex: 5000 is 5 seconds) to keep them updated when page is not reloaded.
+    this.getNeedsSubscription = interval(4000).subscribe(() => {
+      this.getNeeds();
+    })
+  }  
 
+  
   needs:Need[] = []; // front-end container for all needs in cupboard
   usernames:String[] = [];
 
   refresh(): void {
     this.users = this.user.getAllUsers();
+  }
+
+   /*
+   * populates needs once the program is initialized
+   */
+  ngOnInit(): void {
+
+    // calls the getNeeds function to populate needs
+    this.getNeeds();
+    this.refresh();
   }
   
   /**
@@ -83,9 +102,8 @@ export class AdminPage {
       }
     }
 
-    //this.saveAll();
-  
   }
+
   /** 
    * deletes a need both from the needs list and the back-end
    * 
@@ -97,17 +115,8 @@ export class AdminPage {
     this.needs = this.needs.filter(n => n !== need);
     window.location.reload();
 
-    // Old functionality of actually deleting the need
-    // calls the deleteNeedID function from adminPageService, accessing the need's id and subscribing to the observable
-    // this.adminPageService.deleteNeedID(need.id).subscribe( needs => 
-    //   {this.needs = this.needs.filter(n => n !== needs);
-    //      window.location.reload();
-    //   });
-
     // removes the need by tagging its visibility to false
     this.adminPageService.changeNeedVisibility(need.id, false).subscribe();
-
-    //this.saveAll();
 
   }
 
@@ -145,21 +154,8 @@ export class AdminPage {
       {this.needs = this.needs.filter(n => n !== needs);
       window.location.reload();
     });
-
-    //this.saveAll();
     
   }      
-
-
-  /*
-   * populates needs once the program is initialized
-   */
-  ngOnInit(): void {
-    
-    // calls the getNeeds function to populate needs
-    this.getNeeds();
-    this.refresh();
-  }
 
   
   removeAUser(): void {
@@ -190,34 +186,3 @@ export class AdminPage {
   }
 
 }
-  /**
-   * Update the data for each of user's needs to be the same as the cupboards data
-   */
-    // ------------Commented Out because the baskets already handle their own updates------------
-  // saveAll(): void{
-
-  //   this.usernames.forEach(userName => {
-  //     this.fundingBasketService.getNeeds(userName).subscribe( fundingNeeds => {
-  //       fundingNeeds.forEach((userNeed : Need) => { // loop through individual needs
-  //         this.needs.forEach((cupboardNeed:Need) => { //loop through the cupboard's needs
-              
-  //             if(userNeed.id == cupboardNeed.id){ // update the respective data for each userNeed
-  //               if(userNeed !== cupboardNeed){ // update only if there is a discrepency
-  //                 //updated = true;
-  //                 this.fundingBasketService.updateNeed( userName, { 
-  //                   id: cupboardNeed.id, 
-  //                   name: cupboardNeed.name, 
-  //                   value: cupboardNeed.value, 
-  //                   currentQuantity: userNeed.currentQuantity, 
-  //                   maxQuantity: userNeed.maxQuantity, 
-  //                   type: cupboardNeed.type, 
-  //                   visible: cupboardNeed.visible
-  //                 } as Need).subscribe();
-  //               }
-  //             }
-
-  //         });
-  //       });
-  //     });
-  //   });
-  // }
