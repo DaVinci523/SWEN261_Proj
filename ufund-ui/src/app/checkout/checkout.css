@@ -2,7 +2,12 @@ h1 {
     text-align: center;
 }
 
+button {
+    cursor: pointer;
+}
+
 div.checkout-container {
+    height: 100%;
     margin: 20% 1%;
     padding: 10%;
     border: 8px solid black;
@@ -20,4 +25,8 @@ button.checkout {
 div.overflow-warnings {
     overflow-y: scroll;
     height: 350px;
+}
+
+div.overflow-warnings *{
+    padding: 0.5em 0em;
 }

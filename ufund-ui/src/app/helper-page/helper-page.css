@@ -10,12 +10,16 @@ div#helper-page-container {
 }
 
 #funding-basket {
-    border-left: 4px solid black;
-    padding: 6% 6%;
+  border-left: 4px solid black;
+  padding: 6% 6%;
+}
+
+button {
+    cursor: pointer;
 }
 
 div {
-    width: 100%;
+  width: 100%;
 }
 
 
@@ -40,7 +44,6 @@ div {
 .right {
   right: 0;
   float: right;
-  background-color: lightred;
 }
 
 .no-access {

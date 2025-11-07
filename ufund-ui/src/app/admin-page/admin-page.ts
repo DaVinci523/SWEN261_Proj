@@ -60,22 +60,27 @@ export class AdminPage {
     }
     else{
 
+      var changedVisibilty = false; // used to check if a need had its visibility changed so the program only creates or changes visibility and not both.
+
       // checks through every cupboard need and if it matches the newly created need's name and that need is not visible, then set the visibility of that need to true.
       this.needs.forEach(need => {
-        if(need.name.toLowerCase == name.toLowerCase && !need.visible){ // check names ignoring case and whitespace
+        if(need.name.toLowerCase() == name.toLowerCase() && !need.visible){ // check names ignoring case and whitespace
           
           // adds the need back in by tagging its visibility to true
           this.adminPageService.changeNeedVisibility(need.id, true).subscribe();
-
+          changedVisibilty = true;
+          window.location.reload();
         }
       });
 
-      // calls the createNeed function, passing the parameters as a Need object, subscribing to the observable
-      this.adminPageService.createNeed({ name, value, type, currentQuantity: 0, maxQuantity: quantity, visible: true} as Need)
-        .subscribe(need => {
-          this.needs.push(need);
-          window.location.reload();
-      });
+      if(!changedVisibilty){
+        // calls the createNeed function, passing the parameters as a Need object, subscribing to the observable
+        this.adminPageService.createNeed({ name, value, type, currentQuantity: 0, maxQuantity: quantity, visible: true} as Need)
+          .subscribe(need => {
+            this.needs.push(need);
+            window.location.reload();
+        });
+      }
     }
 
     //this.saveAll();
@@ -90,6 +95,7 @@ export class AdminPage {
 
     // updates the needs list once the need has been deleted
     this.needs = this.needs.filter(n => n !== need);
+    window.location.reload();
 
     // Old functionality of actually deleting the need
     // calls the deleteNeedID function from adminPageService, accessing the need's id and subscribing to the observable
