@@ -30,7 +30,7 @@
                                 <span id="modification-buttons">
                                     <!-- update button attacked to every need to update it in the needs cupboard -->
                                     <!-- uses inputs from right column as parameters for updated attributes-->
-                                    <button type="button" class="update" (click)= "updateNeed(need, needName.value, needValue.valueAsNumber, need.currentQuantity, needQuant.valueAsNumber, needType.value);">Update Need</button>  
+                                    <button type="button" title="Fill in fields on the right, then click me" class="update" (click)= "updateNeed(need, needName.value, needValue.valueAsNumber, need.currentQuantity, needQuant.valueAsNumber, needType.value);">Update Need</button>  
                                     
                                     <!-- delete button attached to every need to immediately remvove it from the needs cupboard -->
                                     <button type = button class="delete" (click) = "deleteNeed(need)"> Delete Need </button>
@@ -48,7 +48,7 @@
 
         <!-- right column displays the inputs to add/update a need -->
         <div id="admin-editor" class ="split right">
-            <h2>Edit Need:</h2>
+            <h2>Add/Update Need:</h2>
 
             <!-- input box for name input -->
             <div class="">

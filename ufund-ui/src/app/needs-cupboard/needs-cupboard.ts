@@ -1,9 +1,10 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Need } from '../need';
 import { NeedsCupboardService } from '../needs-cupboard-service';
 import { FundingBasketService } from '../funding-basket-service';
 import { User } from '../user';
+import { interval, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-needs-cupboard',
@@ -11,13 +12,20 @@ import { User } from '../user';
   templateUrl: './needs-cupboard.html',
   styleUrls: ['./needs-cupboard.css']
 })
-export class NeedsCupboard implements OnInit {
+export class NeedsCupboard implements OnInit, OnDestroy {
+  private getNeedsSubscription: Subscription;
   quantityTerm: any;
+
   constructor(
     private needsCupboardService: NeedsCupboardService,
     private fundingBasketService: FundingBasketService,
     private router: Router
-  ) {}
+  ) {
+    // Continuously call getNeeds on set intervals (ex: 5000 is 5 seconds) to keep them updated when page is not reloaded.
+    this.getNeedsSubscription = interval(5000).subscribe(() => {
+      this.getNeeds();
+    })
+  }
 
   user = inject(User);
 
@@ -44,6 +52,15 @@ export class NeedsCupboard implements OnInit {
 
     const saved = localStorage.getItem('buttonText');
     if (saved) this.buttonText = saved;
+  }
+
+  /**
+   * Remove getNeedsSubscription if it still exists when this component is destroyed to prevent memory leaks.
+   */
+  ngOnDestroy(): void{
+    if (this.getNeedsSubscription){
+      this.getNeedsSubscription.unsubscribe();
+    }
   }
 
   /**
