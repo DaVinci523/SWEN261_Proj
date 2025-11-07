@@ -23,7 +23,7 @@
                     @for (userNeed of userNeeds; track userNeed.id) {
 
                         <!--Show the surplus message if the user and cupboard needs are matching and the userNeed's quantity would bring the cupboardNeed's quantity past 0-->
-                        @if ( (userNeed.id == cupboardNeed.id) && ((cupboardNeed.currentQuantity + userNeed.maxQuantity) > cupboardNeed.maxQuantity) ) {
+                        @if ( (userNeed.id == cupboardNeed.id) && ((cupboardNeed.currentQuantity + userNeed.maxQuantity) > cupboardNeed.maxQuantity) && (userNeed.visible) && (cupboardNeed.visible) ) {
                             <li>
                                 <span class="data-container">
                                     <span id="need-variables">
