@@ -77,7 +77,8 @@ This section describes the application architecture.
 >Our Model tier consists of a Need.java file that contains our need object. Each need object has an identification (id), name, value (or the cost), >type (what type of item it is), and quantity. There are getter and setters for each of the variables above.
 >
 >Our Model tier also includes a User.java file that represents an individual user. Each user has a name and a funding basket (an array of needs). >The class has a constructor to initialize these fields and getters (getName(), getBasket()).
->Finally, we also have a FundingBasketDataWrapper.java file that wraps the collection of users for persistence and transport. It holds a single >field, a list of users, along with a constructor to set it and a getter (getUsers()). 
+>Finally, we also have a FundingBasketDataWrapper.java file that wraps the collection of users for persistence and transport. It holds a single >field, a list of users, along with a constructor to set it and a getter (getUsers()).
+
 
 
 ### Overview of User Interface
@@ -254,7 +255,43 @@ This section describes the application architecture.
       * @param name , string to check if name contains
       * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
       * a HttpStatus.NOT_FOUND if a need of id doesn't exist
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured.
+   
+* ReviewController.java - Handles HTTP requests for reviews
+  * getReviews()
+      * Handles HTTP GET requests to "/reviews"
+      * @return a Response entity containing HttpStatus.OK if the array of reviews is successfully returned,
+      * an HttpStatus.NO_CONTENT if there are no reviews
+      * an HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured
+  * getReviewsByRating()
+      * Handles HTTP GET requests to "/reviews/rating/{rating}"
+      * @param rating: the rating value the reviews are filtered by
+      * @return a Response entity containing HttpStatus.OK if reviews with matching ratings are found
+      * a HttpStatus.NO_CONTENT if no reviews match the rating parameter
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurs
+  * createReview()
+      * Handles HTTP POST requests to "/reviews"
+      * @param review: the Review object to be created
+      * @return a Response entity containing HttpStatus.CREATED if the review is successfully created,
+      * HttpStatus.CONFLICT if the creation failed,
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured
+  * deleteReview()
+      * Handles HTTP DELETE requests to "/reviews/{id}"
+      * @param id: the id of the review that is being deleted
+      * @return a Response entity containing HttpStatus.OK if the review was deleted successfully,
+      * HttpStatus.NOT_FOUND if there is no review with the given id
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred
+  * deleteReviewsByUsername()
+      * Handles HTTP DELETE requests to "/reviews/user/{userName}"
+      * @param userName: the username of the user whose reviews should be deleted
+      * @return a Response entity containing HttpStatus.ok if the review was deleted successfully,
+      * HttpStatus.NOT_FOUND if there are no reviews from the given userName
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurs
+  * deleteAllReviews()
+      * Handles HTTP DELETE requests to "/reviews"
+      * @return a Response entity contatin HttpStatus.OK if all the reviews were deleted successfully,
+      * HttpStatus.NOT_FOUND if there are no reviews
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurs. 
 
 > _**[Sprint 4]** Provide a summary of this tier of your architecture. This
 > section will follow the same instructions that are given for the View
@@ -270,7 +307,9 @@ This section describes the application architecture.
 >Our Model tier consists of a Need.java file that contains our need object. Each need object has an identification (id), name, value (or the cost), >type (what type of item it is), and quantity. There are getter and setters for each of the variables above.
 >
 >Our Model tier also includes a User.java file that represents an individual user. Each user has a name and a funding basket (an array of needs). >The class has a constructor to initialize these fields and getters (getName(), getBasket()).
->Finally, we also have a FundingBasketDataWrapper.java file that wraps the collection of users for persistence and transport. It holds a single >field, a list of users, along with a constructor to set it and a getter (getUsers()). 
+>Finally, we also have a FundingBasketDataWrapper.java file that wraps the collection of users for persistence and transport. It holds a single >field, a list of users, along with a constructor to set it and a getter (getUsers()).
+>
+>Additionally, out Model tier contains a Review.java file that represents a review written by a user. Each review has a id, the username of the reviewer, the text content of the review, and an integer rating. The class includes a contains a constructor to initialze the various fields and getters for each field including: getId(), getUserName(), getReviewText(), and getRating().
 
   * Need.java - Create a Need object with given id, name, and value.
     * Contains getters (getID() -> int, getName() -> String, getValue() -> double, getQuantity() -> int, getType() -> String) and setters (setName(), setValue(), setQuantity(), setType()). Also contains a (toString() -> String) override.
@@ -407,6 +446,42 @@ This section describes the application architecture.
       * @param userName the user this method will modify
       * @return true if file was updated succesfully
       * @return false, if deletion failed
+        
+  * Review.java
+    * Creates a Review object using an id, userName, reviewText, and rating and parameters
+    * Contains getters (getId() -> int, getUserName() -> String, getReviewText() -> String, getRating() -> int) as well as a (toString() -> String) override
+    * This is used in ReviewFileDAO.java to hold data for reviews.
+  
+  * ReviewFileDAO.java - the working logic behind our application for accessing Reviews.
+    * getReviews()
+      * Loads all of the reviews from the persistance storage
+      * @return an array of all reviews stored in the JSON file
+    * getReviewsByRating
+      * Filters the list of reviews to only show those that have the same rating as specified
+      * @param int rating: the rating value to filter with
+      * @return an array of reviews with the same rating as the parameter
+    * createReview()
+      * Adds a new review into the JSON file and assigns it a unique id.
+      * @param Review review: the review object that is being added
+      * @return the new Review now with an id
+      * @throws I/O exception if an error ocurred
+    * deleteReview()
+      * Removes a review from the JSON based on its id
+      * @param int id: the id of the review to delete
+      * @return true if the review was deleted successfully or false if it was not
+    * deleteReviewByUsername()
+      * Removes all reviews from a specific user from the JSON
+      * @param String userName: the username of the user whose reviews should be deleted
+      * @return true if the review was deleted successfully or false if it was not
+    * deleteAll()
+      * Deletes all the reviews from the persistance storage
+      * @return true if the file was updated successfully or false if it failed
+    * save()
+      * Write the current list of reviews into the JSON file
+      * @return true if it was written successfully or false if it was not
+    * load()
+      * Loads all the reviews from the JSON file into the memory
+      * @return true if it read successfully
 
 
 <img width="593" height="332" alt="Model Tier Architecture" src="ModelTierArchitecture.png" />
