@@ -16,8 +16,8 @@ public class UserTest {
     @Test
     public void testToString(){
         // Setup
-        Need need1 = new Need(1, "Breadboard", 30.0, 6, "board");
-        Need need2 = new Need(2, "Resistor", 5.0, 10, "component");
+        Need need1 = new Need(1, "Breadboard", 30.0, 0, 6, "board", true);
+        Need need2 = new Need(2, "Resistor", 5.0, 0, 10, "component", true);
         Need[] needs = {need1, need2};
         String username = "user";
         User user = new User(username, needs);

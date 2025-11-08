@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Need } from './need';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {MessageService} from './message';
@@ -14,6 +14,19 @@ export class AdminPageService {
   private needsUrl = 'http://localhost:8080/needs';
 
   constructor(private http: HttpClient,  private MessageService: MessageService) {}
+  
+  // Add Behavior Subject // DOES NOTHING
+  static cupboardSubject = new BehaviorSubject([] as Need[]); 
+  // currentCupboard = AdminPageService.cupboardSubject.asObservable();
+
+  /**
+   * Updates the cupboard BehaviorSubject to the new given need cupboard
+   * @param newCupboard 
+   */ // DOES NOTHING
+  public static updateCurrentCupboard(newCupboard: Need[]){
+    AdminPageService.cupboardSubject.next(newCupboard);
+    console.log(AdminPageService.cupboardSubject);
+  }
 
   /** 
    * Log a NeedService message with the MessageService 
@@ -70,15 +83,16 @@ export class AdminPageService {
    * @param need - need to be updated
    * @param name - name of updated need
    * @param value - value of updated need
-   * @param quantity - quantity of updated need
+   * @param currentQuantity - currentQuantity of updated need
+   * @param maxQuantity - currentQuantity of updated need
    * @param type - type of updated need
    * 
    * @returns returns the PUT request observable
    */
-  updateNeed(need:any, name: string, value: number, quantity: number, type: string):Observable<any>{
+  updateNeed(need:any, name: string, value: number, currentQuantity: number, maxQuantity: number, type: string, visible: boolean):Observable<any>{
     
     // creates the new need object with updated values
-    const updatedNeed: Need = {id: need.id, name, value, quantity, type};
+    const updatedNeed: Need = {id: need.id, name, value, currentQuantity, maxQuantity, type, visible};
     
     // sends a PUT request to the needsUrl with the updated need object
     return this.http.put<Need>(this.needsUrl, updatedNeed).pipe(
@@ -87,6 +101,15 @@ export class AdminPageService {
     );
   } 
 
+  /** PUT: update the need's visibility on the server */
+  changeNeedVisibility( id: number, visible: boolean): Observable<any> {
+    const url = `${this.needsUrl}/${id}/visible/?visible=${visible}`;
+
+    return this.http.put(url, this.httpOptions).pipe(
+      tap(_ => this.log(`updated need id=${id}`)),
+      catchError(this.handleError<any>('updateNeed'))
+    );
+  }
 
   /**
    * creates a single need in the needs cupboard

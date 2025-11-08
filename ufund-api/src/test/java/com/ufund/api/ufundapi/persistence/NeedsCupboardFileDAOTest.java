@@ -1,6 +1,5 @@
 package com.ufund.api.ufundapi.persistence;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -14,12 +13,9 @@ import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties.Io;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ufund.api.ufundapi.model.Need;
@@ -39,9 +35,9 @@ public class NeedsCupboardFileDAOTest {
     public void setup() throws IOException {
         mockObjectMapper = mock(ObjectMapper.class);
         testNeeds = new Need[] {
-            new Need(1, "Wire", 5.0, 10, "cord"),
-            new Need(2, "BreadBoard", 10.0, 2, "board"),
-            new Need(3, "Sensor", 3.5, 4, "component")
+            new Need(1, "Wire", 5.0, 0, 10, "cord", true),
+            new Need(2, "BreadBoard", 10.0, 0, 2, "board", true),
+            new Need(3, "Sensor", 3.5, 0, 4, "component", true)
         };
 
         // Mock the ObjectMapper to return our testNeeds array
@@ -96,12 +92,19 @@ public class NeedsCupboardFileDAOTest {
      */
     @Test
     public void testCreateNeed() throws IOException {
-        Need newNeed = new Need(0, "Battery", 12.0, 1, "power");
+        Need newNeed = new Need(0, "Battery", 12.0, 0, 1, "power", true);
         Need result = dao.createdNeed(newNeed);
         assertNotNull(result);
         assertEquals(newNeed.getName(), result.getName());
         assertEquals(newNeed.getValue(), result.getValue());
         assertEquals(newNeed.getType(), result.getType());
+    }
+    
+    @Test
+    public void testCreateNeedNotExist() throws IOException {
+        Need newNeed = new Need(0, "Wire", 12.0, 0, 1, "power", true);
+        Need result = dao.createdNeed(newNeed);
+        assertNull(result);
     }
 
     /**
@@ -109,7 +112,7 @@ public class NeedsCupboardFileDAOTest {
      */
     @Test
     public void testUpdateNeed() throws IOException {
-        Need updated = new Need(2, "Updated Board", 15.0, 5, "board");
+        Need updated = new Need(2, "Updated Board", 15.0, 0, 5, "board", true);
         Need result = dao.updateNeed(updated);
         assertEquals(updated, result);
         assertEquals(updated, dao.getNeed(2));
@@ -120,7 +123,7 @@ public class NeedsCupboardFileDAOTest {
      */
     @Test
     public void testUpdateNeedNotFound() throws IOException {
-        Need updated = new Need(999, "NonExistent", 0.0, 0, "none");
+        Need updated = new Need(999, "NonExistent", 0.0, 0, 0, "none", true);
         Need result = dao.updateNeed(updated);
         assertNull(result);
     }
@@ -156,6 +159,12 @@ public class NeedsCupboardFileDAOTest {
         }
     }
 
+    @Test
+    public void testDeleteNeedTypeFalse() throws IOException {
+        boolean result = dao.deleteNeedType("rabbit");
+        assertFalse(result);
+    }
+
     /**
      * Test deleteAll clears all needs
      */
@@ -176,5 +185,11 @@ public class NeedsCupboardFileDAOTest {
         for (Need n : dao.getNeeds()){
             assertFalse(n.getName().contains("Wire"));
         }
+    }
+
+    @Test
+    public void testDeleteNeedNameFalse() throws IOException {
+        boolean result = dao.deleteNeedName("Cobra");
+        assertFalse(result);
     }
 }

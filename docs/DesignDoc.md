@@ -22,14 +22,17 @@ geometry: margin=1in
 This is a summary of the project.
 
 ### Purpose
->  _**[Sprint 2 & 4]** Provide a very brief statement about the project and the most
-> important user group and user goals._
+>The myResearch program seeks to help student researchers by providing them with funding for the various equipment that they will require. The most >important user group of the myResearch program are charitable people who are interested in the potential advancements student research can bring. >These user’s main goal is to provide funding for equipment through their account on the myResearch site.
 
 ### Glossary and Acronyms
-> _**[Sprint 2 & 4]** Provide a table of terms and acronyms._
 
 | Term | Definition |
 |------|------------|
+| myResearch | The name of our non-profit |
+| World Wide Web | Global system of connected links and webpages |
+| Quantity | The number of products needed to fulfill a need |
+| Value | The monetary value of a product |
+| Type | The category a product was placed in  |
 | SPA | Single Page |
 
 
@@ -37,12 +40,8 @@ This is a summary of the project.
 
 This section describes the features of the application.
 
-> _In this section you do not need to be exhaustive and list every
-> story.  Focus on top-level features from the Vision document and
-> maybe Epics and critical Stories._
-
 ### Definition of MVP
-> _**[Sprint 2 & 4]** Provide a simple description of the Minimum Viable Product._
+>The MVP supports simple authentication with login and logout. The reserved username admin designates the U-fund Manager role; any other username >is treated as a Helper. Helpers can browse and search a catalog of “needs,” add selected items to a personal funding basket, and then check out to >fund the items in that basket. The U-fund Manager maintains the “needs cupboard,” with permission to add, update, and delete needs, but cannot >view any individual funding basket to keep contributor activity private and roles separated. All application state (the needs cupboard, baskets, >and relevant user interactions) is persisted to files so updates survive restarts and can be reloaded on the next session.
 
 ### MVP Features
 >  _**[Sprint 4]** Provide a list of top-level Epics and/or Stories of the MVP._
@@ -52,49 +51,39 @@ This section describes the features of the application.
 
 
 ## Application Domain
+<img width="780" height="517" alt="Application Domain Analysis" src="DomainAnalysis.png" />
 
-This section describes the application domain.
+>The application is organized around a navigation bar that appears on every page, giving users quick access to key pages: myResearch (the >homepage), Login, Needs, and Checkout. New users begin on the homepage, which briefly explains the purpose of the app and provides a clear call to >action button that takes them to the Needs Page. From there, users always have the nav bar to move between pages, while the homepage acts as the >welcoming hub.
+>
+>The primary flow is present on the Need Page and Checkout Page. The Need Page has a split layout where the left panel lists all available needs in >the “need cupboard,” and the right panel shows the user’s current “funding basket.” Users can add items from the cupboard to their basket and >adjust their quantities. Proceeding to the Checkout Page, they again see a similar layout with basket contents on the left and payment inputs on >the right. Filling out the payment fields and clicking checkout submits the purchase which makes the system remove the purchased quantities from >the need cupboard, clears the user’s basket, and sends the user back to the homepage. If a user logs in with the username “admin,” they’re taken >to the Admin Page, which has the similar split layout with the left side displaying the current contents of the need cupboard, while the right >side provides controls to add, edit, or remove needs.
 
-<img width="700" height="543" alt="Team1DomainAnalysis2 drawio" src="https://github.com/user-attachments/assets/4761c2de-7beb-43d9-9579-60b06b449997" />
 
 
-> _**[Sprint 2 & 4]** Provide a high-level overview of the domain for this application. You
-> can discuss the more important domain entities and their relationship
-> to each other._
+
+
+
 
 
 ## Architecture and Design
+<img width="789" height="382" alt="Architecture Design" src="ArchitectureAndDesign.png" />
+
+
 
 This section describes the application architecture.
 
 ### Summary
 
-The following Tiers/Layers model shows a high-level view of the webapp's architecture. 
-**NOTE**: detailed diagrams are required in later sections of this document.
 
-<img width="1542" height="995" alt="Screenshot 2025-09-29 163450" src="https://github.com/user-attachments/assets/5b2db26b-9f8d-4537-84f7-b81fad5f1e49" />
+>Our Model tier consists of a Need.java file that contains our need object. Each need object has an identification (id), name, value (or the cost), >type (what type of item it is), and quantity. There are getter and setters for each of the variables above.
+>
+>Our Model tier also includes a User.java file that represents an individual user. Each user has a name and a funding basket (an array of needs). >The class has a constructor to initialize these fields and getters (getName(), getBasket()).
+>Finally, we also have a FundingBasketDataWrapper.java file that wraps the collection of users for persistence and transport. It holds a single >field, a list of users, along with a constructor to set it and a getter (getUsers()).
 
-
-The web application, is built using the Model–View–ViewModel (MVVM) architecture pattern. 
-
-The Model stores the application data objects including any functionality to provide persistance. 
-
-The View is the client-side SPA built with Angular utilizing HTML, CSS and TypeScript. The ViewModel provides RESTful APIs to the client (View) as well as any logic required to manipulate the data objects from the Model.
-
-Both the ViewModel and Model are built using Java and Spring Framework. Details of the components within these tiers are supplied below.
 
 
 ### Overview of User Interface
 
-This section describes the web interface and flow; this is how the user views and interacts with the web application.
-
-<img width="1870" height="951" alt="image" src="https://github.com/user-attachments/assets/0681ec0a-3fe0-4b14-8b4f-04e08e3192c3" />
-
-
-### 
-> _Provide a summary of the application's user interface.  Describe, from the user's perspective, the flow of the pages/navigation in the web application.
->  (Add low-fidelity mockups prior to initiating your **[Sprint 2]**  work so you have a good idea of the user interactions.) Eventually replace with representative screen shots of your high-fidelity results as these become available and finally include future recommendations improvement recommendations for your **[Sprint 4]** )_
-
+>The primary flow is present on the Need Page and Checkout Page. The Need Page has a split layout where the left panel lists all available needs in >the “need cupboard,” and the right panel shows the user’s current “funding basket.” Users can add items from the cupboard to their basket and >adjust their quantities. Proceeding to the Checkout Page, they again see a similar layout with basket contents on the left and payment inputs on >the right. Filling out the payment fields and clicking checkout submits the purchase which makes the system remove the purchased quantities from >the need cupboard, clears the user’s basket, and sends the user back to the homepage. If a user logs in with the username “admin,” they’re taken >to the Admin Page, which has the similar split layout with the left side displaying the current contents of the need cupboard, while the right >side provides controls to add, edit, or remove needs. We plan on improving the look of the UI in Sprint 3 but for right now it is fully functional. No functionality improvements need to be made before the end of sprint 2.
 
 ### View Tier
 > _**[Sprint 4]** Provide a summary of the View Tier UI of your architecture.
@@ -113,6 +102,7 @@ This section describes the web interface and flow; this is how the user views an
 >* _A single class diagram of the entire system will not be effective. You may start with one, but will be need to break it down into smaller sections to account for requirements of each of the Tier static models below._
  >* _Correct labeling of relationships with proper notation for the relationship type, multiplicities, and navigation information will be important._
  >* _Include other details such as attributes and method signatures that you think are needed to support the level of detail in your discussion._
+<img width="6467" height="2197" alt="View Tier Architecture" src="ViewTierArchitecture.png" />
 
 ### ViewModel Tier
 
@@ -150,6 +140,15 @@ This section describes the web interface and flow; this is how the user views an
       * a HttpStatus.NOT_FOUND if need doesn't exist
       * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
       * Updates a need given its (id, name, value, quantity, and type). It will update the data at the specified id.
+  * updateNeedVisibility()
+      * Handles HTTP PUT requests to the "/needs/visibile/"visible""
+      * @param userName: the user to update
+      * @param id: the id of the need to be updated
+      * @param visible: the visibility state to set the need
+      * @return a Response entity containing HttpStatus.OK if the update was successful,
+      * a HttpStatus.NOT_FOUND if need doesn't exist
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured.
+      * Updates a need's (visibile) attribute to true/false
   * deleteNeed()
       * Handles HTTP DELETE requests to the "/needs"
       * @param id , id of need to be deleted
@@ -173,15 +172,126 @@ This section describes the web interface and flow; this is how the user views an
   * deleteNeedName()
       * Handles HTTP DELETE requests to the "/needs"
       * @param name , string to check if name contains
-      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
+      * @return a Response entity containing HttpStatus.OK if the deletion was successful,
       * a HttpStatus.NOT_FOUND if a need of id doesn't exist
       * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
       * Deletes needs given it contains the specified name.
     
 * FundingBasketController.java - Handles HTTP requests from the model tier for the Funding Basket.
-  * Contains the same methods with the addition of a getUsers() method that retrieves all users with funding baskets. 
-  * For the other methods in NeedsCupboard.java, functions similarly, with the addition of a @param userName to access only the funding basket of the specified user. 
-    * For example, if all methods were called with the userName = helper123, then only helper123's funding basket will be accessed and modified. So, if an admin were logged in, they would see no items in the funding basket because their username is not in the funding basket. 
+  * getUsers()
+      * Handles HTTP GET requests to "/funding_basket_needs/users"
+      * @return a Response entity containing HttpStatus.OK if the array of users is returned,
+      * a HttpStatus.NO_CONTENT if the returned data is null
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured.
+  * getUsernames()
+      * Handles HTTP GET requests to "/funding_basket_needs/usernames"
+      * @return a Response entity containing HttpStatus.OK if the array of users is returned,
+      * a HttpStatus.NO_CONTENT if the returned data is null
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+  * getNeed()
+      * Handles HTTP GET requests to "/funding_basket_needs/userName/id"
+      * @param userName: the user to search in
+      * @param id: the searched objects id
+      * @return a Response entity containing HttpStatus.OK if the search was successful,
+      * a HttpStatus.NOT_FOUND if the search fails due to a non existent id
+      *  HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+  * getNeeds()
+      * Handles HTTP GET requests to "/funding_basket_needs/userName/needs"
+      * @param userName: the user to retrieve from
+      * @return a Response entity containing HttpStatus.OK if the array of needs is returned,
+      * a HttpStatus.NO_CONTENT if the returned data is null
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+  * searchNeeds()
+      * Handles HTTP GET requests to "/funding_basket_needs/userName/?name= "name""
+      * @param userName: the user to search from
+      * @param name , check if need contains String name
+      * @return a Response entity containing HttpStatus.OK if the search was successful,
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+  * createNeed()
+      * Handles HTTP POST requests to "/funding_basket_needs/userName "need""
+      * @param userName: the user to create in
+      * @param need: the object to be created
+      * @return a Response entity containing HttpStatus.CREATED if the creation was successful,
+      * a HttpStatus.CONFLICT if the creation fails due to a conflict, or a HttpStatus.INTERNAL_SERVER_ERROR
+      * if an I/O error occured. 
+  * updateNeed()
+      * Handles HTTP PUT requests to "/funding_basket_needs/userName "need""
+      * @param userName: the user to update
+      * @param need: the object to be updated
+      * @return a Response entity containing HttpStatus.OK if the update was successful,
+      * a HttpStatus.NOT_FOUND if need doesn't exist
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+  * updateNeedVisibility()
+      * Handles HTTP PUT requests to "/funding_basket_needs/userName/id/visible/"visible""
+      * @param userName: the user to update
+      * @param id: the id of the need to be updated
+      * @param visible: the visibility state to set the need
+      * @return a Response entity containing HttpStatus.OK if the update was successful,
+      * a HttpStatus.NOT_FOUND if need doesn't exist
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+  * deleteNeedId()
+      * Handles HTTP DELETE requests to "/funding_basket_needs/userName/id"
+      * @param userName: the user to delete from
+      * @param id , id of need to be deleted
+      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
+      * a HttpStatus.NOT_FOUND if a need of id doesn't exist
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured.
+  * deleteNeedType()
+      * Handles HTTP DELETE requests to "/funding_basket_needs/userName/type/type"
+      * @param userName: the user to delete from
+      * @param type , type of need to be deleted
+      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
+      * a HttpStatus.NOT_FOUND if a need of id doesn't exist
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+  * deleteAll()
+      * Handles HTTP DELETE requests to "/funding_basket_needs/userName"
+      * @param userName: the user to delete from
+      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
+      * a HttpStatus.NOT_FOUND if a need of id doesn't exist
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+  * deleteNeedName()
+      * Handles HTTP DELETE requests to "/funding_basket_needs/name/"name""
+      * @param userName: the user to delete from
+      * @param name , string to check if name contains
+      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
+      * a HttpStatus.NOT_FOUND if a need of id doesn't exist
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured.
+   
+* ReviewController.java - Handles HTTP requests for reviews
+  * getReviews()
+      * Handles HTTP GET requests to "/reviews"
+      * @return a Response entity containing HttpStatus.OK if the array of reviews is successfully returned,
+      * an HttpStatus.NO_CONTENT if there are no reviews
+      * an HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured
+  * getReviewsByRating()
+      * Handles HTTP GET requests to "/reviews/rating/{rating}"
+      * @param rating: the rating value the reviews are filtered by
+      * @return a Response entity containing HttpStatus.OK if reviews with matching ratings are found
+      * a HttpStatus.NO_CONTENT if no reviews match the rating parameter
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurs
+  * createReview()
+      * Handles HTTP POST requests to "/reviews"
+      * @param review: the Review object to be created
+      * @return a Response entity containing HttpStatus.CREATED if the review is successfully created,
+      * HttpStatus.CONFLICT if the creation failed,
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured
+  * deleteReview()
+      * Handles HTTP DELETE requests to "/reviews/{id}"
+      * @param id: the id of the review that is being deleted
+      * @return a Response entity containing HttpStatus.OK if the review was deleted successfully,
+      * HttpStatus.NOT_FOUND if there is no review with the given id
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred
+  * deleteReviewsByUsername()
+      * Handles HTTP DELETE requests to "/reviews/user/{userName}"
+      * @param userName: the username of the user whose reviews should be deleted
+      * @return a Response entity containing HttpStatus.ok if the review was deleted successfully,
+      * HttpStatus.NOT_FOUND if there are no reviews from the given userName
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurs
+  * deleteAllReviews()
+      * Handles HTTP DELETE requests to "/reviews"
+      * @return a Response entity contatin HttpStatus.OK if all the reviews were deleted successfully,
+      * HttpStatus.NOT_FOUND if there are no reviews
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurs. 
 
 > _**[Sprint 4]** Provide a summary of this tier of your architecture. This
 > section will follow the same instructions that are given for the View
@@ -190,9 +300,17 @@ This section describes the web interface and flow; this is how the user views an
 > _At appropriate places as part of this narrative provide **one** or more updated and **properly labeled**
 > static models (UML class diagrams) with some details such as associations (connections) between classes, and critical attributes and methods. (**Be sure** to revisit the Static **UML Review Sheet** to ensure your class diagrams are using correct format and syntax.)_
 > 
-![Replace with your ViewModel Tier class diagram 1, etc.](model-placeholder.png)
+<img width="929" height="716" alt="View Model Architecture" src="ViewModelTierArchitecture.png" />
+
 
 ### Model Tier
+>Our Model tier consists of a Need.java file that contains our need object. Each need object has an identification (id), name, value (or the cost), >type (what type of item it is), and quantity. There are getter and setters for each of the variables above.
+>
+>Our Model tier also includes a User.java file that represents an individual user. Each user has a name and a funding basket (an array of needs). >The class has a constructor to initialize these fields and getters (getName(), getBasket()).
+>Finally, we also have a FundingBasketDataWrapper.java file that wraps the collection of users for persistence and transport. It holds a single >field, a list of users, along with a constructor to set it and a getter (getUsers()).
+>
+>Additionally, out Model tier contains a Review.java file that represents a review written by a user. Each review has a id, the username of the reviewer, the text content of the review, and an integer rating. The class includes a contains a constructor to initialze the various fields and getters for each field including: getId(), getUserName(), getReviewText(), and getRating().
+
   * Need.java - Create a Need object with given id, name, and value.
     * Contains getters (getID() -> int, getName() -> String, getValue() -> double, getQuantity() -> int, getType() -> String) and setters (setName(), setValue(), setQuantity(), setType()). Also contains a (toString() -> String) override.
     * This is used in NeedsCupboardFileDAO.java to hold data for a need/s.
@@ -328,24 +446,53 @@ This section describes the web interface and flow; this is how the user views an
       * @param userName the user this method will modify
       * @return true if file was updated succesfully
       * @return false, if deletion failed
+        
+  * Review.java
+    * Creates a Review object using an id, userName, reviewText, and rating and parameters
+    * Contains getters (getId() -> int, getUserName() -> String, getReviewText() -> String, getRating() -> int) as well as a (toString() -> String) override
+    * This is used in ReviewFileDAO.java to hold data for reviews.
+  
+  * ReviewFileDAO.java - the working logic behind our application for accessing Reviews.
+    * getReviews()
+      * Loads all of the reviews from the persistance storage
+      * @return an array of all reviews stored in the JSON file
+    * getReviewsByRating
+      * Filters the list of reviews to only show those that have the same rating as specified
+      * @param int rating: the rating value to filter with
+      * @return an array of reviews with the same rating as the parameter
+    * createReview()
+      * Adds a new review into the JSON file and assigns it a unique id.
+      * @param Review review: the review object that is being added
+      * @return the new Review now with an id
+      * @throws I/O exception if an error ocurred
+    * deleteReview()
+      * Removes a review from the JSON based on its id
+      * @param int id: the id of the review to delete
+      * @return true if the review was deleted successfully or false if it was not
+    * deleteReviewByUsername()
+      * Removes all reviews from a specific user from the JSON
+      * @param String userName: the username of the user whose reviews should be deleted
+      * @return true if the review was deleted successfully or false if it was not
+    * deleteAll()
+      * Deletes all the reviews from the persistance storage
+      * @return true if the file was updated successfully or false if it failed
+    * save()
+      * Write the current list of reviews into the JSON file
+      * @return true if it was written successfully or false if it was not
+    * load()
+      * Loads all the reviews from the JSON file into the memory
+      * @return true if it read successfully
 
 
-> _**[Sprint 2, 3 & 4]** Provide a summary of this tier of your architecture. This
-> section will follow the same instructions that are given for the View
-> Tier above._
+<img width="593" height="332" alt="Model Tier Architecture" src="ModelTierArchitecture.png" />
 
-> _At appropriate places as part of this narrative provide **one** or more updated and **properly labeled**
-> static models (UML class diagrams) with some details such as associations (connections) between classes, and critical attributes and methods. (**Be sure** to revisit the Static **UML Review Sheet** to ensure your class diagrams are using correct format and syntax.)_
-> 
-![Replace with your Model Tier class diagram 1, etc.](model-placeholder.png)
+
 
 ## OO Design Principles
-
-  * The two Object Oriented Design principles that the CTRL team is championing throughout the design and implementation are Low Coupling and Open/Close. The Low Coupling principle is implemented into the design through there being only one connection. The Open/Close principle is utilized as our program is designed to grow over time. As of Sprint 1 the foundational code has been written and we will be able to add new functionality without modifying what is already there.
-
-
-> _**[Sprint 2, 3 & 4]** Will eventually address upto **4 key OO Principles** in your final design. Follow guidance in augmenting those completed in previous Sprints as indicated to you by instructor. Be sure to include any diagrams (or clearly refer to ones elsewhere in your Tier sections above) to support your claims._
-
+>Sprint 1: The two Object Oriented Design principles that the CTRL team is championing throughout the design and implementation are Low Coupling >and Open/Close. The Low Coupling principle is implemented into the design through there being only one connection. The Open/Close principle is >utilized as our program is designed to grow over time. As of Sprint 1 the foundational code has been written and we will be able to add new >functionality without modifying what is already there.
+>
+>Sprint 2: The two Object Oriented Design principles that the CTRL team is championing throughout Sprint 2 are the Law of Demeter and Pure >Fabrication. The Law of Demeter principle is being followed through our implementation of service classes, which serves as an inbetween for the >controller and DAO. This prevents the classes from having to call other classes that are distant which would break the “don’t talk to strangers” >principle for the Law of Demeter. Another principle that the service files helped us follow was Pure Fabrication. Pure Fabrication is when a new >class is created to handle responsibilities that don’t fit well with the already existing classes. The service files were created to specifically >handle the calling of methods, making it a good example of following the Pure Fabrication principle.
+>
 > _**[Sprint 3 & 4]** OO Design Principles should span across **all tiers.**_
 
 ## Static Code Analysis/Future Design Improvements
@@ -357,15 +504,8 @@ This section describes the web interface and flow; this is how the user views an
 > _**[Sprint 4]** Discuss **future** refactoring and other design improvements your team would explore if the team had additional time._
 
 ## Testing
-> _This section will provide information about the testing performed
-> and the results of the testing._
-
 ### Acceptance Testing
-> _**[Sprint 2 & 4]** Report on the number of user stories that have passed all their
-> acceptance criteria tests, the number that have some acceptance
-> criteria tests failing, and the number of user stories that
-> have not had any testing yet. Highlight the issues found during
-> acceptance testing and if there are any concerns._
+>Across Sprints 2, acceptance testing indicates that the majority of user stories have fully met their acceptance criteria. Core user flows are >behaving as expected like the persistent navigation bar correctly routes to myResearch (Homepage), Login, and Checkout; the Login Page accurately >authenticates valid users and their roles; and the needs list currently sending data to the funding basket. One acceptance criteria failure (which >was later resolved) was where the wrong user’s funding basket appeared after login. Another acceptance criteria failure that was fixed was the ?>Update Need feature on the Admin Page which attempts to modify an existing need, currently reset fields to empty or zero and does not save ?>updates. Other than that, all other tested stories passed without exception. 
 
 ### Unit Testing and Code Coverage
 > _**[Sprint 4]** Discuss your unit testing strategy. Report on the code coverage
@@ -374,7 +514,8 @@ This section describes the web interface and flow; this is how the user views an
 > code coverage met your targets._
 
 >_**[Sprint 2, 3 & 4]** **Include images of your code coverage report.** If there are any anomalies, discuss
-> those._
+> those._W
+<img width="821" height="718" alt="General Code Coverage Reports" src="UnitTestingAndCodeCoverage.png" />
 
 ## Ongoing Rationale
 >_**[Sprint 1, 2, 3 & 4]** Throughout the project, provide a time stamp **(yyyy/mm/dd): Sprint # and description** of any _**mayor**_ team decisions or design milestones/changes and corresponding justification._
@@ -400,4 +541,32 @@ This section describes the web interface and flow; this is how the user views an
   * Ensuring each member has their code properly working before merging all of it.
   * Record our demo video and our scripts.
   * Finish all Sprint 1 requirements in the Design Doc. 
+ 
+* Sprint #2:
+
+* 2025/10/01
+  * Wrote our beginning sprint 2 epics and user stories
+    * Assigned points to them with Planning Poker
+    * Acceptance Test Plan updated with them
+* 2025/10/04-05
+  * Unit test verifications for MVC
+    * Making sure they all ran + worked
+  * Created our first angular files
+    * Gave us a good baseline to work on
+    * Split the stories among team members to work individually so we can test angular in our own playgrounds.
+* 2025/10/08
+  * Merged all our separate branches into main to create a beginning working UI (no functionality, just page routing)
+  * Also added a navigation bar
+* 2025/10/09
+  * Completed code coverage of the unit tests we had
+  * Assigned tasks of each of our user stories to begin having a UI with functionality
+* 2025/10/13
+  * Quick agenda and progress check on all our code.
+  * Code reviewed one of our codes.
+
+* 2025/10/18-19
+  * Planned the our agenda for the rest of Spring 2 (establishing deadlines and work)
+  * Began merging our almost final codes.
+  * TODO : Currently have hardcoded that any password passes for users, this will be updated during sprint 3 if necessary.
+
 

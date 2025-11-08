@@ -1,17 +1,19 @@
 .nav-bar {
-  background: linear-gradient(90deg, #ffa718, #f6b54d);
-  border-bottom: 1px solid rgba(0,0,0,.12);
-  padding: 10px 18px;
+  background: #ffa718;
+  border-bottom: 24px solid rgba(0, 0, 0, 0.12);
+  padding: 0.75em;
   display: flex;
   align-items: center;
-  border-radius: 10px;
   box-shadow: 0 2px 6px rgba(0,0,0,.06);
-  margin: 8px;               /* keeps it from touching edges */
+
+  /* margin: 8px;               keeps it from touching edges */
 }
 
-.brand {
+.icon-link.home {
   font-weight: 700;
   letter-spacing: .4px;
+  font-size: 24px;
+  margin-left: 2%;
   text-decoration: none;
   color: #1a1a1a;
 }
@@ -55,4 +57,20 @@
 .icon-link:focus-visible img {
   transform: translateY(-1px);
   opacity: 1;
+}
+
+.checkout-link {
+  position: relative;
+  display: inline-block;
+}
+
+.item-count-badge {
+  position: absolute;
+  top: 20px;
+  right: 4px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 5px;
+  font-size: 10px
 }

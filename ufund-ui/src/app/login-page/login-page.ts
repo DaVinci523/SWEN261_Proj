@@ -9,7 +9,7 @@ import { User } from '../user';
   styleUrls: ['./login-page.css']   // note: styleUrls (plural)
 })
 export class LoginPage {
-  constructor(private router: Router, private user: User) {}
+  constructor(private router: Router, public user: User) {}
 
   username = '';
   password = '';
@@ -18,25 +18,62 @@ export class LoginPage {
    * When the user clicks the login button, the username entered will store
    * into the user service and direct the user to their corresponding page
    */
-  onLogin(): void {
-    if (!this.username || !this.password) {
+  onLogin(skipConfirm: boolean = false): void {
+    if (!this.username) {
       return;
     }
+    if (!this.password) {
+      return;
+    }
+
+    if (!skipConfirm) {
+      const proceed = window.confirm('Log in as "' + this.username + '"?');
+      if (!proceed) {
+        return;
+      }
+    }
+
 
     const ok = this.user.login(this.username, this.password);
 
     if (ok) {
-      alert('Welcome ' + this.username);
-
       const role = this.user.getCurrentUserRole();
-
       if (role === 'admin') {
         this.router.navigate(['/admin']);
       } else {
         this.router.navigate(['/helper']);
       }
     } else {
-      alert('Invalid username or password.');
+      alert('Invalid username or password, or the account does not exist.');
+    }
+  }
+
+  onCreateUser(): void {
+    if (!this.username) {
+      alert('Please enter a username to create an account.');
+      return;
+    }
+    if (!this.password) {
+      alert('Please enter a password to create an account.');
+      return;
+    }
+
+    if (this.user.userExists(this.username)) {
+      alert('That username already exists. Please choose another.');
+      return;
+    }
+
+    const proceed = window.confirm('Create a new account for "' + this.username + '" and save this password?');
+    if (!proceed) {
+      return;
+    }
+
+    const created = this.user.createUser(this.username, this.password);
+    if (created) {
+      alert('Account created! Logging you in now.');
+      this.onLogin(true);
+    } else {
+      alert('Account could not be created.');
     }
   }
 }

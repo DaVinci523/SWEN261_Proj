@@ -1,25 +1,45 @@
 h1,h2 {
     text-align: center;
+    text-color: white;
 }
+
 /* Containers */
+div.funding-basket-container {
+    padding: 5%;
+    border: 8px solid black;
+    border-radius: 24px;
+    background-color: white
+}
+
+button {
+    cursor: pointer;
+}
+
 ul {
     margin-left: auto;
-    margin-right:auto;
-    width: 98%;
+    margin-right: auto;
+    height: 400px;
+    width: 96%;
     padding: 0%;
-    border-top:4px dashed black;
-    font-size: 20px;
+    border: 0px dashed black;
+    /* border-bottom: 0px; */
+    border-radius: 12px;
+    font-size: 18px;
+    overflow-y: scroll;
 }
 
 li {
     list-style-type:none;
-    border: 4px dashed black;
-    border-top: 0px;
+    border: 2px solid black;
+    border-radius: 4em;
+    margin: 3%;
+    padding-right: 0.2em;
 }
 
 span.data-container {
     display: grid;
-    grid-template-columns: 70% 20% 10%;
+    grid-auto-flow: column;
+    grid-template-columns: 50% 40% 10%;
     padding: 3%;
 }
 
@@ -27,7 +47,7 @@ span.data-container {
 span#need-variables {
     grid-column: 1;
     display: grid;
-    grid-template-columns: 25% 25% 25% 25%;
+    grid-template-columns: 50% 50%;
     text-alignt: center;
     margin-top: auto;
     margin-bottom: auto;
@@ -38,6 +58,7 @@ span#quantity-inputs {
     text-align: center;
     margin-top: auto;
     margin-bottom: auto;
+    min-width: 40%;
 }
 
 span#delete-column {
@@ -49,13 +70,14 @@ span#delete-column {
 /* Grid Item Children */
 span#need-variables > * {
     height: auto;
+    width: auto;
     padding-top: 10%;
     padding-bottom: 10%;
     text-align: center;
 }
 
 span#quantity-inputs > * {
-    float: right;
+    float: center;
     padding-top: 10%;
     padding-bottom: 10%;
 }
@@ -65,27 +87,43 @@ span.variable {
     width: auto;
     text-align: center;
     padding: 1%;
-    border: 2px solid black;
+    padding-left: 1em;
+    word-break: break-all;
 }
 
 input.manual-quantity {
-    width: 4em;
-    padding: 3%;
+    width: 3em;
+    padding: 2%;
+    text-align: center;
     border: 2px solid black;
 }
 
-button.change-quantity, button.delete {
-    width: 3em;
-    padding: 3%;
+button.change-quantity {
+    width: 2.1em;
+    padding: 2%;
     border: 2px solid black;
     text-align: center;
 }
 
 button.delete {
-    width: 3em;
-    height: 3em;
-    float: right;
+    width: 2.5em;
+    height: 2.5em;
+    float: center;
     border: 2px solid black;
-    border-radius: 12px;
+    border-radius: 18px;
+    margin: 15%;
     text-align: center;
+    background-color: #ff6161;
+}
+
+button.change-quantity.subtract {
+    border-left: 2px solid black;
+    border-bottom-left-radius: 2em;
+    border-top-left-radius: 2em;
+}
+
+button.change-quantity.add {
+    border-right: 2px solid black;
+    border-bottom-right-radius: 2em;
+    border-top-right-radius: 2em;
 }

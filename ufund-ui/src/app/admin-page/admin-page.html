@@ -2,113 +2,118 @@
 
 <!-- checks if current user is an admin -->
 @if(this.user.getCurrentUserRole() == 'admin') {
-    <h2>Admin</h2>    
+    <h2>Admin</h2>
 
     <!-- column structure supplied by: -->
     <!-- https://www.w3schools.com/howto/howto_css_two_columns.asp -->
+    <div class="admin-page-container">
 
-        <div class="container">
+        <!-- left column displays the needs cupboard -->
+        <div id="needs-cupboard" class="split left">
+            <h2>Needs Cupoard:</h2>
 
-            <!-- left column displays the needs cupboard -->
-            <div class="column">
-                <h3>Needs Cupoard:</h3>
-
+            <ul>
                 <!-- interates through every need in the needs cupboard -->
                 @for (need of needs; track need.id) {
-                
-                <!-- list item for a single need--> 
-                <li>
-                    <span class="data-container">
-                <span id="need-variables">
-                    <!-- all attributes utilize interpolation to display -->
-                    <span class="identifier variable">Id: [{{need.id}}]</span> 
-                    <span class="variable">Name: [{{need.name}}]</span>
-                    <span class="variable">Value: [${{need.value}}]</span>
-                    <span class="variable">Quantity: [{{need.quantity}}]</span>
-                    <span class="variable">Type: ["{{need.type}}"]</span>
-
-                    <!-- delete button attached to every need to immediately remvove it from the needs cupboard -->
-                    <button type = button class="delete" (click) = deleteNeed(need)> Delete Need </button>
-                     
-                    <!-- update button attacked to every need to update it in the needs cupboard -->
-                    <!-- uses inputs from right column as parameters for updated attributes-->
-                    <button type="button" class="update"
-            (click)= "updateNeed(need, needName.value, needValue.valueAsNumber, 
-            needQuant.valueAsNumber, needType. value);">Update Need</button>     
-                </span>
-                </span>
-                </li>
+                    <!-- list item for a single need--> 
+                    @if (need.visible){ <!--only show need if it is visible-->
+                        <li>
+                            <span class="data-container">
+                                <span id="need-variables">
+                                    <!-- all attributes utilize interpolation to display -->
+                                    <span class="identifier variable">Id: <b>{{need.id}}</b></span> 
+                                    <span class="variable">Name: <b>{{need.name}}</b></span>
+                                    <span class="variable">Value: <b>${{need.value}}</b></span>
+                                    <span class="variable">Quantity: <b>{{need.currentQuantity}}/{{need.maxQuantity}}</b></span>
+                                    <span class="variable">Type: <b>"{{need.type}}"</b></span>
+                                </span>
+                                <span id="modification-buttons">
+                                    <!-- update button attacked to every need to update it in the needs cupboard -->
+                                    <!-- uses inputs from right column as parameters for updated attributes-->
+                                    <button type="button" title="Fill in fields on the right, then click me" class="update" (click)= "updateNeed(need, needName.value, needValue.valueAsNumber, need.currentQuantity, needQuant.valueAsNumber, needType.value);">Update Need</button>  
+                                    
+                                    <!-- delete button attached to every need to immediately remvove it from the needs cupboard -->
+                                    <button type = button class="delete" (click) = "deleteNeed(need)"> Delete Need </button>
+                                </span>
+                            </span>
+                        </li>
+                    }
                 }
                 <!-- notifies the user if the needs cupboard is empty ---> 
                 @empty {
                     <li>There are no items.</li>
                 }
+            </ul>
+        </div>
 
+        <!-- right column displays the inputs to add/update a need -->
+        <div id="admin-editor" class ="split right">
+            <h2>Add/Update Need:</h2>
 
-
+            <!-- input box for name input -->
+            <div class="">
+                <div class="">Need Name: </div>
+                
+                <!-- name input is saved in needName -->
+                <input type="text" id="username" name="username" #needName placeholder="Enter need name">
+            </div>
+            
+            <!-- input box for quantity input -->
+            <div class="">
+                <div class="">Quantity: </div>
+                                
+                <!-- quantity input is saved in needQuant -->
+                <input type="number" #needQuant placeholder="Enter quantity">
             </div>
 
-            <!-- right column displays the inputs to add/update a need -->
-            <div class ="column">
-                <h3>Edit Need:</h3>
+            <!-- input box for value input -->
+            <div class="">
+                <div class="">Value: </div>
+                            
+                <!-- value input is saved in needValue -->
+                <input type="number" #needValue placeholder="Enter value">
+            </div>
 
-                <!-- input box for name input -->
-                <div class="flex-container">
-                    <div class="flex-item-left">Need Name: </div>
-                    
-                    <div class= "padding"> </div>
+            <!-- input box for type input -->
+            <div class="">
+                <div class="">Type: </div>
+                                
+                <!-- type input is saved in needType -->
+                <input type="text" #needType placeholder="Enter type">
+            </div>
 
-                    <!-- name input is saved in needName -->
-                    <input type="text" id="username" name="username" #needName placeholder="Enter need name">
-                </div>
-                
-                <div class = "padding"> </div>
-
-                <!-- input box for quantity input -->
-                <div class="flex-container">
-                    <div class="flex-item-left">Quantity: </div>
-                    
-                    <div class= "padding"> </div>
-                    
-                    <!-- quantity input is saved in needQuant -->
-                    <input type="number" #needQuant placeholder="Enter quantity">
-                </div>
-
-                <div class = "padding"> </div>
-
-                <!-- input box for value input -->
-                <div class="flex-container">
-                    <div class="flex-item-left">Value: </div>
-                    
-                    <div class= "padding"> </div>
-                    
-                    <!-- value input is saved in needValue -->
-                    <input type="number" #needValue placeholder="Enter value">
-                </div>
-
-                <div class = "padding"> </div>
-
-                <!-- input box for type input -->
-                <div class="flex-container">
-                    <div class="flex-item-left">Type: </div>
-                    
-                    <div class= "padding"> </div>
-                    
-                    <!-- type input is saved in needType -->
-                    <input type="text" #needType placeholder="Enter type">
-                </div>
-
-                <div class = "padding"> </div>
-
-                <!-- add button to add a need to the needs cupboard -->
-                <button type="button" class="add"
+            <!-- add button to add a need to the needs cupboard -->
+            <button type="button" class="add"
             (click)= "createNeed(needName.value, needValue.valueAsNumber, 
             needQuant.valueAsNumber, needType. value);">Add Need</button>
-
-                          
+                    
+            <div class="user-management">
+                <div class="row">
+                    <input type="text"
+                        placeholder="Username to remove"
+                        [(ngModel)]="usernameToRemove"
+                        aria-label="Username to remove" />
+                </div>
+                <div class="row">
+                    <button class="btn danger" (click)="removeAUser()">Remove User</button>
+                    <button class="btn warn" (click)="clearAll()">Clear All Users</button>
+                </div>
             </div>
-    
-        </div>
+
+            <!-- Optional: a tiny readout so you see what exists -->
+            <div class="users-list">
+                <h2>Current Users ({{ users.length }})</h2>
+                <ul>
+                    @for (user of users; track user.username) {
+                        <li>
+                            <strong>{{user.username}}</strong> — role: {{ user.role }}
+                        </li>
+                    }
+                </ul>
+            </div>
+        
+        </div>        
+    </div>
 } @else {
     <!-- notifies user that they are restricted from seeing the admin page -->
     <div class="restricted">Restricted</div>
