@@ -22,8 +22,7 @@
         <button type="button" class="create"(click)="submit()">Create Review</button>
     </div>
 
-    <ul class="userNeeds"><!--add all userneeds to a list-->
-        
+    <ul>
         @for (review of reviews; track review.id) {
             <li class="row">
                 <div class="data-container">

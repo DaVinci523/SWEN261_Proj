@@ -41,6 +41,11 @@ export class ReviewsCard {
    * Pulls up two random reviews to display
    */
   refreshReviews(): void {
+    while(this.displayedReviews.length > 0){ // clear the display
+      this.displayedReviews.pop();
+    }
+
+    // add to the display
     let randNum1 = Math.floor(Math.random() * this.allReviews.length); // generate random numbers for indeces of random reviews
     let randNum2 = Math.floor(Math.random() * this.allReviews.length);
       
@@ -48,5 +53,18 @@ export class ReviewsCard {
     this.displayedReviews.push(this.allReviews[randNum2]);
   }
 
+  getStars(n: number): number[] { // returns an array of the size of the given rating, a helper function for the @for loop in review-page.html
+    let count = n;
+    if (count < 0) { count = 0; }
+    if (count > 5) { count = 5; }
 
+    const arr: number[] = [];
+    let i = 0;
+    while (i < count) {
+      arr.push(this.dummyTracker);
+      this.dummyTracker++;
+      i = i + 1;
+    }
+    return arr;
+  }
 }

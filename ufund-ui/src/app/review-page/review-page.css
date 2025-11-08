@@ -17,7 +17,6 @@ ul {
     height:100%;
     border-radius: 12px;
     place-items: center;
-
 }
 
 li {
@@ -70,6 +69,5 @@ div#review-text {
     overflow-y: scroll;
     overflow-wrap: break-word;
     text-align: left;
-    
 }
 
