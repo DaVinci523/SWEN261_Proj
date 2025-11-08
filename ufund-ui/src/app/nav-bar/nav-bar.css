@@ -2,6 +2,7 @@
   background: #ffa718;
   border-bottom: 24px solid rgba(0, 0, 0, 0.12);
   padding: 0.75em;
+  padding-right: 2em;
   display: flex;
   align-items: center;
   box-shadow: 0 2px 6px rgba(0,0,0,.06);
@@ -51,8 +52,7 @@
 .reviews-button {
   padding: 6px 10px;
   border-radius: 8px;
-  border: 1px solid rgba(0,0,0,.18);
-  background: #fff;
+  border: 2px solid black;
   cursor: pointer;
 }
 .reviews-button:hover { 
@@ -86,7 +86,7 @@ svg:hover {
 .item-count-badge {
   position: absolute;
   top: 20px;
-  right: 4px;
+  right: 20px;
   background-color: red;
   color: white;
   border-radius: 50%;
