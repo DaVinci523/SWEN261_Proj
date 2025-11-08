@@ -6,6 +6,8 @@ import { Component } from '@angular/core';
   templateUrl: './ai.html',
   styleUrl: './ai.css'
 })
-export class Ai {
 
+export class Ai {
+    respone = '';
+    
 }
