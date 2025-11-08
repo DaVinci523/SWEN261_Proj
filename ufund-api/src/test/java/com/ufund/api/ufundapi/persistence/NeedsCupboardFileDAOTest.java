@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -191,5 +192,58 @@ public class NeedsCupboardFileDAOTest {
     public void testDeleteNeedNameFalse() throws IOException {
         boolean result = dao.deleteNeedName("Cobra");
         assertFalse(result);
+    }
+
+    /**
+     * Test searchNeedsType
+     */
+    @Test
+    public void testSearchNeedsType() throws IOException {
+        Need[] results = dao.searchNeedsType("board");
+        assertEquals(1, results.length);
+        assertEquals("BreadBoard", results[0].getName());
+    }
+
+    @Test
+    public void testSearchNeedsTypeNull() throws IOException {
+        Need[] results = dao.searchNeedsType(null);
+        assertEquals(testNeeds.length, results.length);
+    }
+
+    @Test
+    public void testSearchNeedsTypeNoMatch() throws IOException {
+        Need[] results = dao.searchNeedsType("nonexistent");
+        assertEquals(0, results.length);
+    }
+
+    /**
+     * Test search needs quantity
+     */
+    @Test
+    public void testSearchNeedsQuantity() throws IOException {
+        Need[] results = dao.searchNeedsQunatity(1);
+        assertEquals(testNeeds.length, results.length);
+    }
+
+    @Test
+    public void testSearchNeedsQuantityZero() throws IOException {
+        Need[] results = dao.searchNeedsQunatity(0);
+        assertEquals(testNeeds.length, results.length);
+    }
+
+    /**
+     * Test searchNeedsBalue
+     */
+    @Test
+    public void testSearchNeedsValueExact() throws IOException {
+        Need[] results = dao.searchNeedsValue(10.0);
+        assertEquals(1, results.length);
+        assertEquals("BreadBoard", results[0].getName());
+    }
+
+    @Test
+    public void testSearchNeedsValuesNoMatch() throws IOException {
+        Need[] results = dao.searchNeedsValue(999.0);
+        assertEquals(0, results.length);
     }
 }
