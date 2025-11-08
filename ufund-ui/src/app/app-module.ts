@@ -18,6 +18,7 @@ import { NeedDetailComponent } from './need-details/need-details';
 import { NavBar } from './nav-bar/nav-bar';
 import { Checkout } from './checkout/checkout';
 import { ReviewsPage } from './review-page/review-page';
+import { ReviewsCard } from './reviews-card/reviews-card';
 @NgModule({
   declarations: [
     App,
@@ -31,7 +32,8 @@ import { ReviewsPage } from './review-page/review-page';
     NeedDetailComponent,
     NavBar,
     Checkout,
-    ReviewsPage
+    ReviewsPage,
+    ReviewsCard
   ],
   imports: [
     BrowserModule,

@@ -37,6 +37,9 @@
                     <div id="review-text" class="row">
                         {{review.reviewText}}
                     </div>
+                    @if (this.user.getCurrentUserRole() == 'admin'){
+                        <button (click)="delete(review.id)">Delete</button>
+                    }
                 </div>
             </li>
         } 

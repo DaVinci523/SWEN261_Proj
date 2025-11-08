@@ -22,7 +22,7 @@ export class ReviewsPage implements OnInit {
 
   constructor(
     private reviewService: ReviewService, 
-    private user: User, 
+    public user: User, 
     private router: Router
   ) {}
 
@@ -118,14 +118,14 @@ export class ReviewsPage implements OnInit {
       });
   }
 
-  delete(r: Review): void {
-    const ok = window.confirm('Delete review #' + r.id + '?');
+  delete(id: number): void {
+    const ok = window.confirm('Delete review #' + id + '?');
     if (!ok) {
       return;
     }
 
     const self = this;
-    this.reviewService.deleteReview(r.id).subscribe(function(_) {
+    this.reviewService.deleteReview(id).subscribe(function(_) {
       self.loadByRating();
     });
   }
