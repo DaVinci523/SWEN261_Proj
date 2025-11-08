@@ -179,4 +179,57 @@ public class needsCupboardServiceTest {
         assertTrue(result);
         verify(mockDAO).deleteAll();
     }
+
+    /**
+     * Tests that searchNeedsType() gets Needs by the type with the DAO
+     */
+    @Test
+    public void testSearchNeedsType() throws IOException {
+        Need[] expected = {
+            new Need(1, "BreadBoard", 10.0, 0, 3, "board", true)
+        };
+
+        when(mockDAO.searchNeedsType("board")).thenReturn(expected);
+
+        Need[] actual = service.searchNeedsType("board");
+
+        assertArrayEquals(expected, actual);
+        verify(mockDAO, times(1)).searchNeedsType("board");
+    }
+
+    /**
+     * Tests searchNeedsQuantity
+     */
+    @Test
+    public void testSearchNeedsQuantity() throws IOException {
+        Need[] expected = {
+            new Need(2, "Wire", 5.0, 0, 10, "cord", true),
+            new Need(3, "Resistor", 2.0, 0, 100, "component", true)
+        };
+
+        when(mockDAO.searchNeedsQunatity(5)).thenReturn(expected);
+
+        Need[] actual = service.searchNeedsQuantity(5);
+
+        assertArrayEquals(expected, actual);
+        verify(mockDAO, times(1)).searchNeedsQunatity(5);
+    }
+
+    /**
+     * Tests searchNeedsValue
+     */
+    @Test
+    public void testSearchNeedsValue() throws IOException {
+        Need[] expected = {
+            new Need(4, "Sensor", 3.5, 0, 4, "component", true)
+        };
+
+        when(mockDAO.searchNeedsValue(3.5)).thenReturn(expected);
+
+        Need[] actual = service.searchNeedsValue(3.5);
+
+        assertArrayEquals(expected, actual);
+        verify(mockDAO, times(1)).searchNeedsValue(3.5);
+    }
+    
 }
