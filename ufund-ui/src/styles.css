@@ -6,6 +6,6 @@ html, body {
 }
 app-root { display:block; min-height:100%; }
 
-button:hover { // all buttons have a slight brighten effect
+button:hover { /* all buttons have a slight brighten effect */
     filter: brightness(1.1);
 }

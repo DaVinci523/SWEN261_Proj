@@ -1,6 +1,27 @@
 <app-nav-bar></app-nav-bar>
 
 <div id="reviews-container">
+    <div id="review-creator">
+        <div id="create-review-header">
+            <h2>Create Review:</h2>
+            <!-- input box for ranking input -->
+            <div id="">
+                <div class="">Rate: ({{form.rating}})</div>
+                <input type="range" min="1" max="5" step="1" [(ngModel)]="form.rating" (input)="updateRating()">
+            </div>
+        </div>
+
+        <!-- input box for text input -->
+        <div id="review-creator-description">
+            <div class="">Description: </div>
+                        
+            <!-- value input is saved in needValue -->
+            <input type="text" [(ngModel)]="this.form.reviewText" placeholder="Please describe your review here...">
+        </div>
+
+        <button type="button" class="create"(click)="submit()">Create Review</button>
+    </div>
+
     <ul class="userNeeds"><!--add all userneeds to a list-->
         
         @for (review of reviews; track review.id) {
@@ -9,7 +30,7 @@
                     <div id="review-head" class="row">
                         <span class="variable">{{review.userName}}</span>
                         <br>
-                        @for (review of getStars(review.rating); track review ) {
+                        @for (_ of getStars(review.rating); track _) {
                             <img src="\images\Gold_Star.png" alt="Gold star" width="25" height="25"/>
                         }
                     </div>
