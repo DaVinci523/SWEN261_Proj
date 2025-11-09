@@ -148,3 +148,20 @@ button.fund {
     border-radius: 24px;
     font-size: 18px;
 }
+
+.donation-status {
+  font-size: 1.1em;
+  padding: 6px 0 8px 0;
+  margin-bottom: 6px;
+}
+
+.donation-buttons {
+  margin-bottom: 18px;
+  padding: 8px 10px;
+  background: #fafafa;
+  border-radius: 6px;
+}
+
+.donation-buttons button {
+  margin-right: 6px;
+}

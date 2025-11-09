@@ -3,6 +3,18 @@
 <!-- checks if current user is an admin -->
 @if(this.user.getCurrentUserRole() == 'admin') {
     <h2>Admin</h2>
+    <div class="donation-panel">
+    <h2>Donation Goal Management</h2>
+
+    <p><strong>Total Donated:</strong> ${{ totalDonated }}</p>
+    <p><strong>Current Goal:</strong> ${{ donationGoal }}</p>
+
+    <label>Set New Goal:</label>
+    <input type="number" [(ngModel)]="newGoal" placeholder="Enter New Goal" min="1">
+    <button (click)="updateGoal()">Update Goal</button>
+
+
+    </div>
 
     <!-- column structure supplied by: -->
     <!-- https://www.w3schools.com/howto/howto_css_two_columns.asp -->

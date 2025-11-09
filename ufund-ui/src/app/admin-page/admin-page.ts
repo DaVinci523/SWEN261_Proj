@@ -4,6 +4,7 @@ import { Need } from '../need';
 import { User, PublicUserInfo } from '../user';
 import { FundingBasketService } from '../funding-basket-service';
 import { interval, Subscription } from 'rxjs';
+import { DonationService } from '../donation';
 
 @Component({
   selector: 'app-admin-page',
@@ -16,13 +17,16 @@ import { interval, Subscription } from 'rxjs';
 export class AdminPage {
   usernameToRemove = '';
   users: PublicUserInfo[] = [];
-
+  totalDonated: number = 0;
+  donationGoal: number = 0;
+  newGoal: number | null = null;
   private getNeedsSubscription: Subscription;
   
   constructor(
     private adminPageService:AdminPageService, // adminPageService to connect to REST API back-end      
     private fundingBasketService: FundingBasketService,
-    public user: User, // current user of the application
+    public user: User, // current user of the application,
+    private donationService: DonationService
   ){
     // Continuously call getNeeds on set intervals (ex: 5000 is 5 seconds) to keep them updated when page is not reloaded.
     this.getNeedsSubscription = interval(4000).subscribe(() => {
@@ -46,6 +50,7 @@ export class AdminPage {
     // calls the getNeeds function to populate needs
     this.getNeeds();
     this.refresh();
+    this.loadDonationStatus();
   }
   
   /**
@@ -184,5 +189,26 @@ export class AdminPage {
     alert('All users deleted.');
     this.refresh();
   }
+  loadDonationStatus(): void {
+    this.donationService.getStatus().subscribe(status => {
+      this.totalDonated = status.totalDonated;
+      this.donationGoal = status.donationGoal;
+    });
+  }
 
+  updateGoal(): void {
+    if (this.newGoal != null && this.newGoal > 0) {
+
+      if (this.newGoal < this.totalDonated) {
+        alert(`Goal cannot be lower than the total donated ($${this.totalDonated}).`);
+        this.newGoal = this.donationGoal; // reset input
+        return;
+      }
+
+      this.donationService.setGoal(this.newGoal).subscribe(() => {
+        this.loadDonationStatus();
+        this.newGoal = null;
+      });
+    }
+  }
 }

@@ -118,7 +118,19 @@ export class FundingBasketService {
     return this.itemCountSubject.value;
   }
 
-  
+  addDonation(userName: string, amount: number) {
+  const donationNeed = {
+    id: Date.now() * -1,
+    name: "Donation",
+    value: amount,
+    currentQuantity: 0,
+    maxQuantity: 1,
+    type: "donation",
+    visible: true
+  };
+  return this.addNeed(userName, donationNeed);
+}
+
 /**
    * Handle Http operation that failed.
    * Let the app continue.

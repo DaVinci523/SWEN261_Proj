@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { Need } from '../need';
 import { NeedsCupboardService } from '../needs-cupboard-service';
 import { FundingBasketService } from '../funding-basket-service';
+import { DonationService } from '../donation';
+
 import { User } from '../user';
 import { interval, Subscription } from 'rxjs';
 
@@ -19,11 +21,13 @@ export class NeedsCupboard implements OnInit, OnDestroy {
   constructor(
     private needsCupboardService: NeedsCupboardService,
     private fundingBasketService: FundingBasketService,
-    private router: Router
+    private router: Router,
+    private donationService: DonationService
   ) {
     // Continuously call getNeeds on set intervals (ex: 5000 is 5 seconds) to keep them updated when page is not reloaded.
     this.getNeedsSubscription = interval(5000).subscribe(() => {
       this.getNeeds();
+      this.loadDonationStatus();
     })
   }
 
@@ -36,6 +40,10 @@ export class NeedsCupboard implements OnInit, OnDestroy {
   qtyTerm: number | null = null;
   valTerm: number | null = null;
   buttonText: string = 'Add to Cart';
+  //used to display donations
+  totalDonated: number = 0;
+  donationGoal: number = 0;
+
   /**
    * Initialization
    * @returns 
@@ -49,6 +57,7 @@ export class NeedsCupboard implements OnInit, OnDestroy {
     }
     this.userName = u;
     this.getNeeds();
+    this.loadDonationStatus();
 
     const saved = localStorage.getItem('buttonText');
     if (saved) this.buttonText = saved;
@@ -172,5 +181,26 @@ export class NeedsCupboard implements OnInit, OnDestroy {
         this.needs.push(need);
       });
   }
+  addDonation(amount: number): void {
+  const donationNeed: Need = {
+    id: Math.floor(Math.random() * 1000000),    //random number 
+    name: `Donation ($${amount})`,
+    value: Number(amount),                       // donation amount
+    maxQuantity: 1,
+    currentQuantity: 0,
+    type: "donation",
+    visible: true
+  };
+  this.moveToFunding(donationNeed);
+  console.log("USERNAME:", this.userName);
+
+}
+loadDonationStatus(): void {
+  this.donationService.getStatus().subscribe(status => {
+    this.totalDonated = status.totalDonated;
+    this.donationGoal = status.donationGoal;
+  });
+}
+
 
 }

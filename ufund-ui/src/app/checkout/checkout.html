@@ -14,6 +14,10 @@
             <label for="user-checkout-info">Address: </label>
             <input id="user-checkout-info" [(ngModel)]="address" placeholder="address"/>
         </div> -->
+        <div class="total-summary">
+            <p><strong>Total Cart Value:</strong> ${{ cartTotal }}</p>
+            <p><strong>Donation Amount:</strong> ${{ donationTotal }}</p>
+        </div>
 
         <!--(click) passes input value to add() and then clears the input -->
         <button type="button" class="checkout" (click)="checkout()">Checkout</button>
