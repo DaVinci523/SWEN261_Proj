@@ -22,7 +22,9 @@ geometry: margin=1in
 This is a summary of the project.
 
 ### Purpose
->The myResearch program seeks to help student researchers by providing them with funding for the various equipment that they will require. The most >important user group of the myResearch program are charitable people who are interested in the potential advancements student research can bring. >These user’s main goal is to provide funding for equipment through their account on the myResearch site.
+>The myResearch program seeks to help student researchers by providing them with funding for the various equipment that they will require. The most 
+>important user group of the myResearch program are charitable people who are interested in the potential advancements student research can bring. 
+>These user’s main goal is to provide funding for equipment through their account on the myResearch site.
 
 ### Glossary and Acronyms
 
