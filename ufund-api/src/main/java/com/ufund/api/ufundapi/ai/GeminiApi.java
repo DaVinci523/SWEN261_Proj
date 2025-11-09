@@ -11,7 +11,7 @@ import com.google.genai.types.GenerateContentResponse;
 public class GeminiAPI {
 
     private Client client;
-    private String response;
+
 
     /**
      * Creates the Gemini API
@@ -31,8 +31,11 @@ public class GeminiAPI {
             GenerateContentResponse userResponse = client.models.generateContent("gemini-2.5-flash", prompt, null);
             
             // gets the text from the response and assigns it the response instance field
-            this.response = userResponse.text();
+            return userResponse.text();
             
-            return response;
+    }
+
+    public String steve(){
+        return "";
     }
 }

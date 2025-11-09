@@ -7,17 +7,20 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/** 
+ * Service latyer between the controller and API
+ */
 @Service
 public class GeminiAPIServiceImplementation {
     
     private final GeminiAPI geminiAPI;
 
+    @Autowired
     public GeminiAPIServiceImplementation(GeminiAPI geminiAPI) {
         this.geminiAPI = geminiAPI;
     }
 
-    public String generateGeminiResponse(String prompt) {
-        // Implementation to call Gemini API and return response
+    public String generateGeminiResponse(String prompt) throws IOException {
         return geminiAPI.generateResponse(prompt);   
     }
 
