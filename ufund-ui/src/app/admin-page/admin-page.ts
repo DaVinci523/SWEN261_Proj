@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { AdminPageService } from '../admin-page-service'; 
 import { Need } from '../need';
-import { User, PublicUserInfo } from '../user';
+import { User } from '../user';
 import { FundingBasketService } from '../funding-basket-service';
 import { interval, Subscription } from 'rxjs';
+import { AccountsService } from '../accounts-service';
+import { Account } from '../account';
 
 @Component({
   selector: 'app-admin-page',
@@ -15,19 +17,26 @@ import { interval, Subscription } from 'rxjs';
 
 export class AdminPage {
   usernameToRemove = '';
-  users: PublicUserInfo[] = [];
+  users: Account[] = [];
 
   private getNeedsSubscription: Subscription;
+  private usersPollSubscription?: Subscription;
   
   constructor(
     private adminPageService:AdminPageService, // adminPageService to connect to REST API back-end      
     private fundingBasketService: FundingBasketService,
     public user: User, // current user of the application
+    private accounts: AccountsService
   ){
     // Continuously call getNeeds on set intervals (ex: 5000 is 5 seconds) to keep them updated when page is not reloaded.
     this.getNeedsSubscription = interval(4000).subscribe(() => {
       this.getNeeds();
+      this.refresh();
     })
+    //ensure users list is kept fresh even if getNeeds doesnt work
+    this.usersPollSubscription = interval(4000).subscribe(() => {
+      this.refresh();
+    });
   }  
 
   
@@ -35,7 +44,13 @@ export class AdminPage {
   usernames:String[] = [];
 
   refresh(): void {
-    this.users = this.user.getAllUsers();
+    this.accounts.getAccounts().subscribe(list => {
+      if (Array.isArray(list)) {
+        this.users = list as Account[];
+      } else {
+        this.users = [];
+      }
+    });
   }
 
    /*
@@ -56,6 +71,11 @@ export class AdminPage {
     // calls the getNeeds function from adminPageService and subscribes to the observable
     this.adminPageService.getNeeds().subscribe(needs => this.needs = needs);
     this.fundingBasketService.getUserNames().subscribe(usernames => this.usernames = usernames); // gets all the usernames
+    this.accounts.getUsernames().subscribe(names => {
+      if (Array.isArray(names)) {
+        this.usernames = names as unknown as String[];
+      }
+    });
   }
 
 
@@ -167,22 +187,18 @@ export class AdminPage {
     const ok = window.confirm('Delete user "' + u + '"?');
     if (!ok) { return; }
 
-    const done = this.user.deleteUser(u);
-    if (done) {
-      alert('Deleted "' + u);
-      this.usernameToRemove = '';
-      this.refresh();
-    } else {
-      alert('User not found.');
-    }
+    this.accounts.delete(u).subscribe(done => {
+      if (done !== undefined) {
+        localStorage.setItem('force-logout:' + u, String(Date.now()));
+        alert('Deleted "' + u + '"');
+        this.usernameToRemove = '';
+        this.refresh();
+        this.getNeeds();
+      } else {
+        alert('User not found.');
+      }
+    });
   }
 
-  clearAll(): void {
-    const ok = window.confirm('Delete ALL users? This cannot be undone.');
-    if (!ok) { return; }
-    this.user.clearAllUsers();
-    alert('All users deleted.');
-    this.refresh();
-  }
 
 }
