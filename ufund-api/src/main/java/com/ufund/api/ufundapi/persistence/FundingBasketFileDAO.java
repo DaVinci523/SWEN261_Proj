@@ -422,6 +422,12 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
      }
     }
 
+    /**
+     * Delete a user and all associated needs from the funding basket file.
+     * @param userName the user this method will modify
+     * @return true if file was updated succesfully
+     * @return false, if deletion failed
+     */
     @Override
     public boolean deleteUser(String userName) throws IOException {
         if (userName == null) {
@@ -456,5 +462,36 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
 
         return true;
     }
+
+    /**
+     * Creates a new user entry in the funding basket file.
+     * @param userName the user this method will modify
+     * @return true if file was updated succesfully
+     * @return false, if deletion failed
+     */
+    @Override
+    public boolean createUser(String userName) throws IOException {
+        if (userName == null) {
+            return false;
+        }
+
+        if (users.containsKey(userName)) {
+            return true; // already present, nothing to do
+        }
+
+        // create an empty basket for this user WITHOUT changing currentUser/currentUserNeeds
+        users.put(userName, new Need[0]);
+
+        // persist users -> funding_basket.json (same double-write pattern you use elsewhere)
+        User[] usersArray = getUsersArray();
+        List<User> usersList = Arrays.asList(usersArray);
+        FundingBasketDataWrapper wrappedList = new FundingBasketDataWrapper(usersList);
+
+        objectMapper.writeValue(new File(filename), wrappedList);
+        objectMapper.writeValue(new File(filename), wrappedList);
+
+        return true;
+    }
+
 
 }

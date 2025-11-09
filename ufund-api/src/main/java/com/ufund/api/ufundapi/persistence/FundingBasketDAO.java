@@ -100,4 +100,13 @@ public interface FundingBasketDAO {
      */
     boolean deleteUser(String userName) throws IOException;
 
+    /**
+     * Creates a new user entry in the funding basket file.
+     * @param userName the username for the new user
+     * @return true if the user was created successfully; false if the user already exists
+     * @throws IOException if an I/O error occurs while saving data
+     */
+    boolean createUser(String userName) throws IOException;
+
+
 }

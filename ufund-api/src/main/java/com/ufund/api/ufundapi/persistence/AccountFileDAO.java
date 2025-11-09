@@ -50,8 +50,18 @@ public class AccountFileDAO implements AccountDAO {
     public AccountFileDAO(@Value("${auth.file}") String filename, ObjectMapper objectMapper) throws IOException {
         this.filename = filename;
         this.objectMapper = objectMapper;
+
+        File f = new File(filename);
+        if (!f.exists() || f.length() == 0) {
+            // initialize an empty wrapper so future reads succeed
+            AccountsDataWrapper empty = new AccountsDataWrapper(new ArrayList<Account>());
+            objectMapper.writeValue(f, empty);
+        }
+
         load();
     }
+
+
 
     /**
      * Load from JSON into the in-memory map
@@ -60,12 +70,22 @@ public class AccountFileDAO implements AccountDAO {
      */
     private void load() throws IOException {
         File f = new File(filename);
-        if (!f.exists()) {
+        if (!f.exists() || f.length() == 0) {
             save();
             return;
         }
 
-        AccountsDataWrapper data = objectMapper.readValue(f, AccountsDataWrapper.class);
+        AccountsDataWrapper data;
+        try {
+            data = objectMapper.readValue(f, AccountsDataWrapper.class);
+        } catch (com.fasterxml.jackson.databind.exc.MismatchedInputException |
+                com.fasterxml.jackson.core.JsonParseException e) {
+            // re-init the file to a valid empty wrapper
+            AccountsDataWrapper empty = new AccountsDataWrapper(new ArrayList<Account>());
+            objectMapper.writeValue(f, empty);
+            data = empty;
+        }
+
         List<Account> list = null;
         if (data != null) {
             list = data.getUsers();
@@ -79,6 +99,7 @@ public class AccountFileDAO implements AccountDAO {
             }
         }
     }
+
 
     /**
      * Saves accounts from map into file

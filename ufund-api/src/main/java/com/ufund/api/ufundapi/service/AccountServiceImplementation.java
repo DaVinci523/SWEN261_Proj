@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.ufund.api.ufundapi.model.Account;
 import com.ufund.api.ufundapi.persistence.AccountDAO;
+import com.ufund.api.ufundapi.persistence.FundingBasketDAO;
 
 /**
  * Implementation of the AccountService interface
@@ -16,6 +17,7 @@ import com.ufund.api.ufundapi.persistence.AccountDAO;
 @Service
 public class AccountServiceImplementation implements AccountService {
     private final AccountDAO accountDAO;
+    private final FundingBasketDAO fundingBasketDAO;
 
     /**
      * Constructs an AccountServiceImplementation instance
@@ -23,8 +25,9 @@ public class AccountServiceImplementation implements AccountService {
      * @param accountDAO the data access object for Account operations
      */
     @Autowired
-    public AccountServiceImplementation(AccountDAO accountDAO) {
+    public AccountServiceImplementation(AccountDAO accountDAO, FundingBasketDAO fundingBasketDAO) {
         this.accountDAO = accountDAO;
+        this.fundingBasketDAO = fundingBasketDAO;
     }
 
     /**
@@ -70,6 +73,9 @@ public class AccountServiceImplementation implements AccountService {
     @Override
     public Account create(Account account) throws IOException {
         Account created = accountDAO.create(account);
+        if (created != null) {
+            fundingBasketDAO.createUser(created.getUsername());
+        }
         return created;
     }
 
@@ -94,6 +100,15 @@ public class AccountServiceImplementation implements AccountService {
      */
     @Override
     public boolean delete(String username) throws IOException {
+        if (username == null) {
+            return false;
+        }
+        
+        try {
+            fundingBasketDAO.deleteUser(username);
+        } catch (IOException e) {
+        }
+
         boolean removed = accountDAO.delete(username);
         return removed;
     }
