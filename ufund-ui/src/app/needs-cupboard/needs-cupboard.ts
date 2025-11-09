@@ -181,20 +181,32 @@ export class NeedsCupboard implements OnInit, OnDestroy {
         this.needs.push(need);
       });
   }
-  addDonation(amount: number): void {
-  const donationNeed: Need = {
-    id: Math.floor(Math.random() * 1000000),    //random number 
-    name: `Donation ($${amount})`,
-    value: Number(amount),                       // donation amount
-    maxQuantity: 1,
-    currentQuantity: 0,
-    type: "donation",
-    visible: true
-  };
-  this.moveToFunding(donationNeed);
-  console.log("USERNAME:", this.userName);
 
+  /**
+   * 
+   * @param amount Add donation from the needscupboard as a need to the funding basket
+   */
+  addDonation(amount: number): void {
+    if (amount <=0){
+      alert("Cannot donate less than $1. Thankyou!")
+    }
+    else{
+      const donationNeed: Need = {
+        id: Math.floor(Math.random() * 1000000),    //random number 
+        name: `Donation ($${amount})`,
+        value: Number(amount),                       // donation amount
+        maxQuantity: 1,
+        currentQuantity: 0,
+        type: "donation",
+        visible: true
+      };
+      this.moveToFunding(donationNeed);
+  } 
 }
+
+/**
+ * Load the current values of totalDonated and donationGoal
+ */
 loadDonationStatus(): void {
   this.donationService.getStatus().subscribe(status => {
     this.totalDonated = status.totalDonated;

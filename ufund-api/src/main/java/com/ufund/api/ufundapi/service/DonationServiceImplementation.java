@@ -15,20 +15,25 @@ public class DonationServiceImplementation {
         this.donationDAO = donationDAO;
     }
 
+    /**
+     * Get JSON status/data
+     * @return
+     * @throws IOException
+     */
     public Donation getStatus() throws IOException {
         return donationDAO.getStatus();
     }
 
+     /**
+     * update donationTotal with the new donation
+     * @param amount
+     * @throws IOException
+     */ 
     public Donation addDonation(int amount) throws IOException {
         Donation status = donationDAO.getStatus();
 
     // Add donation
     status.setTotalDonated(status.getTotalDonated() + amount);
-
-    // Auto-increase goal if met
-    if (status.getTotalDonated() >= status.getDonationGoal()) {
-        status.setDonationGoal(status.getDonationGoal() * 2);
-    }
 
     // Save changes
     donationDAO.save(status);
@@ -36,6 +41,11 @@ public class DonationServiceImplementation {
     return status;
     }
 
+    /**
+     * Update Goal
+     * @param goal
+     * @throws IOException
+     */
     public Donation setGoal(int newGoal) throws IOException {
         Donation status = donationDAO.getStatus();
 

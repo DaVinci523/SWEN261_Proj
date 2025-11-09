@@ -57,9 +57,12 @@ export class Checkout implements OnInit{
     this.getNeeds();
   }
   
-  // Get all needs in the funding basket, (done)
+  // Get all needs in the funding basket,
   // then decrease the quantity of the respective needs in the needs cupboard by the funding basket quantities, 
   // then clear the funding basket
+  //Update the donation values
+  //show the total price of your cart broken down into botht the donationTotal and the 
+  // complete total
   checkout(): void {
   this.nameOnCard = "";
   this.cardNumber = "";
@@ -120,6 +123,9 @@ export class Checkout implements OnInit{
     }
   }
   
+  /**
+   * Calculate the cart total to be displayed
+   */
   calculateTotals(): void {
   this.cartTotal = 0;
   this.donationTotal = 0;

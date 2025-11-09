@@ -189,6 +189,10 @@ export class AdminPage {
     alert('All users deleted.');
     this.refresh();
   }
+
+  /**
+   * Gather the current totalDonated and donationGoals
+   */
   loadDonationStatus(): void {
     this.donationService.getStatus().subscribe(status => {
       this.totalDonated = status.totalDonated;
@@ -196,6 +200,10 @@ export class AdminPage {
     });
   }
 
+  /**
+   * Allow the admin to update the goal but he cannot update it below the current totalDonated
+   * @returns 
+   */
   updateGoal(): void {
     if (this.newGoal != null && this.newGoal > 0) {
 

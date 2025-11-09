@@ -19,15 +19,26 @@ public class DonationFileDAO implements DonationDAO {
         load();
     }
 
+    /**
+     * Load in values from JSON into a MAP to do operations on
+     * @throws IOException
+     */
     private void load() throws IOException {
         status = objectMapper.readValue(new File(filename), Donation.class);
     }
 
+    /**
+     * Get the status/Data of the JSON
+     */
     @Override
     public Donation getStatus() throws IOException {
         return status;
     }
 
+    /**
+     * Add the donation amount to the totalDOnated
+     * @return The status/data
+     */
     @Override
     public Donation addDonation(int amount) throws IOException {
         status.setTotalDonated(status.getTotalDonated() + amount);
@@ -35,12 +46,19 @@ public class DonationFileDAO implements DonationDAO {
         return status;
     }
 
+    /**
+     * Update goal 
+     * retunr status/data
+     */
     @Override
     public Donation setGoal(int newGoal) throws IOException {
         status.setDonationGoal(newGoal);
         save(status);
         return status;
     }
+    /**
+     * Save updated status/data to the JSON
+     */
     @Override
     public void save(Donation status) throws IOException {
         this.status = status;

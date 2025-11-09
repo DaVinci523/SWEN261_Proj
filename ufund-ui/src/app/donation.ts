@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class DonationService {
 
-  private donationUrl = 'http://localhost:8080/donations'; // backend controller base route
+  private donationUrl = 'http://localhost:8080/donations'; // backend controller url
   
   constructor(private http: HttpClient) { }
 
@@ -16,12 +16,12 @@ export class DonationService {
     return this.http.post(`${this.donationUrl}/add/${amount}`, {});
   }
 
-  /** Get total + goal (for display later) */
+  /** Get total + goal */
   getStatus(): Observable<any> {
     return this.http.get(`${this.donationUrl}/status`);
   }
 
-  /** Set goal (admin optional) */
+  /** Set goal for admin */
   setGoal(goal: number): Observable<any> {
     return this.http.post(`${this.donationUrl}/goal/${goal}`, {});
   }
