@@ -1,28 +1,26 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '../user';
+import { AccountsService } from '../accounts-service';
 
 @Component({
   selector: 'app-login-page',
   standalone: false,
   templateUrl: './login-page.html',
-  styleUrls: ['./login-page.css']   // note: styleUrls (plural)
+  styleUrls: ['./login-page.css']
 })
 export class LoginPage {
-  constructor(private router: Router, public user: User) {}
+  constructor(
+    private router: Router,
+    public user: User,
+    private accounts: AccountsService
+  ) {}
 
   username = '';
   password = '';
-  
-  /**
-   * When the user clicks the login button, the username entered will store
-   * into the user service and direct the user to their corresponding page
-   */
+
   onLogin(skipConfirm: boolean = false): void {
-    if (!this.username) {
-      return;
-    }
-    if (!this.password) {
+    if (!this.username || !this.password) {
       return;
     }
 
@@ -33,19 +31,20 @@ export class LoginPage {
       }
     }
 
+    this.accounts.validate(this.username, this.password).subscribe(ok => {
+      if (!ok) {
+        alert('Invalid username or password, or the account does not exist.');
+        return;
+      }
 
-    const ok = this.user.login(this.username, this.password);
-
-    if (ok) {
+      this.user.setSession(this.username);
       const role = this.user.getCurrentUserRole();
-      if (role === 'admin') {
+      if (role == 'admin') {
         this.router.navigate(['/admin']);
       } else {
-        this.router.navigate(['/helper']);
+        this.router.navigate(['/helper']);// or your desired default
       }
-    } else {
-      alert('Invalid username or password, or the account does not exist.');
-    }
+    });
   }
 
   onCreateUser(): void {
@@ -53,27 +52,46 @@ export class LoginPage {
       alert('Please enter a username to create an account.');
       return;
     }
-    if (!this.password) {
+    if (!this.password) { 
       alert('Please enter a password to create an account.');
       return;
     }
 
-    if (this.user.userExists(this.username)) {
-      alert('That username already exists. Please choose another.');
-      return;
-    }
+    this.accounts.exists(this.username).subscribe(exists => {
+      if (exists) {
+        alert('That username already exists. Please choose another.');
+        return;
+      }
 
-    const proceed = window.confirm('Create a new account for "' + this.username + '" and save this password?');
-    if (!proceed) {
-      return;
-    }
+      const proceed = window.confirm(`Create a new account for "${this.username}" and save this password?`);
+      if (!proceed) {
+        return;
+      }
 
-    const created = this.user.createUser(this.username, this.password);
-    if (created) {
-      alert('Account created! Logging you in now.');
-      this.onLogin(true);
-    } else {
-      alert('Account could not be created.');
-    }
+      let role: 'admin' | 'helper';
+      const lower = this.username.toLowerCase();
+      if (lower === 'admin') {
+        role = 'admin';
+      } else {
+        role = 'helper';
+      }
+
+      this.accounts.create({ username: this.username, password: this.password, role }).subscribe(created => {
+        if (!created) {
+          alert('Account could not be created.');
+          return;
+        }
+        alert('Account created! Logging you in now.');
+        // set session locally; backend already created the account (and funding basket via your server-side hook)
+        this.user.setSession(this.username);
+
+        const r = this.user.getCurrentUserRole();
+        if (r === 'admin') {
+          this.router.navigate(['/admin']);
+        } else {
+          this.router.navigate(['/helper']);
+        }
+      });
+    });
   }
 }
