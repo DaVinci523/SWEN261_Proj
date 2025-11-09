@@ -3,9 +3,7 @@ package com.ufund.api.ufundapi.model;
 import com.google.genai.Client;
 import com.google.genai.types.GenerateContentResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;;
+import org.springframework.stereotype.Component;
 
 /**
  * Gemini API to interact with the user
@@ -14,16 +12,14 @@ import org.springframework.stereotype.Component;;
 @Component
 public class GeminiAPI {
 
-
     private Client client;
-
 
     /**
      * Creates the Gemini API
      * @param client Client to interact with Gemini API
      */
     public GeminiAPI(Client client) {
-        this.client = Client.builder().apiKey("AIzaSyB3So1lECn4L2NRZlNhWhN7NAjmpEGlSPU").build();
+        this.client = GeminiAPIConfig.genaiClient();
     }
     
     /**
