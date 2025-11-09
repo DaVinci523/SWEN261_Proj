@@ -1,10 +1,11 @@
-package com.ufund.api.ufundapi.ai;
+package com.ufund.api.ufundapi.model;
 
 import com.google.genai.Client;
 import com.google.genai.types.GenerateContentResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Component;;
 
 /**
  * Gemini API to interact with the user
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class GeminiAPI {
 
-    @Qualifier("Client")
+
     private Client client;
 
 

@@ -1,8 +1,9 @@
 package com.ufund.api.ufundapi.controller;
 
-import com.ufund.api.ufundapi.ai.GeminiAPI;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import com.ufund.api.ufundapi.model.GeminiAPI;
 import com.ufund.api.ufundapi.service.GeminiAPIService;
 
 import java.io.IOException;
