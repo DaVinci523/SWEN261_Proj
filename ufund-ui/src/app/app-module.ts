@@ -17,6 +17,8 @@ import { FundingBasket } from './funding-basket/funding-basket';
 import { NeedDetailComponent } from './need-details/need-details';
 import { NavBar } from './nav-bar/nav-bar';
 import { Checkout } from './checkout/checkout';
+import { ReviewsPage } from './review-page/review-page';
+import { ReviewsCard } from './reviews-card/reviews-card';
 @NgModule({
   declarations: [
     App,
@@ -29,7 +31,9 @@ import { Checkout } from './checkout/checkout';
     FundingBasket,
     NeedDetailComponent,
     NavBar,
-    Checkout
+    Checkout,
+    ReviewsPage,
+    ReviewsCard
   ],
   imports: [
     BrowserModule,

@@ -76,45 +76,49 @@ public class FundingBasketControllerTest {
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
     }
 
-    // @Test
-    // public void testGetUsersException() throws IOException { // getUsers may throw IOException
-    //     // Setup
-    //     var users = new User[0];
-
-    //     // When getUsers is called return the users created above
-    //     doThrow(new IOException()).when(mockfundingBasketService.getUsers()).thenReturn(null);
+    @Test
+    public void testGetUsersException() throws IOException { // getUsers may throw IOException
+        doThrow(new IOException()).when(mockfundingBasketService).getUsers();
 
     //     // Invoke
-    //     ResponseEntity<User[]> response = fundingBasketController.getUsers();
+        ResponseEntity<User[]> response = fundingBasketController.getUsers();
 
     //     // Analyze
-    //     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-    // }
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
 
     // getUsernames() Test
-    // @Test
-    // public void testGetUsernames() throws IOException { // getUsers may throw IOException
+    @Test
+    public void testGetUsernames() throws IOException { // getUsers may throw IOException
     //     // Setup
-    //     User[] users = new User[2];
+        Need[] usrNeeds = {new Need(1, "Wires", 20.00, 0, 5, "cord", true)};
         
-    //     Need[] usrNeeds = {new Need(1, "Wires", 20.00, 0, 5, "cord", true)};
+        User[] users = {
+            new User("helper123", usrNeeds),
+            new User("helper456", usrNeeds)
+        };
+        // When getNeeds is called return the needs created above
+        when(mockfundingBasketService.getUsers()).thenReturn(users);
 
-    //     users[0] = new User("helper123", usrNeeds);
-    //     users[1] = new User("helper456", usrNeeds);
-
-    //     // When getNeeds is called return the needs created above
-    //     when(mockfundingBasketService.getUsers()).thenReturn(users);
-
-    //     ResponseEntity<User[]> response = fundingBasketController.getUsers();
+        ResponseEntity<String[]> response = fundingBasketController.getUsernames();
 
     //     String[] usernames = new String[users.length];
     //         for(int i = 0; i < users.length; i++){
     //             usernames[i] = users[i].getName();
     //         }
 
-    //     // Analyze
     //     assertEquals(usernames, response.getStatusCode());
-    // }
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("helper123", response.getBody()[0]);
+        assertEquals("helper456", response.getBody()[1]);
+    }
+
+    @Test
+    public void testGetUsernamesHandleException() throws IOException {
+        doThrow(new IOException()).when(mockfundingBasketService).getUsers();
+        ResponseEntity<String[]> response = fundingBasketController.getUsernames();
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
 
     // getNeeds() Tests
     @Test
@@ -365,50 +369,32 @@ public class FundingBasketControllerTest {
     }
 
     // //updateNeedVisibility() Tests
-    //  @Test
-    // public void testUpdateNeedVisibility() throws IOException { // updateNeed may throw IOException
+    @Test
+    public void testUpdateNeedVisibility() throws IOException { // updateNeed may throw IOException
     //     // Setup
-    //     Need need = new Need(1, "Lab Kit", 20.0, 0, 0, "Kit", true);
+        Need existing = new Need(10, "Lab Kit", 20.0, 0, 0, "Kit", true);
+        Need updated = new Need(10, "Lab Kit", 20.0, 0, 0, "Kit", false);
     //     // when updateNeed is called, return true simulating successful
     //     // update and save
-    //     when(fundingBasketController.updateNeedVisibility(USERNAME, need.getId(), false)).thenReturn(new Need(1, "Lab Kit", 20.0, 0, 0, "Kit", false));
-    //     ResponseEntity<Need> response = fundingBasketController.updateNeedVisibility(USERNAME, need.getId(), false);
+        when(mockfundingBasketService.getNeed(USERNAME, 10)).thenReturn(existing);
+        when(mockfundingBasketService.updateNeed(USERNAME, existing)).thenReturn(updated);
 
-    //     // Invoke
-    //     response = fundingBasketController.updateNeedVisibility(USERNAME, need.getId(), false);
+        ResponseEntity<Need> response = fundingBasketController.updateNeedVisibility(USERNAME, 10, false);
     //     // Analyze
-    //     assertEquals(HttpStatus.OK,response.getStatusCode());
-    //     assertEquals(need,response.getBody());
-    // }
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(false, response.getBody().getVisible());
+    }
 
-    // @Test
-    // public void testUpdateNeedVisibilityFailed() throws IOException { // updateNeed may throw IOException
-    //     // Setup
-    //     Need need = new Need(99, "Lab Kit", 20.0, 0, 0, "Kit", true);
-    //     // when updateNeed is called, return true simulating successful
-    //     // update and save
-    //     when(fundingBasketController.updateNeedVisibility(USERNAME, need.getId(), true)).thenReturn(null);
 
+    @Test
+    public void testUpdateNeedVisibilityHandleException() throws IOException { // updateNeed may throw IOException
+        doThrow(new IOException()).when(mockfundingBasketService).getNeed(USERNAME, 10);
     //     // Invoke
-    //     ResponseEntity<Need> response = fundingBasketController.updateNeedVisibility(USERNAME, need.getId(), true);
+        ResponseEntity<Need> response = fundingBasketController.updateNeedVisibility(USERNAME, 10, true);
 
     //     // Analyze
-    //     assertEquals(HttpStatus.NOT_FOUND,response.getStatusCode());
-    // }
-
-    // @Test
-    // public void testUpdateNeedVisibilityHandleException() throws IOException { // updateNeed may throw IOException
-    //     // Setup
-    //     Need need = new Need(99, "Lab Kit", 20.0, 0, 0, "Kit", true);
-    //     // When updateNeed is called on the Mock Need DAO, throw an IOException
-    //     doThrow(new IOException()).when(fundingBasketController).updateNeedVisibility(USERNAME, need.getId(), true);
-
-    //     // Invoke
-    //     ResponseEntity<Need> response = fundingBasketController.updateNeedVisibility(USERNAME, need.getId(), true);
-
-    //     // Analyze
-    //     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,response.getStatusCode());
-    // }
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,response.getStatusCode());
+    }
     
     @Test
     public void testDeleteNeedName() throws IOException { // deleteNeed may throw IOException

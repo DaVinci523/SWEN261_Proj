@@ -57,20 +57,18 @@ public class FundingBasketFileDAOTest {
         fundingBasketFileDAO = new FundingBasketFileDAO("doesnt_matter.txt", mockObjectMapper);
     }
 
-    // @Test
-    // public void testGetUsers(){
-    //     testNeeds = new Need[3];
-    //     testNeeds[0] = new Need(1, "Wires", 20.00, 0, 5, "cord", true);
-    //     testNeeds[1] = new Need(2, "Breadboard", 10, 0, 1, "board", true);
-    //     testNeeds[2] = new Need(3, "Lab Kit", 100, 0, 3, "kit", true);
+    @Test
+    public void testGetUsers() throws IOException {
+        //Invoke 
+        User[] users = fundingBasketFileDAO.getUsers();
 
-    //     User user1 = new User("user1", testNeeds);
-    //     User[] users = new User[2];
-
-    //     users[0] = user1;
-        
-    //     assertEquals(fundingBasketFileDAO.getUsers(), users);
-    // }
+        //Analyze 
+        assertNotNull(users);
+        assertEquals(1, users.length);
+        assertEquals("user1", users[0].getName());
+        assertEquals(testNeeds.length, users[0].getBasket().length);
+        assertEquals(testNeeds[0].getName(), users[0].getBasket()[0].getName());
+    }
 
     @Test
     public void testGetNeeds() {
