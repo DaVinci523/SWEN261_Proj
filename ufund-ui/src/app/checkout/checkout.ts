@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 
 import { Need } from '../need';
 import { User } from '../user';
+import { interval, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-checkout',
@@ -14,11 +15,21 @@ import { User } from '../user';
   styleUrl: './checkout.css'
 })
 export class Checkout implements OnInit{
+
+  private getNeedsSubscription: Subscription;
+  
   constructor(
     private router: Router,
     private fundingBasketService: FundingBasketService,
     private needsCupboardService: NeedsCupboardService
-  ) { }
+  ) { 
+    // Continuously call getNeeds on set intervals (ex: 5000 is 5 seconds) to keep them updated when page is not reloaded.
+    this.getNeedsSubscription = interval(500).subscribe(() => {
+      this.getNeeds();
+    })
+  }
+
+  
 
   user = inject(User);
   currentUser: string | null = null;
@@ -61,7 +72,6 @@ export class Checkout implements OnInit{
     console.log("CUPBOARD")
     console.log(this.needsCupboard);
     try{
-      window.location.reload(); // reload the page
       this.userNeeds.forEach((userNeed) => { // loop through every userNeed
         console.log("USERNEED")
         console.log(userNeed);
@@ -89,6 +99,9 @@ export class Checkout implements OnInit{
     } catch (error){
       console.log("ERROR: " + error);
     }
+
+    window.location.reload(); // reload the page
+
 
   }
 
