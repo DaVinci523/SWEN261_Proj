@@ -1,8 +1,10 @@
 package com.ufund.api.ufundapi.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
@@ -311,51 +313,59 @@ public class NeedsCupboardControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
 
-    //updateNeedVisibility() Tests
-    //  @Test
-    // public void testUpdateNeedVisibility() throws IOException { // updateNeed may throw IOException
-    //     // Setup
-    //     Need need = new Need(1, "Lab Kit", 20.0, 0, 0, "Kit", true);
-    //     // when updateNeed is called, return true simulating successful
-    //     // update and save
-    //     when(mockNeedsCupboardService.updateNeedVisibility(need.getId(), false));
-    //     ResponseEntity<Need> response = needsCupboardController.updateNeedVisibility(need.getId(), false);
+    // updateNeedVisibility() Tests
+    @Test
+    public void testUpdateNeedVisibility() throws IOException { // updateNeed may throw IOException
+         // Setup
+        int id = 1;
+        Need need = new Need(id, "Battery", 12.0, 0, 3, "power", true);
+        Need updatedNeed = new Need(id, "Battery", 12.0, 0, 3, "power", false);
+    
+        when(mockNeedsCupboardService.getNeedById(id)).thenReturn(need);
+        when(mockNeedsCupboardService.updateNeed(any(Need.class))).thenReturn(updatedNeed);
 
-    //     // Invoke
-    //     response = needsCupboardController.updateNeedVisibility(need.getId(), false);
-    //     // Analyze
-    //     assertEquals(HttpStatus.OK,response.getStatusCode());
-    //     assertEquals(need,response.getBody());
-    // }
-
-    // @Test
-    // public void testUpdateNeedVisibilityFailed() throws IOException { // updateNeed may throw IOException
-    //     // Setup
-    //     Need need = new Need(99, "Lab Kit", 20.0, 0, 0, "Kit", true);
-    //     // when updateNeed is called, return true simulating successful
-    //     // update and save
-    //     when(mockNeedsCupboardService.updateNeedVisibility(need.getId(), true));
-
-    //     // Invoke
-    //     ResponseEntity<Need> response = needsCupboardController.updateNeedVisibility(need.getId(), true);
+        ResponseEntity<Need> response = needsCupboardController.updateNeedVisibility(id, false);
 
     //     // Analyze
-    //     assertEquals(HttpStatus.NOT_FOUND,response.getStatusCode());
-    // }
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(updatedNeed, response.getBody());
+        verify(mockNeedsCupboardService).getNeedById(id);
+        verify(mockNeedsCupboardService).updateNeed(any(Need.class));
+    }
 
-    // @Test
-    // public void testUpdateNeedVisibilityHandleException() throws IOException { // updateNeed may throw IOException
-    //     // Setup
-    //     Need need = new Need(99, "Lab Kit", 20.0, 0, 0, "Kit", true);
-    //     // When updateNeed is called on the Mock Need DAO, throw an IOException
-    //     doThrow(new IOException()).when(mockNeedsCupboardService).updateNeedVisibility(need.getId(), true);
+    @Test
+    public void testUpdateNeedVisibilityFailed() throws IOException { // updateNeed may throw IOException
+         // Setup
+        int id = 1;
+        Need need = new Need(id, "Battery", 12.0, 0, 3, "power", true);
+        // when updateNeed is called, return true simulating successful
+        // update and save
+        when(mockNeedsCupboardService.getNeedById(id)).thenReturn(need);
+        when(mockNeedsCupboardService.updateNeed(need)).thenReturn(null);
 
     //     // Invoke
-    //     ResponseEntity<Need> response = needsCupboardController.updateNeedVisibility(need.getId(), true);
+        ResponseEntity<Need> response = needsCupboardController.updateNeedVisibility(id, false);
 
     //     // Analyze
-    //     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,response.getStatusCode());
-    // }
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        verify(mockNeedsCupboardService).getNeedById(id);
+        verify(mockNeedsCupboardService).updateNeed(need);
+    }
+
+    @Test
+    public void testUpdateNeedVisibilityHandleException() throws IOException { // updateNeed may throw IOException
+    //     // Setup
+        int id = 1;
+        // When updateNeed is called on the Mock Need DAO, throw an IOException
+        doThrow(new IOException()).when(mockNeedsCupboardService).getNeedById(id);
+
+    //     // Invoke
+        ResponseEntity<Need> response = needsCupboardController.updateNeedVisibility(id, false);
+
+    //     // Analyze
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,response.getStatusCode());
+        verify(mockNeedsCupboardService).getNeedById(id);
+    }
 
     /**
      * deleteAll tests
@@ -431,5 +441,87 @@ public class NeedsCupboardControllerTest {
 
         //Analyze
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
+
+    // Tests for search needs by type
+    @Test
+    public void testSearchNeedsType() throws IOException {
+        String type = "safety";
+        Need[] needs = {
+            new Need(1, "Goggles", 10.0, 0, 3, "safety", true),
+            new Need(2, "Gloves", 5.0, 0, 10, "safety", true)
+        };
+
+        when(mockNeedsCupboardService.searchNeedsType(type)).thenReturn(needs);
+
+        ResponseEntity<Need[]> response = needsCupboardController.searchNeedsType(type);
+        assertEquals(needs, response.getBody());
+        verify(mockNeedsCupboardService).searchNeedsType(type);
+    }
+
+    @Test
+    public void testSearchNeedsTypeHandleException() throws IOException {
+        String type = "safety";
+        doThrow(new IOException()).when(mockNeedsCupboardService).searchNeedsType(type);
+
+        ResponseEntity<Need[]> response = needsCupboardController.searchNeedsType(type);
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        verify(mockNeedsCupboardService).searchNeedsType(type);
+    }
+
+    // Search Needs Quantity
+    @Test
+    public void testSearchNeedsQuantity() throws IOException {
+        Integer quantity = 5;
+        Need[] needs = {
+            new Need(1, "Breadboard", 10.0, 0, 5, "electronics", true),
+            new Need(2, "Wires", 5.0, 0, 5, "electronics", true)
+        };
+
+        when(mockNeedsCupboardService.searchNeedsQuantity(quantity)).thenReturn(needs);
+        ResponseEntity<Need[]> response = needsCupboardController.searchNeedsQuantity(quantity);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(needs, response.getBody());
+        verify(mockNeedsCupboardService).searchNeedsQuantity(quantity);
+    }
+
+    @Test
+    public void testSearchNeedsQuantityHandleException() throws IOException {
+        Integer quantity = 5;
+        doThrow(new IOException()).when(mockNeedsCupboardService).searchNeedsQuantity(quantity);
+
+        ResponseEntity<Need[]> response = needsCupboardController.searchNeedsQuantity(quantity);
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        verify(mockNeedsCupboardService).searchNeedsQuantity(quantity);
+    }
+
+    @Test
+    public void testSearchNeedsValue() throws IOException {
+        Double value = 10.0;
+        Need[] needs = {
+            new Need(1, "Breadboard", 10.0, 0, 5, "electronics", true)
+        };
+
+        when(mockNeedsCupboardService.searchNeedsValue(value)).thenReturn(needs);
+
+        ResponseEntity<Need[]> response = needsCupboardController.searchNeedsValue(value);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(needs, response.getBody());
+        verify(mockNeedsCupboardService).searchNeedsValue(value);
+    }
+
+    @Test
+    public void testSearchNeedsValueHandleException() throws IOException {
+        Double value = 10.0;
+        doThrow(new IOException()).when(mockNeedsCupboardService).searchNeedsValue(value);
+
+        ResponseEntity<Need[]> response = needsCupboardController.searchNeedsValue(value);
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        verify(mockNeedsCupboardService).searchNeedsValue(value);
     }
 }
