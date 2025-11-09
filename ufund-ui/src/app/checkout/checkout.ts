@@ -50,6 +50,7 @@ export class Checkout implements OnInit{
   // then decrease the quantity of the respective needs in the needs cupboard by the funding basket quantities, 
   // then clear the funding basket
   checkout(): void{
+
     console.log("RUNNING")
     this.nameOnCard = ""; // reset the data to empty strings.
     this.cardNumber = "";
@@ -60,6 +61,7 @@ export class Checkout implements OnInit{
     console.log("CUPBOARD")
     console.log(this.needsCupboard);
     try{
+      window.location.reload(); // reload the page
       this.userNeeds.forEach((userNeed) => { // loop through every userNeed
         console.log("USERNEED")
         console.log(userNeed);

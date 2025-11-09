@@ -78,6 +78,17 @@ li {
   float: right;
 }
 
+button {
+  margin-top: 2%;
+  border-radius: 48px;
+  width: 8em;
+}
+
+input {
+  border-radius: 48px;
+  padding: 0.4em 1em;
+}
+
 
 span.data-container {
   display: grid;
