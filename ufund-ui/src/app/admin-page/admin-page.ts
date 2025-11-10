@@ -1,11 +1,13 @@
+
 import { Component } from '@angular/core';
-import { AdminPageService } from '../admin-page-service'; 
+import { AdminPageService } from '../admin-page-service';
 import { Need } from '../need';
 import { User } from '../user';
 import { FundingBasketService } from '../funding-basket-service';
 import { interval, Subscription } from 'rxjs';
 import { AccountsService } from '../accounts-service';
 import { Account } from '../account';
+import { forkJoin, of } from 'rxjs';
 
 @Component({
   selector: 'app-admin-page',
@@ -14,14 +16,14 @@ import { Account } from '../account';
   styleUrl: './admin-page.css'
 })
 
-
 export class AdminPage {
   usernameToRemove = '';
   users: Account[] = [];
 
+
   private getNeedsSubscription: Subscription;
   private usersPollSubscription?: Subscription;
-  
+ 
   constructor(
     private adminPageService:AdminPageService, // adminPageService to connect to REST API back-end      
     private fundingBasketService: FundingBasketService,
@@ -38,8 +40,7 @@ export class AdminPage {
       this.refresh();
     });
   }  
-
-  
+ 
   needs:Need[] = []; // front-end container for all needs in cupboard
   usernames:String[] = [];
 
@@ -57,17 +58,15 @@ export class AdminPage {
    * populates needs once the program is initialized
    */
   ngOnInit(): void {
-
     // calls the getNeeds function to populate needs
     this.getNeeds();
     this.refresh();
   }
-  
+ 
   /**
    * gets all needs from back-end
    */
   getNeeds(): void {
-
     // calls the getNeeds function from adminPageService and subscribes to the observable
     this.adminPageService.getNeeds().subscribe(needs => this.needs = needs);
     this.fundingBasketService.getUserNames().subscribe(usernames => this.usernames = usernames); // gets all the usernames
@@ -77,7 +76,6 @@ export class AdminPage {
       }
     });
   }
-
 
   /**
    * creates a single need
@@ -89,22 +87,18 @@ export class AdminPage {
    * @param type - type of the need
    */
   createNeed(name: string, value: number, quantity: number, type: string): void {
-
     // clears white space in name input
     name = name.trim();
-
     // checks if name is empty
-    if (!name) { 
-      return; 
+    if (!name) {
+      return;
     }
     else{
-
       var changedVisibilty = false; // used to check if a need had its visibility changed so the program only creates or changes visibility and not both.
-
       // checks through every cupboard need and if it matches the newly created need's name and that need is not visible, then set the visibility of that need to true.
       this.needs.forEach(need => {
         if(need.name.toLowerCase() == name.toLowerCase() && !need.visible){ // check names ignoring case and whitespace
-          
+        
           // adds the need back in by tagging its visibility to true
           this.adminPageService.changeNeedVisibility(need.id, true).subscribe();
           changedVisibilty = true;
@@ -121,25 +115,21 @@ export class AdminPage {
         });
       }
     }
-
   }
 
-  /** 
+  /**
    * deletes a need both from the needs list and the back-end
-   * 
+   *
    * @param need - the need to be deleted
    */
-  deleteNeed(need: Need): void { 
-
+  deleteNeed(need: Need): void {
     // updates the needs list once the need has been deleted
     this.needs = this.needs.filter(n => n !== need);
     window.location.reload();
 
     // removes the need by tagging its visibility to false
     this.adminPageService.changeNeedVisibility(need.id, false).subscribe();
-
   }
-
 
   /**
    *updates a need both from the needs list and the back-end
@@ -149,10 +139,10 @@ export class AdminPage {
    * @param value - the updated value of the need
    * @param currentQuantity - the current quantity of the need
    * @param maxQuantity - the updated maxQuantity of the need
-   * @param type - the updated type of the need   
-   */ 
+   * @param type - the updated type of the need  
+   */
   updateNeed(need: Need, name: string, value: number, currentQuantity: number, maxQuantity: number, type: string): void {
-    
+   
     if(!name){ // if any of the other variables are not set, then don't change them.
       name = need.name;
     }
@@ -170,25 +160,40 @@ export class AdminPage {
     this.needs = this.needs.filter(n => n !== need);
 
     // calls the updateNeed function from adminPageService, subscribing to the observable
-    this.adminPageService.updateNeed(need, name, value, currentQuantity, maxQuantity, type, true).subscribe(needs => 
+    this.adminPageService.updateNeed(need, name, value, currentQuantity, maxQuantity, type, true).subscribe(needs =>
       {this.needs = this.needs.filter(n => n !== needs);
       window.location.reload();
     });
-    
+   
   }      
 
-  
   removeAUser(): void {
     const u = this.usernameToRemove.trim();
     if (!u) {
       alert('Enter a username to remove.');
       return;
     }
+
+    if (u.toLowerCase() === 'admin') {
+      alert('The "admin" account cannot be deleted.');
+      return;
+    }
+    
     const ok = window.confirm('Delete user "' + u + '"?');
     if (!ok) { return; }
 
     this.accounts.delete(u).subscribe(done => {
       if (done !== undefined) {
+        // Broadcast via localStorage which fires storage event in other tabs
+        try { localStorage.setItem('force-logout:' + u, String(Date.now())); } catch (_e) {}
+        // Broadcast via BroadcastChannel
+        try {
+          if ('BroadcastChannel' in window) {
+            const bc = new BroadcastChannel('auth');
+            bc.postMessage({ type: 'force-logout', user: u });
+            bc.close();
+          }
+        } catch (_e) {}
         localStorage.setItem('force-logout:' + u, String(Date.now()));
         alert('Deleted "' + u + '"');
         this.usernameToRemove = '';
@@ -199,6 +204,8 @@ export class AdminPage {
       }
     });
   }
+
+
 
 
 }
