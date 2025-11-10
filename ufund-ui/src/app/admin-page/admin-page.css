@@ -130,3 +130,15 @@ div.user-management {
   font-weight: 600;
   text-align: center;
 }
+.donation-panel {
+  background: #fafafa;
+  padding: 15px;
+  border-radius: 6px;
+  max-width: 400px;
+}
+
+.donation-panel input {
+  margin-right: 8px;
+  margin-top: 6px;
+}
+
