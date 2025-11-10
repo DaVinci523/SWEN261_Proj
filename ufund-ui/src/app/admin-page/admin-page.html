@@ -3,18 +3,6 @@
 <!-- checks if current user is an admin -->
 @if(this.user.getCurrentUserRole() == 'admin') {
     <h2>Admin</h2>
-    <div class="donation-panel">
-    <h2>Donation Goal Management</h2>
-
-    <p><strong>Total Donated:</strong> ${{ totalDonated }}</p>
-    <p><strong>Current Goal:</strong> ${{ donationGoal }}</p>
-
-    <label>Set New Goal:</label>
-    <input type="number" [(ngModel)]="newGoal" placeholder="Enter New Goal" min="1">
-    <button (click)="updateGoal()">Update Goal</button>
-
-
-    </div>
 
     <!-- column structure supplied by: -->
     <!-- https://www.w3schools.com/howto/howto_css_two_columns.asp -->
@@ -22,7 +10,7 @@
 
         <!-- left column displays the needs cupboard -->
         <div id="needs-cupboard" class="split left">
-            <h2>Needs Cupoard:</h2>
+                <h2>Needs Cupoard:</h2>
 
             <ul>
                 <!-- interates through every need in the needs cupboard -->
@@ -60,45 +48,49 @@
 
         <!-- right column displays the inputs to add/update a need -->
         <div id="admin-editor" class ="split right">
-            <h2>Add/Update Need:</h2>
+            <div id="add-update-editor">
+                <h2>Add/Update Need:</h2>
 
-            <!-- input box for name input -->
-            <div class="">
-                <div class="">Need Name: </div>
-                
-                <!-- name input is saved in needName -->
-                <input type="text" id="username" name="username" #needName placeholder="Enter need name">
-            </div>
-            
-            <!-- input box for quantity input -->
-            <div class="">
-                <div class="">Quantity: </div>
-                                
-                <!-- quantity input is saved in needQuant -->
-                <input type="number" #needQuant placeholder="Enter quantity">
-            </div>
+                <div>
+                    <div>Need Name: </div>
+                    <!-- name input is saved in needName -->
+                    <input type="text" id="username" name="username" #needName placeholder="Enter need name">
+                </div>
+                <div>
+                    <div>Quantity: </div>                                
+                    <!-- quantity input is saved in needQuant -->
+                    <input type="number" #needQuant placeholder="Enter quantity">
+                </div>
+                <div>
+                    <div>Value: </div>     
+                    <!-- value input is saved in needValue -->
+                    <input type="number" #needValue placeholder="Enter value">
+                </div>
+                <div>
+                    <div>Type: </div>           
+                    <!-- type input is saved in needType -->
+                    <input type="text" #needType placeholder="Enter type">
+                </div>
 
-            <!-- input box for value input -->
-            <div class="">
-                <div class="">Value: </div>
-                            
-                <!-- value input is saved in needValue -->
-                <input type="number" #needValue placeholder="Enter value">
-            </div>
-
-            <!-- input box for type input -->
-            <div class="">
-                <div class="">Type: </div>
-                                
-                <!-- type input is saved in needType -->
-                <input type="text" #needType placeholder="Enter type">
+                <!-- add button to add a need to the needs cupboard -->
+                <button type="button" class="add"
+                (click)= "createNeed(needName.value, needValue.valueAsNumber, 
+                needQuant.valueAsNumber, needType. value);">Add Need</button>
             </div>
 
-            <!-- add button to add a need to the needs cupboard -->
-            <button type="button" class="add"
-            (click)= "createNeed(needName.value, needValue.valueAsNumber, 
-            needQuant.valueAsNumber, needType. value);">Add Need</button>
-                    
+            <div class="donation-panel">
+                <h2>Donation Goal Management</h2>
+
+                <p><strong>Total Donated:</strong> ${{ totalDonated }}</p>
+                <p><strong>Current Goal:</strong> ${{ donationGoal }}</p>
+
+                <label>Set New Goal: </label>
+                <input type="number" [(ngModel)]="newGoal" placeholder="Enter New Goal" min="1">
+                <button (click)="updateGoal()">Update Goal</button>
+            </div>
+
+
+
             <div class="user-management">
                 <div class="row">
                     <input type="text"
@@ -111,7 +103,7 @@
                 </div>
             </div>
 
-            <!-- Optional: a tiny readout so you see what exists -->
+            <!-- A tiny readout so you see what exists -->
             <div class="users-list">
                 <h2>Current Users ({{ users.length }})</h2>
                 <ul>
