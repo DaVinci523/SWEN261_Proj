@@ -15,10 +15,9 @@ public class GeminiAPI {
     private Client client;
 
     /**
-     * Creates the Gemini API
-     * @param client Client to interact with Gemini API
+     * Creates the Gemini API using GeminiAPIConfig to build the client  
      */
-    public GeminiAPI(Client client) {
+    public GeminiAPI() {
         this.client = GeminiAPIConfig.genaiClient();
     }
     
