@@ -53,3 +53,25 @@ div#review-text {
     overflow-wrap: break-word;
     text-align: left;
 }
+
+.refresh-btn{
+  appearance:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  margin: 0;
+  align-self: start;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1.5px solid #2e6cff;
+  background: transparent;
+  color: #2e6cff;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 0 rgb(0 0 0 / .06);
+  transition: .2s, color .2s, transform .06s, box-shadow .2s;
+}
+
+.refresh-btn:hover { background:#2e6cff; color:#fff; }
+.refresh-btn:active { transform: translateY(1px); box-shadow:0 1px 0 rgb(0 0 0 / .04); }
+.refresh-btn:focus-visible { outline:3px solid #cddcff; outline-offset:2px; }

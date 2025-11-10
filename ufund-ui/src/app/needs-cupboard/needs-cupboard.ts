@@ -25,7 +25,7 @@ export class NeedsCupboard implements OnInit, OnDestroy {
     private donationService: DonationService
   ) {
     // Continuously call getNeeds on set intervals (ex: 5000 is 5 seconds) to keep them updated when page is not reloaded.
-    this.getNeedsSubscription = interval(5000).subscribe(() => {
+    this.getNeedsSubscription = interval(4000).subscribe(() => {
       this.getNeeds();
       this.loadDonationStatus();
     })

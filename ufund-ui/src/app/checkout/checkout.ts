@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 
 import { Need } from '../need';
 import { User } from '../user';
+import { interval, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-checkout',
@@ -16,12 +17,20 @@ import { User } from '../user';
   styleUrl: './checkout.css'
 })
 export class Checkout implements OnInit{
+
+  private getNeedsSubscription: Subscription;
+  
   constructor(
     private router: Router,
     private fundingBasketService: FundingBasketService,
     private needsCupboardService: NeedsCupboardService,
     private donationService: DonationService
-  ) { }
+  ) {
+    // Continuously call getNeeds on set intervals (ex: 5000 is 5 seconds) to keep them updated when page is not reloaded.
+    this.getNeedsSubscription = interval(500).subscribe(() => {
+      this.getNeeds();
+    })
+  }
 
   user = inject(User);
   currentUser: string | null = null;
@@ -64,49 +73,51 @@ export class Checkout implements OnInit{
   //show the total price of your cart broken down into botht the donationTotal and the 
   // complete total
   checkout(): void {
-  this.nameOnCard = "";
-  this.cardNumber = "";
-  this.address = "";
+    this.nameOnCard = "";
+    this.cardNumber = "";
+    this.address = "";
 
-  const updateRequests = [];
+    const updateRequests = [];
 
-  // Compute totals
-  this.cartTotal = 0;
-  this.donationTotal = 0;
+    // Compute totals
+    this.cartTotal = 0;
+    this.donationTotal = 0;
 
-  this.userNeeds.forEach(userNeed => {
-    const subtotal = userNeed.value * userNeed.maxQuantity;
-    this.cartTotal += subtotal;
-    if (userNeed.type === "donation") {
-      this.donationTotal += subtotal;
+    this.userNeeds.forEach(userNeed => {
+      const subtotal = userNeed.value * userNeed.maxQuantity;
+      this.cartTotal += subtotal;
+      if (userNeed.type === "donation") {
+        this.donationTotal += subtotal;
+      }
+    });
+
+    // Send donation to backend
+    if (this.donationTotal > 0) {
+      updateRequests.push(this.donationService.addDonation(this.donationTotal));
     }
-  });
 
-  // Send donation to backend
-  if (this.donationTotal > 0) {
-    updateRequests.push(this.donationService.addDonation(this.donationTotal));
+    // Update cupboard + remove needs
+    this.userNeeds.forEach(userNeed => {
+      if (userNeed.type !== "donation") {
+        this.needsCupboard.forEach(cupboardNeed => {
+          if (cupboardNeed.id == userNeed.id && cupboardNeed.visible && userNeed.visible) {
+            cupboardNeed.currentQuantity += userNeed.maxQuantity;
+            updateRequests.push(this.needsCupboardService.updateNeed(cupboardNeed));
+          }
+        });
+      }
+      updateRequests.push(this.fundingBasketService.deleteNeed(this.userName, userNeed.id));
+    });
+
+    Promise.all(updateRequests.map(req => req.toPromise()))
+      .then(() => {
+        console.log("Checkout Completed Successfully");
+        window.location.reload();
+      })
+      .catch(err => console.log("Checkout Error:", err));
+    
+    window.location.reload(); // reload the page
   }
-
-  // Update cupboard + remove needs
-  this.userNeeds.forEach(userNeed => {
-    if (userNeed.type !== "donation") {
-      this.needsCupboard.forEach(cupboardNeed => {
-        if (cupboardNeed.id == userNeed.id && cupboardNeed.visible && userNeed.visible) {
-          cupboardNeed.currentQuantity += userNeed.maxQuantity;
-          updateRequests.push(this.needsCupboardService.updateNeed(cupboardNeed));
-        }
-      });
-    }
-    updateRequests.push(this.fundingBasketService.deleteNeed(this.userName, userNeed.id));
-  });
-
-  Promise.all(updateRequests.map(req => req.toPromise()))
-    .then(() => {
-      console.log("Checkout Completed Successfully");
-      window.location.reload();
-    })
-    .catch(err => console.log("Checkout Error:", err));
-}
 
 
   deleteNeed(need: Need): void {

@@ -29,10 +29,12 @@ export class HomePage {
     this.router.navigate(['/checkout']);
   }
 
+  // Method for handling the admin navigation
   goToAdmin(){
      this.router.navigate(['/admin']);
   }
 
+  // Method for smooth scrolling to different sections of the homepage
   scrollTo(id: string, e?: Event) {
     e?.preventDefault();
     const el = document.getElementById(id);
