@@ -506,26 +506,42 @@ This section describes the application architecture.
 
 ## OO Design Principles
 Sprint 1: The two Object Oriented Design principles that the CTRL team is championing throughout the design and implementation are Low Coupling and Open/Close. The Low Coupling principle is aimed towards minimizing interdependence between different classes.  One example of Low Coupling in our project can be shown through our Need and User model classes. 
-<img width="593" height="332" alt="Model Tier Architecture" src="Need_Constructor.png" />
+
+<img width="593" height="332" alt="Need Constructor" src="Need_Constructor.png" />
+<img width="593" height="332" alt="User Constructor" src="User_Constructor.png" />
+
 The need class only takes in primitive types as variables, which means that it has no reliance on other classes allowing it to follow the Low Coupling principle. The user class does take an array of needs as one of its variables, however, it is not dependent on the actual internal functions of the need class. This enables changes to be made to need without causing any problems with the User class. The open/closed object oriented principle states that software entities should be open for extension but closed for modification. One way this was utilized throughout the project was through the use of interfaces in the persistence tier. A specific example of this is shown below through NeedsCupboardDAO and NeedsCupboardFileDAO. 
+
+<img width="593" height="332" alt="NeedCupboardDAO" src="NeedsCupboardDAO.png" />
+<img width="593" height="332" alt="NeedsCupboardFileDAO" src="NeedsCupboardFileDAO.png" />
 
 As a result of the persistence tier being designed this way, if something such as how the data is stored is modified, the rest of the system will remain unaffected following the open/closed principle. 
 
 
 Sprint 2: The two Object Oriented Design principles that the CTRL team is championing throughout Sprint 2 are the Law of Demeter and Pure Fabrication. The Law of Demeter principle is being followed through our implementation of service classes, which serves as an inbetween for the controller and DAO. This prevents the classes from having to call other classes that are distant which would break the “don’t talk to strangers” principle for the Law of Demeter. This can be shown through NeedsCupboardServiceImplementation and how it only talks to its DAO. 
 
+<img width="593" height="332" alt="NeedsCupboardServiceImplementation" src="NeedsCupboardServiceImplementation.png" />
+
 Another principle that the service files helped us follow was Pure Fabrication. Pure Fabrication is when a new class is created to handle responsibilities that don’t fit well with the already existing classes. The service files were created to specifically handle the communication between the controller and DAO, making it a good example of following the Pure Fabrication principle. The searchNeedsType method in the NeedsCupboardServiceImplementation shows how the class functions as a middleman between the DAO and the controller, following the Pure Fabrication Principle. 
 
+<img width="593" height="332" alt="searchNeedsType method" src="searchNeedsType.png" />
 
 Sprint 3: The Object Oriented Design Principle that the CTRL team decided to champion throughout sprint 3 was Single Responsibility. The Single Responsibility principle is the idea that each class should have a single tightly focused responsibility. One way this principle was implemented throughout the project during sprint 3 was through the review system, where each class has its own specific purpose. In the model tier, the review model serves to define the structure of the reviews data. This can be seen through the constructor in the review model. 
 
+<img width="593" height="332" alt="Review Model" src="ReviewModel.png" />
+
 In the persistence tier, ReviewFileDAO handles the storage and retrieval of data for Reviews. Two methods that play a huge role in the storage and retrieval of data for Reviews are save() and load() methods that are shown below.
+
+<img width="593" height="332" alt="ReviewFileDAO" src="ReviewFileDAO.png" />
 
 The ReviewServiceImplementation file handles all communications between the Review Controller and the Review Persistence tiers. This communication to the ReviewDAO can be seen in the code snippet below from ReviewServiceImplementation. 
 
+<img width="593" height="332" alt="ReviewServiceImplementation" src="ReviewServiceImplementation.png" />
+
 Finally, the Review Controller handles all REST API requests for reviews. For example, the code below shows how the Review Controller handles the request for creating a new review.
+<img width="593" height="332" alt="Review Controller POST method" src="createReview.png" />
 >
-> _**[Sprint 3 & 4]** OO Design Principles should span across **all tiers.**_
+> _**[Sprint 4]** OO Design Principles should span across **all tiers.**_
 
 ## Static Code Analysis/Future Design Improvements
 > _**[Sprint 4]** With the results from the Static Code Analysis exercise, 
