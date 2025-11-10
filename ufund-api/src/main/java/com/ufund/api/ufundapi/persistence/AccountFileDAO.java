@@ -50,14 +50,6 @@ public class AccountFileDAO implements AccountDAO {
     public AccountFileDAO(@Value("${auth.file}") String filename, ObjectMapper objectMapper) throws IOException {
         this.filename = filename;
         this.objectMapper = objectMapper;
-
-        File f = new File(filename);
-        if (!f.exists() || f.length() == 0) {
-            // initialize an empty wrapper so future reads succeed
-            AccountsDataWrapper empty = new AccountsDataWrapper(new ArrayList<Account>());
-            objectMapper.writeValue(f, empty);
-        }
-
         load();
     }
 
@@ -69,24 +61,17 @@ public class AccountFileDAO implements AccountDAO {
      * @throws IOException if read fails
      */
     private void load() throws IOException {
-        File f = new File(filename);
-        if (!f.exists() || f.length() == 0) {
-            save();
-            return;
+        accounts.clear();
+        File file = new File(filename);
+        AccountsDataWrapper data = objectMapper.readValue(file, AccountsDataWrapper.class);
+        List<Account> list = (data == null) ? null : data.getUsers();
+        if (list != null) {
+            for (Account a : list) {
+                if (a != null && a.getUsername() != null) {
+                    accounts.put(a.getUsername(), a);
+                }
+            }
         }
-
-        AccountsDataWrapper data;
-        try {
-            data = objectMapper.readValue(f, AccountsDataWrapper.class);
-        } catch (com.fasterxml.jackson.databind.exc.MismatchedInputException |
-                com.fasterxml.jackson.core.JsonParseException e) {
-            // re-init the file to a valid empty wrapper
-            AccountsDataWrapper empty = new AccountsDataWrapper(new ArrayList<Account>());
-            objectMapper.writeValue(f, empty);
-            data = empty;
-        }
-
-        List<Account> list = null;
         if (data != null) {
             list = data.getUsers();
         }
