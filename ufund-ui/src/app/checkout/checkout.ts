@@ -2,10 +2,13 @@ import { Component, OnInit, inject } from '@angular/core';
 
 import { FundingBasketService } from '../funding-basket-service';
 import { NeedsCupboardService } from '../needs-cupboard-service';
+import { DonationService } from '../donation';
+
 import { Router } from '@angular/router';
 
 import { Need } from '../need';
 import { User } from '../user';
+import { interval, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-checkout',
@@ -14,16 +17,27 @@ import { User } from '../user';
   styleUrl: './checkout.css'
 })
 export class Checkout implements OnInit{
+
+  private getNeedsSubscription: Subscription;
+  
   constructor(
     private router: Router,
     private fundingBasketService: FundingBasketService,
-    private needsCupboardService: NeedsCupboardService
-  ) { }
+    private needsCupboardService: NeedsCupboardService,
+    private donationService: DonationService
+  ) {
+    // Continuously call getNeeds on set intervals (ex: 5000 is 5 seconds) to keep them updated when page is not reloaded.
+    this.getNeedsSubscription = interval(500).subscribe(() => {
+      this.getNeeds();
+    })
+  }
 
   user = inject(User);
   currentUser: string | null = null;
   userName: string = '';  // TO-DO: Set to the name of the currently logged in user 
 
+  cartTotal:number = 0;
+  donationTotal: number = 0
 
   userNeeds: Need[] = []; // the front-end container for the user's needs
   needsCupboard: Need[] = [];
@@ -32,8 +46,14 @@ export class Checkout implements OnInit{
   address: string = "";
 
   getNeeds(): void { // gets the needs from the REST api by running a program in the needService
-    this.fundingBasketService.getNeeds(this.userName).subscribe(userNeeds => this.userNeeds = userNeeds); // retrieve a user's funding basket Needs
+    this.fundingBasketService.getNeeds(this.userName).subscribe(userNeeds => 
+    {
+      this.userNeeds = userNeeds
+      this.calculateTotals();
+    }
+    ); // retrieve a user's funding basket Needs
     this.needsCupboardService.getNeeds().subscribe(needsCupboard => this.needsCupboard = needsCupboard); // retrieve needsCupboard Needs  }
+
   }
 
   ngOnInit(): void {
@@ -46,49 +66,59 @@ export class Checkout implements OnInit{
     this.getNeeds();
   }
   
-  // Get all needs in the funding basket, (done)
+  // Get all needs in the funding basket,
   // then decrease the quantity of the respective needs in the needs cupboard by the funding basket quantities, 
   // then clear the funding basket
-  checkout(): void{
-    console.log("RUNNING")
-    this.nameOnCard = ""; // reset the data to empty strings.
+  //Update the donation values
+  //show the total price of your cart broken down into botht the donationTotal and the 
+  // complete total
+  checkout(): void {
+    this.nameOnCard = "";
     this.cardNumber = "";
     this.address = "";
 
-    console.log("USERNEEDS")
-    console.log(this.userNeeds);
-    console.log("CUPBOARD")
-    console.log(this.needsCupboard);
-    try{
-      this.userNeeds.forEach((userNeed) => { // loop through every userNeed
-        console.log("USERNEED")
-        console.log(userNeed);
-        this.needsCupboard.forEach((cupboardNeed) => {
-          if (cupboardNeed.id == userNeed.id && cupboardNeed.visible && userNeed.visible){ // update NeedsCupbard needs if both are of same id, and both are visible.
-            cupboardNeed.currentQuantity += userNeed.maxQuantity;
-            console.log("CUPBOARD")
-            console.log(cupboardNeed)
-            this.needsCupboardService.updateNeed(cupboardNeed).subscribe();
+    const updateRequests = [];
 
-            this.deleteNeed(userNeed);
-          }
-        });
-        console.log("BASKET");
-        console.log(this.userNeeds);
-        console.log("NEEDCUP");
-        console.log(this.needsCupboard);
+    // Compute totals
+    this.cartTotal = 0;
+    this.donationTotal = 0;
 
-        this.saveAll();
+    this.userNeeds.forEach(userNeed => {
+      const subtotal = userNeed.value * userNeed.maxQuantity;
+      this.cartTotal += subtotal;
+      if (userNeed.type === "donation") {
+        this.donationTotal += subtotal;
+      }
+    });
 
-      }); 
-      
-      window.location.reload(); // reload the page
-
-    } catch (error){
-      console.log("ERROR: " + error);
+    // Send donation to backend
+    if (this.donationTotal > 0) {
+      updateRequests.push(this.donationService.addDonation(this.donationTotal));
     }
 
+    // Update cupboard + remove needs
+    this.userNeeds.forEach(userNeed => {
+      if (userNeed.type !== "donation") {
+        this.needsCupboard.forEach(cupboardNeed => {
+          if (cupboardNeed.id == userNeed.id && cupboardNeed.visible && userNeed.visible) {
+            cupboardNeed.currentQuantity += userNeed.maxQuantity;
+            updateRequests.push(this.needsCupboardService.updateNeed(cupboardNeed));
+          }
+        });
+      }
+      updateRequests.push(this.fundingBasketService.deleteNeed(this.userName, userNeed.id));
+    });
+
+    Promise.all(updateRequests.map(req => req.toPromise()))
+      .then(() => {
+        console.log("Checkout Completed Successfully");
+        window.location.reload();
+      })
+      .catch(err => console.log("Checkout Error:", err));
+    
+    window.location.reload(); // reload the page
   }
+
 
   deleteNeed(need: Need): void {
     this.userNeeds = this.userNeeds.filter(n => n !== need); // removes the given need in the front end by re-defining the list by only filetering in needs that weren't given
@@ -104,4 +134,24 @@ export class Checkout implements OnInit{
     }
   }
   
+  /**
+   * Calculate the cart total to be displayed
+   */
+  calculateTotals(): void {
+  this.cartTotal = 0;
+  this.donationTotal = 0;
+
+  this.userNeeds.forEach(need => {
+    const subtotal = need.value * need.maxQuantity;
+    this.cartTotal += subtotal;
+
+    if (need.type === "donation") {
+      this.donationTotal += subtotal;
+    }
+  });
+
+  console.log("Cart Total: $" + this.cartTotal);
+  console.log("Donation Total: $" + this.donationTotal);
+}
+
 }

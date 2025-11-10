@@ -1,0 +1,77 @@
+/* Containers */
+ul {
+    display: grid;
+    gap: 3%;
+    grid-template-columns: 31% 31% 31%;
+    padding: 0%;
+    margin: 5%;
+    font-size: 20px;
+    width:90%;
+    height:100%;
+    border-radius: 12px;
+    place-items: center;
+    text-align: center;
+}
+
+li {
+    grid-columns: 1;
+    grid-rows: 1;
+    list-style-type: none;
+    border: 2px solid black;
+    border-radius: 48px;
+    border-bottom-right-radius: 4px;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+}
+
+
+div.data-container {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 20% 80%;
+    height: 100%;
+    padding-bottom: 10%;
+    overflow: clip;
+}
+
+div#review-head {
+    grid-row: 1;
+    height: 100%;
+    width: 100%;
+    padding: 5% 0%;
+    margin: 0.5em 0em;
+}
+
+div#review-text {
+    grid-row: 2;
+    height: 100px;
+    width: 70%;
+    padding: 0% 10%;
+    padding-top: 1.2em;
+    overflow-y: scroll;
+    overflow-wrap: break-word;
+    text-align: left;
+}
+
+.refresh-btn{
+  appearance:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  margin: 0;
+  align-self: start;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1.5px solid #2e6cff;
+  background: transparent;
+  color: #2e6cff;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 0 rgb(0 0 0 / .06);
+  transition: .2s, color .2s, transform .06s, box-shadow .2s;
+}
+
+.refresh-btn:hover { background:#2e6cff; color:#fff; }
+.refresh-btn:active { transform: translateY(1px); box-shadow:0 1px 0 rgb(0 0 0 / .04); }
+.refresh-btn:focus-visible { outline:3px solid #cddcff; outline-offset:2px; }

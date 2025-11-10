@@ -18,6 +18,8 @@ import { NeedDetailComponent } from './need-details/need-details';
 import { NavBar } from './nav-bar/nav-bar';
 import { Checkout } from './checkout/checkout';
 import { Ai } from './ai/ai';
+import { ReviewsPage } from './review-page/review-page';
+import { ReviewsCard } from './reviews-card/reviews-card';
 @NgModule({
   declarations: [
     App,
@@ -31,7 +33,9 @@ import { Ai } from './ai/ai';
     NeedDetailComponent,
     NavBar,
     Checkout,
-    Ai
+    Ai,
+    ReviewsPage,
+    ReviewsCard
   ],
   imports: [
     BrowserModule,

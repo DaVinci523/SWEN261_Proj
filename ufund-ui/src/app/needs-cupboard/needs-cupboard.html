@@ -1,4 +1,5 @@
 <div class="cupboard-page-container">
+    
     <div class="search-container">
         <div class="search-name-container">  
             <input
@@ -38,6 +39,24 @@
                     />
             </div>
         </div>
+    </div>
+    
+    <!--Displays the status of the donation bar, and dynamically increases the fill-meter based on the difference between the total donated and the donation goal-->
+    <div class="donation-status" [style.--donation-fill-stop]="(totalDonated/donationGoal) * 100 + '%'"> 
+        <strong>Donation Progress:</strong>
+        ${{ totalDonated }} / ${{ donationGoal }}
+    </div>
+
+    <div class="donation-buttons">
+        <h3>Support With a Donation</h3>
+
+        <button class="donation-button" (click)="addDonation(5)">$5</button>
+        <button class="donation-button" (click)="addDonation(10)">$10</button>
+        <button class="donation-button" (click)="addDonation(25)">$25</button>
+        <button class="donation-button" (click)="addDonation(50)">$50</button>
+
+        <input type="number" id="custom-donation" #customAmount placeholder="Custom $" min="1" style="width:80px;">
+        <button class="donation-button" id="custom-donation" (click)="addDonation(+customAmount.value)">Add</button>
     </div>
 
     <ul class="userNeeds"><!--add all userneeds to a list-->

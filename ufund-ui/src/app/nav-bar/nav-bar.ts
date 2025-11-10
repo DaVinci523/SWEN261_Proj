@@ -73,6 +73,10 @@ export class NavBar  implements OnInit{
     }
   }
 
+  goToReviews(){
+    this.router.navigate(['/reviews']);
+  }
+
    /**
    * When a user clicks the login icon in the navigation bar
    * If the user is logged in, ask them if they want to log out
@@ -83,7 +87,6 @@ export class NavBar  implements OnInit{
       const ok = confirm(`Signed in as ${this.user.getCurrentUser()}\n\nLog out?`);
       if (ok) {
         this.user.logout();
-        alert('You have been logged out.');
         this.router.navigate(['/homepage']);
       }
     } else {

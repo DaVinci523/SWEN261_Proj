@@ -99,8 +99,14 @@ export class FundingBasketService {
   updateItemCount(userName: String): void {
     this.getNeeds(userName).subscribe({
       next: (needs) => {
+        // loops through every need and adds their maxQuantity(the # of an item in the basket) to a sum
         const total = needs.reduce((sum: number, need: any) => {
-          return sum + (need.maxQuantity ?? 0);
+          if(need.visible){ // only count visible needs
+            return sum + (need.maxQuantity ?? 0);
+          }
+          else if(!need.visible){
+            return sum;
+          }
         }, 0);
         this.itemCountSubject.next(total);
       },
@@ -118,7 +124,19 @@ export class FundingBasketService {
     return this.itemCountSubject.value;
   }
 
-  
+  addDonation(userName: string, amount: number) {
+  const donationNeed = {
+    id: Date.now() * -1,
+    name: "Donation",
+    value: amount,
+    currentQuantity: 0,
+    maxQuantity: 1,
+    type: "donation",
+    visible: true
+  };
+  return this.addNeed(userName, donationNeed);
+}
+
 /**
    * Handle Http operation that failed.
    * Let the app continue.
