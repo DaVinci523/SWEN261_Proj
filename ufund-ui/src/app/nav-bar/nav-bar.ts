@@ -87,7 +87,6 @@ export class NavBar  implements OnInit{
       const ok = confirm(`Signed in as ${this.user.getCurrentUser()}\n\nLog out?`);
       if (ok) {
         this.user.logout();
-        alert('You have been logged out.');
         this.router.navigate(['/homepage']);
       }
     } else {
