@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Review, ReviewService } from '../review-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-reviews-card',
@@ -15,7 +16,7 @@ export class ReviewsCard {
     
   constructor(
     private reviewService: ReviewService, 
-    // private router: Router
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -65,5 +66,9 @@ export class ReviewsCard {
       i = i + 1;
     }
     return arr;
+  }
+
+  goToReviews(): void {
+    this.router.navigate(['/reviews']);
   }
 }
