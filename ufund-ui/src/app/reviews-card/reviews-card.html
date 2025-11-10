@@ -1,23 +1,19 @@
-<ul>
+<div class="reviews-row">
+  <ul class="reviews-list">
     @for (review of displayedReviews; track review.id) {
-        <li>
-            <div class="data-container">
-                <div id="review-head" class="row">
-                    <span class="variable">{{review.userName}}</span>
-                    <br>
-                    @for (_ of getStars(review.rating); track _) {
-                        <img src="\images\Gold_Star.png" alt="Gold star" width="25" height="25"/>
-                    }
-                </div>
-                <div id="review-text" class="row">
-                    {{review.reviewText}}
-                </div>
-            </div>
-        </li>
-    } 
-    @empty {
-        <li>There are no items.</li>
-    }
-</ul>
+      <li>
+        <div class="data-container">
+          <div id="review-head" class="row">
+            <span class="variable">{{review.userName}}</span><br>
+            @for (_ of getStars(review.rating); track _) {
+              <img src="\images\Gold_Star.png" alt="Gold star" width="25" height="25"/>
+            }
+          </div>
+          <div id="review-text" class="row">{{review.reviewText}}</div>
+        </div>
+      </li>
+    } @empty { <li>There are no items.</li> }
+  </ul>
 
-<button (click)="refreshReviews()">Refresh</button>
+  <button class="refresh-btn" (click)="refreshReviews()">Refresh</button>
+</div>

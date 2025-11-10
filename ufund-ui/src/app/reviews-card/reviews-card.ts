@@ -12,7 +12,6 @@ export class ReviewsCard {
   displayedReviews: Review[] = [];
   avgRating = 0;
   dummyTracker = 0; // angular does not like all the stars being individual elements with the same key, so this will give them different keys
-
     
   constructor(
     private reviewService: ReviewService, 
