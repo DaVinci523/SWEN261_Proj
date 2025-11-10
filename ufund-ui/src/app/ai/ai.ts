@@ -15,4 +15,12 @@ export class Ai {
       private aiService:AiService
     ){}
     
+    response:String = "response goes here"; //container for API-generated response
+
+    getResponse(prompt:String ): void {
+
+      this.aiService.getResponse(prompt).subscribe((response: String) => this.response = response);
+
+    } 
+
 }

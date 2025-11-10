@@ -1,4 +1,5 @@
 <div>
 <input type="text" #prompt placeholder="Enter prompt">
-<button type = "aiButton" (click) = ""> Get Response </button>
+<button type = "aiButton" (click) = "getResponse(prompt.value)"> Get Response </button>
+<p>{{response}}</p>
 </div>
