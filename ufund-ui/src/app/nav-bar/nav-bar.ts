@@ -73,6 +73,10 @@ export class NavBar  implements OnInit{
     }
   }
 
+  goToReviews(){
+    this.router.navigate(['/reviews']);
+  }
+
    /**
    * When a user clicks the login icon in the navigation bar
    * If the user is logged in, ask them if they want to log out

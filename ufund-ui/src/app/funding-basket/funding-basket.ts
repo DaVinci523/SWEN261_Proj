@@ -22,7 +22,7 @@ export class FundingBasket implements OnInit, OnDestroy {
     private router: Router,
   ) {
     // Continuously call getNeeds on set intervals (ex: 5000 is 5 seconds) to keep them updated when page is not reloaded.
-    this.getNeedsSubscription = interval(4000).subscribe(() => {
+    this.getNeedsSubscription = interval(500).subscribe(() => {
       this.getNeeds();
     })
   }

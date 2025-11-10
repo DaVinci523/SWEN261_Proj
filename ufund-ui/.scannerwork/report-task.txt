@@ -2,5 +2,5 @@ projectKey=ufund-app
 serverUrl=http://localhost:9000
 serverVersion=25.10.0.114319
 dashboardUrl=http://localhost:9000/dashboard?id=ufund-app
-ceTaskId=d40a1ca2-b95f-4724-a99a-707540f9cdb1
-ceTaskUrl=http://localhost:9000/api/ce/task?id=d40a1ca2-b95f-4724-a99a-707540f9cdb1
+ceTaskId=1ef3ff14-9344-413b-aa02-631eb24429aa
+ceTaskUrl=http://localhost:9000/api/ce/task?id=1ef3ff14-9344-413b-aa02-631eb24429aa
