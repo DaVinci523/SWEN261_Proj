@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AiService } from '../ai-service';
 
 @Component({
   selector: 'app-ai',
@@ -8,8 +9,10 @@ import { Component } from '@angular/core';
 })
 
 export class Ai {
-    respone = '';
+  
     
-
+    constructor(
+      private aiService:AiService
+    ){}
     
 }
