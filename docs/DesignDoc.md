@@ -539,6 +539,7 @@ The ReviewServiceImplementation file handles all communications between the Revi
 <img width="593" height="332" alt="ReviewServiceImplementation" src="ReviewServiceImplementation.png" />
 
 Finally, the Review Controller handles all REST API requests for reviews. For example, the code below shows how the Review Controller handles the request for creating a new review.
+
 <img width="593" height="332" alt="Review Controller POST method" src="createReview.png" />
 >
 > _**[Sprint 4]** OO Design Principles should span across **all tiers.**_
