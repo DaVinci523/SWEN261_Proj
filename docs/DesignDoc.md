@@ -82,8 +82,25 @@ This section describes the application architecture.
 
 
 ### Overview of User Interface
+<img width="6467" height="2197" alt="View Tier Architecture" src="ViewTierArchitecture.png" />
 
->The primary flow is present on the Need Page and Checkout Page. The Need Page has a split layout where the left panel lists all available needs in >the “need cupboard,” and the right panel shows the user’s current “funding basket.” Users can add items from the cupboard to their basket and >adjust their quantities. Proceeding to the Checkout Page, they again see a similar layout with basket contents on the left and payment inputs on >the right. Filling out the payment fields and clicking checkout submits the purchase which makes the system remove the purchased quantities from >the need cupboard, clears the user’s basket, and sends the user back to the homepage. If a user logs in with the username “admin,” they’re taken >to the Admin Page, which has the similar split layout with the left side displaying the current contents of the need cupboard, while the right >side provides controls to add, edit, or remove needs. We plan on improving the look of the UI in Sprint 3 but for right now it is fully functional. No functionality improvements need to be made before the end of sprint 2.
+>>The primary flow is present on the Need Page and Checkout Page:
+>The Need Page has a split layout where the left panel lists all available needs in the “need cupboard,” and the right panel shows the user’s current “funding basket.” Users can add items from the cupboard to their basket and adjust their quantities.
+
+>Proceeding to the Checkout Page, the user sees a similar layout with basket contents on the left and payment inputs on the right.
+>Filling out the payment fields and clicking checkout submits the purchase which makes the system remove the purchased quantities from the need cupboard, clears the user’s basket.
+
+
+>>The admin flow is as follows:
+>If a user logs in with the username “admin,” they’re taken to the Admin Page, which has a similar split layout with the left side displaying the current contents of the need cupboard, while the right side provides fields to add, update, or remove needs. 
+>In addition, in the bottom right corner the current list of users are displayed. Here, the admin can delete specified users.
+
+
+>Additional elements:
+> In the home-page, any logged-in user will see a section dedicated to showcasing two randomly selected reviews. Underneath, there is a button to re-select two random reviews
+
+> When logged in, any user can navigate to the reviews page from the navigation bar. Here, non-admins have a field to create a review given the rating and description. Admins have the ability to delete any individual review. 
+
 
 ### View Tier
 > _**[Sprint 4]** Provide a summary of the View Tier UI of your architecture.
@@ -102,7 +119,6 @@ This section describes the application architecture.
 >* _A single class diagram of the entire system will not be effective. You may start with one, but will be need to break it down into smaller sections to account for requirements of each of the Tier static models below._
  >* _Correct labeling of relationships with proper notation for the relationship type, multiplicities, and navigation information will be important._
  >* _Include other details such as attributes and method signatures that you think are needed to support the level of detail in your discussion._
-<img width="6467" height="2197" alt="View Tier Architecture" src="ViewTierArchitecture.png" />
 
 ### ViewModel Tier
 
