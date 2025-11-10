@@ -68,6 +68,7 @@ export class ReviewsCard {
     return arr;
   }
 
+  // Navigate to the reviews page
   goToReviews(): void {
     this.router.navigate(['/reviews']);
   }

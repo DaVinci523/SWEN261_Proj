@@ -167,6 +167,12 @@ export class AdminPage {
    
   }      
 
+  /**
+   * Removes a user from the back-end accounts list
+   * Does not allow removal of an admin
+   * Logs out users who are currently logged in when deleted
+   * @returns nothing
+   */
   removeAUser(): void {
     const u = this.usernameToRemove.trim();
     if (!u) {
