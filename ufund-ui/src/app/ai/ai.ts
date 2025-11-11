@@ -19,8 +19,15 @@ export class Ai {
 
     getResponse(prompt:String ): void {
 
-      this.aiService.getResponse(prompt).subscribe((response: String) => this.response = response);
-      console.log(this.response);
+      this.aiService.createResponse(prompt).subscribe((response: String) => {
+
+        this.response = response;
+        console.log(response);
+        this.aiService.getResponse(prompt).subscribe((response: String) => this.response = response);
+      }
+    );
+    
+
     } 
 
 }
