@@ -315,4 +315,81 @@ public class FundingBasketFileDAOTest {
         assertEquals(0, fundingBasketFileDAO.getNeeds("user1").length);
     }
 
+    @Test
+    public void testCreateUser() {
+        // Invoke
+        boolean result = assertDoesNotThrow(() -> fundingBasketFileDAO.createUser("newbie"),
+                                "Unexpected exception thrown");
+
+        // Analyze
+        assertEquals(true, result);
+        User[] users = fundingBasketFileDAO.getUsers();
+        assertNotNull(users);
+        assertEquals(2, users.length);
+
+        User newbie = null;
+        for (User u : users) {
+            if ("newbie".equals(u.getName())) {
+                newbie = u;
+                break;
+            }
+        }
+        assertNotNull(newbie);
+        assertEquals(0, newbie.getBasket().length);
+    }
+
+    @Test
+    public void testCreateUserAlreadyExists() {
+        assertEquals(1, fundingBasketFileDAO.getUsers().length);
+
+        // Invoke
+        boolean result = assertDoesNotThrow(() -> fundingBasketFileDAO.createUser("user1"),
+                                "Unexpected exception thrown");
+
+        // Analyze
+        assertEquals(true, result); // method returns true when already present
+        // still just the same single user
+        assertEquals(1, fundingBasketFileDAO.getUsers().length);
+    }
+
+    @Test
+    public void testCreateUserNull() {
+        // Invoke
+        boolean result = assertDoesNotThrow(() -> fundingBasketFileDAO.createUser(null),
+                                "Unexpected exception thrown");
+
+        // Analyze
+        assertEquals(false, result);
+        assertEquals(1, fundingBasketFileDAO.getUsers().length);
+    }
+
+    @Test
+    public void testDeleteUser() {
+        assertEquals(1, fundingBasketFileDAO.getUsers().length);
+
+        // Invoke
+        boolean result = assertDoesNotThrow(() -> fundingBasketFileDAO.deleteUser("user1"),
+                                "Unexpected exception thrown");
+
+        // Analyze
+        assertEquals(true, result);
+        User[] users = fundingBasketFileDAO.getUsers();
+        assertNotNull(users);
+        assertEquals(0, users.length);
+
+        Need[] needs = fundingBasketFileDAO.getNeeds("user1");
+        assertNull(needs);
+    }
+
+    @Test
+    public void testDeleteUserNotFound() {
+        // Invoke
+        boolean result = assertDoesNotThrow(() -> fundingBasketFileDAO.deleteUser("ghost"),
+                                "Unexpected exception thrown");
+
+        // Analyze
+        assertEquals(false, result);
+
+        assertEquals(1, fundingBasketFileDAO.getUsers().length);
+    }
 }
