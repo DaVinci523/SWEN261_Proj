@@ -19,6 +19,8 @@ import { NavBar } from './nav-bar/nav-bar';
 import { Checkout } from './checkout/checkout';
 import { ReviewsPage } from './review-page/review-page';
 import { ReviewsCard } from './reviews-card/reviews-card';
+import { ModalHost } from './modal-host/modal-host';
+
 @NgModule({
   declarations: [
     App,
@@ -33,7 +35,8 @@ import { ReviewsCard } from './reviews-card/reviews-card';
     NavBar,
     Checkout,
     ReviewsPage,
-    ReviewsCard
+    ReviewsCard,
+    ModalHost
   ],
   imports: [
     BrowserModule,
