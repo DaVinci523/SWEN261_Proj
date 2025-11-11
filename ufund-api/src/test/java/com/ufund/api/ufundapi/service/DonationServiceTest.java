@@ -50,8 +50,8 @@ public class DonationServiceTest {
         when(mockDonationDAO.getStatus()).thenReturn(mockDonation);
         Donation result = donationService.getStatus();
 
-        assertNotNull(result, "The returned Donation object should not be null");
-        assertEquals(mockDonation, result, "The returned Donation should match the mockDonation object");
+        assertNotNull(result);
+        assertEquals(mockDonation, result);
         verify(mockDonationDAO, times(1)).getStatus();
     }
 
@@ -64,7 +64,7 @@ public class DonationServiceTest {
 
         Donation updated = donationService.addDonation(300);
 
-        assertEquals(500, updated.getTotalDonated(), "The total donated should be increased by 300");
+        assertEquals(500, updated.getTotalDonated());
         verify(mockDonationDAO, times(1)).getStatus();
         verify(mockDonationDAO, times(1)).save(updated);
     }
@@ -77,7 +77,7 @@ public class DonationServiceTest {
         when(mockDonationDAO.getStatus()).thenReturn(mockDonation);
         Donation updated = donationService.setGoal(1500);
 
-        assertEquals(1500, updated.getDonationGoal(), "The goal should be updated to the higher value");
+        assertEquals(1500, updated.getDonationGoal());
         verify(mockDonationDAO, times(1)).getStatus();
         verify(mockDonationDAO, times(1)).setGoal(1500);
     }
@@ -94,7 +94,7 @@ public class DonationServiceTest {
 
         Donation updated = donationService.setGoal(300);
 
-        assertEquals(500, updated.getDonationGoal(), "The goal should lowered to the new goal");
+        assertEquals(500, updated.getDonationGoal());
         verify(mockDonationDAO, times(1)).getStatus();
         verify(mockDonationDAO, times(1)).setGoal(500);
     }
