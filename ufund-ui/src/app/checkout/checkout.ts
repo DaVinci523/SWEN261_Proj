@@ -29,6 +29,7 @@ export class Checkout implements OnInit{
     // Continuously call getNeeds on set intervals (ex: 5000 is 5 seconds) to keep them updated when page is not reloaded.
     this.getNeedsSubscription = interval(500).subscribe(() => {
       this.getNeeds();
+      this.calculateTotals();
     })
   }
 
@@ -141,14 +142,15 @@ export class Checkout implements OnInit{
   this.donationTotal = 0;
 
   this.userNeeds.forEach(need => {
+    if(need.visible){
     const subtotal = need.value * need.maxQuantity;
     this.cartTotal += subtotal;
-
+    
     if (need.type === "donation") {
       this.donationTotal += subtotal;
     }
+  }
   });
-
   console.log("Cart Total: $" + this.cartTotal);
   console.log("Donation Total: $" + this.donationTotal);
 }

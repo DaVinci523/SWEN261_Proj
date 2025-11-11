@@ -41,6 +41,7 @@ export class AdminPage {
     this.getNeedsSubscription = interval(500).subscribe(() => {
       this.getNeeds();
       this.refresh();
+      this.loadDonationStatus();
     })
     //ensure users list is kept fresh even if getNeeds doesnt work
     this.usersPollSubscription = interval(2000).subscribe(() => {
