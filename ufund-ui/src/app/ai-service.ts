@@ -14,12 +14,12 @@ export class AiService {
 
   // HTTP options for POST and PUT requests
   httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
   
-  getResponse(prompt:String) : Observable<any> {
+  getResponse(prompt: String) : Observable<String> {
 
-    return this.http.post(this.aiUrl, prompt, this.httpOptions);
+    return this.http.post<String>(this.aiUrl, prompt, this.httpOptions);
 
   }
 
