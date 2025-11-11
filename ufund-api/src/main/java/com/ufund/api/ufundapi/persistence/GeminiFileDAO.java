@@ -11,6 +11,7 @@ import java.io.File;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import com.ufund.api.ufundapi.model.Response;
+import com.ufund.api.ufundapi.model.GeminiAPI;
 
 @Component
 public class GeminiFileDAO implements GeminiDAO {
@@ -18,11 +19,13 @@ public class GeminiFileDAO implements GeminiDAO {
     private ObjectMapper objectMapper;
     private String filename;
     private Map<String, String> responses;
+    private GeminiAPI geminiAPI;
 
 
     public GeminiFileDAO(@Value("${responses.file}") String filename, ObjectMapper objectMapper) throws IOException {
         this.filename = filename;
         this.objectMapper = objectMapper;
+        this.geminiAPI = new GeminiAPI();
         load();
     }
 
@@ -45,11 +48,15 @@ public class GeminiFileDAO implements GeminiDAO {
 
 
     public String getResponse(String prompt){
-        if(responses.containsKey(prompt)){
             return responses.get(prompt);
-        }
+    }
 
-    public String generateResponse
+    public Response generateResponse(String prompt) throws IOException{
+            Response newResponse = geminiAPI.generateResponse(prompt);
+            responses.put(newResponse.getPrompt(), newResponse.getResponse());
+            save();
+            return newResponse;
+            
     }
 
 }

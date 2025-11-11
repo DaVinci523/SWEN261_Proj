@@ -8,6 +8,8 @@ import com.ufund.api.ufundapi.service.GeminiAPIService;
 
 import java.io.IOException;
 import java.util.logging.Logger;
+
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author CTRL Team 
  */
 @RestController
-@RequestMapping("/api/gemini")
+@RequestMapping("/responses")
 public class GeminiAPIController {
     private static final Logger LOG = Logger.getLogger(GeminiAPI.class.getName());
     private final GeminiAPIService geminiAPIService;
@@ -34,11 +36,13 @@ public class GeminiAPIController {
      * @param prompt user-provided prompt
      * @return ResponseEntity containing the response or error message, HttpStatus
      */
+    @PostMapping("/")
     public ResponseEntity<String> getGeminiResponse(String prompt) {
         try{
             String response = geminiAPIService.generateGeminiResponse(prompt);
             return new ResponseEntity<String>(response, HttpStatus.OK);
         } 
+        
         catch (IOException e) {
             LOG.severe("Error generating Gemini response: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); 

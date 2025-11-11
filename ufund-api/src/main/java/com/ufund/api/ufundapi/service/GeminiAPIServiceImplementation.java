@@ -5,7 +5,8 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ufund.api.ufundapi.model.GeminiAPI;
+import com.ufund.api.ufundapi.model.Response;
+import com.ufund.api.ufundapi.persistence.GeminiFileDAO;
 
 /** 
  * Service latyer between the controller and API
@@ -14,15 +15,15 @@ import com.ufund.api.ufundapi.model.GeminiAPI;
 @Service
 public class GeminiAPIServiceImplementation implements GeminiAPIService {
     
-    private final GeminiAPI geminiAPI;
+    private final GeminiFileDAO geminiFileDAO;
 
     /**
      * Creates the GeiminiAPIService implementation
      * @param geminiAPI API to be linked to the 
      */
     @Autowired
-    public GeminiAPIServiceImplementation(GeminiAPI geminiAPI) {
-        this.geminiAPI = geminiAPI;
+    public GeminiAPIServiceImplementation(GeminiFileDAO geminiFileDAO) {
+        this.geminiFileDAO = geminiFileDAO;
     }
 
     /**
@@ -31,7 +32,8 @@ public class GeminiAPIServiceImplementation implements GeminiAPIService {
     * @return returns the response from the API   
     */
     public String generateGeminiResponse(String prompt) throws IOException {
-        return geminiAPI.generateResponse(prompt);   
+        Response newResponse = geminiFileDAO.generateResponse(prompt);   
+        return newResponse.getResponse();
     }
 
 }

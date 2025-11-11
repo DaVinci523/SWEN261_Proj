@@ -8,7 +8,7 @@ import { tap } from 'rxjs/operators';
 })
 export class AiService {
   
-  private aiUrl = "http://localhost:8080/api/gemini"
+  private aiUrl = "http://localhost:8080/responses"
 
   constructor(private http: HttpClient){}
 
