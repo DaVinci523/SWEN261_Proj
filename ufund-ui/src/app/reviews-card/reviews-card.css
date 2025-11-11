@@ -70,19 +70,19 @@ div#review-text {
 
 
 .refresh-btn{
-  appearance:none;
-  margin: 0.5em auto;
-  align-self: start;
-  padding: 8px 14px;
-  border-radius: 999px;
-  border: 1.5px solid #2e6cff;
-  background: transparent;
-  color: #2e6cff;
-  font-weight: 700;
-  width: 40%;
-  cursor: pointer;
-  box-shadow: 0 2px 0 rgb(0 0 0 / .06);
-  transition: .2s, color .2s, transform .06s, box-shadow .2s;
+    appearance:none;
+    margin: 0.5em auto;
+    align-self: start;
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1.5px solid #2e6cff;
+    background: transparent;
+    color: #2e6cff;
+    font-weight: 700;
+    width: 40%;
+    cursor: pointer;
+    box-shadow: 0 2px 0 rgb(0 0 0 / .06);
+    transition: .2s, color .2s, transform .06s, box-shadow .2s;
 }
 
 .refresh-btn:hover { background:#2e6cff; color:#fff; }

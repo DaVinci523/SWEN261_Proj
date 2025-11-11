@@ -1,6 +1,7 @@
 /*
 https://www.w3schools.com/howto/howto_css_two_columns.asp
 */
+
 div.admin-page-container {
   display: grid;
   grid-template-columns: 75% 25%;
@@ -127,7 +128,6 @@ div.user-management {
   margin-top: 1em;
   border-top: 2px solid black;
 }
-
 
 .donation-panel {
   background: #fafafa;

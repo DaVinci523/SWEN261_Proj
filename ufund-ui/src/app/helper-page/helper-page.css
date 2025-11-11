@@ -5,17 +5,13 @@ div#helper-page-container {
   background-color: #fff8e8;
 }
 
-#needs-cupboard {
-
-}
-
 #funding-basket {
   border-left: 4px solid black;
   padding: 6% 6%;
 }
 
 button {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 div {
@@ -23,7 +19,7 @@ div {
 }
 
 .center-content {
-    padding: 2% 10%;
+  padding: 2% 10%;
 }
 
 /* Split the screen in half */

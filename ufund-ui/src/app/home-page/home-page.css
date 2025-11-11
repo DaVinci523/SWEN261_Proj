@@ -171,7 +171,9 @@
 }
 
 /* prevent children from forcing columns wider than intended */
-.about-grid > * { min-width: 0; }
+.about-grid > * {
+  min-width: 0; 
+}
 
 .about-photo{
   grid-column: 1;           /* left column */
@@ -213,7 +215,6 @@
 }
 
 
-
 .cta{
   display: inline-flex;
   flex-direction: column;
@@ -241,5 +242,7 @@
 }
 @keyframes bob{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
 
-#about{ scroll-margin-top: 80px; }
+#about { 
+  scroll-margin-top: 80px; 
+}
 
