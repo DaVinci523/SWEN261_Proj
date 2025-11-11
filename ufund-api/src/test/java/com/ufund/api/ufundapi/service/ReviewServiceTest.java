@@ -29,6 +29,9 @@ public class ReviewServiceTest {
         service = new ReviewServiceImplementation(mockDAO);
     }
 
+    /**
+     * Tests the getReviews method
+     */
     @Test
     public void testGetReviews() throws IOException {
         Review[] expected = {
@@ -43,6 +46,9 @@ public class ReviewServiceTest {
         verify(mockDAO, times(1)).getReviews();
     }
 
+    /**
+     * Tests the getReviewsByRating method
+     */
     @Test
     public void testGetReviewsByRating() throws IOException {
         Review[] expected = { new Review(1, "A", "Great!", 5)};
@@ -54,6 +60,10 @@ public class ReviewServiceTest {
         verify(mockDAO).getReviewsByRating(5);
     }
 
+    /**
+     * Tests the createReview method
+     * @throws IOException
+     */
     @Test
     public void testCreateReview() throws IOException {
         Review toCreate = new Review(0, "Charlie", "Outstanding", 5);
@@ -66,6 +76,10 @@ public class ReviewServiceTest {
         verify(mockDAO).createReview(toCreate);
     }
 
+    /**
+     * Tests the deleteReview method
+     * @throws IOException
+     */
     @Test
     public void testDeleteReview() throws IOException {
         when(mockDAO.deleteReview(1)).thenReturn(true);
@@ -75,6 +89,10 @@ public class ReviewServiceTest {
         verify(mockDAO).deleteReview(1);
     }
 
+    /**
+     * Tests the deleteAll method
+     * @throws IOException
+     */
     @Test
     public void testDeleteAll() throws IOException {
         when(mockDAO.deleteAll()).thenReturn(true);
@@ -83,6 +101,10 @@ public class ReviewServiceTest {
         verify(mockDAO).deleteAll();
     }
 
+    /**
+     * Tests the deleteReviewByUsername method
+     * @throws IOException
+     */
     @Test
     public void testDeleteReviewsByUsername() throws IOException {
         when(mockDAO.deleteReviewsByUsername("A")).thenReturn(true);

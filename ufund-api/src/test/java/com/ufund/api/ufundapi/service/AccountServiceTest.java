@@ -43,7 +43,7 @@ public class AccountServiceTest {
     }
 
     /**
-     * Tests that getAccounts() returns all the accounts correctly
+     * Tests that getAccounts method returns all the accounts correctly
      */
     @Test
     public void testGetAccounts() throws IOException {
@@ -56,7 +56,7 @@ public class AccountServiceTest {
     }
 
     /**
-     * Tests that getUsernames() returns all usernames correctly
+     * Tests that getUsernames method returns all usernames correctly
      */
     @Test
     public void testGetUsernames() throws IOException {
@@ -70,7 +70,7 @@ public class AccountServiceTest {
     }
 
     /**
-     * Tests that exists(username) delegates to the DAO
+     * Tests that exists(username) method delegates to the DAO
      */
     @Test
     public void testExists() throws IOException {
@@ -83,8 +83,7 @@ public class AccountServiceTest {
     }
 
     /**
-     * Tests that create(account) returns the created account
-     * and creates a FundingBasket user
+     * Tests that create(account) method returns the created account and creates a FundingBasket user
      */
     @Test
     public void testCreate() throws IOException {
@@ -99,8 +98,7 @@ public class AccountServiceTest {
     }
 
     /**
-     * Tests that create(account) returns null on duplicate
-     * and does not create a FundingBasket user
+     * Tests that create(account) method returns null on duplicate and does not create a FundingBasket user
      */
     @Test
     public void testCreateDuplicate() throws IOException {
@@ -115,7 +113,7 @@ public class AccountServiceTest {
     }
 
     /**
-     * Tests that validate(username, password) delegates to DAO
+     * Tests that validate(username, password) method delegates to DAO
      */
     @Test
     public void testValidate() throws IOException {
@@ -128,7 +126,7 @@ public class AccountServiceTest {
     }
 
     /**
-     * Tests that delete(username) removes FundingBasket user then account
+     * Tests that delete(username) method removes FundingBasket user then account
      */
     @Test
     public void testDelete() throws IOException {
@@ -142,7 +140,7 @@ public class AccountServiceTest {
     }
 
     /**
-     * Tests that delete(username) returns false when account not found
+     * Tests that delete(username) method returns false when account not found
      */
     @Test
     public void testDeleteNotFound() throws IOException {
