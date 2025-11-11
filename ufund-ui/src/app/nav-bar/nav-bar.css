@@ -6,8 +6,6 @@
   display: flex;
   align-items: center;
   box-shadow: 0 2px 6px rgba(0,0,0,.06);
-
-  /* margin: 8px;               keeps it from touching edges */
 }
 
 .icon-link.home {
