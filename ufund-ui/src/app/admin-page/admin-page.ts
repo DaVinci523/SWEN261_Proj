@@ -5,6 +5,7 @@ import { Need } from '../need';
 import { User } from '../user';
 import { FundingBasketService } from '../funding-basket-service';
 import { interval, Subscription } from 'rxjs';
+import { DonationService } from '../donation';
 import { AccountsService } from '../accounts-service';
 import { Account } from '../account';
 import { forkJoin, of } from 'rxjs';
@@ -20,6 +21,9 @@ import { ModalService } from '../modal-service';
 export class AdminPage {
   usernameToRemove = '';
   users: Account[] = [];
+  totalDonated: number = 0;
+  donationGoal: number = 0;
+  newGoal: number | null = null;
 
 
   private getNeedsSubscription: Subscription;
@@ -63,6 +67,7 @@ export class AdminPage {
     // calls the getNeeds function to populate needs
     this.getNeeds();
     this.refresh();
+    this.loadDonationStatus();
   }
  
   /**
@@ -226,7 +231,42 @@ export class AdminPage {
     
   }
 
+  clearAll(): void {
+    const ok = window.confirm('Delete ALL users? This cannot be undone.');
+    if (!ok) { return; }
+    //this.user.clearAllUsers();
+    alert('All users deleted.');
+    this.refresh();
+  }
 
+  /**
+   * Gather the current totalDonated and donationGoals
+   */
 
+  loadDonationStatus(): void {
+    this.donationService.getStatus().subscribe(status => {
+      this.totalDonated = status.totalDonated;
+      this.donationGoal = status.donationGoal;
+    });
+  }
 
+  /**
+   * Allow the admin to update the goal but he cannot update it below the current totalDonated
+   * @returns 
+   */
+  updateGoal(): void {
+    if (this.newGoal != null && this.newGoal > 0) {
+
+      if (this.newGoal < this.totalDonated) {
+        alert(`Goal cannot be lower than the total donated ($${this.totalDonated}).`);
+        this.newGoal = this.donationGoal; // reset input
+        return;
+      }
+
+      this.donationService.setGoal(this.newGoal).subscribe(() => {
+        this.loadDonationStatus();
+        this.newGoal = null;
+      });
+    }
+  }
 }
