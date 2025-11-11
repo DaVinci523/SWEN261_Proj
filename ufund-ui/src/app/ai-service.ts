@@ -22,6 +22,5 @@ export class AiService {
     return this.http.post(this.aiUrl, prompt, this.httpOptions);
 
   }
-  
 
 }
