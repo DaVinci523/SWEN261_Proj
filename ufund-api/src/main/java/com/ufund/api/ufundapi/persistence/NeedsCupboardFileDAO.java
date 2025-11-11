@@ -101,6 +101,7 @@ public class NeedsCupboardFileDAO implements NeedsCupboardDAO {
         nextId = 0;
         //use object mapper to deserialize  file into needsArray
         Need[] needsArray = objectMapper.readValue(new File(filename), Need[].class);
+        
         //add needs to needs tree map
         for (Need need : needsArray){
             needs.put(need.getId(), need);
