@@ -61,7 +61,7 @@ export class AdminPage {
     });
   }
 
-   /*
+   /** 
    * populates needs once the program is initialized
    */
   ngOnInit(): void {
