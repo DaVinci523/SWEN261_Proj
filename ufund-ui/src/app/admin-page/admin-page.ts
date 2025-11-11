@@ -32,6 +32,7 @@ export class AdminPage {
   constructor(
     private adminPageService:AdminPageService, // adminPageService to connect to REST API back-end      
     private fundingBasketService: FundingBasketService,
+    private donationService: DonationService,
     public user: User, // current user of the application
     private accounts: AccountsService,
     private modal: ModalService
