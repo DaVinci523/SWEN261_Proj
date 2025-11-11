@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author CTRL Team 
  */
 @RestController
-@RequestMapping("/responses")
+@RequestMapping("responses")
 public class GeminiAPIController {
     private static final Logger LOG = Logger.getLogger(GeminiAPI.class.getName());
     private final GeminiAPIService geminiAPIService;
@@ -36,9 +36,11 @@ public class GeminiAPIController {
      * @param prompt user-provided prompt
      * @return ResponseEntity containing the response or error message, HttpStatus
      */
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<String> getGeminiResponse(String prompt) {
+        LOG.info("POST /responses");
         try{
+            System.out.println("PROMPT" + prompt);
             String response = geminiAPIService.generateGeminiResponse(prompt);
             return new ResponseEntity<String>(response, HttpStatus.OK);
         } 
