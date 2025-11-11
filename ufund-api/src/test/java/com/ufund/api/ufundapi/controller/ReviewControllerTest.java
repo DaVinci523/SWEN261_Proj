@@ -27,6 +27,9 @@ public class ReviewControllerTest {
         controller = new ReviewController(mockService);
     }
 
+    /**
+     * Tests getReviews method
+     */
     @Test
     public void testGetReviewsSuccess() throws IOException {
         Review[] reviews = { new Review(1, "A", "Great!", 5)};
@@ -52,6 +55,9 @@ public class ReviewControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
 
+    /**
+     * Tests createReview method
+     */
     @Test
     public void testCreateReviewSuccess() throws IOException {
         Review review = new Review(0, "B", "Good", 4);
@@ -82,6 +88,9 @@ public class ReviewControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
 
+    /**
+     * Tests deleteReview method
+     */
     @Test
     public void testDeleteReviewSuccess() throws IOException {
         when(mockService.deleteReview(1)).thenReturn(true);
@@ -106,6 +115,9 @@ public class ReviewControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
 
+    /**
+     * Tests getReviewByRating method
+     */
     @Test
     public void testGetReviewsByRatingSuccess() throws IOException {
         Review[] reviews = { new Review(1, "A", "Great!", 5)};
@@ -132,6 +144,9 @@ public class ReviewControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
 
+    /**
+     * Test deleteReviewByUsername method
+     */
     @Test
     public void testDeleteReviewByUsernameSuccess() throws IOException {
         when(mockService.deleteReviewsByUsername("A")).thenReturn(true);
@@ -156,6 +171,9 @@ public class ReviewControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
 
+    /**
+     * Tests deleteAllReviews method
+     */
     @Test
     public void testDeleteAllReviewsSuccess() throws IOException {
         when(mockService.deleteAll()).thenReturn(true);

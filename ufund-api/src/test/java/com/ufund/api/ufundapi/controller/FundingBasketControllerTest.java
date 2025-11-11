@@ -40,7 +40,9 @@ public class FundingBasketControllerTest {
         fundingBasketController = new FundingBasketController(mockfundingBasketService);
     }
 
-    // getUsers() Tests
+    /**
+     * Tests the getUsers method
+     */
     @Test
     public void testGetUsers() throws IOException { // getUsers may throw IOException
         // Setup
@@ -87,7 +89,9 @@ public class FundingBasketControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
 
-    // getUsernames() Test
+    /**
+     * Tests the getUsernames method
+     */
     @Test
     public void testGetUsernames() throws IOException { // getUsers may throw IOException
     //     // Setup
@@ -102,12 +106,6 @@ public class FundingBasketControllerTest {
 
         ResponseEntity<String[]> response = fundingBasketController.getUsernames();
 
-    //     String[] usernames = new String[users.length];
-    //         for(int i = 0; i < users.length; i++){
-    //             usernames[i] = users[i].getName();
-    //         }
-
-    //     assertEquals(usernames, response.getStatusCode());
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("helper123", response.getBody()[0]);
         assertEquals("helper456", response.getBody()[1]);
@@ -120,7 +118,9 @@ public class FundingBasketControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
 
-    // getNeeds() Tests
+    /**
+     * Tests the getNeeds method
+     */
     @Test
     public void testGetNeeds() throws IOException { // getNeeds may throw IOException
         // Setup
@@ -165,7 +165,10 @@ public class FundingBasketControllerTest {
         assertEquals(HttpStatus.NO_CONTENT,response.getStatusCode());
     }
     
-    //searchNeeds()     Tests
+    /**
+     * Tests the searchNeeds method
+     * @throws IOException
+     */
     @Test
     public void testSearchNeeds() throws IOException{
         String searchString = "La";
@@ -192,7 +195,9 @@ public class FundingBasketControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,response.getStatusCode());
     }
 
-    // deleteNeedType() Tests
+    /**
+     * Tests hte deleteNeedType method
+     */
     @Test
     public void testDeleteNeedType() throws IOException { // deleteNeedType may throw IOException
         // Setup
@@ -235,6 +240,9 @@ public class FundingBasketControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
 
+    /**
+     * Tests the getNeed method
+     */
     @Test
     public void testGetNeed() throws IOException {  // getNeed may throw IOException
         // Setup
@@ -280,6 +288,10 @@ public class FundingBasketControllerTest {
     }
 
     
+    /**
+     * Tests the deleteNeed method
+     * @throws IOException
+     */
     @Test
     public void testDeleteNeed() throws IOException { // deleteNeed may throw IOException
         // Setup
@@ -322,6 +334,9 @@ public class FundingBasketControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,response.getStatusCode());
     }
 
+    /**
+     * Tests the updateNeed method
+     */
     @Test
     public void testUpdateNeed() throws IOException { // updateNeed may throw IOException
         // Setup
@@ -368,7 +383,9 @@ public class FundingBasketControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,response.getStatusCode());
     }
 
-    // //updateNeedVisibility() Tests
+    /**
+     * Tests the updateNeedVisibility method
+     */
     @Test
     public void testUpdateNeedVisibility() throws IOException { // updateNeed may throw IOException
     //     // Setup
@@ -396,6 +413,9 @@ public class FundingBasketControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,response.getStatusCode());
     }
     
+    /**
+     * Tests the deleteNeedName method
+     */
     @Test
     public void testDeleteNeedName() throws IOException { // deleteNeed may throw IOException
         // when deleteNeed is called return true, simulating successful deletion
@@ -432,6 +452,9 @@ public class FundingBasketControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,response.getStatusCode());
     }
 
+    /**
+     * Tests createNeed method
+     */
     @Test
     public void testCreateNeed() throws IOException {  // createNeed may throw IOException
         // Setup
@@ -488,7 +511,9 @@ public class FundingBasketControllerTest {
     }
 
 
-
+    /**
+     * Tests deleteAll method
+     */
     @Test
     public void testDeleteAll() throws IOException { // deleteAll may throw IOException
         // when deleteAll is called return true, simulating successful deletion
