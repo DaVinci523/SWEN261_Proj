@@ -8,6 +8,7 @@ import { interval, Subscription } from 'rxjs';
 import { AccountsService } from '../accounts-service';
 import { Account } from '../account';
 import { forkJoin, of } from 'rxjs';
+import { ModalService } from '../modal-service';
 
 @Component({
   selector: 'app-admin-page',
@@ -28,7 +29,8 @@ export class AdminPage {
     private adminPageService:AdminPageService, // adminPageService to connect to REST API back-end      
     private fundingBasketService: FundingBasketService,
     public user: User, // current user of the application
-    private accounts: AccountsService
+    private accounts: AccountsService,
+    private modal: ModalService
   ){
     // Continuously call getNeeds on set intervals (ex: 5000 is 5 seconds) to keep them updated when page is not reloaded.
     this.getNeedsSubscription = interval(500).subscribe(() => {
@@ -176,39 +178,52 @@ export class AdminPage {
   removeAUser(): void {
     const u = this.usernameToRemove.trim();
     if (!u) {
-      alert('Enter a username to remove.');
+      this.modal.infoDialog('Error', 'Please enter a username.', 'OK')
+      .subscribe(() => {});
       return;
     }
 
     if (u.toLowerCase() === 'admin') {
-      alert('The "admin" account cannot be deleted.');
+      this.modal.infoDialog('Not allowed', 'You cannot delete that account.', 'OK')
+      .subscribe(() => {});
       return;
     }
     
-    const ok = window.confirm('Delete user "' + u + '"?');
-    if (!ok) { return; }
-
-    this.accounts.delete(u).subscribe(done => {
-      if (done !== undefined) {
-        // Broadcast via localStorage which fires storage event in other tabs
-        try { localStorage.setItem('force-logout:' + u, String(Date.now())); } catch (_e) {}
-        // Broadcast via BroadcastChannel
-        try {
-          if ('BroadcastChannel' in window) {
-            const bc = new BroadcastChannel('auth');
-            bc.postMessage({ type: 'force-logout', user: u });
-            bc.close();
+    this.modal.confirmDialog('Delete user', 'Delete "' + u + '"?', 'Delete', 'Cancel')
+    .subscribe(ok => {
+      if (ok) {
+        
+        this.accounts.delete(u).subscribe({
+          next: () => {
+            // success
+            try { localStorage.setItem('force-logout:' + u, String(Date.now())); } catch {}
+            try {
+              if ('BroadcastChannel' in window) {
+                const bc = new BroadcastChannel('auth');
+                bc.postMessage({ type: 'force-logout', user: u });
+                bc.close();
+              }
+            } catch {}
+            this.usernameToRemove = '';
+            this.refresh();
+            this.getNeeds();
+          },
+          error: (err) => {
+            if (err && err.status === 404) {
+              this.modal.infoDialog('Not found', 'That user does not exist.', 'OK').subscribe(() => {});
+              return;
+            }
+            if (err && err.status === 403) {
+              this.modal.infoDialog('Not allowed', 'You cannot delete that account.', 'OK').subscribe(() => {});
+              return;
+            }
+            this.modal.infoDialog('Error', 'Could not delete the user. Please try again.', 'OK').subscribe(() => {});
           }
-        } catch (_e) {}
-        localStorage.setItem('force-logout:' + u, String(Date.now()));
-        alert('Deleted "' + u + '"');
-        this.usernameToRemove = '';
-        this.refresh();
-        this.getNeeds();
-      } else {
-        alert('User not found.');
+        });
+      
       }
     });
+    
   }
 
 
