@@ -171,7 +171,9 @@
 }
 
 /* prevent children from forcing columns wider than intended */
-.about-grid > * { min-width: 0; }
+.about-grid > * {
+  min-width: 0; 
+}
 
 .about-photo{
   grid-column: 1;           /* left column */
@@ -198,6 +200,8 @@
   width: 100%;
   align-self: start;
   margin-top: 4px;
+  margin-bottom: 4%;
+  margin-left: 20%;
 }
 
 /* Stack on small screens */
@@ -209,7 +213,6 @@
   .about-text{  grid-column:1; grid-row:2; }
   #reviews-card-container{ grid-column:1; grid-row:3; }
 }
-
 
 
 .cta{
@@ -239,5 +242,7 @@
 }
 @keyframes bob{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
 
-#about{ scroll-margin-top: 80px; }
+#about { 
+  scroll-margin-top: 80px; 
+}
 
