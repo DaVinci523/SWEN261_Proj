@@ -82,7 +82,7 @@ This section describes the application architecture.
 
 
 ### Overview of User Interface
-<img width="6467" height="2197" alt="View Tier Architecture" src="ViewTierArchitecture.png" />
+<img width="6467" height="2197" alt="View Tier Architecture" src="ViewTierArchitecture2.png" />
 
 >>The primary flow is present on the Need Page and Checkout Page:
 >The Need Page has a split layout where the left panel lists all available needs in the “need cupboard,” and the right panel shows the user’s current “funding basket.” Users can add items from the cupboard to their basket and adjust their quantities.
