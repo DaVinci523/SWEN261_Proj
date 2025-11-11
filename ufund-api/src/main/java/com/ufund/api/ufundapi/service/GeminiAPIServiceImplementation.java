@@ -36,4 +36,8 @@ public class GeminiAPIServiceImplementation implements GeminiAPIService {
         return newResponse.getResponse();
     }
 
+    public String getGeminiResponse(String prompt) throws IOException {
+        return geminiFileDAO.getResponse(prompt);
+    }
+
 }

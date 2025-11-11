@@ -3,7 +3,9 @@ package com.ufund.api.ufundapi.persistence;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
-
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.io.File;
@@ -18,7 +20,7 @@ public class GeminiFileDAO implements GeminiDAO {
 
     private ObjectMapper objectMapper;
     private String filename;
-    private Map<String, String> responses;
+    private List<Response> responses;
     private GeminiAPI geminiAPI;
 
 
@@ -30,12 +32,12 @@ public class GeminiFileDAO implements GeminiDAO {
     }
 
     private boolean load() throws IOException {
-        responses = new TreeMap<>();
+        responses = new ArrayList<>();
 
         Response[] responsesArray = objectMapper.readValue(new File(filename), Response[].class);
 
         for (Response response : responsesArray){
-            responses.put(response.getPrompt(), response.getResponse());
+            responses.add(response);
         }
 
         return true;
@@ -48,12 +50,18 @@ public class GeminiFileDAO implements GeminiDAO {
 
 
     public String getResponse(String prompt){
-            return responses.get(prompt);
+            
+            for(Response response : responses ){
+                if(response.getPrompt() == prompt){
+                    return response.getResponse();
+                }
+            }   
+            return null;
     }
 
     public Response generateResponse(String prompt) throws IOException{
             Response newResponse = geminiAPI.generateResponse(prompt);
-            responses.put(newResponse.getPrompt(), newResponse.getResponse());
+            responses.add(newResponse);
             save();
             return newResponse;
             

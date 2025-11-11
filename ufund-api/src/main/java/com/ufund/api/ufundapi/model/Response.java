@@ -32,7 +32,8 @@ public class Response {
         this.prompt = prompt;
     }
 
-    public String toStrint(){
+    @Override
+    public String toString(){
         return String.format(STRINGIFY, response, prompt);
     }
 
