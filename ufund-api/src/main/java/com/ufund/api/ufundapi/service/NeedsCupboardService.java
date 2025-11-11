@@ -28,7 +28,5 @@ public interface NeedsCupboardService {
     boolean deleteAllNeeds() throws IOException;
 
     boolean deleteNeedByName(String name) throws IOException;
-
     
-
 }

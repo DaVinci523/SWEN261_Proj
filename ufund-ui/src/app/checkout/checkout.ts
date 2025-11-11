@@ -29,6 +29,7 @@ export class Checkout implements OnInit{
     // Continuously call getNeeds on set intervals (ex: 5000 is 5 seconds) to keep them updated when page is not reloaded.
     this.getNeedsSubscription = interval(500).subscribe(() => {
       this.getNeeds();
+      this.calculateTotals();
     })
   }
 
@@ -66,12 +67,11 @@ export class Checkout implements OnInit{
     this.getNeeds();
   }
   
-  // Get all needs in the funding basket,
-  // then decrease the quantity of the respective needs in the needs cupboard by the funding basket quantities, 
-  // then clear the funding basket
-  //Update the donation values
-  //show the total price of your cart broken down into botht the donationTotal and the 
-  // complete total
+  /**
+   * Get all needs in the funding basket, then decrease the quantity of the respective needs in the needs cupboard by 
+   * the funding basket quantities, then clear the funding basket. Update the donation values, show the total price of 
+   * your cart broken down into both the donationTotal and the complete total
+   */
   checkout(): void {
     this.nameOnCard = "";
     this.cardNumber = "";
@@ -142,14 +142,15 @@ export class Checkout implements OnInit{
   this.donationTotal = 0;
 
   this.userNeeds.forEach(need => {
+    if(need.visible){
     const subtotal = need.value * need.maxQuantity;
     this.cartTotal += subtotal;
-
+    
     if (need.type === "donation") {
       this.donationTotal += subtotal;
     }
+  }
   });
-
   console.log("Cart Total: $" + this.cartTotal);
   console.log("Donation Total: $" + this.donationTotal);
 }

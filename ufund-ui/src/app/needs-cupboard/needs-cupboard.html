@@ -8,7 +8,7 @@
                 placeholder="Search Needs…"
                 [(ngModel)]="searchTerm"
                 (input)="getNeeds()"   
-                />
+            />
         </div>
         <div class="special-searches-container">
             <div class="searchbar"> 
@@ -18,7 +18,7 @@
                     placeholder="Search Type…"
                     [(ngModel)]="typeTerm"
                     (input)="searchNeedsType()"   
-                    />
+                />
             </div>
             <div class="searchbar"> 
                 <input
@@ -27,7 +27,7 @@
                     placeholder="Search Quantity..."        
                     [(ngModel)]="qtyTerm"
                     (input)="searchNeedsQuantity()"   
-                    />
+                />
             </div>
             <div class="searchbar"> 
                 <input
@@ -36,7 +36,7 @@
                     placeholder="Search Value..."        
                     [(ngModel)]="valTerm"
                     (input)="searchNeedsValue()"
-                    />
+                />
             </div>
         </div>
     </div>
@@ -72,7 +72,6 @@
                             <span *ngIf="need.currentQuantity < need.maxQuantity" class="variable">Quantity: {{need.currentQuantity}}/{{need.maxQuantity}}</span>
                             <span class="variable">${{need.value}}</span>
                             <!-- <span class="variable">Type: ["{{need.type}}"]</span> -->
-                            
                         </span>
                         <span id="fund">
                             <button *ngIf="need.currentQuantity < need.maxQuantity" id="moveToFund"type="button" (click)="moveToFunding(need)" class="fund" title="Add to Cart">Add to Cart</button>  

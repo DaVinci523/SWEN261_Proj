@@ -52,8 +52,7 @@ public class FundingBasketServiceTest {
     }
 
     /**
-     * Tests that the FundingBasketService getNeed returns
-     * a single need by its ID.
+     * Tests that the FundingBasketService getNeed returns a single need by its ID.
      */
     @Test
     public void testGetNeed() throws IOException {
@@ -66,7 +65,7 @@ public class FundingBasketServiceTest {
     }
 
     /**
-     * Tests searchNeeds to verify the needs are filtered by name
+     * Tests searchNeeds method to verify the needs are filtered by name
      */
     @Test
     public void testSearchNeeds() throws IOException {
@@ -84,7 +83,7 @@ public class FundingBasketServiceTest {
     }
 
     /**
-     * Tests createdNeed to verify that a new need is successfully created
+     * Tests createdNeed method to verify that a new need is successfully created
      */
     @Test
     public void testCreateNeed() throws IOException {
@@ -97,7 +96,7 @@ public class FundingBasketServiceTest {
     }
 
     /**
-     * Tests that updateNeed() updates an existing need
+     * Tests that updateNeed method updates an existing need
      */
     @Test
     public void testUpdateNeed() throws IOException {
@@ -110,7 +109,7 @@ public class FundingBasketServiceTest {
     }
 
     /**
-     * Tests that deleteNeed(int) deletes a need by its ID
+     * Tests that deleteNeed(int) method deletes a need by its ID
      */
     @Test
     public void testDeleteNeed() throws IOException {
@@ -122,7 +121,7 @@ public class FundingBasketServiceTest {
     }
 
     /**
-     * Tests that deleteNeedType deletes all needs of a given type
+     * Tests that deleteNeedType method deletes all needs of a given type
      */
     @Test
     public void testDeleteNeedType() throws IOException {
@@ -134,7 +133,7 @@ public class FundingBasketServiceTest {
     }
 
     /**
-     * Tests that deleteAll() deletes all Needs
+     * Tests that deleteAll method deletes all Needs
      */
     @Test
     public void testDeleteAll() throws IOException {
@@ -146,7 +145,7 @@ public class FundingBasketServiceTest {
     }
 
     /**
-     * Tests that deleteNeedname deletes needs with a matching substring
+     * Tests that deleteNeedName method deletes needs with a matching substring
      */
     @Test
     public void testDeleteNeedName() throws IOException {
@@ -158,7 +157,7 @@ public class FundingBasketServiceTest {
     }
 
     /**
-     * Tests that getUsers() returns all users correctly
+     * Tests that getUsers method returns all users correctly
      */
     @Test
     public void testGetUsers() throws IOException {

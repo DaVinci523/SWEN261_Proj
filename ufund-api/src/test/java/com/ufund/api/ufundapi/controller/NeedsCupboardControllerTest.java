@@ -38,7 +38,9 @@ public class NeedsCupboardControllerTest {
         needsCupboardController = new NeedsCupboardController(mockNeedsCupboardService);
     }
 
-    // getNeeds() Tests
+    /**
+     * Tests getNeeds method
+     */
     @Test
     public void testGetNeeds() throws IOException { // getHeroes may throw IOException
         // Setup
@@ -70,7 +72,10 @@ public class NeedsCupboardControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,response.getStatusCode());
     }
 
-    //searchNeeds()     Tests
+    /**
+     * Tests searchNeeds method
+     * @throws IOException
+     */
     @Test
     public void testSearchNeeds() throws IOException{
         String searchString = "La";
@@ -97,7 +102,9 @@ public class NeedsCupboardControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,response.getStatusCode());
     }
 
-    // deleteNeedType() Tests
+    /**
+     * Tests deleteNeedType method
+     */
     @Test
     public void testDeleteNeedType() throws IOException { // deleteNeedType may throw IOException
         // Setup
@@ -140,6 +147,9 @@ public class NeedsCupboardControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
 
+    /**
+     * Tests getNeed method
+     */
     @Test
     public void testGetNeed() throws IOException {  // getHero may throw IOException
         // Setup
@@ -184,7 +194,9 @@ public class NeedsCupboardControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,response.getStatusCode());
     }
 
-    
+    /**
+     * Tests deleteNeed method
+     */
     @Test
     public void testDeleteNeed() throws IOException { // deleteHero may throw IOException
         // Setup
@@ -228,7 +240,7 @@ public class NeedsCupboardControllerTest {
     }
 
     /**
-     * createNeed() Tests
+     * Tests createNeed method
      */
     @Test
     public void testCreateNeed() throws IOException {
@@ -271,7 +283,7 @@ public class NeedsCupboardControllerTest {
     }
 
     /**
-     * updateNeed tests
+     * Tests updateNeed method
      */
     @Test
     public void testUpdateNeed() throws IOException {
@@ -313,7 +325,9 @@ public class NeedsCupboardControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
 
-    // updateNeedVisibility() Tests
+    /**
+     * Tests updateNeedVisibility method
+     */
     @Test
     public void testUpdateNeedVisibility() throws IOException { // updateNeed may throw IOException
          // Setup
@@ -368,7 +382,7 @@ public class NeedsCupboardControllerTest {
     }
 
     /**
-     * deleteAll tests
+     * Tests deleteAll method
      */
     @Test
     public void testDeleteAll() throws IOException {
@@ -406,7 +420,7 @@ public class NeedsCupboardControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
 
-    // deleteNeedName() Tests
+    // Tests deleteNeedName method
     @Test
     public void testDeleteNeedName() throws IOException {
         // when deleteAllNeeds is called return true
@@ -443,7 +457,9 @@ public class NeedsCupboardControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
 
-    // Tests for search needs by type
+    /**
+     * Tests searchNeedsType method
+     */
     @Test
     public void testSearchNeedsType() throws IOException {
         String type = "safety";
@@ -470,7 +486,10 @@ public class NeedsCupboardControllerTest {
         verify(mockNeedsCupboardService).searchNeedsType(type);
     }
 
-    // Search Needs Quantity
+    /**
+     * Tests searchNeedsQuantity method
+     * @throws IOException
+     */
     @Test
     public void testSearchNeedsQuantity() throws IOException {
         Integer quantity = 5;
@@ -498,6 +517,9 @@ public class NeedsCupboardControllerTest {
         verify(mockNeedsCupboardService).searchNeedsQuantity(quantity);
     }
 
+    /**
+     * Tests searchNeedsValue method
+     */
     @Test
     public void testSearchNeedsValue() throws IOException {
         Double value = 10.0;

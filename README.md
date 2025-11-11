@@ -30,17 +30,26 @@ An online U-Fund system built in Java **24**
 
 ## Known bugs and disclaimers
 
-- For the application to run the funding_basket.json should have at least the following data: 
-{"users": [{"userName":"helper123","basket":[]}]}
+- For the application to run the funding_basket.json should have at Least the following data: (copy & paste)
+{"users": [{"userName":"helper123","basket":[]},{"userName":"helper456","basket":[]}]}
 
-- For the application to run the needs.json should have at least the following data: 
+- For the application to run the needs.json should have at Least the following data: (copy & paste)
 []
 
-2. Bugs & Disclaimers:  The following are features that are currently bugged, and planned to be resolved in Sprint 3: 
-- Needs still remain in funding basket even after their corresponding need is removed from the needs cupboard.
-- For users, there is no set password for them. The program will accept any value. This is planned to be updated in Sprint 3.
-- In the admin page, if the data fields are empty when updating a need, the respective fields will be empty. The same goes for adding a need, the only requirement for adding is the need's name. (to update a need you would have to enter all the fields even if you only want to update one field.)
-- Regarding quantity and surplus, our cupboard currently shows the manager's needs that are remaining, counting down for every user that supports it. Then in surplus, the visual changes to "Surplus" instead of showing the negative values. We plan to change this functionality to display, for example 8/10 when not in surplus so that later on when the requested needs increas, say from 10-20, the application will display 13/20 where the previous surplus was 13/10.
+- For the application to run the donations.json should have at Least the following data: (copy & paste)
+{"totalDonated":0,"donationGoal":100}
+
+- For the application to run the reviews.json should have at Least the following data: (copy & paste)
+[]
+
+- For the application to run the users.json should have at Least the following data: (copy & paste)
+{"users":[{"username":"helper456","password":"456","role":"helper"},{"username":"helper123","password":"123","role":"helper"},{"username":"admin","password":"admin","role":"admin"}]}
+
+
+2. Disclaimers & Unresolved features: The following are features that have not been implemented for the sake of focusing on other areas of the application
+- Designated types for the needs, so that admins can only create needs that belong to the designated type
+- Replace the intervals with observables / more dynamic methods of transfering data.
+- Moving some logic such as checkout to the backend.
 
 ## How to test it
 
@@ -86,12 +95,12 @@ To run tests on all the tiers in isolation do this:
 
 ## User Authentication
 1. Ufund Manager => 
-username: admin, password: (can be anything)
-2. Helper => 
+username: admin, password: 'admin'
+2. Create a Helper => 
 username: (can be anything), password: (can be anything)
 3. Default Helpers => 
-username: helper123, password: (can be anything)
-username: helper456, password: (can be anything)
+username: helper123, password: '123'
+username: helper456, password: '456'
 
 
 ## License

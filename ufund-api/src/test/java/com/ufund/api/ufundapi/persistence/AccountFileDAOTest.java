@@ -61,7 +61,9 @@ public class AccountFileDAOTest {
         accountFileDAO = new AccountFileDAO(FILENAME, mockObjectMapper);
     }
 
-    // getAccounts() Tests
+    /**
+     * Tests the getAccounts method
+     */
     @Test
     public void testGetAccounts() {
         // Invoke
@@ -77,7 +79,9 @@ public class AccountFileDAOTest {
         assertTrue(Arrays.stream(accounts).anyMatch(a -> "admin".equals(a.getUsername())));
     }
 
-    // getUsernames() Tests
+    /**
+     * Tests the getUsernames method
+     */
     @Test
     public void testGetUsernames() {
         // Invoke
@@ -91,7 +95,9 @@ public class AccountFileDAOTest {
         assertTrue(Arrays.asList(names).contains("admin"));
     }
 
-    // exists() Tests
+    /**
+     * Tests the exists method
+     */
     @Test
     public void testExists() {
         assertTrue(accountFileDAO.exists("helper123"));
@@ -105,7 +111,9 @@ public class AccountFileDAOTest {
         assertFalse(accountFileDAO.exists(null));
     }
 
-    // validate() Tests
+    /**
+     * Tests the validate method
+     */
     @Test
     public void testValidate() {
         assertTrue(accountFileDAO.validate("helper123", "123"));
@@ -116,7 +124,9 @@ public class AccountFileDAOTest {
         assertFalse(accountFileDAO.validate("ghost", "pw"));
     }
 
-    // create() Tests
+    /**
+     * Tests the create method
+     */
     @Test
     public void testCreateAccount() {
         // Setup
@@ -156,7 +166,9 @@ public class AccountFileDAOTest {
         assertEquals(testAccounts.length, accountFileDAO.getAccounts().length);
     }
 
-    // delete() Tests
+    /**
+     * Tests the delete methods
+     */
     @Test
     public void testDeleteAccount() {
         // Invoke
