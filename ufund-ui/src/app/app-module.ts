@@ -20,6 +20,8 @@ import { Checkout } from './checkout/checkout';
 import { Ai } from './ai/ai';
 import { ReviewsPage } from './review-page/review-page';
 import { ReviewsCard } from './reviews-card/reviews-card';
+import { ModalHost } from './modal-host/modal-host';
+
 @NgModule({
   declarations: [
     App,
@@ -35,7 +37,8 @@ import { ReviewsCard } from './reviews-card/reviews-card';
     Checkout,
     Ai,
     ReviewsPage,
-    ReviewsCard
+    ReviewsCard,
+    ModalHost
   ],
   imports: [
     BrowserModule,
