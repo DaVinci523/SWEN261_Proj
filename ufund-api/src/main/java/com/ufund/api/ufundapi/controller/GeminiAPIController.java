@@ -4,6 +4,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.ufund.api.ufundapi.model.GeminiAPI;
+import com.ufund.api.ufundapi.model.APIResponse;
+
 import com.ufund.api.ufundapi.service.GeminiAPIService;
 
 import java.io.IOException;
@@ -41,12 +43,12 @@ public class GeminiAPIController {
      * @return ResponseEntity containing the response or error message, HttpStatus
      */
     @PostMapping("")
-    public ResponseEntity<String> generateGeminiResponse(@RequestBody String prompt) {
+    public ResponseEntity<APIResponse> generateGeminiResponse(@RequestBody String prompt) {
         LOG.info("POST /responses");
         try{
             System.out.println("PROMPT" + prompt);
-            String response = geminiAPIService.generateGeminiResponse(prompt);
-            return new ResponseEntity<String>(response, HttpStatus.OK);
+            APIResponse response = geminiAPIService.generateGeminiResponse(prompt);
+            return new ResponseEntity<APIResponse>(response, HttpStatus.OK);
         } 
         
         catch (IOException e) {
@@ -55,19 +57,19 @@ public class GeminiAPIController {
         }
     }
 
-    @GetMapping("/{prompt}")
-    public ResponseEntity<String> getGeminiResponse (@PathVariable String prompt) {
-        LOG.info("GET /responses");
-        try{
-            System.out.println("PROMPT" + prompt);
-            String response = geminiAPIService.generateGeminiResponse(prompt);
-            return new ResponseEntity<String>(response, HttpStatus.OK);
-        } 
+    // @GetMapping("/{prompt}")
+    // public ResponseEntity<String> getGeminiResponse (@PathVariable String prompt) {
+    //     LOG.info("GET /responses");
+    //     try{
+    //         System.out.println("PROMPT" + prompt);
+    //         String response = geminiAPIService.generateGeminiResponse(prompt);
+    //         return new ResponseEntity<String>(response, HttpStatus.OK);
+    //     } 
         
-        catch (IOException e) {
-            LOG.severe("Error generating Gemini response: " + e.getMessage());
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); 
-        }
-    }
+    //     catch (IOException e) {
+    //         LOG.severe("Error generating Gemini response: " + e.getMessage());
+    //         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); 
+    //     }
+    // }
     
 }

@@ -17,10 +17,14 @@ export class AiService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
   
-  getResponse(prompt: String) : Observable<String> {
+  createResponse(prompt: String) : Observable<String> {
 
     return this.http.post<String>(this.aiUrl, prompt, this.httpOptions);
 
+  }
+
+  getResponse(prompt: String) :Observable<String> {
+    return this.http.get<String>(`${this.aiUrl}/${prompt}`);
   }
 
 }

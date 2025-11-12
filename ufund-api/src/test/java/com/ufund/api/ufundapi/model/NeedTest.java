@@ -37,6 +37,9 @@ public class NeedTest {
         assertEquals(expected_visible, need.getVisible());
     }
 
+    /**
+     * Tests the setValue method
+     */
     @Test
     public void testValue() {
         // Setup
@@ -58,6 +61,9 @@ public class NeedTest {
         assertEquals(expected_value,need.getValue());
     }
 
+    /**
+     * Tests the setCurrentQuantity method
+     */
     @Test
     public void testCurrentQuantity() {
         // Setup
@@ -79,6 +85,9 @@ public class NeedTest {
         assertEquals(expected_quantity,need.getCurrentQuantity());
     }
 
+    /**
+     * Tests the setMaxQuantity method
+     */
     @Test
     public void testMaxQuantity() {
         // Setup
@@ -100,6 +109,9 @@ public class NeedTest {
         assertEquals(expected_quantity,need.getMaxQuantity());
     }
 
+    /**
+     * Tests the setType method
+     */
     @Test
     public void testType() {
         // Setup
@@ -121,6 +133,9 @@ public class NeedTest {
         assertEquals(expected_type,need.getType());
     }
     
+    /**
+     * Tests the setName method
+     */
     @Test
     public void testName() {
         // Setup
@@ -142,6 +157,9 @@ public class NeedTest {
         assertEquals(expected_name,need.getName());
     }
 
+    /**
+     * Tests the toString method
+     */
     @Test
     public void testToString() {
         // Setup

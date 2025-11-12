@@ -12,7 +12,7 @@ import java.io.File;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import com.ufund.api.ufundapi.model.Response;
+import com.ufund.api.ufundapi.model.APIResponse;
 import com.ufund.api.ufundapi.model.GeminiAPI;
 
 @Component
@@ -20,7 +20,7 @@ public class GeminiFileDAO implements GeminiDAO {
 
     private ObjectMapper objectMapper;
     private String filename;
-    private List<Response> responses;
+    private List<APIResponse> responses;
     private GeminiAPI geminiAPI;
 
 
@@ -34,9 +34,9 @@ public class GeminiFileDAO implements GeminiDAO {
     private boolean load() throws IOException {
         responses = new ArrayList<>();
 
-        Response[] responsesArray = objectMapper.readValue(new File(filename), Response[].class);
+        APIResponse[] responsesArray = objectMapper.readValue(new File(filename), APIResponse[].class);
 
-        for (Response response : responsesArray){
+        for (APIResponse response : responsesArray){
             responses.add(response);
         }
 
@@ -51,7 +51,7 @@ public class GeminiFileDAO implements GeminiDAO {
 
     public String getResponse(String prompt){
             
-            for(Response response : responses ){
+            for(APIResponse response : responses ){
                 if(response.getPrompt() == prompt){
                     return response.getResponse();
                 }
@@ -59,8 +59,8 @@ public class GeminiFileDAO implements GeminiDAO {
             return null;
     }
 
-    public Response generateResponse(String prompt) throws IOException{
-            Response newResponse = geminiAPI.generateResponse(prompt);
+    public APIResponse generateResponse(String prompt) throws IOException{
+            APIResponse newResponse = geminiAPI.generateResponse(prompt);
             responses.add(newResponse);
             save();
             return newResponse;

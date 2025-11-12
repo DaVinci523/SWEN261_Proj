@@ -13,6 +13,9 @@ import org.junit.jupiter.api.Test;
 
 @Tag("Model-tier")
 public class UserTest {
+    /**
+     * Tests the toString method
+     */
     @Test
     public void testToString(){
         // Setup

@@ -25,13 +25,13 @@ public class GeminiAPI {
      * Generates a response from a given prompt
      * @param prompt user-provided prompt
      */
-    public Response generateResponse(String prompt) {
+    public APIResponse generateResponse(String prompt) {
 
             // Call the Gemini API to generate the response
             GenerateContentResponse userResponse = client.models.generateContent("gemini-2.5-flash-lite", prompt, null);
             
             // gets the text from the response and assigns it the response instance field
-            return new Response(userResponse.text(),prompt);
+            return new APIResponse(userResponse.text(),prompt);
             
     }
 }

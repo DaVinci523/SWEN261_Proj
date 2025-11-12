@@ -34,8 +34,7 @@ public class needsCupboardServiceTest {
     }
 
     /**
-     * Tests that NeedsCupboardServiceImplementation's getAllNeeds() method retrieves
-     * all Need objects from the DAO
+     * Tests that NeedsCupboardServiceImplementation's getAllNeeds method retrieves all Need objects from the DAO
      */
     @Test
     public void testGetAllNeeds() throws IOException {
@@ -52,8 +51,7 @@ public class needsCupboardServiceTest {
     }
 
     /**
-     * Tests that NeedsCupboardServiceImplementation's getNeedByID() method retrieves
-     * a single Need object from the DAO based on the ID
+     * Tests that the getNeedByID method retrieves a single Need object from the DAO based on the ID
      */
     @Test
     public void testGetNeedById() throws IOException {
@@ -67,8 +65,7 @@ public class needsCupboardServiceTest {
     }
 
     /**
-     * Tests that NeedsCupboardServiceImplementation's createNeed() correctly creates
-     * a new Need through the DAO
+     * Tests that the createNeed method correctly creates a new Need through the DAO
      */
     @Test
     public void testCreateNeed() throws IOException {
@@ -84,8 +81,7 @@ public class needsCupboardServiceTest {
     }
 
     /**
-     * Tests that NeedsCupboardServiceImplementation's deleteNeedById correctly
-     *removes a Need by its ID
+     * Tests the deleteNeedById method correctly removes a Need by its ID
      */
     @Test
     public void testDeleteNeedById() throws IOException {
@@ -97,8 +93,7 @@ public class needsCupboardServiceTest {
     }
 
     /**
-     * Tests that NeedsCupboardServiceImplementation's deleteNeedById correctly
-     * propogates an IOException thrown by the DAO.
+     * Tests that the deleteNeedById method correctly handles an IOException thrown by the DAO.
      */
     @Test
     public void testDeleteNeedThrowsIOException() throws IOException {
@@ -109,7 +104,7 @@ public class needsCupboardServiceTest {
     }
 
     /**
-     * Tests that searchNeeds() retrieves Need objects matching a given name
+     * Tests that searchNeeds method retrieves Need objects matching a given name
      */
     @Test
     public void testSearchNeeds() throws IOException {
@@ -126,7 +121,7 @@ public class needsCupboardServiceTest {
     }
 
     /**
-     * Tests that updateNeed() updates a Need through the DAO
+     * Tests that updateNeed method updates a Need through the DAO
      */
     @Test
     public void testUpdateNeed() throws IOException {
@@ -142,7 +137,7 @@ public class needsCupboardServiceTest {
     }
 
     /**
-     * Tests that deleteNeedByType() removes all Needs of a given type
+     * Tests that deleteNeedByType method removes all Needs of a given type
      */
     @Test
     public void testDeleteNeedByType() throws IOException {
@@ -155,7 +150,7 @@ public class needsCupboardServiceTest {
     }
 
     /**
-     * Tests that deleteNeedByName() removes a Need with a given name
+     * Tests that deleteNeedByName method removes a Need with a given name
      */
     @Test
     public void testDeleteNeedByName() throws IOException {
@@ -168,7 +163,7 @@ public class needsCupboardServiceTest {
     }
 
     /**
-     * Tests that deleteAllNeeds() removes all Needs in the DAO
+     * Tests that deleteAllNeeds method removes all Needs in the DAO
      */
     @Test
     public void testDeleteAllNeeds() throws IOException {
@@ -181,7 +176,7 @@ public class needsCupboardServiceTest {
     }
 
     /**
-     * Tests that searchNeedsType() gets Needs by the type with the DAO
+     * Tests that searchNeedsType method gets Needs by the type with the DAO
      */
     @Test
     public void testSearchNeedsType() throws IOException {
@@ -198,7 +193,7 @@ public class needsCupboardServiceTest {
     }
 
     /**
-     * Tests searchNeedsQuantity
+     * Tests searchNeedsQuantity method
      */
     @Test
     public void testSearchNeedsQuantity() throws IOException {
@@ -216,7 +211,7 @@ public class needsCupboardServiceTest {
     }
 
     /**
-     * Tests searchNeedsValue
+     * Tests searchNeedsValue method
      */
     @Test
     public void testSearchNeedsValue() throws IOException {

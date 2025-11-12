@@ -39,7 +39,9 @@ public class AccountControllerTest {
         accountController = new AccountController(mockAccountService);
     }
 
-    // getAccounts() Tests
+    /**
+     * Tests the getAccounts method
+     */
     @Test
     public void testGetAccounts() throws IOException {
         // Setup
@@ -78,7 +80,9 @@ public class AccountControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
 
-    // getUsernames() Tests
+    /**
+     * Tests the getUsernames method
+     */
     @Test
     public void testGetUsernames() throws IOException {
         // Setup
@@ -106,7 +110,9 @@ public class AccountControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
 
-    // exists() Tests
+    /**
+     * Tests the exists method
+     */
     @Test
     public void testExists() throws IOException {
         // Setup
@@ -132,7 +138,9 @@ public class AccountControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
 
-    // create() Tests
+    /**
+     * Tests the create method
+     */
     @Test
     public void testCreateAccount() throws IOException {
         // Setup
@@ -173,7 +181,9 @@ public class AccountControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
 
-    // login() Tests
+    /**
+     * Tests the login method
+     */
     @Test
     public void testLogin() throws IOException {
         // Setup
@@ -213,7 +223,10 @@ public class AccountControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
 
-    // delete() Tests
+    /**
+     * Tests the delete method
+     * @throws IOException
+     */
     @Test
     public void testDeleteAccount() throws IOException {
         // Setup

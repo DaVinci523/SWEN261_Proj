@@ -49,7 +49,7 @@ public class NeedsCupboardFileDAOTest {
     }
 
     /**
-     * Tests getNeeds() returns all needs
+     * Tests getNeeds() method
      */
     @Test
     public void testGetNeeds() throws IOException {
@@ -61,7 +61,7 @@ public class NeedsCupboardFileDAOTest {
     }
 
     /**
-     * Test that getNeed() returns a single Need by its ID
+     * Test that getNeed() method returns a single Need by its ID
      */
     @Test
     public void testGetNeed() throws IOException {
@@ -70,7 +70,7 @@ public class NeedsCupboardFileDAOTest {
     }
 
     /**
-     * Test that getNeed() returns null if the ID does not exist
+     * Test that getNeed() method returns null if the ID does not exist
      */
     @Test
     public void testGetNeedNotFound() throws IOException{
@@ -79,7 +79,7 @@ public class NeedsCupboardFileDAOTest {
     }
 
     /**
-     * Test that searchNeeds only returns Needs that contain the substring
+     * Test that searchNeeds method only returns Needs that contain the substring
      */
     @Test
     public void testSearchNeeds() throws IOException {
@@ -89,7 +89,7 @@ public class NeedsCupboardFileDAOTest {
     }
 
     /**
-     * Tests that createdNeed adds a new need
+     * Tests the createNeed method
      */
     @Test
     public void testCreateNeed() throws IOException {
@@ -109,7 +109,7 @@ public class NeedsCupboardFileDAOTest {
     }
 
     /**
-     * Tests that updateNeed updates an existing need
+     * Tests that updateNeed method updates an existing need
      */
     @Test
     public void testUpdateNeed() throws IOException {
@@ -120,7 +120,7 @@ public class NeedsCupboardFileDAOTest {
     }
 
     /**
-     * Test that updateNeed returns null for non existent needs
+     * Test that updateNeed method returns null for non existent needs
      */
     @Test
     public void testUpdateNeedNotFound() throws IOException {
@@ -130,7 +130,7 @@ public class NeedsCupboardFileDAOTest {
     }
 
     /**
-     * Tests that deleteNeed removes the need and returns true
+     * Tests that deleteNeed method removes the need and returns true
      */
     @Test
     public void testDeleteNeed() throws IOException {
@@ -140,7 +140,7 @@ public class NeedsCupboardFileDAOTest {
     }
 
     /**
-     * Tests that deleteNeed returns false if the need does not exist
+     * Tests that deleteNeed method returns false if the need does not exist
      */
     @Test
     public void testDeleteNeedNotFound() throws IOException {
@@ -149,7 +149,7 @@ public class NeedsCupboardFileDAOTest {
     }
 
     /**
-     * Test deleteNeedType delete all needs of a given type
+     * Test deleteNeedType method 
      */
     @Test
     public void testDeleteNeedType() throws IOException {
@@ -167,7 +167,7 @@ public class NeedsCupboardFileDAOTest {
     }
 
     /**
-     * Test deleteAll clears all needs
+     * Test deleteAll method
      */
     @Test
     public void testDeleteAll() throws IOException {
@@ -177,7 +177,7 @@ public class NeedsCupboardFileDAOTest {
     }
 
     /**
-     * Test deletNeedName deletes all needs whose name contains the substring
+     * Test deletNeedName method
      */
     @Test
     public void testDeleteNeedName() throws IOException {
@@ -195,7 +195,7 @@ public class NeedsCupboardFileDAOTest {
     }
 
     /**
-     * Test searchNeedsType
+     * Test searchNeedsType method
      */
     @Test
     public void testSearchNeedsType() throws IOException {
@@ -217,7 +217,7 @@ public class NeedsCupboardFileDAOTest {
     }
 
     /**
-     * Test search needs quantity
+     * Test searchNeedsQuantity method
      */
     @Test
     public void testSearchNeedsQuantity() throws IOException {
@@ -232,7 +232,7 @@ public class NeedsCupboardFileDAOTest {
     }
 
     /**
-     * Test searchNeedsBalue
+     * Test searchNeedsByValue method
      */
     @Test
     public void testSearchNeedsValueExact() throws IOException {

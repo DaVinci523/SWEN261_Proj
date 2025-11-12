@@ -2,14 +2,14 @@ package com.ufund.api.ufundapi.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Response {
+public class APIResponse {
     
     private static String STRINGIFY = "Response [response=%s, prompt=%s]";
 
     @JsonProperty("response") private String response;
     @JsonProperty("prompt") private String prompt;
 
-    public Response (@JsonProperty("response") String response, @JsonProperty("prompt") String prompt) {
+    public APIResponse (@JsonProperty("response") String response, @JsonProperty("prompt") String prompt) {
 
         this.response = response;
         this.prompt = prompt;
