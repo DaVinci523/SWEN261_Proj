@@ -78,28 +78,35 @@ export class NeedsCupboard implements OnInit, OnDestroy {
    */
   getNeeds(): void {
     var method : any;
-    if(this.searchTerm != null){
-      const term = this.searchTerm.trim();
-      method = term
-      ? this.needsCupboardService.searchNeeds(term)
-      : this.needsCupboardService.getNeeds();
-    }
-    else if(this.typeTerm != null){
-      const term = this.typeTerm.trim();
-      method = term
-      ? this.needsCupboardService.searchNeedsType(term)
-      : this.needsCupboardService.getNeeds();
-    }
-    else if(this.qtyTerm != null){
+    console.log(this.searchTerm);
+    console.log(this.typeTerm);
+    console.log(this.qtyTerm);
+    console.log(this.valTerm);
+
+
+    
+    if(this.qtyTerm != null && this.qtyTerm != 0){
       const term = this.qtyTerm;
       method = term
       ? this.needsCupboardService.searchNeedsQuantity(term)
       : this.needsCupboardService.getNeeds();
     }
-    else if(this.valTerm != null){
+    else if(this.valTerm != null && this.valTerm != 0){
       const term = this.valTerm;
       method = term
       ? this.needsCupboardService.searchNeedsValue(term)
+      : this.needsCupboardService.getNeeds();
+    }
+    else if(this.typeTerm != null && this.typeTerm != ''){
+      const term = this.typeTerm.trim();
+      method = term
+      ? this.needsCupboardService.searchNeedsType(term)
+      : this.needsCupboardService.getNeeds();
+    }
+    else if(this.searchTerm != null){
+      const term = this.searchTerm.trim();
+      method = term
+      ? this.needsCupboardService.searchNeeds(term)
       : this.needsCupboardService.getNeeds();
     }
     method.subscribe((needs: Need[]) => this.needs = needs);
