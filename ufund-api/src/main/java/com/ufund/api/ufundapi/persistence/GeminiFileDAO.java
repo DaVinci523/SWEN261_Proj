@@ -73,7 +73,7 @@ public class GeminiFileDAO implements GeminiDAO {
         
         // cleans the response of special characters and creates new APIResponse
         String messyResp = messyResponse.getResponse();
-        String cleanResp = messyResp.replaceAll("[\\\\-\\\\+\\\\.\\\\^:,\"*]", "");
+        String cleanResp = messyResp.replaceAll("[\\\\-\\\\+\\\\\\^:\"*]", "");
         APIResponse cleanResponse = new APIResponse(cleanResp, prompt);
         
         // adds the clean response to responses
