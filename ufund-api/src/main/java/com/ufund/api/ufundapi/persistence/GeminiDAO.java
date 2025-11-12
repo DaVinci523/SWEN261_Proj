@@ -2,12 +2,12 @@ package com.ufund.api.ufundapi.persistence;
 
 import java.io.IOException;
 
-import com.ufund.api.ufundapi.model.Response;
+import com.ufund.api.ufundapi.model.APIResponse;
 
 public interface GeminiDAO {
  
     String getResponse(String prompt);
 
-    Response generateResponse(String prompt) throws IOException;
+    APIResponse generateResponse(String prompt) throws IOException;
 
 }

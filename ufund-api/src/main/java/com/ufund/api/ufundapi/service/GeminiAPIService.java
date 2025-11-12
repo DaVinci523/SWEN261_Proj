@@ -1,10 +1,11 @@
 package com.ufund.api.ufundapi.service;
 
+import com.ufund.api.ufundapi.model.APIResponse;
 import java.io.IOException;
 
 public interface GeminiAPIService {
 
     
-    String generateGeminiResponse(String prompt) throws IOException;
+    APIResponse generateGeminiResponse(String prompt) throws IOException;
 
 }
