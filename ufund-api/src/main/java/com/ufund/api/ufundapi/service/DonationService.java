@@ -2,34 +2,28 @@ package com.ufund.api.ufundapi.service;
 
 import java.io.IOException;
 
+import com.ufund.api.ufundapi.model.Donation;
+
 public interface DonationService {
 
     /**
-     * Get totalDonated
-     * @return donationTotal
+     * Get JSON status/data
+     * @return
      * @throws IOException
      */
-    double getTotal() throws IOException;
-
-    /**
-     * Get donationGoal
-     * @return goal
-     * @throws IOException
-     */
-    double getGoal() throws IOException;
-
+    Donation getStatus() throws IOException;
     /**
      * update donationTotal with the new donation
      * @param amount
      * @throws IOException
      */
-    void addDonation(double amount) throws IOException;
+    Donation addDonation(int amount) throws IOException;
 
     /**
      * Update Goal
      * @param goal
      * @throws IOException
      */
-    void setGoal(double goal) throws IOException;
+    Donation setGoal(int newGoal) throws IOException;
 }
 

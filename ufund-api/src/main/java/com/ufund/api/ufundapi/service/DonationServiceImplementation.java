@@ -7,7 +7,7 @@ import com.ufund.api.ufundapi.model.Donation;
 import com.ufund.api.ufundapi.persistence.DonationDAO;
 
 @Service
-public class DonationServiceImplementation {
+public class DonationServiceImplementation implements DonationService {
     private final DonationDAO donationDAO;
 
     @Autowired
@@ -20,6 +20,7 @@ public class DonationServiceImplementation {
      * @return
      * @throws IOException
      */
+    @Override
     public Donation getStatus() throws IOException {
         return donationDAO.getStatus();
     }
@@ -29,6 +30,7 @@ public class DonationServiceImplementation {
      * @param amount
      * @throws IOException
      */ 
+    @Override
     public Donation addDonation(int amount) throws IOException {
         Donation status = donationDAO.getStatus();
 
@@ -46,6 +48,7 @@ public class DonationServiceImplementation {
      * @param goal
      * @throws IOException
      */
+    @Override
     public Donation setGoal(int newGoal) throws IOException {
         Donation status = donationDAO.getStatus();
 
