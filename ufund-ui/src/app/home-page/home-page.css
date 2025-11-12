@@ -200,14 +200,20 @@
   margin-top: 4px;
 }
 
+#ai-container{
+  grid-column: 2;           /* right column, second row (UNDER the text) */
+  grid-row: 3;
+}
+
 /* Stack on small screens */
 @media (max-width: 900px){
   .about-grid{
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
   }
   .about-photo{ grid-column:1; grid-row:1; }
   .about-text{  grid-column:1; grid-row:2; }
   #reviews-card-container{ grid-column:1; grid-row:3; }
+  #ai-container{ grid-column: 2; grid-row: 1;}
 }
 
 
