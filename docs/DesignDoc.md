@@ -82,8 +82,25 @@ Finally, we also have a FundingBasketDataWrapper.java file that wraps the collec
 
 
 ### Overview of User Interface
+<img width="6467" height="2197" alt="View Tier Architecture" src="ViewTierArchitecture2.png" />
 
->The primary flow is present on the Need Page and Checkout Page. The Need Page has a split layout where the left panel lists all available needs in >the “need cupboard,” and the right panel shows the user’s current “funding basket.” Users can add items from the cupboard to their basket and >adjust their quantities. Proceeding to the Checkout Page, they again see a similar layout with basket contents on the left and payment inputs on >the right. Filling out the payment fields and clicking checkout submits the purchase which makes the system remove the purchased quantities from >the need cupboard, clears the user’s basket, and sends the user back to the homepage. If a user logs in with the username “admin,” they’re taken >to the Admin Page, which has the similar split layout with the left side displaying the current contents of the need cupboard, while the right >side provides controls to add, edit, or remove needs. We plan on improving the look of the UI in Sprint 3 but for right now it is fully functional. No functionality improvements need to be made before the end of sprint 2.
+>>The primary flow is present on the Need Page and Checkout Page:
+>The Need Page has a split layout where the left panel lists all available needs in the “need cupboard,” and the right panel shows the user’s current “funding basket.” Users can add items from the cupboard to their basket and adjust their quantities.
+
+>Proceeding to the Checkout Page, the user sees a similar layout with basket contents on the left and payment inputs on the right.
+>Filling out the payment fields and clicking checkout submits the purchase which makes the system remove the purchased quantities from the need cupboard, clears the user’s basket.
+
+
+>>The admin flow is as follows:
+>If a user logs in with the username “admin,” they’re taken to the Admin Page, which has a similar split layout with the left side displaying the current contents of the need cupboard, while the right side provides fields to add, update, or remove needs. 
+>In addition, in the bottom right corner the current list of users are displayed. Here, the admin can delete specified users.
+
+
+>Additional elements:
+> In the home-page, any logged-in user will see a section dedicated to showcasing two randomly selected reviews. Underneath, there is a button to re-select two random reviews
+
+> When logged in, any user can navigate to the reviews page from the navigation bar. Here, non-admins have a field to create a review given the rating and description. Admins have the ability to delete any individual review. 
+
 
 ### View Tier
 > _**[Sprint 4]** Provide a summary of the View Tier UI of your architecture.
@@ -102,7 +119,6 @@ Finally, we also have a FundingBasketDataWrapper.java file that wraps the collec
 >* _A single class diagram of the entire system will not be effective. You may start with one, but will be need to break it down into smaller sections to account for requirements of each of the Tier static models below._
  >* _Correct labeling of relationships with proper notation for the relationship type, multiplicities, and navigation information will be important._
  >* _Include other details such as attributes and method signatures that you think are needed to support the level of detail in your discussion._
-<img width="6467" height="2197" alt="View Tier Architecture" src="ViewTierArchitecture.png" />
 
 ### ViewModel Tier
 
@@ -489,11 +505,44 @@ Finally, we also have a FundingBasketDataWrapper.java file that wraps the collec
 
 
 ## OO Design Principles
->Sprint 1: The two Object Oriented Design principles that the CTRL team is championing throughout the design and implementation are Low Coupling >and Open/Close. The Low Coupling principle is implemented into the design through there being only one connection. The Open/Close principle is >utilized as our program is designed to grow over time. As of Sprint 1 the foundational code has been written and we will be able to add new >functionality without modifying what is already there.
+Sprint 1: The two Object Oriented Design principles that the CTRL team is championing throughout the design and implementation are Low Coupling and Open/Close. The Low Coupling principle is aimed towards minimizing interdependence between different classes.  One example of Low Coupling in our project can be shown through our Need and User model classes. 
+
+<img width="593" height="332" alt="Need Constructor" src="Need_Constructor.png" />
+<img width="593" height="332" alt="User Constructor" src="User_Constructor.png" />
+
+The need class only takes in primitive types as variables, which means that it has no reliance on other classes allowing it to follow the Low Coupling principle. The user class does take an array of needs as one of its variables, however, it is not dependent on the actual internal functions of the need class. This enables changes to be made to need without causing any problems with the User class. The open/closed object oriented principle states that software entities should be open for extension but closed for modification. One way this was utilized throughout the project was through the use of interfaces in the persistence tier. A specific example of this is shown below through NeedsCupboardDAO and NeedsCupboardFileDAO. 
+
+<img width="593" height="332" alt="NeedCupboardDAO" src="NeedsCupboardDAO.png" />
+<img width="593" height="332" alt="NeedsCupboardFileDAO" src="NeedsCupboardFileDAO.png" />
+
+As a result of the persistence tier being designed this way, if something such as how the data is stored is modified, the rest of the system will remain unaffected following the open/closed principle. 
+
+
+Sprint 2: The two Object Oriented Design principles that the CTRL team is championing throughout Sprint 2 are the Law of Demeter and Pure Fabrication. The Law of Demeter principle is being followed through our implementation of service classes, which serves as an inbetween for the controller and DAO. This prevents the classes from having to call other classes that are distant which would break the “don’t talk to strangers” principle for the Law of Demeter. This can be shown through NeedsCupboardServiceImplementation and how it only talks to its DAO. 
+
+<img width="593" height="332" alt="NeedsCupboardServiceImplementation" src="NeedsCupboardServiceImplementation.png" />
+
+Another principle that the service files helped us follow was Pure Fabrication. Pure Fabrication is when a new class is created to handle responsibilities that don’t fit well with the already existing classes. The service files were created to specifically handle the communication between the controller and DAO, making it a good example of following the Pure Fabrication principle. The searchNeedsType method in the NeedsCupboardServiceImplementation shows how the class functions as a middleman between the DAO and the controller, following the Pure Fabrication Principle. 
+
+<img width="593" height="332" alt="searchNeedsType method" src="searchNeedsType.png" />
+
+Sprint 3: The Object Oriented Design Principle that the CTRL team decided to champion throughout sprint 3 was Single Responsibility. The Single Responsibility principle is the idea that each class should have a single tightly focused responsibility. One way this principle was implemented throughout the project during sprint 3 was through the review system, where each class has its own specific purpose. In the model tier, the review model serves to define the structure of the reviews data. This can be seen through the constructor in the review model. 
+
+<img width="593" height="332" alt="Review Model" src="ReviewModel.png" />
+
+In the persistence tier, ReviewFileDAO handles the storage and retrieval of data for Reviews. Two methods that play a huge role in the storage and retrieval of data for Reviews are save() and load() methods that are shown below.
+
+<img width="593" height="332" alt="ReviewFileDAO" src="ReviewFileDAO.png" />
+
+The ReviewServiceImplementation file handles all communications between the Review Controller and the Review Persistence tiers. This communication to the ReviewDAO can be seen in the code snippet below from ReviewServiceImplementation. 
+
+<img width="593" height="332" alt="ReviewServiceImplementation" src="ReviewServiceImplementation.png" />
+
+Finally, the Review Controller handles all REST API requests for reviews. For example, the code below shows how the Review Controller handles the request for creating a new review.
+
+<img width="593" height="332" alt="Review Controller POST method" src="createReview.png" />
 >
->Sprint 2: The two Object Oriented Design principles that the CTRL team is championing throughout Sprint 2 are the Law of Demeter and Pure >Fabrication. The Law of Demeter principle is being followed through our implementation of service classes, which serves as an inbetween for the >controller and DAO. This prevents the classes from having to call other classes that are distant which would break the “don’t talk to strangers” >principle for the Law of Demeter. Another principle that the service files helped us follow was Pure Fabrication. Pure Fabrication is when a new >class is created to handle responsibilities that don’t fit well with the already existing classes. The service files were created to specifically >handle the calling of methods, making it a good example of following the Pure Fabrication principle.
->
-> _**[Sprint 3 & 4]** OO Design Principles should span across **all tiers.**_
+> _**[Sprint 4]** OO Design Principles should span across **all tiers.**_
 
 ## Static Code Analysis/Future Design Improvements
 > _**[Sprint 4]** With the results from the Static Code Analysis exercise, 
@@ -515,7 +564,7 @@ Finally, we also have a FundingBasketDataWrapper.java file that wraps the collec
 
 >_**[Sprint 2, 3 & 4]** **Include images of your code coverage report.** If there are any anomalies, discuss
 > those._W
-<img width="821" height="718" alt="General Code Coverage Reports" src="UnitTestingAndCodeCoverage.png" />
+<img width="821" height="718" alt="General Code Coverage Reports" src="s3coverage.png" />
 
 ## Ongoing Rationale
 >_**[Sprint 1, 2, 3 & 4]** Throughout the project, provide a time stamp **(yyyy/mm/dd): Sprint # and description** of any _**mayor**_ team decisions or design milestones/changes and corresponding justification._

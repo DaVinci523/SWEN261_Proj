@@ -53,27 +53,25 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
      * @param userName the user that will be swapped to
      * @return
      */
-    private boolean swapCurrentUser(String userName){
-        synchronized(currentUser){
-            currentUser = userName;
+    private boolean swapCurrentUser(String userName) {
+        currentUser = userName;
+        currentUserNeeds = new TreeMap<>();
 
-            currentUserNeeds = new TreeMap<>();
+        if (!users.containsKey(userName)) {
+            return false;
+        }
 
-            if(!users.containsKey(userName)){ // create a new user with an empty needs list if the userName is not part of the table
-                users.put(userName, new Need[0]);
-            }
-
-            try{
-                for (Need need : users.get(currentUser)){
-                    currentUserNeeds.put(need.getId(), need);
+        Need[] arr = users.get(userName);
+        if (arr != null) {
+            for (Need n : arr) {
+                if (n != null) {
+                    currentUserNeeds.put(n.getId(), n);
                 }
-            } catch (NotFound e){ // send error message if userName is not in the data
-                System.out.println("Error: Not a valid userName");
-                return false;
             }
         }
         return true;
     }
+
 
     /**
      *  Create array of Users from tree map
@@ -120,7 +118,6 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
      * @return Array of Needs
      */
     private Need[] getNeedsArray(String userName, String text){
-        swapCurrentUser(userName);
         ArrayList<Need> needsArrayList = new ArrayList<>();
 
         for (Need need : currentUserNeeds.values()){
@@ -192,7 +189,12 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
 
         }
 
-        swapCurrentUser(currentUser);// sets the current user needs to whatever the last user was in the usersArray(the currentUser)
+        if (currentUser != null && users.containsKey(currentUser)) {
+            swapCurrentUser(currentUser);
+        } else {
+            currentUserNeeds = new TreeMap<>();
+            currentUser = "";
+        }
         
         return true;
     }
@@ -217,9 +219,13 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
 
     @Override
     public Need[] getNeeds(String userName) {
-        swapCurrentUser(userName);
+        boolean ok = swapCurrentUser(userName);
+        if (!ok) {
+            return null;
+        }
         synchronized(currentUserNeeds) {
-            return getNeedsArray(currentUser);
+            Need[] out = getNeedsArray(userName, null);
+            return out;
         }
     }
     /**
@@ -230,9 +236,13 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
      */
     @Override
     public Need[] searchNeeds(String userName, String text) throws IOException {
-        swapCurrentUser(userName);
+        boolean ok = swapCurrentUser(userName);
+        if (!ok) {
+            return null;
+        }
         synchronized(currentUserNeeds) {
-            return getNeedsArray(userName, text);
+            Need[] out = getNeedsArray(userName, text);
+            return out;
         }
     }
 
@@ -244,14 +254,17 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
      */
     @Override
     public Need getNeed(String userName, int id) throws IOException {
-        swapCurrentUser(userName);
-        synchronized(currentUserNeeds) {
-            if (currentUserNeeds.containsKey(id))
-                return currentUserNeeds.get(id);
-            else
-                return null;
+        boolean ok = swapCurrentUser(userName);
+        if (!ok) {
+            return null;
         }
-
+        synchronized(currentUserNeeds) {
+            if (currentUserNeeds.containsKey(id)) {
+                return currentUserNeeds.get(id);
+            } else {
+                return null;
+            }
+        }
     }
 
     /**
@@ -270,7 +283,10 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
             if (need.getId() == 0){ // if an id is not given, then return null
                 return null;
             }
-            swapCurrentUser(userName);
+            boolean ok = swapCurrentUser(userName);
+            if (!ok) {
+                return null;
+            }
             boolean exists = currentUserNeeds.values().stream().anyMatch(n -> n.getName().equalsIgnoreCase(need.getName()) || n.getId() == (need.getId()));
             if (exists){
                 Need toUpdate = currentUserNeeds.get(need.getId());
@@ -302,7 +318,10 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
      */
     @Override
     public Need updateNeed(String userName, Need need) throws IOException {
-        swapCurrentUser(userName);
+        boolean ok = swapCurrentUser(userName);
+        if (!ok) {
+            return null;
+        }
         synchronized(currentUserNeeds) {
             if (currentUserNeeds.containsKey(need.getId()) == false)
                 return null;
@@ -322,7 +341,10 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
      */
     @Override
     public boolean deleteNeed(String userName, int id) throws IOException {
-        swapCurrentUser(userName);
+        boolean ok = swapCurrentUser(userName);
+        if (!ok) {
+            return false;
+        }
         synchronized(currentUserNeeds) {
            if (currentUserNeeds.containsKey(id)) {
                currentUserNeeds.remove(id);
@@ -345,7 +367,10 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
      */
     @Override
     public boolean deleteNeedType(String userName, String type) throws IOException {
-        swapCurrentUser(userName);
+        boolean ok = swapCurrentUser(userName);
+        if (!ok) {
+            return false;
+        }
         synchronized(currentUserNeeds) {
             if(currentUserNeeds.entrySet().removeIf(entry -> entry.getValue().getType().equals(type))){ // remove entry if it matches the given type
                boolean saved = save();
@@ -364,7 +389,10 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
      */
     @Override
     public boolean deleteAll(String userName) throws IOException {
-        swapCurrentUser(userName);
+        boolean ok = swapCurrentUser(userName);
+        if (!ok) {
+            return false;
+        }
         synchronized(currentUserNeeds) {
             currentUserNeeds.clear();
             boolean saved = save();
@@ -380,7 +408,10 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
      */
     @Override
     public boolean deleteNeedName(String userName, String name) throws IOException {
-        swapCurrentUser(userName);
+        boolean ok = swapCurrentUser(userName);
+        if (!ok) {
+            return false;
+        }
         synchronized(currentUserNeeds) {
             if(currentUserNeeds.entrySet().removeIf(entry -> entry.getValue().getName().contains(name))){
                boolean saved = save();
@@ -390,5 +421,77 @@ public class FundingBasketFileDAO implements FundingBasketDAO {
                 return false;
      }
     }
+
+    /**
+     * Delete a user and all associated needs from the funding basket file.
+     * @param userName the user this method will modify
+     * @return true if file was updated succesfully
+     * @return false, if deletion failed
+     */
+    @Override
+    public boolean deleteUser(String userName) throws IOException {
+        if (userName == null) {
+            return false;
+        }
+
+        if (!users.containsKey(userName)) {
+            return false;
+        }
+
+        users.remove(userName);
+
+        // If we just removed the "currentUser" reset state
+        if (currentUser != null && currentUser.equals(userName)) {
+            currentUserNeeds = new TreeMap<>();
+
+            if (!users.isEmpty()) {
+                String first = users.keySet().iterator().next();
+                swapCurrentUser(first);
+            } else {
+                currentUser = "";
+            }
+        }
+
+        // Persist the updated users map to disk in the same wrapped format
+        User[] usersArray = getUsersArray();
+        List<User> usersList = Arrays.asList(usersArray);
+        FundingBasketDataWrapper wrappedList = new FundingBasketDataWrapper(usersList);
+
+        objectMapper.writeValue(new File(filename), wrappedList);
+        objectMapper.writeValue(new File(filename), wrappedList);
+
+        return true;
+    }
+
+    /**
+     * Creates a new user entry in the funding basket file.
+     * @param userName the user this method will modify
+     * @return true if file was updated succesfully
+     * @return false, if deletion failed
+     */
+    @Override
+    public boolean createUser(String userName) throws IOException {
+        if (userName == null) {
+            return false;
+        }
+
+        if (users.containsKey(userName)) {
+            return true; // already present, nothing to do
+        }
+
+        // create an empty basket for this user WITHOUT changing currentUser/currentUserNeeds
+        users.put(userName, new Need[0]);
+
+        // persist users -> funding_basket.json (same double-write pattern you use elsewhere)
+        User[] usersArray = getUsersArray();
+        List<User> usersList = Arrays.asList(usersArray);
+        FundingBasketDataWrapper wrappedList = new FundingBasketDataWrapper(usersList);
+
+        objectMapper.writeValue(new File(filename), wrappedList);
+        objectMapper.writeValue(new File(filename), wrappedList);
+
+        return true;
+    }
+
 
 }

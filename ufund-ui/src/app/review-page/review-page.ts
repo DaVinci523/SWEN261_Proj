@@ -119,7 +119,7 @@ export class ReviewsPage implements OnInit {
   }
 
   delete(id: number): void {
-    const ok = window.confirm('Delete review #' + id + '?');
+    const ok = window.confirm('Delete review?');
     if (!ok) {
       return;
     }

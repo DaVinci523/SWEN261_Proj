@@ -61,7 +61,7 @@ public class ReviewFileDAOTest {
     }
 
     /**
-     * Test getReviews returns all the reviews
+     * Test getReviews method returns all the reviews
      */
     @Test
     public void testGetReviews() {
@@ -73,7 +73,7 @@ public class ReviewFileDAOTest {
     }
 
     /**
-     * Test getReview() retrieves a review by ID
+     * Test getReview method retrieves a review by ID
      */
     @Test
     public void testGetReviewsByRating() throws IOException {
@@ -84,7 +84,7 @@ public class ReviewFileDAOTest {
     }
 
     /**
-     * Test getReview returns null when the review does not exist
+     * Test getReview method returns null when the review does not exist
      */
     @Test
     public void testGetReviewsByRatingNoneFound() throws IOException {
@@ -94,7 +94,7 @@ public class ReviewFileDAOTest {
     }
 
     /**
-     * Test createReview creates a new review with a unique ID
+     * Test createReview nethod creates a new review with a unique ID
      */
     @Test
     public void testCreateReview() throws IOException {
@@ -112,7 +112,7 @@ public class ReviewFileDAOTest {
     }
 
     /**
-     * Test that deleteReview removes an existing review
+     * Test that deleteReview method removes an existing review
      */
     @Test
     public void testDeleteReview() throws IOException {
@@ -125,7 +125,7 @@ public class ReviewFileDAOTest {
     }
 
     /**
-     * Test deleteReview() returns false if the id does not exist 
+     * Test deleteReview method returns false if the id does not exist 
      */
     @Test
     public void testDeleteReviewNotFound() throws IOException {
@@ -137,7 +137,7 @@ public class ReviewFileDAOTest {
     }
 
     /**
-     * Test deleteAll removes all reviews and saves the updated file
+     * Test deleteAll method removes all reviews and saves the updated file
      */
     @Test
     public void testDeleteAll() throws IOException {
@@ -151,6 +151,9 @@ public class ReviewFileDAOTest {
         assertEquals(0, reviewFileDAO.getReviews().length);
     }
 
+    /**
+     * Tests deleteReviewByUsername method
+     */
     @Test
     public void testDeleteReviewsByUsername() throws IOException {
         boolean result = reviewFileDAO.deleteReviewsByUsername("user2");

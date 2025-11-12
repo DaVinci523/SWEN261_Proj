@@ -1,240 +1,133 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone  } from '@angular/core';
+import { Router } from '@angular/router';
+import { AccountsService } from './accounts-service';
+
 
 export type Role = 'admin' | 'helper';
-export interface UserInfo { password: string; role: Role; }
-export interface PublicUserInfo { username: string; password: string; role: Role; }
-type CredStore = Record<string, UserInfo>;
+
 
 @Injectable({ providedIn: 'root' })
 export class User {
   private USER_KEY = 'auth_username';
   private FLAG_KEY = 'auth_loggedin';
-  private CREDS_KEY = 'auth_creds';  
 
-  // auth session state
+
   loggedIn = false;
   currentUser: string | null = null;
 
-  constructor() {
-  const creds = this.getCreds();
-    if (!creds['admin']) {
-      creds['admin'] = { password: 'admin', role: 'admin' };
-      this.setCreds(creds);
-    }
-    const flag = localStorage.getItem(this.FLAG_KEY);
-    const user = localStorage.getItem(this.USER_KEY);
+
+  private bc: BroadcastChannel | null = null;
+
+
+  constructor(private router: Router, private ngZone: NgZone, private accounts: AccountsService) {
+    const flag = sessionStorage.getItem(this.FLAG_KEY);
+    const user = sessionStorage.getItem(this.USER_KEY);
     if (flag === 'true' && user) {
       this.loggedIn = true;
       this.currentUser = user;
-    } else {
-      this.loggedIn = false;
-      this.currentUser = null;
-    }
-  }
-
-
-  getAllUsers() {
-    const creds = this.getCreds(); //map
-    const list: PublicUserInfo[] = []; //store
-    const keys = Object.keys(creds); //usernames
-    let i = 0;
-    while (i < keys.length) {
-      const uname = keys[i];
-      const rec = creds[uname]; //record for that username
-      if (rec) {
-        list.push({ username: uname, password: rec.password, role: rec.role });
-      }
-      i++;
-    }
-    return list;
-  }
-
-  deleteUser(username: string): boolean {
-    if (!username) {
-      return false;
-    }
-    const uname = username.trim();
-    if (!uname) {
-      return false;
     }
 
-    const lower = uname.toLowerCase();
-    if (lower == 'admin') {
-      return false;
-    }
-
-    const creds = this.getCreds();
-    if (!creds[uname]) {
-      return false;
-    }
-    delete creds[uname];
-    this.setCreds(creds);
-    if (this.currentUser == uname) {
-      this.logout();
-    }
-    return true;
-  }
-  
-  clearAllUsers(){
-    localStorage.removeItem(this.CREDS_KEY);
-
-    //readd admin
-    const seed: CredStore = {};
-    seed['admin'] = { password: 'admin', role: 'admin' };
-    this.setCreds(seed);
-  }
-
-  private getCreds(): CredStore{
-    const raw = localStorage.getItem(this.CREDS_KEY);
-    let store = {};
-    if (raw !== null) {
-      const parsed = JSON.parse(raw);
-      if (parsed) {
-        store = parsed;
+    if ('BroadcastChannel' in window) {
+      try {
+        this.bc = new BroadcastChannel('auth');
+        this.bc.onmessage = (ev: MessageEvent) => {
+          const data = ev.data;
+          if (!data) { return; }
+          if (data.type === 'force-logout') {
+            const target = String(data.user || '');
+            if (this.currentUser && target &&
+                this.currentUser.toLowerCase() === target.toLowerCase()) {
+              this.ngZone.run(() => {
+                this.logout();
+                try { this.router.navigate(['/login']); } catch (_e) {}
+              });
+            }
+          }
+        };
+      } catch (_e) {
+        this.bc = null;
       }
     }
-    return store;
+    window.addEventListener('storage', (e: StorageEvent) => {
+      if (!e.key) { return; }
+      const prefix = 'force-logout:';
+      if (e.key.indexOf(prefix) !== 0) { return; }
+      const target = e.key.substring(prefix.length);
+      if (!target) { return; }
+      if (this.currentUser &&
+          this.currentUser.toLowerCase() === target.toLowerCase()) {
+        this.ngZone.run(() => {
+          this.logout();
+          try { this.router.navigate(['/login']); } catch (_e) {}
+        });
+      }
+    });
+
+
+    setInterval(() => {
+      if (!this.loggedIn) { return; }
+      if (!this.currentUser) { return; }
+      const uname = this.currentUser;
+
+
+      this.accounts.exists(uname).subscribe({
+        next: (exists) => {
+          if (!exists) {
+            this.ngZone.run(() => {
+              this.logout();
+              try { this.router.navigate(['/login']); } catch (_e) {}
+            });
+          }
+        },
+        error: (_err) => {
+        }
+      });
+    }, 4000);
+
+
   }
 
-  private setCreds(creds: CredStore) {
-    localStorage.setItem(this.CREDS_KEY, JSON.stringify(creds));
-  }
 
-  private getRoleFor(uname: string): Role {
-    const lower = uname.toLowerCase();
-    if (lower === 'admin') {
-      return 'admin';
-    }
-    return 'helper';
-  }
-
-  userExists(username: string): boolean {
-    if (username == null) {
-      return false;
-    }
-
-    const uname = username.trim();
-    if (!uname) {
-      return false;
-    }
-
-    const creds = this.getCreds();
-    if (creds[uname] !== undefined) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  createUser(username: string, password: string): boolean {
-    if (username == null) {
-      return false;
-    }
-    if (password == null) {
-      return false;
-    }
-
-    const uname = username.trim();
-    if (!uname) {
-      return false;
-    }
-    if (!password) {
-      return false;
-    }
-
-    const creds = this.getCreds();
-    if (creds[uname]) {
-      return false;
-    }
-
-    const role = this.getRoleFor(uname);
-    creds[uname] = { password: password, role: role };
-    this.setCreds(creds);
-    return true;
-  }
-
-  /** 
-   * "Logs in a user" which stores the current user logged in.
-   * @param username Username of the user
-   * @param password Password for username
-   * @returns 
-   */
-  login(username: string, password: string): boolean {
-    if (!username) {
-      return false;
-    }
-    if (!password) {
-      return false;
-    }
-
-    const uname = username.trim();
-    if (!uname) {
-      return false;
-    }
-
-    const creds = this.getCreds();
-    const rec = creds[uname];
-
-    if (!rec) {
-      return false;
-    }
-    if (rec.password !== password) {
-      return false;
-    }
-
+  /** set session after backend validates/creates */
+  setSession(username: string): void {
     this.loggedIn = true;
-    this.currentUser = uname;
-    localStorage.setItem(this.FLAG_KEY, 'true');
-    localStorage.setItem(this.USER_KEY, uname);
-    return true;
+    this.currentUser = username;
+    sessionStorage.setItem(this.FLAG_KEY, 'true');
+    sessionStorage.setItem(this.USER_KEY, username);
   }
 
-  /**
-   * "Logs out a user" which clears the current user logged in.
-   */
+
   logout(): void {
     this.loggedIn = false;
     this.currentUser = null;
-    localStorage.removeItem(this.FLAG_KEY);
-    localStorage.removeItem(this.USER_KEY);
+    sessionStorage.removeItem(this.FLAG_KEY);
+    sessionStorage.removeItem(this.USER_KEY);
   }
 
-  /**
-   * Get the current user logged in
-   * @returns Current user (their username) logged in
-   */
-  getCurrentUser(): string | null { 
-    return this.currentUser;
-   }
 
-   /**
-    * Get the role (admin / helper) of the current user logged in
-    * @returns The logged in user's role
-    */
+  getCurrentUser(): string | null {
+    return this.currentUser;
+  }
+
+
   getCurrentUserRole(): Role | null {
-    if (this.currentUser == null) {
+    if (!this.currentUser) {
       return null;
     }
 
-    const creds = this.getCreds();
-    const rec = creds[this.currentUser];
 
-    if (rec) {
-      return rec.role;
+    if (this.currentUser.toLowerCase() == 'admin') {
+      return 'admin';
     }
 
-    const lower = this.currentUser.toLowerCase();
-    let role: Role = 'helper';
-    if (lower === 'admin') {
-      role = 'admin';
-    }
-    return role;
+
+    return 'helper';
   }
 
-  /**
-   * @returns If a user is logged in
-   */
-  isLoggedIn(): boolean { 
-    return this.loggedIn; 
+
+  isLoggedIn(): boolean {
+    return this.loggedIn;
   }
 }
+
+

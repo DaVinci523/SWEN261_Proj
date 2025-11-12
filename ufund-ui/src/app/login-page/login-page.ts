@@ -1,79 +1,90 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '../user';
+import { AccountsService } from '../accounts-service';
+import { ModalService } from '../modal-service';
 
 @Component({
   selector: 'app-login-page',
   standalone: false,
   templateUrl: './login-page.html',
-  styleUrls: ['./login-page.css']   // note: styleUrls (plural)
+  styleUrls: ['./login-page.css']
 })
 export class LoginPage {
-  constructor(private router: Router, public user: User) {}
+  constructor(
+    private router: Router,
+    public user: User,
+    private accounts: AccountsService,
+    public modal: ModalService
+  ) {}
 
   username = '';
   password = '';
-  
-  /**
-   * When the user clicks the login button, the username entered will store
-   * into the user service and direct the user to their corresponding page
-   */
+
   onLogin(skipConfirm: boolean = false): void {
-    if (!this.username) {
-      return;
-    }
-    if (!this.password) {
+    if (!this.username || !this.password) {
       return;
     }
 
     if (!skipConfirm) {
-      const proceed = window.confirm('Log in as "' + this.username + '"?');
-      if (!proceed) {
-        return;
-      }
-    }
+        this.modal.confirmDialog('Confirm login', 'Log in as "' + this.username + '"?', 'Yes', 'No')
+        .subscribe(go => {
+        if (go) {
+            this.accounts.validate(this.username, this.password).subscribe(ok => {
+              if (!ok) {
+                this.modal.infoDialog('Login failed', 'Invalid username or password.', 'OK').subscribe(() => {});
+                return;
+              }
 
-
-    const ok = this.user.login(this.username, this.password);
-
-    if (ok) {
-      const role = this.user.getCurrentUserRole();
-      if (role === 'admin') {
-        this.router.navigate(['/admin']);
-      } else {
-        this.router.navigate(['/helper']);
-      }
-    } else {
-      alert('Invalid username or password, or the account does not exist.');
+              this.user.setSession(this.username);
+              const role = this.user.getCurrentUserRole();
+              if (role == 'admin') {
+                this.router.navigate(['/admin']);
+              } else {
+                this.router.navigate(['/helper']);
+              }
+            });
+        }
+      });
     }
   }
 
   onCreateUser(): void {
-    if (!this.username) {
-      alert('Please enter a username to create an account.');
-      return;
-    }
-    if (!this.password) {
-      alert('Please enter a password to create an account.');
-      return;
-    }
+    this.accounts.exists(this.username).subscribe(exists => {
+      if (exists) {
+        this.modal.infoDialog('Account Creation Error', 'This username already exists.', 'OK').subscribe(() => {});
+        return;
+      }
 
-    if (this.user.userExists(this.username)) {
-      alert('That username already exists. Please choose another.');
-      return;
-    }
+      this.modal.confirmDialog('Account Creation', 'Create an account named "' + this.username + '"?', 'Yes', 'No')
+      .subscribe(go => {
+        let role: 'admin' | 'helper';
+        const lower = this.username.toLowerCase();
+        if (lower === 'admin') {
+          role = 'admin';
+        } else {
+          role = 'helper';
+        }
 
-    const proceed = window.confirm('Create a new account for "' + this.username + '" and save this password?');
-    if (!proceed) {
-      return;
-    }
+        this.accounts.create({ username: this.username, password: this.password, role }).subscribe(created => {
+          if (!created) {
+            alert('Account could not be created.');
+            return;
+          }
+          this.modal.infoDialog('Account Creation', 'Account created, logging you in now...', 'OK')
+          .subscribe(go => {
+            // set session locally; backend already created the account (and funding basket via your server-side hook)
+            this.user.setSession(this.username);
 
-    const created = this.user.createUser(this.username, this.password);
-    if (created) {
-      alert('Account created! Logging you in now.');
-      this.onLogin(true);
-    } else {
-      alert('Account could not be created.');
-    }
+            const r = this.user.getCurrentUserRole();
+            if (r === 'admin') {
+              this.router.navigate(['/admin']);
+            } else {
+              this.router.navigate(['/helper']);
+            }
+          });
+        });
+      });
+    });
   }
 }

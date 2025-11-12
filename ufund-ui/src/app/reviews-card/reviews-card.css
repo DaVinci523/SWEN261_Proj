@@ -1,10 +1,18 @@
 /* Containers */
+div.reviews-row {
+    background-color: white;
+    padding: 2%;
+    border: 2px solid black;
+    border-radius: 48px;
+    width: 80%;
+}
+
 ul {
     display: grid;
     gap: 3%;
-    grid-template-columns: 31% 31% 31%;
+    grid-template-columns: 45% 45%;
     padding: 0%;
-    margin: 5%;
+    margin: 5% auto;
     font-size: 20px;
     width:90%;
     height:100%;
@@ -35,6 +43,11 @@ div.data-container {
     overflow: clip;
 }
 
+div.button-container {
+    padding-right: 2.5em;
+    text-align: right;
+}
+
 div#review-head {
     grid-row: 1;
     height: 100%;
@@ -53,3 +66,25 @@ div#review-text {
     overflow-wrap: break-word;
     text-align: left;
 }
+
+
+
+.refresh-btn{
+    appearance:none;
+    margin: 0.5em auto;
+    align-self: start;
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1.5px solid #2e6cff;
+    background: transparent;
+    color: #2e6cff;
+    font-weight: 700;
+    width: 40%;
+    cursor: pointer;
+    box-shadow: 0 2px 0 rgb(0 0 0 / .06);
+    transition: .2s, color .2s, transform .06s, box-shadow .2s;
+}
+
+.refresh-btn:hover { background:#2e6cff; color:#fff; }
+.refresh-btn:active { transform: translateY(1px); box-shadow:0 1px 0 rgb(0 0 0 / .04); }
+.refresh-btn:focus-visible { outline:3px solid #cddcff; outline-offset:2px; }

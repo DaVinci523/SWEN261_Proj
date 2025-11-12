@@ -12,6 +12,9 @@ import org.junit.jupiter.api.Test;
 
  @Tag("Model-tier")
 public class ReviewTest {
+    /**
+     * Tests the constructor
+     */
     @Test
     public void testConstructor(){
         //Setup
@@ -31,6 +34,9 @@ public class ReviewTest {
     }
 
 
+    /**
+     * Tests the toString method
+     */
     @Test
     public void testToString() {
         // Setup
@@ -48,12 +54,15 @@ public class ReviewTest {
         assertEquals(expected_string, actual_string);
     }
 
+    /**
+     * Tests the review getter methods
+     */
     @Test
     public void testGetters() {
-        Review review = new Review(2, "userXman", "Nice site", 4);
+        Review review = new Review(2, "Xman", "Nice site", 4);
 
         assertEquals(2, review.getId());
-        assertEquals("userXman", review.getUserName());
+        assertEquals("Xman", review.getUserName());
         assertEquals("Nice site", review.getReviewText());
         assertEquals(4, review.getRating());
     }

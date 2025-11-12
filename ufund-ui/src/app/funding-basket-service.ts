@@ -44,33 +44,26 @@ export class FundingBasketService {
     return this.http.get<any>(url);
   }
 
-  /** GET need by id. Will 404 if id not found */
+  /** 
+   * GET need by id. Will 404 if id not found 
+   */
   getNeed(userName: String, id: number): Observable<Need> {
     const url = `${this.needsUrl}/${userName}/${id}`;
-    return this.http.get<Need>(url)//.pipe(
-    //   tap(_ => this.log(`fetched need id=${id}`)),
-    //   catchError(this.handleError<Need>(`getNeed id=${id}`))
-    //);
+    return this.http.get<Need>(url)
   }
 
   /** PUT: update the need on the server */
   updateNeed(userName: String, need: Need): Observable<any> {
     const url = `${this.needsUrl}/${userName}`;
 
-    return this.http.put(url, need, this.httpOptions)/*.pipe(
-      tap(_ => this.log(`updated hero id=${hero.id}`)),
-      catchError(this.handleError<any>('updateHero'))
-    );*/
+    return this.http.put(url, need, this.httpOptions)
   }
 
   /** PUT: update the need's visibility on the server */
   changeNeedVisibility(userName: String, id: number, visible: boolean): Observable<any> {
     const url = `${this.needsUrl}/${userName}/${id}/visible/?visible=${visible}`;
 
-    return this.http.put(url, this.httpOptions)/*.pipe(
-      tap(_ => this.log(`updated hero id=${hero.id}`)),
-      catchError(this.handleError<any>('updateHero'))
-    );*/
+    return this.http.put(url, this.httpOptions)
   }
 
   /** POST: add a new need to the server */
@@ -78,8 +71,7 @@ export class FundingBasketService {
     const url = `${this.needsUrl}/${userName}`;
 
     return this.http.post<Need>(url, need, this.httpOptions).pipe(
-      tap(_ => this.updateItemCount(userName)),
-      //catchError(this.handleError<Need>('addNeed'))
+      tap(_ => this.updateItemCount(userName))
     );
   }
 
@@ -89,7 +81,6 @@ export class FundingBasketService {
 
     return this.http.delete<Need>(url, this.httpOptions).pipe(
       tap(_ => this.updateItemCount(userName))
-      //catchError(this.handleError<Hero>('deleteHero'))
     );
   }
 
@@ -99,8 +90,14 @@ export class FundingBasketService {
   updateItemCount(userName: String): void {
     this.getNeeds(userName).subscribe({
       next: (needs) => {
+        // loops through every need and adds their maxQuantity(the # of an item in the basket) to a sum
         const total = needs.reduce((sum: number, need: any) => {
-          return sum + (need.maxQuantity ?? 0);
+          if(need.visible){ // only count visible needs
+            return sum + (need.maxQuantity ?? 0);
+          }
+          else if(!need.visible){
+            return sum;
+          }
         }, 0);
         this.itemCountSubject.next(total);
       },
@@ -118,7 +115,19 @@ export class FundingBasketService {
     return this.itemCountSubject.value;
   }
 
-  
+  addDonation(userName: string, amount: number) {
+  const donationNeed = {
+    id: Date.now() * -1,
+    name: "Donation",
+    value: amount,
+    currentQuantity: 0,
+    maxQuantity: 1,
+    type: "donation",
+    visible: true
+  };
+  return this.addNeed(userName, donationNeed);
+}
+
 /**
    * Handle Http operation that failed.
    * Let the app continue.
@@ -129,10 +138,8 @@ export class FundingBasketService {
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
 
-      // TODO: send the error to remote logging infrastructure
       console.error(error); // log to console instead
 
-      // TODO: better job of transforming error for user consumption
       this.log(`${operation} failed: ${error.message}`);
 
       // Let the app keep running by returning an empty result.

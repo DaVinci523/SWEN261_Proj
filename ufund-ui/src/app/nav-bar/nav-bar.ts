@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '../user';
 import { FundingBasketService } from '../funding-basket-service';
+import { ModalService } from '../modal-service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -12,7 +13,7 @@ import { FundingBasketService } from '../funding-basket-service';
 export class NavBar  implements OnInit{
   cartItemCount: number = 0;
 
-  constructor(private router: Router, public user: User, private fundingBasketService: FundingBasketService) {}
+  constructor(private router: Router, public user: User, private fundingBasketService: FundingBasketService, private modal: ModalService) {}
 
   ngOnInit(): void {
       if (this.user.isLoggedIn()) {
@@ -84,12 +85,13 @@ export class NavBar  implements OnInit{
    */
   onUserIconClick() {
     if (this.user.isLoggedIn()) {
-      const ok = confirm(`Signed in as ${this.user.getCurrentUser()}\n\nLog out?`);
-      if (ok) {
-        this.user.logout();
-        alert('You have been logged out.');
-        this.router.navigate(['/homepage']);
-      }
+      this.modal.confirmDialog('Log Out', 'Would you like to log out?', 'Yes', 'No')
+      .subscribe(go => {
+        if (go) {
+          this.user.logout();
+          this.router.navigate(['/homepage']);
+        }
+      });
     } else {
       this.goToLogin();
     }

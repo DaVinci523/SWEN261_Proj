@@ -161,15 +161,23 @@
   text-align: left;
   color: #222;
 }
-
 .about-grid{
   display: grid;
-  grid-template-columns: minmax(280px, 520px) 1fr; /* image left, text right */
-  gap: 28px 40px;
+  grid-template-columns: minmax(280px, 520px) 1fr; /* photo | text/reviews */
+  grid-auto-rows: auto;
+  column-gap: 40px;
+  row-gap: 28px;
   align-items: start;
 }
 
+/* prevent children from forcing columns wider than intended */
+.about-grid > * {
+  min-width: 0; 
+}
+
 .about-photo{
+  grid-column: 1;           /* left column */
+  grid-row: 1 / span 2;     /* spans both rows on desktop */
   width: 100%;
   height: auto;
   display: block;
@@ -178,17 +186,34 @@
 }
 
 .about-text{
+  grid-column: 2;           /* right column, first row */
+  grid-row: 1;
   margin: 0;
   font-family: "Lora", serif;
   font-size: clamp(1rem, 1.2vw, 1.1rem);
   line-height: 1.75;
 }
 
+#reviews-card-container{
+  grid-column: 2;           /* right column, second row (UNDER the text) */
+  grid-row: 2;
+  width: 100%;
+  align-self: start;
+  margin-top: 4px;
+  margin-bottom: 4%;
+  margin-left: 20%;
+}
+
 /* Stack on small screens */
 @media (max-width: 900px){
-  .about-grid{ grid-template-columns: 1fr; }
-  .about-heading{ text-align: center; }
+  .about-grid{
+    grid-template-columns: 1fr;
+  }
+  .about-photo{ grid-column:1; grid-row:1; }
+  .about-text{  grid-column:1; grid-row:2; }
+  #reviews-card-container{ grid-column:1; grid-row:3; }
 }
+
 
 .cta{
   display: inline-flex;
@@ -217,5 +242,7 @@
 }
 @keyframes bob{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
 
-#about{ scroll-margin-top: 80px; }
+#about { 
+  scroll-margin-top: 80px; 
+}
 

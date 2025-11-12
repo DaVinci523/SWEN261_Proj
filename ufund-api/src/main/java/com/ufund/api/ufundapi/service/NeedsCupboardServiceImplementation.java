@@ -82,5 +82,4 @@ public class NeedsCupboardServiceImplementation implements NeedsCupboardService{
         return needsCupboardDAO.searchNeedsValue(val);
     }
    
-
 }

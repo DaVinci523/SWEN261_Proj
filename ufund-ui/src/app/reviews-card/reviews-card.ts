@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Review, ReviewService } from '../review-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-reviews-card',
@@ -12,11 +13,10 @@ export class ReviewsCard {
   displayedReviews: Review[] = [];
   avgRating = 0;
   dummyTracker = 0; // angular does not like all the stars being individual elements with the same key, so this will give them different keys
-
     
   constructor(
     private reviewService: ReviewService, 
-    // private router: Router
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -66,5 +66,10 @@ export class ReviewsCard {
       i = i + 1;
     }
     return arr;
+  }
+
+  // Navigate to the reviews page
+  goToReviews(): void {
+    this.router.navigate(['/reviews']);
   }
 }
