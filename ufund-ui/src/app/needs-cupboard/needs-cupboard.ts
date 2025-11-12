@@ -187,6 +187,7 @@ export class NeedsCupboard implements OnInit, OnDestroy {
    * @param amount Add donation from the needscupboard as a need to the funding basket
    */
   addDonation(amount: number): void {
+    amount = Math.round(amount);
     if (amount <=0){
       alert("Cannot donate less than $1. Thankyou!")
     }

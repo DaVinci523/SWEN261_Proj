@@ -6,6 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "GenerateTextfromTextInput",
+            "request": "launch",
+            "mainClass": "com.ufund.api.ufundapi.ai.GenerateTextfromTextInput",
+            "projectName": "ufund-api"
+        },
+        {
+            "type": "java",
+            "name": "aiTest",
+            "request": "launch",
+            "mainClass": "com.ufund.api.ufundapi.ai.aiTest",
+            "projectName": "ufund-api"
+        },
+        {
+            "type": "java",
             "name": "UfundApiApplication",
             "request": "launch",
             "mainClass": "com.ufund.api.ufundapi.UfundApiApplication",
