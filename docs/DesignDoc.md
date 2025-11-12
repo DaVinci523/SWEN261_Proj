@@ -22,7 +22,7 @@ geometry: margin=1in
 This is a summary of the project.
 
 ### Purpose
->The myResearch program seeks to help student researchers by providing them with funding for the various equipment that they will require. The most >important user group of the myResearch program are charitable people who are interested in the potential advancements student research can bring. >These user’s main goal is to provide funding for equipment through their account on the myResearch site.
+The myResearch program seeks to help student researchers by providing them with funding for the various equipment that they will require. The most important user group of the myResearch program are charitable people who are interested in the potential advancements student research can bring. These user’s main goal is to provide funding for equipment through their account on the myResearch site.
 
 ### Glossary and Acronyms
 
@@ -41,7 +41,7 @@ This is a summary of the project.
 This section describes the features of the application.
 
 ### Definition of MVP
->The MVP supports simple authentication with login and logout. The reserved username admin designates the U-fund Manager role; any other username >is treated as a Helper. Helpers can browse and search a catalog of “needs,” add selected items to a personal funding basket, and then check out to >fund the items in that basket. The U-fund Manager maintains the “needs cupboard,” with permission to add, update, and delete needs, but cannot >view any individual funding basket to keep contributor activity private and roles separated. All application state (the needs cupboard, baskets, >and relevant user interactions) is persisted to files so updates survive restarts and can be reloaded on the next session.
+The MVP supports simple authentication with login and logout. The reserved username admin designates the U-fund Manager role; any other username is treated as a Helper. Helpers can browse and search a catalog of “needs,” add selected items to a personal funding basket, and then check out to fund the items in that basket. The U-fund Manager maintains the “needs cupboard,” with permission to add, update, and delete needs, but cannot view any individual funding basket to keep contributor activity private and roles separated. All application state (the needs cupboard, baskets, and relevant user interactions) is persisted to files so updates survive restarts and can be reloaded on the next session.
 
 ### MVP Features
 >  _**[Sprint 4]** Provide a list of top-level Epics and/or Stories of the MVP._
@@ -53,13 +53,7 @@ This section describes the features of the application.
 ## Application Domain
 <img width="780" height="517" alt="Application Domain Analysis" src="DomainAnalysis.png" />
 
->The application is organized around a navigation bar that appears on every page, giving users quick access to key pages: myResearch (the >homepage), Login, Needs, and Checkout. New users begin on the homepage, which briefly explains the purpose of the app and provides a clear call to >action button that takes them to the Needs Page. From there, users always have the nav bar to move between pages, while the homepage acts as the >welcoming hub.
->
->The primary flow is present on the Need Page and Checkout Page. The Need Page has a split layout where the left panel lists all available needs in >the “need cupboard,” and the right panel shows the user’s current “funding basket.” Users can add items from the cupboard to their basket and >adjust their quantities. Proceeding to the Checkout Page, they again see a similar layout with basket contents on the left and payment inputs on >the right. Filling out the payment fields and clicking checkout submits the purchase which makes the system remove the purchased quantities from >the need cupboard, clears the user’s basket, and sends the user back to the homepage. If a user logs in with the username “admin,” they’re taken >to the Admin Page, which has the similar split layout with the left side displaying the current contents of the need cupboard, while the right >side provides controls to add, edit, or remove needs.
-
-
-
-
+This is a domain model of a  small funding platform: a User (assisted by an AI that answers need-related questions) interacts with two roles—Helper (username/password) and U-Fund Manager (admin credentials). Helpers can create reviews (username, rating) about the website, owns a funding basket, and shops for needs. A Funding Basket holds multiple basket items (quantity, name, value, type) that send amounts toward specific needs (id, name, value, quantity, type). Baskets produce transactions that update the need cupboard, where needs are stored; the U-Fund Manager manages the cupboard and can delete reviews. Overall flow: Helper → Basket → Basket Items → Transaction → Need/Need Cupboard, with governance by the U-Fund Manager and guidance from the AI for users.
 
 
 
@@ -72,35 +66,32 @@ This section describes the features of the application.
 This section describes the application architecture.
 
 ### Summary
+The front end is Angular and TypeScript that runs in any browser. The back end is a Spring Boot server written in Java. Data is saved in JSON files on storage.
 
+In the View box is the client UI. It shows pages and buttons. When the user clicks something, the browser sends an HTTP request and expects JSON back.
 
->Our Model tier consists of a Need.java file that contains our need object. Each need object has an identification (id), name, value (or the cost), >type (what type of item it is), and quantity. There are getter and setters for each of the variables above.
->
->Our Model tier also includes a User.java file that represents an individual user. Each user has a name and a funding basket (an array of needs). >The class has a constructor to initialize these fields and getters (getName(), getBasket()).
->Finally, we also have a FundingBasketDataWrapper.java file that wraps the collection of users for persistence and transport. It holds a single >field, a list of users, along with a constructor to set it and a getter (getUsers()).
+The ViewModel box is the API and service layer. Controllers like NeedCupboardController.java and FundingBasketController.java define the URLs. They call services such as NeedCupboardService and FundingBasketService that hold the business rules. The “Implementation” classes are the concrete service code that runs.
 
+The Model box is about data and storage. Domain classes like Need.java and FundingBasketDataWrapper.java describe what the data looks like. DAO interfaces (NeedCupboardDAO, FundingBasketDAO) define how to load and save that data. File DAO classes (NeedCupboardFileDAO.java, FundingBasketFileDAO.java) actually read and write the JSON files.
 
 
 ### Overview of User Interface
 <img width="6467" height="2197" alt="View Tier Architecture" src="ViewTierArchitecture2.png" />
+The primary flow is present on the Need Page and Checkout Page.
 
->>The primary flow is present on the Need Page and Checkout Page:
->The Need Page has a split layout where the left panel lists all available needs in the “need cupboard,” and the right panel shows the user’s current “funding basket.” Users can add items from the cupboard to their basket and adjust their quantities.
+The Need Page has a split layout where the left panel lists all available needs in the “need cupboard,” and the right panel shows the user’s current “funding basket.” Users can add items from the cupboard to their basket and adjust their quantities.
 
->Proceeding to the Checkout Page, the user sees a similar layout with basket contents on the left and payment inputs on the right.
->Filling out the payment fields and clicking checkout submits the purchase which makes the system remove the purchased quantities from the need cupboard, clears the user’s basket.
+Proceeding to the Checkout Page, the user sees a similar layout with basket contents on the left and payment inputs on the right.
+Filling out the payment fields and clicking checkout submits the purchase which makes the system remove the purchased quantities from the need cupboard, clears the user’s basket.
 
+The admin flow is as follows:
+If a user logs in with the username “admin,” they’re taken to the Admin Page, which has a similar split layout with the left side displaying the current contents of the need cupboard, while the right side provides fields to add, update, or remove needs.
+In addition, in the bottom right corner the current list of users are displayed. Here, the admin can delete specified users.
 
->>The admin flow is as follows:
->If a user logs in with the username “admin,” they’re taken to the Admin Page, which has a similar split layout with the left side displaying the current contents of the need cupboard, while the right side provides fields to add, update, or remove needs. 
->In addition, in the bottom right corner the current list of users are displayed. Here, the admin can delete specified users.
+Additional elements:
+In the home-page, any logged-in user will see a section dedicated to showcasing two randomly selected reviews. Underneath, there is a button to re-select two random reviews
 
-
->Additional elements:
-> In the home-page, any logged-in user will see a section dedicated to showcasing two randomly selected reviews. Underneath, there is a button to re-select two random reviews
-
-> When logged in, any user can navigate to the reviews page from the navigation bar. Here, non-admins have a field to create a review given the rating and description. Admins have the ability to delete any individual review. 
-
+When logged in, any user can navigate to the reviews page from the navigation bar. Here, non-admins have a field to create a review given the rating and description. Admins have the ability to delete any individual review.
 
 ### View Tier
 > _**[Sprint 4]** Provide a summary of the View Tier UI of your architecture.
@@ -309,6 +300,67 @@ This section describes the application architecture.
       * HttpStatus.NOT_FOUND if there are no reviews
       * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurs. 
 
+* GeminiAPIController.java - Handles requests to API from model tier to generate a response
+  * getGeminiResponse()
+    * Get the API’s response for given prompt
+    * @param prompt, user-provided prompt
+    * @ return, ResponseEntity<APIResponse> containing the response or error message
+
+* AccountController.java - Handles HTTP requests for account management
+  * getAccounts()
+    * Handles HTTP GET requests to "/accounts"
+    * @return a ResponseEntity containing HttpStatus.OK with the array of accounts
+    * HttpStatus.NO_CONTENT if the returned data is null,
+    * or HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
+  * getUsernames()
+    * Handles HTTP GET requests to "/accounts/usernames"
+    * @return a ResponseEntity containing HttpStatus.OK with the array of usernames,
+    * HttpStatus.NO_CONTENT if the returned data is null,
+    * or HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
+  * exists()
+    * Handles HTTP GET requests to "/accounts/exists/{username}"
+    * @param username the username to check
+    * @return a ResponseEntity containing HttpStatus.OK with true/false,
+    * or HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
+  * create()
+    * Handles HTTP POST requests to "/accounts"
+    * @param account the Account to create
+    * @return a ResponseEntity containing HttpStatus.CREATED if creation was successful,
+    * HttpStatus.CONFLICT if the username already exists,
+    * or HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
+  * login()
+    * Handles HTTP POST requests to "/accounts/login"
+    * @param req the Account object containing username and password
+    * @return a ResponseEntity containing HttpStatus.OK if credentials are valid,
+    * HttpStatus.UNAUTHORIZED if invalid,
+    * or HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
+  * delete()
+    * Handles HTTP DELETE requests to "/accounts/{username}"
+    * @param username the username to delete
+    * @return a ResponseEntity containing HttpStatus.OK if deletion was successful,
+    * HttpStatus.NOT_FOUND if the username does not exist,
+    * or HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
+
+* DonationController.java - Handles HTTP requests for Donation System
+  * getStatus()
+    * Get the current information in donations
+    * @GetMapping
+    * @param donationService
+    * @return Status
+    * @throws IOException
+  * addDonation()
+    * Increment the donations
+    * @param amount
+    * @return donation increment
+    * @throws IOException
+  * setGoal()
+    * Update the donationGoal
+    * @param newGoal
+    * @return update goal
+    * @throws IOException
+    * @PostMapping
+
+
 > _**[Sprint 4]** Provide a summary of this tier of your architecture. This
 > section will follow the same instructions that are given for the View
 > Tier above._
@@ -316,16 +368,21 @@ This section describes the application architecture.
 > _At appropriate places as part of this narrative provide **one** or more updated and **properly labeled**
 > static models (UML class diagrams) with some details such as associations (connections) between classes, and critical attributes and methods. (**Be sure** to revisit the Static **UML Review Sheet** to ensure your class diagrams are using correct format and syntax.)_
 > 
-<img width="929" height="716" alt="View Model Architecture" src="ViewModelTierArchitecture.png" />
+<img width="929" height="716" alt="View Model 1 Architecture" src="ViewModelClasses1.png" />
+<img width="929" height="716" alt="View Model 2 Architecture" src="ViewModelClasses2.png" />
 
 
 ### Model Tier
->Our Model tier consists of a Need.java file that contains our need object. Each need object has an identification (id), name, value (or the cost), >type (what type of item it is), and quantity. There are getter and setters for each of the variables above.
->
->Our Model tier also includes a User.java file that represents an individual user. Each user has a name and a funding basket (an array of needs). >The class has a constructor to initialize these fields and getters (getName(), getBasket()).
->Finally, we also have a FundingBasketDataWrapper.java file that wraps the collection of users for persistence and transport. It holds a single >field, a list of users, along with a constructor to set it and a getter (getUsers()).
->
->Additionally, out Model tier contains a Review.java file that represents a review written by a user. Each review has a id, the username of the reviewer, the text content of the review, and an integer rating. The class includes a contains a constructor to initialze the various fields and getters for each field including: getId(), getUserName(), getReviewText(), and getRating().
+
+Our Model tier consists of a Need.java file that contains our need object. Each need object has an identification (id), name, value (or the cost), type (what type of item it is), and quantity. There are getter and setters for each of the variables above.
+
+Our Model tier also includes a User.java file that represents an individual user. Each user has a name and a funding basket (an array of needs). The class has a constructor to initialize these fields and getters (getName(), getBasket()). Finally, we also have a FundingBasketDataWrapper.java file that wraps the collection of users for persistence and transport. It holds a single field, a list of users, along with a constructor to set it and a getter (getUsers()).
+
+Additionally, our Model tier contains a Review.java file that represents a review written by a user. Each review has an id, the username of the reviewer, the text content of the review, and an integer rating. The class contains a constructor to initialize the various fields and getters for each field including: getId(), getUserName(), getReviewText(), and getRating().
+
+Also, the Model tier has an APIResponse.java, GeminiAPI.java, and GeminiAPIConfig.java. These files serve as the foundation for the user’s interaction with the AI chatbot. APIResponse.java is responsible for formatting the prompt/response pair for JSON storage. GeminiAPI is where the response is generated, and GeminiAPIConfig.java is responsible for declaring GeminiAPI as a Bean in the Spring Framework.
+
+Finally, our Model tier has an Account.java and AccountDataWrapper.java. Account.java that represents each individual user account, with their username, password, and role. It has setters and getters for each as well (setUsername(), setPassword(), setRole(), getUsername(), getPassword(), getRole()). AccountDataWrapper.java, similar to FundingBasketDataWrapper.java, wraps the collection of users for persistence and transport. It holds a lists of users/accounts as well with a getter and setter (getUsers(), setUsers()).
 
   * Need.java - Create a Need object with given id, name, and value.
     * Contains getters (getID() -> int, getName() -> String, getValue() -> double, getQuantity() -> int, getType() -> String) and setters (setName(), setValue(), setQuantity(), setType()). Also contains a (toString() -> String) override.
@@ -495,13 +552,131 @@ This section describes the application architecture.
     * save()
       * Write the current list of reviews into the JSON file
       * @return true if it was written successfully or false if it was not
-    * load()
+    * load()  
       * Loads all the reviews from the JSON file into the memory
       * @return true if it read successfully
 
+  * GeminiAPI.java - Use the Gemini API to interact with user
+    * Contains:
+      * generateResponse(String prompt) -> String — create a response from a prompt
 
-<img width="593" height="332" alt="Model Tier Architecture" src="ModelTierArchitecture.png" />
+  * GeminiAPIConfig.java - Initializes GeminiAPI.java as a Bean for the Spring framework
+    * Contains:
+      * genaiClient() -> Client — builds the client used in the API
 
+  * APIResponse.java - Model for AI generated responses
+    * Getters:
+      * getResponse() -> String
+      * getPrompt() -> String
+    * Setters:
+      * setResponse()
+      * setPrompt()
+    * Other:
+      * toString() — string representation
+
+  * GeminiFileDAO.java - the working logic behind getting API responses to user prompts
+    * generateResponse()
+      * Calls the API to generate a response from the prompt
+      * @param prompt to generate the response with
+      * @return APIResponse instance containing the prompt and its response
+      * @throws IOException if error with generating the response
+    * save()
+      * Saves responses to file
+      * @return true if written successfully
+      * @throws IOException if write fails
+    * load()
+      * Loads responses from file
+      * @return true if loaded successfully
+      * @throws IOException if load fails
+
+  * Account.java - Model for account creations
+    * Getters:
+      * getUsername() -> String
+      * getPassword() -> String
+      * getRole() -> String
+    * Setters:
+      * setUsername()
+      * setPassword()
+      * setRole()
+    * Other:
+      * toString()
+
+  * AccountDataWrapper.java - Create a Data Wrapper object with a given list of users (List)
+    * Contains:
+      * getUsers() -> List — returns the list of users
+      * setUsers() — sets a new list of users
+    * Used in AccountFileDAO.java to wrap data from users.json into a List for processing and later write-back to the .json file
+
+  * AccountFileDAO.java - the working logic behind our application for account management
+    * load()
+      * Load from JSON into the map
+      * Iterates through every account, adding them to the hash map
+      * @throws IOException if read fails
+    * save()
+      * Saves accounts from map into file
+      * @return true, if written successfully
+      * @throws IOException if write fails
+    * getAccounts()
+      * Returns array of all accounts
+      * @return Account[] array of accounts (could be empty)
+    * getUsernames()
+      * Returns array of all usernames
+      * @return String[] array of usernames (could be empty)
+    * exists()
+      * Checks if an account exists for the given username
+      * @param username the username to check
+      * @return true if the account exists, false otherwise
+    * create(Account account)
+      * Creates a new Account object; if the username already exists, returns null to indicate a conflict
+      * @param account the input object containing the username, password, and role
+      * @return the new Account if created; null if username already exists
+      * @throws IOException if an error occurred while saving the new Account to storage
+    * validate(String username, String password)
+      * Validates credentials for an account
+      * @param username the username to validate
+      * @param password the password to validate
+      * @return true if credentials are valid, false otherwise
+    * delete(String username)
+      * Deletes an account with the specified username
+      * @return true if file was updated successfully, false if deletion failed or username not found
+      * @throws IOException if an I/O error occurs while saving data
+
+  * Donation.java - model behind Donation needs
+    * getTotalDonated()
+      * @return totalDonated
+      * Returns the int value of the total amount that a user has donated
+    * setTotalDonated(int totalDonated)
+      * @param int totalDonated 
+      * Allows the user to update the total donated amount
+    * getDonationGoal()
+      * @return int donationGoal
+      * Getter for the value of donationGoal
+    * setDonationGoal()
+      * @param donationGoal
+      * Allows for the setting of donationGoal
+
+    * DonationDAO.java - working logic behind the functionality of the donation system
+      * getStatus() 
+        * Get current status of the json file behind the Donations
+        * Returns a Donation object with the correct totalDonated and donationGoal
+      * addDonation()
+        * @param amount 
+        * @return Donation
+        * Increment donation by passed in amount parameter
+      * setGoal()
+        * @param newGoal
+        * @return Donation
+        * Setter for updating the goal in business logic
+      * save()
+        * @param Donation status
+        * Save updated information to file
+
+
+
+
+
+<img width="593" height="332" alt="Model Tier Classes " src="ModelClasses.png" />
+<img width="593" height="332" alt="DAO Model Tier Classes " src="DAOModelClasses.png"/>
 
 
 ## OO Design Principles
@@ -618,4 +793,23 @@ Finally, the Review Controller handles all REST API requests for reviews. For ex
   * Began merging our almost final codes.
   * TODO : Currently have hardcoded that any password passes for users, this will be updated during sprint 3 if necessary.
 
+* Sprint #3:
+
+* 10/30/2025
+  * Created new user stories and finalize 10& enhancements(Reviews, AI chatbot, and donations by $)
+  * Planning poker to assign numeric values of difficulty to our user stories.
+  * Assign user stories to team members and assign intermediate deadlines for features.
+
+* 11/02/2025
+  * Created sequence diagram for checkout flow.
+  * Set weekly goals for UI, designated type, chatbot, search functionality, and backend implementation to fix known errors and implement back end for donations by money, AI, and reviews.
+
+* 11/04/2025
+  * Reviewed feedback from sprint 2 and created a document that highlighted all the key improvements the team needs to make for sprint 3. As we believe this is the best way to improve our product.
+  * Updated design doc format and OO design principles
+
+* 11/09/2025
+  * Merge sprint 3 feature branches into main and continue updating design doc to stay on schedule for sprint 3. 
+  * With sprint deadline approaching the team looked over the rubric.
+  * Also scrapped the designated types concept as we wanted to focus on finishing MVP and making sure our enhancements are of high quality.
 
