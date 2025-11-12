@@ -16,7 +16,7 @@ export class Ai {
       private aiService:AiService
     ){}
     
-    response: string = "response goes here"; //container for API-generated response
+    response: string = ""; //container for API-generated response
 
     getResponse(prompt:string ): void {
 
