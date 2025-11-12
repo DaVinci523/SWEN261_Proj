@@ -1,6 +1,7 @@
-<div>
+<div [style.--is-visible]="isVisible" [ngClass]="{'loading-cursor': isLoading, 'default-cursor': !isLoading}">
     <h3>Phil - (Ask it about our needs!)</h3>
-<textarea type="text" #prompt placeholder="Enter prompt"></textarea>
-<button type = "aiButton" (click) = "createResponse(prompt.value)"> Get Response </button>
-<p>{{response}}</p>
+    <p>{{response}}</p>
+    <textarea type="text" #prompt placeholder="Enter prompt"></textarea>
+    <button type = "aiButton" (click)="createResponse(prompt.value); triggerCursorChange();"> Get Response </button>
 </div>
+<button id="toggle-ai" (click)="toggleVisibility()">Ask Phil</button>

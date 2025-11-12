@@ -19,13 +19,38 @@ export class Ai {
     //container for API-generated response
     response: string = ""; 
 
-    // creates a response from the GeminiAPI from a prompt
+    isVisible = "hidden";
+    isLoading: boolean = false;
+
+
     createResponse(prompt:string ): void {
 
       this.aiService.createResponse(prompt).subscribe((response: APIResponse) => {
-          this.response = response.response;        
-        }
-      );
+
+      this.response = response.response;
+
+      console.log(response.response);
+        
+      }
+    );
+
     } 
+    
+  toggleVisibility(){ // toggle the ai module's visibility
+    if(this.isVisible != "hidden"){
+      this.isVisible = "hidden";
+    }
+    else{
+      this.isVisible = "shown";
+    }
+  };
+
+
+  triggerCursorChange() { // change the cursor to a loading and revert back after 2 seconds
+    this.isLoading = true;
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 1000);
+  }
 
 }

@@ -42,6 +42,9 @@ An online U-Fund system built in Java **24**
 - For the application to run the reviews.json should have at Least the following data: (copy & paste)
 []
 
+- To ensure the application runs as intended the responses.json MUST be Empty: (copy & paste)
+[]
+
 - For the application to run the users.json should have at Least the following data: (copy & paste)
 {"users":[{"username":"helper456","password":"456","role":"helper"},{"username":"helper123","password":"123","role":"helper"},{"username":"admin","password":"admin","role":"admin"}]}
 
