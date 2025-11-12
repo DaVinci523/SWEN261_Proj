@@ -20,6 +20,7 @@ public class DonationServiceImplementation implements DonationService {
      * @return
      * @throws IOException
      */
+    @Override
     public Donation getStatus() throws IOException {
         return donationDAO.getStatus();
     }
