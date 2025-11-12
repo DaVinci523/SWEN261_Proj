@@ -23,7 +23,8 @@ export class Ai {
     isLoading: boolean = false;
 
 
-    createResponse(prompt:string ): void {
+    
+    createResponse(prompt:string ): void { // creates a response to the prompt using the GeminiAPI
 
       this.aiService.createResponse(prompt).subscribe((response: APIResponse) => {
 
