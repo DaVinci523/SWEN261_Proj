@@ -4,10 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 import java.io.File;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +12,11 @@ import org.springframework.stereotype.Component;
 import com.ufund.api.ufundapi.model.APIResponse;
 import com.ufund.api.ufundapi.model.GeminiAPI;
 
+
+/**
+ * Implements the functionality for JSON file-based peristance for APIResponses
+ * @author CTRL Team 
+ */
 @Component
 public class GeminiFileDAO implements GeminiDAO {
 
@@ -24,6 +26,9 @@ public class GeminiFileDAO implements GeminiDAO {
     private GeminiAPI geminiAPI;
 
 
+    /**
+     * 
+     */
     public GeminiFileDAO(@Value("${responses.file}") String filename, ObjectMapper objectMapper) throws IOException {
         this.filename = filename;
         this.objectMapper = objectMapper;
@@ -48,28 +53,20 @@ public class GeminiFileDAO implements GeminiDAO {
         return true;
     }
 
-
-    public String getResponse(String prompt){
-            
-            for(APIResponse response : responses ){
-                if(response.getPrompt() == prompt){
-                    return response.getResponse();
-                }
-            }   
-            return null;
-    }
-
     public APIResponse generateResponse(String prompt) throws IOException{
-            APIResponse messyResponse = geminiAPI.generateResponse(prompt);
-            String messyResp = messyResponse.getResponse();
-            String cleanResp = messyResp.replaceAll("[\\\\-\\\\+\\\\.\\\\^:,\"*]", "");
-            APIResponse cleanResponse = new APIResponse(cleanResp, prompt);
             
-            responses.add(cleanResponse);
-            
-            save();
-            
-            return cleanResponse;
+        APIResponse messyResponse = geminiAPI.generateResponse(prompt);
+        
+        String messyResp = messyResponse.getResponse();
+        String cleanResp = messyResp.replaceAll("[\\\\-\\\\+\\\\.\\\\^:,\"*]", "");
+        
+        APIResponse cleanResponse = new APIResponse(cleanResp, prompt);
+        
+        responses.add(cleanResponse);
+        
+        save();
+        
+        return cleanResponse;
             
     }
 
