@@ -17,6 +17,7 @@ import { FundingBasket } from './funding-basket/funding-basket';
 import { NeedDetailComponent } from './need-details/need-details';
 import { NavBar } from './nav-bar/nav-bar';
 import { Checkout } from './checkout/checkout';
+import { Ai } from './ai/ai';
 import { ReviewsPage } from './review-page/review-page';
 import { ReviewsCard } from './reviews-card/reviews-card';
 import { ModalHost } from './modal-host/modal-host';
@@ -34,6 +35,7 @@ import { ModalHost } from './modal-host/modal-host';
     NeedDetailComponent,
     NavBar,
     Checkout,
+    Ai,
     ReviewsPage,
     ReviewsCard,
     ModalHost
