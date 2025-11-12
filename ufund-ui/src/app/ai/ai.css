@@ -9,7 +9,7 @@ div {
     margin: 2em;
     margin-bottom: 2em;
     padding: 2em;
-    border: 4px solid black;
+    border: 8px solid black;
     border-radius: 48px;
     visibility: var(--is-visible);
 }
@@ -18,19 +18,28 @@ textarea {
     width: 100%;
     height: 6em;
     text-align: top;
+    border: 2px solid black;
+    border-radius: 16px;
+    padding: 0.6em;
 }
 
-button {
-    float: right;
+button#get-response {
+    margin: 0 35%;
     border-radius: 48px;
+    width: 30%;
     margin-top: 1em;
-    padding: 0.3em 0.8em;
+    padding: 0.5em 0.8em;
 }
 
 p {
     float: right;
     height: 50vh;
+    width: 96%;
     overflow-y: scroll;
+    border: 1px solid black;
+    border-radius: 16px;
+    padding: 0.8em;
+
 }
 
 button#toggle-ai {
