@@ -60,10 +60,16 @@ public class GeminiFileDAO implements GeminiDAO {
     }
 
     public APIResponse generateResponse(String prompt) throws IOException{
-            APIResponse newResponse = geminiAPI.generateResponse(prompt);
-            responses.add(newResponse);
+            APIResponse messyResponse = geminiAPI.generateResponse(prompt);
+            String messyResp = messyResponse.getResponse();
+            String cleanResp = messyResp.replaceAll("[\\\\-\\\\+\\\\.\\\\^:,\"*]", "");
+            APIResponse cleanResponse = new APIResponse(cleanResp, prompt);
+            
+            responses.add(cleanResponse);
+            
             save();
-            return newResponse;
+            
+            return cleanResponse;
             
     }
 
