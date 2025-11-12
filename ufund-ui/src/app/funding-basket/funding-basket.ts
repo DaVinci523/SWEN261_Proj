@@ -24,6 +24,7 @@ export class FundingBasket implements OnInit, OnDestroy {
     // Continuously call getNeeds on set intervals (ex: 5000 is 5 seconds) to keep them updated when page is not reloaded.
     this.getNeedsSubscription = interval(500).subscribe(() => {
       this.getNeeds();
+      fundingBasketService.updateItemCount(this.userName);
     })
   }
 
