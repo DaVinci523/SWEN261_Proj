@@ -16,20 +16,16 @@ export class Ai {
       private aiService:AiService
     ){}
     
-    response: string = ""; //container for API-generated response
+    //container for API-generated response
+    response: string = ""; 
 
-    getResponse(prompt:string ): void {
+    // creates a response from the GeminiAPI from a prompt
+    createResponse(prompt:string ): void {
 
       this.aiService.createResponse(prompt).subscribe((response: APIResponse) => {
-
-      this.response = response.response;
-
-      console.log(response.response);
-        
-      }
-    );
-    
-
+          this.response = response.response;        
+        }
+      );
     } 
 
 }

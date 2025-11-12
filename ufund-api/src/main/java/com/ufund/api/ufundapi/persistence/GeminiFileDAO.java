@@ -27,15 +27,21 @@ public class GeminiFileDAO implements GeminiDAO {
 
 
     /**
-     * 
+     * Creates Gemini DAO (Data Access Object)
+     * @param filename Filename to rw from
+     * @param objectMapper provides deserialization & serialization for JSON
      */
     public GeminiFileDAO(@Value("${responses.file}") String filename, ObjectMapper objectMapper) throws IOException {
         this.filename = filename;
         this.objectMapper = objectMapper;
         this.geminiAPI = new GeminiAPI();
-        load();
+        load(); // loads in responses from file
     }
 
+    /**
+     * loads in responses from file
+     * @return returns true
+     */
     private boolean load() throws IOException {
         responses = new ArrayList<>();
 
@@ -48,22 +54,32 @@ public class GeminiFileDAO implements GeminiDAO {
         return true;
     }
 
+    /**
+     * saves responses to file
+     * @return returns true
+     */
     private boolean save() throws IOException{
         objectMapper.writeValue(new File(filename), responses);
         return true;
     }
 
+    /**
+     * Calls the API to generate a response from the prompt 
+     */
     public APIResponse generateResponse(String prompt) throws IOException{
             
+        // generates the response
         APIResponse messyResponse = geminiAPI.generateResponse(prompt);
         
+        // cleans the response of special characters and creates new APIResponse
         String messyResp = messyResponse.getResponse();
         String cleanResp = messyResp.replaceAll("[\\\\-\\\\+\\\\.\\\\^:,\"*]", "");
-        
         APIResponse cleanResponse = new APIResponse(cleanResp, prompt);
         
+        // adds the clean response to responses
         responses.add(cleanResponse);
         
+        // saves the new response to the file
         save();
         
         return cleanResponse;
