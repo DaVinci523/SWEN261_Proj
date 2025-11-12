@@ -1,14 +1,1 @@
-[
-    {"id":1,"userName":"aj","reviewText":"Loved it!","rating":5},
-    {"id":2,"userName":"george","reviewText":"Pretty good overall.","rating":4},
-    {"id":3,"userName":"charlie","reviewText":"Kind mid.","rating":3},
-    {"id":4,"userName":"aj","reviewText":"Loved it!","rating":5},
-    {"id":5,"userName":"george","reviewText":"Pretty good overall.","rating":4},
-    {"id":6,"userName":"charlie","reviewText":"Kind mid.","rating":3},
-    {"id":7,"userName":"aj","reviewText":"Loved it!","rating":5},
-    {"id":8,"userName":"george","reviewText":"Pretty good overall.","rating":4},
-    {"id":9,"userName":"charlie","reviewText":"Kind mid.","rating":3},
-    {"id":10,"userName":"aj","reviewText":"Loved it!","rating":5},
-    {"id":11,"userName":"george","reviewText":"Pretty good overall.","rating":4},
-    {"id":12,"userName":"charlie","reviewText":"Kind mid.","rating":3}
-]
+[]
