@@ -172,6 +172,12 @@ export class AdminPage {
       type = need.type;
     }
 
+    if (value <0 || maxQuantity < 0){
+      this.modal.infoDialog('Not allowed', 'You cannot set values to negative.', 'OK')
+      .subscribe(() => {});
+      return;
+    }
+
     // updates the needs list after changing the parameter need
     this.needs = this.needs.filter(n => n !== need);
 
