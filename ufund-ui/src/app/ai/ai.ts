@@ -18,6 +18,10 @@ export class Ai {
     
     response: string = ""; //container for API-generated response
 
+    isVisible = "hidden";
+    isLoading: boolean = false;
+
+
     getResponse(prompt:string ): void {
 
       this.aiService.createResponse(prompt).subscribe((response: APIResponse) => {
@@ -28,8 +32,24 @@ export class Ai {
         
       }
     );
-    
 
     } 
+    
+  toggleVisibility(){ // toggle the ai module's visibility
+    if(this.isVisible != "hidden"){
+      this.isVisible = "hidden";
+    }
+    else{
+      this.isVisible = "shown";
+    }
+  };
+
+
+  triggerCursorChange() { // change the cursor to a loading and revert back after 2 seconds
+    this.isLoading = true;
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 1000);
+  }
 
 }

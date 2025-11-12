@@ -1,5 +1,8 @@
 div {
+    --is-visible: hidden; /* Toggle the ai's visibility */
     position: fixed;
+    right: 0;
+    bottom: 0;
     inset: 0;
     z-index: 900;
     background-color: white;
@@ -8,10 +11,7 @@ div {
     padding: 2em;
     border: 4px solid black;
     border-radius: 48px;
-    width: 20vh;
-    height: 30vh;
-    right: 0;
-    
+    visibility: var(--is-visible);
 }
 
 textarea {
@@ -25,4 +25,33 @@ button {
     border-radius: 48px;
     margin-top: 1em;
     padding: 0.3em 0.8em;
+}
+
+p {
+    float: right;
+    height: 50vh;
+    overflow-y: scroll;
+}
+
+button#toggle-ai {
+    z-index: 901;
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    border: 4px solid black;
+    border-radius: 48px;
+    padding: 1em 2em;
+}
+button#toggle-ai:hover {
+  transform: translateY(-1px);
+  opacity: 1;
+}
+
+/* different cursors */
+.loading-cursor {
+    cursor: wait;
+}
+
+.default-cursor {
+    cursor: default;
 }
