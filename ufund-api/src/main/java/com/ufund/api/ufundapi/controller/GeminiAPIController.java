@@ -30,7 +30,7 @@ public class GeminiAPIController {
      * Constructor
      * @param geminiAPIService     
      */
-    public GeminiAPIController(GeminiAPI geminiAPI, GeminiAPIService geminiAPIService ) {
+    public GeminiAPIController(GeminiAPIService geminiAPIService ) {
         this.geminiAPIService = geminiAPIService;
     }
 

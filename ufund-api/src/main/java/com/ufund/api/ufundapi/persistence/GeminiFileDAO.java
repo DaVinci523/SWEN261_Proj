@@ -47,10 +47,14 @@ public class GeminiFileDAO implements GeminiDAO {
 
         APIResponse[] responsesArray = objectMapper.readValue(new File(filename), APIResponse[].class);
 
-        for (APIResponse response : responsesArray){
-            responses.add(response);
-        }
+        if(responsesArray == null){
+            responsesArray = new APIResponse[0];
+        } else {
 
+            for (APIResponse response : responsesArray){
+                responses.add(response);
+            }
+        }
         return true;
     }
 
@@ -65,6 +69,8 @@ public class GeminiFileDAO implements GeminiDAO {
 
     /**
      * Calls the API to generate a response from the prompt 
+     * @param prompt prompt to generate the response with
+     * @return returns an APIResponse instance containing the prompt and its response  
      */
     public APIResponse generateResponse(String prompt) throws IOException{
             
