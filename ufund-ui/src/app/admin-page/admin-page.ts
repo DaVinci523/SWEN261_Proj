@@ -99,8 +99,14 @@ export class AdminPage {
     // clears white space in name input
     name = name.trim();
     // checks if name is empty
-    if (!name) {
-      return;
+    if (value <0 || quantity < 0){
+      this.modal.infoDialog('Not allowed', 'You cannot set values to negative.', 'OK')
+      .subscribe(() => {});
+    }
+    
+    else{
+      if (!name) {
+        return;
     }
     else{
       var changedVisibilty = false; // used to check if a need had its visibility changed so the program only creates or changes visibility and not both.
@@ -124,6 +130,7 @@ export class AdminPage {
         });
       }
     }
+  }
   }
 
   /**
