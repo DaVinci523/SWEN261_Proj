@@ -17,14 +17,11 @@ export class AiService {
     headers: new HttpHeaders({'Content-Type': 'application/json' })
   };
   
+  // creates a response from the GeminiAPI with the given prompt 
   createResponse(prompt: String) : Observable<APIResponse> {
 
     return this.http.post<APIResponse>(this.aiUrl, prompt, this.httpOptions);
 
-  }
-
-  getResponse(prompt: String) :Observable<String> {
-    return this.http.get<String>(`${this.aiUrl}/${prompt}`);
   }
 
 }

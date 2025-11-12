@@ -16,13 +16,15 @@ export class Ai {
       private aiService:AiService
     ){}
     
-    response: string = ""; //container for API-generated response
+    //container for API-generated response
+    response: string = ""; 
 
     isVisible = "hidden";
     isLoading: boolean = false;
 
 
-    getResponse(prompt:string ): void {
+    
+    createResponse(prompt:string ): void { // creates a response to the prompt using the GeminiAPI
 
       this.aiService.createResponse(prompt).subscribe((response: APIResponse) => {
 
