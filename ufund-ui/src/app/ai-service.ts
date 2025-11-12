@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { APIResponse } from './response';
 
 @Injectable({
   providedIn: 'root'
@@ -14,12 +14,12 @@ export class AiService {
 
   // HTTP options for POST and PUT requests
   httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    headers: new HttpHeaders({'Content-Type': 'application/json' })
   };
   
-  createResponse(prompt: String) : Observable<String> {
+  createResponse(prompt: String) : Observable<APIResponse> {
 
-    return this.http.post<String>(this.aiUrl, prompt, this.httpOptions);
+    return this.http.post<APIResponse>(this.aiUrl, prompt, this.httpOptions);
 
   }
 

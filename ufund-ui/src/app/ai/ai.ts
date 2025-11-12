@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AiService } from '../ai-service';
+import { APIResponse } from '../response';
 
 @Component({
   selector: 'app-ai',
@@ -15,15 +16,16 @@ export class Ai {
       private aiService:AiService
     ){}
     
-    response:String = "response goes here"; //container for API-generated response
+    response: string = "response goes here"; //container for API-generated response
 
-    getResponse(prompt:String ): void {
+    getResponse(prompt:string ): void {
 
-      this.aiService.createResponse(prompt).subscribe((response: String) => {
+      this.aiService.createResponse(prompt).subscribe((response: APIResponse) => {
 
-        this.response = response;
-        console.log(response);
-        this.aiService.getResponse(prompt).subscribe((response: String) => this.response = response);
+      this.response = response.response;
+
+      console.log(response.response);
+        
       }
     );
     
