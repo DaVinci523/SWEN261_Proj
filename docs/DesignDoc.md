@@ -306,7 +306,6 @@ When logged in, any user can navigate to the reviews page from the navigation ba
     * @param prompt, user-provided prompt
     * @ return, ResponseEntity<APIResponse> containing the response or error message
 
-
 * AccountController.java - Handles HTTP requests for account management
   * getAccounts()
     * Handles HTTP GET requests to "/accounts"
@@ -341,6 +340,26 @@ When logged in, any user can navigate to the reviews page from the navigation ba
     * @return a ResponseEntity containing HttpStatus.OK if deletion was successful,
     * HttpStatus.NOT_FOUND if the username does not exist,
     * or HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
+
+* DonationController.java - Handles HTTP requests for Donation System
+  * getStatus()
+    * Get the current information in donations
+    * @GetMapping
+    * @param donationService
+    * @return Status
+    * @throws IOException
+  * addDonation()
+    * Increment the donations
+    * @param amount
+    * @return donation increment
+    * @throws IOException
+  * setGoal()
+    * Update the donationGoal
+    * @param newGoal
+    * @return update goal
+    * @throws IOException
+    * @PostMapping
+
 
 > _**[Sprint 4]** Provide a summary of this tier of your architecture. This
 > section will follow the same instructions that are given for the View
@@ -621,6 +640,39 @@ Finally, our Model tier has an Account.java and AccountDataWrapper.java. Account
       * Deletes an account with the specified username
       * @return true if file was updated successfully, false if deletion failed or username not found
       * @throws IOException if an I/O error occurs while saving data
+
+  * Donation.java - model behind Donation needs
+    * getTotalDonated()
+      * @return totalDonated
+      * Returns the int value of the total amount that a user has donated
+    * setTotalDonated(int totalDonated)
+      * @param int totalDonated 
+      * Allows the user to update the total donated amount
+    * getDonationGoal()
+      * @return int donationGoal
+      * Getter for the value of donationGoal
+    * setDonationGoal()
+      * @param donationGoal
+      * Allows for the setting of donationGoal
+
+    * DonationDAO.java - working logic behind the functionality of the donation system
+      * getStatus() 
+        * Get current status of the json file behind the Donations
+        * Returns a Donation object with the correct totalDonated and donationGoal
+      * addDonation()
+        * @param amount 
+        * @return Donation
+        * Increment donation by passed in amount parameter
+      * setGoal()
+        * @param newGoal
+        * @return Donation
+        * Setter for updating the goal in business logic
+      * save()
+        * @param Donation status
+        * Save updated information to file
+
+
+
 
 
 <img width="593" height="332" alt="Model Tier Classes " src="ModelClasses.png" />
