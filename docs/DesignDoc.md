@@ -349,10 +349,12 @@ When logged in, any user can navigate to the reviews page from the navigation ba
 > _At appropriate places as part of this narrative provide **one** or more updated and **properly labeled**
 > static models (UML class diagrams) with some details such as associations (connections) between classes, and critical attributes and methods. (**Be sure** to revisit the Static **UML Review Sheet** to ensure your class diagrams are using correct format and syntax.)_
 > 
-<img width="929" height="716" alt="View Model Architecture" src="ViewModelTierArchitecture.png" />
+<img width="929" height="716" alt="View Model 1 Architecture" src="ViewModelClasses1.png" />
+<img width="929" height="716" alt="View Model 2 Architecture" src="ViewModelClasses2.png" />
 
 
 ### Model Tier
+
 Our Model tier consists of a Need.java file that contains our need object. Each need object has an identification (id), name, value (or the cost), type (what type of item it is), and quantity. There are getter and setters for each of the variables above.
 
 Our Model tier also includes a User.java file that represents an individual user. Each user has a name and a funding basket (an array of needs). The class has a constructor to initialize these fields and getters (getName(), getBasket()). Finally, we also have a FundingBasketDataWrapper.java file that wraps the collection of users for persistence and transport. It holds a single field, a list of users, along with a constructor to set it and a getter (getUsers()).
@@ -531,7 +533,7 @@ Finally, our Model tier has an Account.java and AccountDataWrapper.java. Account
     * save()
       * Write the current list of reviews into the JSON file
       * @return true if it was written successfully or false if it was not
-    * load()
+    * load()  
       * Loads all the reviews from the JSON file into the memory
       * @return true if it read successfully
 
@@ -621,9 +623,8 @@ Finally, our Model tier has an Account.java and AccountDataWrapper.java. Account
       * @throws IOException if an I/O error occurs while saving data
 
 
-
-<img width="593" height="332" alt="Model Tier Architecture" src="ModelTierArchitecture.png" />
-
+<img width="593" height="332" alt="Model Tier Classes " src="ModelClasses.png" />
+<img width="593" height="332" alt="DAO Model Tier Classes " src="DAOModelClasses.png"/>
 
 
 ## OO Design Principles
