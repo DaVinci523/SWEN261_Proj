@@ -76,7 +76,8 @@ The Model box is about data and storage. Domain classes like Need.java and Fundi
 
 
 ### Overview of User Interface
-<img width="6467" height="2197" alt="View Tier Architecture" src="ViewTierArchitecture2.png" />
+<img width="789" height="382" alt="View Tier Architecture" src="ViewTierArchitecture2.png" />
+
 The primary flow is present on the Need Page and Checkout Page.
 
 The Need Page has a split layout where the left panel lists all available needs in the “need cupboard,” and the right panel shows the user’s current “funding basket.” Users can add items from the cupboard to their basket and adjust their quantities.
@@ -687,7 +688,7 @@ Sprint 1: The two Object Oriented Design principles that the CTRL team is champi
 
 The need class only takes in primitive types as variables, which means that it has no reliance on other classes allowing it to follow the Low Coupling principle. The user class does take an array of needs as one of its variables, however, it is not dependent on the actual internal functions of the need class. This enables changes to be made to need without causing any problems with the User class. The open/closed object oriented principle states that software entities should be open for extension but closed for modification. One way this was utilized throughout the project was through the use of interfaces in the persistence tier. A specific example of this is shown below through NeedsCupboardDAO and NeedsCupboardFileDAO. 
 
-<img width="593" height="332" alt="NeedCupboardDAO" src="NeedsCupboardDAO.png" />
+<img height="332" alt="NeedCupboardDAO" src="NeedsCupboardDAO.png" />
 <img width="593" height="332" alt="NeedsCupboardFileDAO" src="NeedsCupboardFileDAO.png" />
 
 As a result of the persistence tier being designed this way, if something such as how the data is stored is modified, the rest of the system will remain unaffected following the open/closed principle. 
@@ -695,11 +696,11 @@ As a result of the persistence tier being designed this way, if something such a
 
 Sprint 2: The two Object Oriented Design principles that the CTRL team is championing throughout Sprint 2 are the Law of Demeter and Pure Fabrication. The Law of Demeter principle is being followed through our implementation of service classes, which serves as an inbetween for the controller and DAO. This prevents the classes from having to call other classes that are distant which would break the “don’t talk to strangers” principle for the Law of Demeter. This can be shown through NeedsCupboardServiceImplementation and how it only talks to its DAO. 
 
-<img width="593" height="332" alt="NeedsCupboardServiceImplementation" src="NeedsCupboardServiceImplementation.png" />
+<img width="493" height="332" alt="NeedsCupboardServiceImplementation" src="NeedsCupboardServiceImplementation.png" />
 
 Another principle that the service files helped us follow was Pure Fabrication. Pure Fabrication is when a new class is created to handle responsibilities that don’t fit well with the already existing classes. The service files were created to specifically handle the communication between the controller and DAO, making it a good example of following the Pure Fabrication principle. The searchNeedsType method in the NeedsCupboardServiceImplementation shows how the class functions as a middleman between the DAO and the controller, following the Pure Fabrication Principle. 
 
-<img width="593" height="332" alt="searchNeedsType method" src="searchNeedsType.png" />
+<img width="593"  alt="searchNeedsType method" src="searchNeedsType.png" />
 
 Sprint 3: The Object Oriented Design Principle that the CTRL team decided to champion throughout sprint 3 was Single Responsibility. The Single Responsibility principle is the idea that each class should have a single tightly focused responsibility. One way this principle was implemented throughout the project during sprint 3 was through the review system, where each class has its own specific purpose. In the model tier, the review model serves to define the structure of the reviews data. This can be seen through the constructor in the review model. 
 
@@ -707,7 +708,7 @@ Sprint 3: The Object Oriented Design Principle that the CTRL team decided to cha
 
 In the persistence tier, ReviewFileDAO handles the storage and retrieval of data for Reviews. Two methods that play a huge role in the storage and retrieval of data for Reviews are save() and load() methods that are shown below.
 
-<img width="593" height="332" alt="ReviewFileDAO" src="ReviewFileDAO.png" />
+<img height="332" alt="ReviewFileDAO" src="ReviewFileDAO.png" />
 
 The ReviewServiceImplementation file handles all communications between the Review Controller and the Review Persistence tiers. This communication to the ReviewDAO can be seen in the code snippet below from ReviewServiceImplementation. 
 
