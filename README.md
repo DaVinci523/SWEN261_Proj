@@ -94,7 +94,7 @@ To run tests on all the tiers in isolation do this:
 4. Open a seperate terminal
 5. Go to the ufund-ui directory
 6. Execute `ng serve -o`
-7. Open in your browser `http://localhost:8080/`
+7. Open in your browser `http://localhost:4200/`
 
 ## User Authentication
 1. Ufund Manager => 
