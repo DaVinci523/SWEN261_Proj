@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ReviewService, Review } from '../review-service';
 import { User } from '../user';
 import { Router } from '@angular/router';
+import { ModalService } from '../modal-service';
 
 @Component({
   selector: 'app-reviews-page',
@@ -23,7 +24,8 @@ export class ReviewsPage implements OnInit {
   constructor(
     private reviewService: ReviewService, 
     public user: User, 
-    private router: Router
+    private router: Router,
+    private modal: ModalService
   ) {}
 
   ngOnInit(): void {
@@ -101,11 +103,11 @@ export class ReviewsPage implements OnInit {
     const t = text.trim();
 
     if (!n) { 
-      alert('Please enter your name.');
+      this.modal.infoDialog('Error', 'Please enter your name.', 'OK').subscribe(() => {});
       return;
     }
     if (!t) {
-      alert('Please enter a review.');
+      this.modal.infoDialog('Error', 'Please enter a review.', 'OK').subscribe(() => {});
       return;
     }
 
@@ -119,14 +121,16 @@ export class ReviewsPage implements OnInit {
   }
 
   delete(id: number): void {
-    const ok = window.confirm('Delete review?');
-    if (!ok) {
-      return;
-    }
+    this.modal.confirmDialog('Review', 'Delete review?', 'Yes', 'No')
+    .subscribe(ok => {
+      if (ok) {
 
-    const self = this;
-    this.reviewService.deleteReview(id).subscribe(function(_) {
-      self.loadByRating();
+      const self = this;
+      this.reviewService.deleteReview(id).subscribe(function(_) {
+        self.loadByRating();
+      });
+
+      }
     });
   }
 

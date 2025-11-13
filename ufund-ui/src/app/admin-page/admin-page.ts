@@ -139,12 +139,17 @@ export class AdminPage {
    * @param need - the need to be deleted
    */
   deleteNeed(need: Need): void {
-    // updates the needs list once the need has been deleted
-    this.needs = this.needs.filter(n => n !== need);
-    window.location.reload();
+    this.modal.confirmDialog('Delete', 'Are you sure you want to delete this need?', 'Yes', 'No')
+    .subscribe(ok => {
+      if (ok) {
+        // updates the needs list once the need has been deleted
+        this.needs = this.needs.filter(n => n !== need);
+        window.location.reload();
 
-    // removes the need by tagging its visibility to false
-    this.adminPageService.changeNeedVisibility(need.id, false).subscribe();
+        // removes the need by tagging its visibility to false
+        this.adminPageService.changeNeedVisibility(need.id, false).subscribe();
+      }
+    });
   }
 
   /**
@@ -246,14 +251,6 @@ export class AdminPage {
     
   }
 
-  clearAll(): void {
-    const ok = window.confirm('Delete ALL users? This cannot be undone.');
-    if (!ok) { return; }
-    //this.user.clearAllUsers();
-    alert('All users deleted.');
-    this.refresh();
-  }
-
   /**
    * Gather the current totalDonated and donationGoals
    */
@@ -273,7 +270,7 @@ export class AdminPage {
     if (this.newGoal != null && this.newGoal > 0) {
 
       if (this.newGoal < this.totalDonated) {
-        alert(`Goal cannot be lower than the total donated ($${this.totalDonated}).`);
+        this.modal.infoDialog('Notice', 'New goal cannot be lower than the total donated.', 'OK').subscribe(() => {});
         this.newGoal = this.donationGoal; // reset input
         return;
       }
