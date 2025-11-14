@@ -9,13 +9,17 @@ div {
     margin: 2em;
     margin-bottom: 2em;
     padding: 2em;
-    border: 8px solid black;
+    border: 2px solid black;
     border-radius: 48px;
     visibility: var(--is-visible);
+    box-shadow: 2px 2px 8px black;
 }
 
 textarea {
-    width: 100%;
+    width: 96%;
+    margin-left: 2%;
+    margin-right: 2%;
+    float: center;
     height: 6em;
     text-align: top;
     border: 2px solid black;
@@ -30,7 +34,7 @@ button#get-response {
     width: 30%;
     margin-top: 1em;
     border: 1px solid black;
-    padding: 0.5em 0.8em;
+    padding: 0.6em 0.8em;
     box-shadow: 2px 2px 4px black;
 }
 button#get-response:hover {
