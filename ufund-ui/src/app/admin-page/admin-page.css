@@ -57,6 +57,9 @@ div.users-list ul {
 }
 
 li {
+  --donation-progress-stop: 30%;
+  --fill-color: var(--need-filling-color);
+    
   grid-columns: 1;
   list-style-type: none;
   border: 2px solid black;
@@ -65,8 +68,17 @@ li {
   padding: 1em;
   font-size: 16px;
 
-  background-color: white;
   box-shadow: 2px 2px 6px black;
+
+  /* fill the donations bar to the specific percentage */
+  background: linear-gradient(to right, var(--fill-color) var(--donation-progress-stop), white 0%, white 100%);
+
+}
+
+li.user-card {
+/* fill the donations bar to the specific percentage */
+  background: linear-gradient(to left, #acf4ffff 20%, white 0%, white 100%);
+
 }
 
 div.variable-input {

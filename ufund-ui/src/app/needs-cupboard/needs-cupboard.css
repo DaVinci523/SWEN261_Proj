@@ -36,14 +36,19 @@ ul {
 }
 
 li {
+    --donation-progress-stop: 30%;
+    --fill-color: var(--need-filling-color);
+    
     list-style-type:none;
     border: 2px solid black;
     border-radius: 48px;
     margin: 0.8em 0.3em;
     padding-left: 1em;
     padding-right: 1em;
-    background-color: white;
     box-shadow: 2px 2px 8px black;
+    /* fill the donations bar to the specific percentage */
+    background: linear-gradient(to right, var(--fill-color) var(--donation-progress-stop), white 0%, white 100%);
+
 }
 button.checkout:hover {
   transform: translateY(-1px);
@@ -166,6 +171,9 @@ button.fund:hover {
   transform: translateY(-1px);
   opacity: 1;
 }
+button.fund:active {
+  transform: translateY(0.5px);
+}
 
 .donation-status {
     --donation-fill-stop: 30%; /* a variable to control at which point the donations bar is filled to */
@@ -178,10 +186,6 @@ button.fund:hover {
     /* fill the donations bar to the specific percentage */
     background: linear-gradient(to right, #ffc87bff var(--donation-fill-stop), var(--background-color) 0%, var(--background-color) 100%);
     box-shadow: 2px 2px 4px black;
-}
-button.checkout:hover {
-  transform: translateY(-1px);
-  opacity: 1;
 }
 
 .donation-buttons {
@@ -205,6 +209,9 @@ button.donation-button {
 button.donation-button:hover {
   transform: translateY(-1px);
   opacity: 1;
+}
+button.donation-button:active {
+  transform: translateY(0.5px);
 }
 
 input#custom-donation{

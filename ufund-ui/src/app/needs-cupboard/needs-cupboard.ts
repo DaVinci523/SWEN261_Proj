@@ -32,6 +32,7 @@ export class NeedsCupboard implements OnInit, OnDestroy {
   }
 
   user = inject(User);
+  needFilledColor = "#bbffacff";
 
   userName: string = '';
   needs: Need[] = [];

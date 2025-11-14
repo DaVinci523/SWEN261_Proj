@@ -24,6 +24,7 @@ export class AdminPage {
   totalDonated: number = 0;
   donationGoal: number = 0;
   newGoal: number | null = null;
+  needFilledColor = "#bbffacff";
 
 
   private getNeedsSubscription: Subscription;

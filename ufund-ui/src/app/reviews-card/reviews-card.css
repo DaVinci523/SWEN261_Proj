@@ -91,5 +91,5 @@ button.refresh-btn:hover {
 }
 
 .refresh-btn:hover { background:#2e6cff; color:#fff; }
-.refresh-btn:active { transform: translateY(1px); box-shadow:0 1px 0 rgb(0 0 0 / .04); }
+.refresh-btn:active { transform: translateY(0.5px); box-shadow:0 1px 0 rgb(0 0 0 / .04); }
 .refresh-btn:focus-visible { outline:3px solid #cddcff; outline-offset:2px; }

@@ -68,3 +68,6 @@ button.checkout:hover {
   transform: translateY(-1px);
   opacity: 1;
 }
+button.checkout:active {
+  transform: translateY(0.5px);
+}
