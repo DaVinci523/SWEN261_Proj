@@ -53,6 +53,8 @@ An online U-Fund system built in Java **24**
 - Designated types for the needs, so that admins can only create needs that belong to the designated type
 - Replace the intervals with observables / more dynamic methods of transfering data.
 - Moving some logic such as checkout to the backend.
+- Our AI is Not connected to our site's backend. Functionally it does not interact with our site, it only answers user's questions regarding what an item does.
+- - Our AI currently is setup for 250 prompts per day, a limit-reached message will display indicating this limit has been reached. 
 
 ## How to test it
 
