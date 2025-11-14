@@ -24,6 +24,7 @@ button.checkout {
     border-radius: 15px;
     border: 1px solid black;
     box-shadow: 2px 2px 8px black;
+    background-color: #fff36fff;
 }
 button.checkout:hover {
   transform: translateY(-1px);

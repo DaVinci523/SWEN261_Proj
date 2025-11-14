@@ -35,6 +35,7 @@ li {
     margin: 3%;
     padding-right: 0.2em;
     box-shadow: 2px 2px 8px black;
+    background: linear-gradient(to top, #c5f7ffff 15%, white 0%, white 100%);
 }
 
 span.data-container {
