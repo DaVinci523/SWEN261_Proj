@@ -201,7 +201,7 @@ export class NeedsCupboard implements OnInit, OnDestroy {
     }
     else{
       const donationNeed: Need = {
-        id: Math.floor(Math.random() * 1000000),    //random number 
+        id: -amount,    //random number 
         name: `Donation ($${amount})`,
         value: Number(amount),                       // donation amount
         maxQuantity: 1,
