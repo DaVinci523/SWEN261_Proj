@@ -730,11 +730,9 @@ Finally, the Review Controller handles all REST API requests for reviews. For ex
 
 ## Testing
 ### Acceptance Testing
->Across Sprint 2, acceptance testing indicates that the majority of user stories have fully met their acceptance criteria. 
-> Core user flows behaving as expected like the persistent navigation bar correctly routes to myResearch (Homepage), Login, and Checkout; the Login Page accurately authenticates valid users and their roles; and the needs list currently sending data to the funding basket. 
-> One acceptance criteria failure (which was later resolved) was where the wrong user’s funding basket appeared after login. Another acceptance criteria failure that was fixed was the Update Need feature on the Admin Page which attempts to modify an existing need, currently reset fields to empty or zero and does not save updates. Other than that, all other tested stories passed without exception. 
+Across Sprint 2, acceptance testing indicates that the majority of user stories have fully met their acceptance criteria. Core user flows behaving as expected like the persistent navigation bar correctly routes to myResearch (Homepage), Login, and Checkout; the Login Page accurately authenticates valid users and their roles; and the needs list currently sending data to the funding basket. One acceptance criteria failure (which was later resolved) was where the wrong user’s funding basket appeared after login. Another acceptance criteria failure that was fixed was the Update Need feature on the Admin Page which attempts to modify an existing need, currently reset fields to empty or zero and does not save updates. Other than that, all other tested stories passed without exception. 
 
-> For sprint three, our acceptance testing has been nearly fully passed. The fails came in the form of two features we did not end up implementing. One was implementing designated types, which restricted the types the admin could enter to be a set list. The other is deleting reviews by username and filtering reviews by rating. We did not get to them due to the time constraints alongside other workloads, but realistically we could get them done in a good week of dedicated work.
+For sprint three, our acceptance testing has been nearly fully passed. The fails came in the form of two features we did not end up implementing. One was implementing designated types, which restricted the types the admin could enter to be a set list. The other is deleting reviews by username and filtering reviews by rating. We did not get to them due to the time constraints alongside other workloads, but realistically we could get them done in a good week of dedicated work.
 
 
 ### Unit Testing and Code Coverage
