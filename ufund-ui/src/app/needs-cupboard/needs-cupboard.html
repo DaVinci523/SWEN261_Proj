@@ -63,22 +63,43 @@
         
         @for (need of needs; track need.id) {
             @if (need.visible){ <!--only show need if it is visible-->
-                <li>
-                    <span class="data-container">
-                        <span id="need-variables">
-                            <!-- <span class="identifier variable">Id: [{{need.id}}]</span>  -->
-                            <span class="variable">{{need.name}}<br><i>{{need.type}}</i></span>
-                            <span *ngIf="need.currentQuantity >= need.maxQuantity" class="variable">Quantity: Surplus</span>
-                            <span *ngIf="need.currentQuantity < need.maxQuantity" class="variable">Quantity: {{need.currentQuantity}}/{{need.maxQuantity}}</span>
-                            <span class="variable">${{need.value}}</span>
-                            <!-- <span class="variable">Type: ["{{need.type}}"]</span> -->
+
+                @if(need.currentQuantity >= need.maxQuantity){ <!--Need is fufilled-->
+                    <li [style.--fill-color]="needFilledColor" [style.--donation-progress-stop]="100 + '%'">
+                        <span class="data-container">
+                            <span id="need-variables">
+                                <!-- <span class="identifier variable">Id: [{{need.id}}]</span>  -->
+                                <span class="variable">{{need.name}}<br><i>{{need.type}}</i></span>
+                                <span *ngIf="need.currentQuantity >= need.maxQuantity" class="variable">Quantity: Surplus</span>
+                                <span *ngIf="need.currentQuantity < need.maxQuantity" class="variable">Quantity: {{need.currentQuantity}}/{{need.maxQuantity}}</span>
+                                <span class="variable">${{need.value}}</span>
+                                <!-- <span class="variable">Type: ["{{need.type}}"]</span> -->
+                            </span>
+                            <span id="fund">
+                                <button *ngIf="need.currentQuantity < need.maxQuantity" id="moveToFund"type="button" (click)="moveToFunding(need)" class="fund" title="Add to Cart">Add to Cart</button>  
+                                <button *ngIf="need.currentQuantity >= need.maxQuantity" id="moveToFund"type="button" (click)="moveToFunding(need)" class="fund" title="Donate Extra">Donate Extra</button> 
+                            </span>
                         </span>
-                        <span id="fund">
-                            <button *ngIf="need.currentQuantity < need.maxQuantity" id="moveToFund"type="button" (click)="moveToFunding(need)" class="fund" title="Add to Cart">Add to Cart</button>  
-                            <button *ngIf="need.currentQuantity >= need.maxQuantity" id="moveToFund"type="button" (click)="moveToFunding(need)" class="fund" title="Donate Extra">Donate Extra</button> 
+                    </li>
+                }
+                @else{ <!--Need is not fufilled-->
+                    <li [style.--donation-progress-stop]="(need.currentQuantity/need.maxQuantity) * 100 + '%'">
+                        <span class="data-container">
+                            <span id="need-variables">
+                                <!-- <span class="identifier variable">Id: [{{need.id}}]</span>  -->
+                                <span class="variable">{{need.name}}<br><i>{{need.type}}</i></span>
+                                <span *ngIf="need.currentQuantity >= need.maxQuantity" class="variable">Quantity: Surplus</span>
+                                <span *ngIf="need.currentQuantity < need.maxQuantity" class="variable">Quantity: {{need.currentQuantity}}/{{need.maxQuantity}}</span>
+                                <span class="variable">${{need.value}}</span>
+                                <!-- <span class="variable">Type: ["{{need.type}}"]</span> -->
+                            </span>
+                            <span id="fund">
+                                <button *ngIf="need.currentQuantity < need.maxQuantity" id="moveToFund"type="button" (click)="moveToFunding(need)" class="fund" title="Add to Cart">Add to Cart</button>  
+                                <button *ngIf="need.currentQuantity >= need.maxQuantity" id="moveToFund"type="button" (click)="moveToFunding(need)" class="fund" title="Donate Extra">Donate Extra</button> 
+                            </span>
                         </span>
-                    </span>
-                </li>
+                    </li>
+                }
             }
         } 
         @empty {

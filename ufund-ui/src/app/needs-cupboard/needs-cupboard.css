@@ -36,13 +36,23 @@ ul {
 }
 
 li {
+    --donation-progress-stop: 30%;
+    --fill-color: var(--need-filling-color);
+    
     list-style-type:none;
     border: 2px solid black;
     border-radius: 48px;
     margin: 0.8em 0.3em;
     padding-left: 1em;
     padding-right: 1em;
-    background-color: white;
+    box-shadow: 2px 2px 8px black;
+    /* fill the donations bar to the specific percentage */
+    background: linear-gradient(to right, var(--fill-color) var(--donation-progress-stop), white 0%, white 100%);
+
+}
+button.checkout:hover {
+  transform: translateY(-1px);
+  opacity: 1;
 }
 
 span.data-container {
@@ -100,6 +110,14 @@ div.search-name-container {
     padding-right: 0%;
 }
 
+input.search {
+    box-shadow: 2px 2px 6px black;
+}
+button.checkout:hover {
+  transform: translateY(-1px);
+  opacity: 1;
+}
+
 input.search.name {
     margin: 0%;
     width: 100%;
@@ -142,11 +160,19 @@ span#fund {
 
 button.fund {
     width: 100%;
-    border: 2px solid black;
+    border: 1px solid black;
     text-align: center;
     height: 3em;
     border-radius: 24px;
     font-size: 18px;
+    box-shadow: 1px 1px 6px black;
+}
+button.fund:hover {
+  transform: translateY(-1px);
+  opacity: 1;
+}
+button.fund:active {
+  transform: translateY(0.5px);
 }
 
 .donation-status {
@@ -159,6 +185,7 @@ button.fund {
     border-radius: 48px;
     /* fill the donations bar to the specific percentage */
     background: linear-gradient(to right, #ffc87bff var(--donation-fill-stop), var(--background-color) 0%, var(--background-color) 100%);
+    box-shadow: 2px 2px 4px black;
 }
 
 .donation-buttons {
@@ -169,6 +196,7 @@ button.fund {
     background: #fafafa;
     border: 2px solid black;
     border-radius: 18px;
+    box-shadow: 2px 2px 8px black;
 }
 
 button.donation-button {
@@ -176,6 +204,14 @@ button.donation-button {
     border-radius: 48px;
     margin: 0.5em 0em;
     margin-right: 6px;
+    box-shadow: 2px 2px 4px black;
+}
+button.donation-button:hover {
+  transform: translateY(-1px);
+  opacity: 1;
+}
+button.donation-button:active {
+  transform: translateY(0.5px);
 }
 
 input#custom-donation{
@@ -183,6 +219,7 @@ input#custom-donation{
     border-radius: 48px;
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
+    box-shadow: 2px 2px 4px black;
 }
 
 button.donation-button#custom-donation{

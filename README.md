@@ -30,6 +30,8 @@ An online U-Fund system built in Java **24**
 
 ## Known bugs and disclaimers
 
+- For improved user experience please test race conditions on the same browser (not incognito)
+
 - For the application to run the funding_basket.json should have at Least the following data: (copy & paste)
 {"users": [{"userName":"helper123","basket":[]},{"userName":"helper456","basket":[]}]}
 
@@ -55,6 +57,7 @@ An online U-Fund system built in Java **24**
 - Moving some logic such as checkout to the backend.
 - Our AI is Not connected to our site's backend. Functionally it does not interact with our site, it only answers user's questions regarding what an item does.
 - - Our AI currently is setup for 250 prompts per day, a limit-reached message will display indicating this limit has been reached. 
+- Our Reviews home-page card has a chance to refresh to a review that was previously displayed, but if the program were to have hundreds of reviews, the odds of that happening would be much lower.
 
 ## How to test it
 

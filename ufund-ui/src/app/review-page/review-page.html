@@ -17,7 +17,7 @@
                 <div class="">Description: </div>
                             
                 <!-- value input is saved in needValue -->
-                <input type="text" [(ngModel)]="this.form.reviewText" placeholder="Please describe your review here...">
+                <input type="text" id="user-text" [(ngModel)]="this.form.reviewText" placeholder="Please describe your review here...">
             </div>
 
             <button type="button" class="create"(click)="submit()">Create Review</button>

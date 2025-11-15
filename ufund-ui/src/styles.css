@@ -1,5 +1,7 @@
 :root {
     --background-color: #fff8e8;
+    --need-filling-color: #ffdcacff;
+    --need-filled-color: #bbffacff;
 }
 
 html, body { 
@@ -12,4 +14,8 @@ app-root { display:block; min-height:100%; }
 
 button:hover { /* all buttons have a slight brighten effect */
     filter: brightness(1.1);
+    transform: translateY(-1px);
+}
+button:active {
+    transform: translateY(0.5px);
 }

@@ -56,8 +56,13 @@
 
   opacity: 0;
   animation: fadeUp .8s ease-out .45s forwards;
+  box-shadow: 2px 2px 6px black;
 }
-.fund-now-button:hover { opacity: .92; }
+.fund-now-button:hover { 
+  opacity: .92; 
+  transform: translateY(-1px);
+  opacity: 1;
+}
 
 .dropping-texts {
   display: inline-block;
@@ -182,7 +187,7 @@
   height: auto;
   display: block;
   border-radius: 14px;
-  box-shadow: 0 12px 28px rgba(0,0,0,.15);
+  box-shadow: 2px 2px 10px black;
 }
 
 .about-text{

@@ -12,7 +12,7 @@
       </section>
 
       <footer class="modal-footer">
-        <button class="btn" type="button" (click)="modal.confirm()">{{ confirmText }}</button>
+        <button class="btn" type="button" (click)="modal.confirm()" autofocus>{{ confirmText }}</button>
         @if (showCancel) {
           <button class="btn btn-secondary" type="button" (click)="modal.cancel()">{{ cancelText }}</button>
         }
