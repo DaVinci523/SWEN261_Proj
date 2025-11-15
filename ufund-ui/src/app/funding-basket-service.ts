@@ -68,6 +68,7 @@ export class FundingBasketService {
 
     return this.http.put(url, need, this.httpOptions).pipe(
       tap(_ => {
+        this.updateItemCount(userName);
         this.updateUserNeeds(userName);
       })
     );
@@ -79,6 +80,7 @@ export class FundingBasketService {
 
     return this.http.put(url, this.httpOptions).pipe(
       tap(_ => {
+        this.updateItemCount(userName);
         this.updateUserNeeds(userName);
       })
     );
