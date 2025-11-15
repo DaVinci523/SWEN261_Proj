@@ -718,7 +718,7 @@ Finally, the Review Controller handles all REST API requests for reviews. For ex
 
 <img width="593" height="332" alt="Review Controller POST method" src="createReview.png" />
 >
-> _**[Sprint 4]** OO Design Principles should span across **all tiers.**_
+> **[Sprint 4]** OO Design Principles should span across **all tiers.**
 
 ## Static Code Analysis/Future Design Improvements
 > _**[Sprint 4]** With the results from the Static Code Analysis exercise, 
