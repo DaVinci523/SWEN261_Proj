@@ -20,9 +20,14 @@ export class FundingBasketService {
   private itemCountSubject = new BehaviorSubject<number>(0);
   itemCount$ = this.itemCountSubject.asObservable();
 
+  // BehaviorSubject used for tracking the needs in the funding basket
+  private userBasketSubject = new BehaviorSubject<Need[]>({} as Need[]);
+  userNeeds$ = this.userBasketSubject.asObservable();
+
+
   constructor(
     private http: HttpClient,
-    private MessageService: MessageService
+    private MessageService: MessageService,
   ) { }
 
   // Save/Modify the Server methods //
@@ -33,6 +38,7 @@ export class FundingBasketService {
 
   getUserNames(): Observable<any> {
     const url = `${this.needsUrl}/usernames`;
+    
 
     return this.http.get(url);
   }
@@ -41,7 +47,11 @@ export class FundingBasketService {
   getNeeds(userName: String): Observable<any> {
     const url = `${this.needsUrl}/${userName}/needs`;
 
-    return this.http.get<any>(url);
+    return this.http.get<any>(url).pipe(
+      tap(_ => {
+        this.updateUserNeeds(userName);
+      })
+    );
   }
 
   /** 
@@ -56,14 +66,22 @@ export class FundingBasketService {
   updateNeed(userName: String, need: Need): Observable<any> {
     const url = `${this.needsUrl}/${userName}`;
 
-    return this.http.put(url, need, this.httpOptions)
+    return this.http.put(url, need, this.httpOptions).pipe(
+      tap(_ => {
+        this.updateUserNeeds(userName);
+      })
+    );
   }
 
   /** PUT: update the need's visibility on the server */
   changeNeedVisibility(userName: String, id: number, visible: boolean): Observable<any> {
     const url = `${this.needsUrl}/${userName}/${id}/visible/?visible=${visible}`;
 
-    return this.http.put(url, this.httpOptions)
+    return this.http.put(url, this.httpOptions).pipe(
+      tap(_ => {
+        this.updateUserNeeds(userName);
+      })
+    );
   }
 
   /** POST: add a new need to the server */
@@ -71,7 +89,10 @@ export class FundingBasketService {
     const url = `${this.needsUrl}/${userName}`;
 
     return this.http.post<Need>(url, need, this.httpOptions).pipe(
-      tap(_ => this.updateItemCount(userName))
+      tap(_ => {
+        this.updateItemCount(userName);
+        this.updateUserNeeds(userName);
+      })
     );
   }
 
@@ -80,7 +101,10 @@ export class FundingBasketService {
     const url = `${this.needsUrl}/${userName}/${id}`;
 
     return this.http.delete<Need>(url, this.httpOptions).pipe(
-      tap(_ => this.updateItemCount(userName))
+      tap(_ => {
+        this.updateItemCount(userName);
+        this.updateUserNeeds(userName);
+      })
     );
   }
 
@@ -113,6 +137,28 @@ export class FundingBasketService {
    */
   getCurrentItemCount(): number {
     return this.itemCountSubject.value;
+  }
+
+  /**
+   * Refreshes and updates the observable item count 
+   */
+  updateUserNeeds(userName: String): void {
+    this.getNeeds(userName).subscribe({
+      next: (needs) => { // updates the front-end needs with the backend
+        this.userBasketSubject.next(needs);
+      },
+      error: (err) => {
+        console.error('Failed to update the user needs:', err);
+        this.userBasketSubject.next({} as Need[]);
+      }
+    });
+  }
+
+  /**
+   * Return the current funding basket needs
+   */
+  getCurrentUserNeeds(): Need[] {
+    return this.userBasketSubject.value;
   }
 
   addDonation(userName: string, amount: number) {

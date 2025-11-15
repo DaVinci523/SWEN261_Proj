@@ -23,8 +23,10 @@ export class FundingBasket implements OnInit, OnDestroy {
   ) {
     // Continuously call getNeeds on set intervals (ex: 5000 is 5 seconds) to keep them updated when page is not reloaded.
     this.getNeedsSubscription = interval(500).subscribe(() => {
-      this.getNeeds();
+      //this.getNeeds();
       fundingBasketService.updateItemCount(this.userName);
+      this.fundingBasketService.updateUserNeeds(this.userName);
+
     })
   }
 
@@ -47,6 +49,12 @@ export class FundingBasket implements OnInit, OnDestroy {
       return;
     }
     this.userName = this.currentUser;
+    // Refresh the basket 
+    this.fundingBasketService.updateUserNeeds(this.userName);
+    // Subscribe to live basket updates
+    this.fundingBasketService.userNeeds$.subscribe((needs: Need[]) => {
+      this.userNeeds = needs;
+    });
 
     this.getNeeds();
 
@@ -104,15 +112,15 @@ export class FundingBasket implements OnInit, OnDestroy {
         if (updateCalls.length > 0) {
           forkJoin(updateCalls).subscribe(() => { // https://rxjs.dev/api/index/function/forkJoin ||| https://www.learnrxjs.io/learn-rxjs/operators/combination/forkjoin
             // Refresh data after all updates complete
-            this.fundingBasketService.getNeeds(this.userName).subscribe((userNeeds) => this.userNeeds = userNeeds);
+            //this.fundingBasketService.getNeeds(this.userName).subscribe((userNeeds) => this.userNeeds = userNeeds);
+            this.fundingBasketService.updateUserNeeds(this.userName);
             this.needsCupboardService.getNeeds().subscribe(cupNeeds => this.needsCupboard = cupNeeds);
           });
         }
 
       });
 
-      
-
+    
     });
   }
 
@@ -128,6 +136,7 @@ export class FundingBasket implements OnInit, OnDestroy {
       .subscribe(need => {
         this.userNeeds.push(need);
         this.fundingBasketService.updateItemCount(this.userName);
+        this.fundingBasketService.updateUserNeeds(this.userName);
       });
   }
 
@@ -135,6 +144,7 @@ export class FundingBasket implements OnInit, OnDestroy {
     this.userNeeds = this.userNeeds.filter(n => n !== need); // removes the given need in the front end by re-defining the list by only filetering in needs that weren't given
     this.fundingBasketService.deleteNeed(this.userName, need.id).subscribe(() => {
       this.fundingBasketService.updateItemCount(this.userName);
+      this.fundingBasketService.updateUserNeeds(this.userName);
     });
   }
 
@@ -142,8 +152,10 @@ export class FundingBasket implements OnInit, OnDestroy {
     //this.fundingBasketService.increaseQuantity(need).subscribe();
     need.maxQuantity++;; // temporary visual, does NOT affect the data.json file
     this.fundingBasketService.updateNeed(this.userName, need)
-        .subscribe(() => {this.getNeeds();
-          window.location.reload();
+        .subscribe(() => {
+          //this.getNeeds();
+          //window.location.reload();
+          this.fundingBasketService.updateUserNeeds(this.userName);
         });
 
   }
@@ -153,12 +165,17 @@ export class FundingBasket implements OnInit, OnDestroy {
     need.maxQuantity--; // temporary visual, does NOT affect the data.json file
     if (need.maxQuantity == 0){
       this.fundingBasketService.deleteNeed(this.userName, need.id).subscribe(() => {
-      window.location.reload();});
+        //window.location.reload(); 
+        this.fundingBasketService.updateUserNeeds(this.userName);
+      });
     }
     else{
     this.fundingBasketService.updateNeed(this.userName, need)
-        .subscribe(() =>{ this.getNeeds(); 
-          window.location.reload(); 
+        .subscribe(() =>{ 
+          //this.getNeeds(); 
+          //window.location.reload(); 
+          this.fundingBasketService.updateUserNeeds(this.userName);
+
         });
     }
   }
@@ -167,7 +184,10 @@ export class FundingBasket implements OnInit, OnDestroy {
     if (this.userNeeds) {
       for ( const need of this.userNeeds){ // update every need in the user's funding basket
       this.fundingBasketService.updateNeed(this.userName, need)
-        .subscribe(() => this.getNeeds());
+        .subscribe(() => 
+          //this.getNeeds()
+          this.fundingBasketService.updateUserNeeds(this.userName)
+        );
       }
     }
   }

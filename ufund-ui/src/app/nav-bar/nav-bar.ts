@@ -24,7 +24,7 @@ export class NavBar  implements OnInit{
           // Subscribe to live count updates
           this.fundingBasketService.itemCount$.subscribe(count => {
             this.cartItemCount = count;
-        });
+          });
         }
       }
   }

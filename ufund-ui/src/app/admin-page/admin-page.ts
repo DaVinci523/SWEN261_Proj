@@ -104,8 +104,7 @@ export class AdminPage {
       .subscribe(() => {});
     }
     
-    else{
-      if (!name) {
+    else if (!name) {
         return;
     }
     else{
@@ -130,7 +129,6 @@ export class AdminPage {
         });
       }
     }
-  }
   }
 
   /**
