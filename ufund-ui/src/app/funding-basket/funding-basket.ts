@@ -13,8 +13,18 @@ import { forkJoin, interval, Observable, Subscription } from 'rxjs';
   styleUrls: ['./funding-basket.css']
 })
 export class FundingBasket implements OnInit, OnDestroy {
+  private needsChannel?: BroadcastChannel;
 
-  private getNeedsSubscription: Subscription;
+  // private getNeedsSubscription: Subscription;
+
+  private messageHandler = (event: MessageEvent) => {
+    console.log("I GOT A MESSAGE: " + event);
+    if (event.data && event.data.startsWith('cupboard-updated')) {
+      this.getNeeds();
+      console.log("Needs updated");
+    }
+  };
+
 
   constructor(
     public fundingBasketService: FundingBasketService,
@@ -22,12 +32,12 @@ export class FundingBasket implements OnInit, OnDestroy {
     private router: Router,
   ) {
     // Continuously call getNeeds on set intervals (ex: 5000 is 5 seconds) to keep them updated when page is not reloaded.
-    this.getNeedsSubscription = interval(500).subscribe(() => {
-      //this.getNeeds();
-      //fundingBasketService.updateItemCount(this.userName);
-      //fundingBasketService.updateUserNeeds(this.userName);
-
-    })
+    // this.getNeedsSubscription = interval(2000).subscribe(() => {
+    //   //this.getNeeds();
+    //   //fundingBasketService.updateItemCount(this.userName);
+    //   //fundingBasketService.updateUserNeeds(this.userName);
+    //   // console.log(fundingBasketService.getCurrentUserNeeds());
+    // })
   }
 
   user = inject(User); // for setting the current user's username
@@ -44,18 +54,31 @@ export class FundingBasket implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.currentUser = this.user.getCurrentUser();
+    window.addEventListener('message', this.messageHandler); // listener for a message
+
+    if ('BroadcastChannel' in window) { // connect broadcast message
+      console.log("BRODCAST IN CHANNEL")
+      this.needsChannel = new BroadcastChannel('needs');
+      this.needsChannel.onmessage = (ev: MessageEvent) => {
+        if (ev.data === 'cupboard-updated') {
+          console.log('FundingBasket received cupboard-updated via BroadcastChannel', ev.data);
+          this.getNeeds();
+        }
+      };
+      console.log('FundingBasket BroadcastChannel listener attached');
+    }
     if (!this.currentUser) {
       this.router.navigate(['/login'], { queryParams: { returnUrl: '/checkout' } });
       return;
     }
     this.userName = this.currentUser;
     // Refresh the basket 
-    this.fundingBasketService.updateUserNeeds(this.userName);
+    // this.fundingBasketService.updateUserNeeds(this.userName);
     // Subscribe to live basket updates
-    this.fundingBasketService.userNeeds$.subscribe((needs: Need[]) => {
+      FundingBasketService.userNeeds$.subscribe((needs: Need[]) => {
       this.userNeeds = needs;
     });
-    this.needsCupboardService.cupboardNeeds$.subscribe((cupbNeeds: Need[]) => {
+    NeedsCupboardService.cupboardNeeds$.subscribe((cupbNeeds: Need[]) => {
       this.needsCupboard = cupbNeeds;
     });
     
@@ -67,18 +90,22 @@ export class FundingBasket implements OnInit, OnDestroy {
    * Remove getNeedsSubscription if it still exists when this component is destroyed to prevent memory leaks.
    */
   ngOnDestroy(): void{
-    if (this.getNeedsSubscription){
-      this.getNeedsSubscription.unsubscribe();
+    window.removeEventListener('message', this.messageHandler);
+    if (this.needsChannel) {
+      this.needsChannel.close();
     }
+    // if (this.getNeedsSubscription){
+    //   this.getNeedsSubscription.unsubscribe();
+    // }
   }
 
   getNeeds(): void {
 
-    // this.fundingBasketService.getNeeds(this.userName).subscribe((userNeeds) => {
-    //   this.userNeeds = userNeeds;
+    this.fundingBasketService.getNeeds(this.userName).subscribe((userNeeds) => {
+      this.userNeeds = userNeeds;
 
-    //   this.needsCupboardService.getNeeds().subscribe(cupNeeds => {
-    //     this.needsCupboard = cupNeeds;
+      this.needsCupboardService.getNeeds().subscribe(cupNeeds => {
+        this.needsCupboard = cupNeeds;
 
         //this.needsCupboard$.subscribe(need => this.needsCupboard = need); // update to observable
 
@@ -116,16 +143,18 @@ export class FundingBasket implements OnInit, OnDestroy {
           forkJoin(updateCalls).subscribe(() => { // https://rxjs.dev/api/index/function/forkJoin ||| https://www.learnrxjs.io/learn-rxjs/operators/combination/forkjoin
             // Refresh data after all updates complete
             this.fundingBasketService.getNeeds(this.userName).subscribe((userNeeds) => this.userNeeds = userNeeds);
-            // this.fundingBasketService.updateItemCount(this.userName);
-            // this.fundingBasketService.updateUserNeeds(this.userName);
             this.needsCupboardService.getNeeds().subscribe(cupNeeds => this.needsCupboard = cupNeeds);
+            // this.fundingBasketService.updateItemCount(this.userName);
+            
+            // this.fundingBasketService.updateUserNeeds(this.userName);
+            // this.needsCupboardService.updateCupboardNeeds();
           });
         }
 
-      // });
+      });
 
     
-    // });
+    });
   }
 
   // add a Need
@@ -140,7 +169,8 @@ export class FundingBasket implements OnInit, OnDestroy {
       .subscribe(need => {
         this.userNeeds.push(need);
         // this.fundingBasketService.updateItemCount(this.userName);
-        this.fundingBasketService.updateUserNeeds(this.userName);
+        // this.fundingBasketService.updateUserNeeds(this.userName);
+        this.notifyNeedModified();
       });
   }
 
@@ -148,7 +178,8 @@ export class FundingBasket implements OnInit, OnDestroy {
     this.userNeeds = this.userNeeds.filter(n => n !== need); // removes the given need in the front end by re-defining the list by only filetering in needs that weren't given
     this.fundingBasketService.deleteNeed(this.userName, need.id).subscribe(() => {
       // this.fundingBasketService.updateItemCount(this.userName);
-      this.fundingBasketService.updateUserNeeds(this.userName);
+      // this.fundingBasketService.updateUserNeeds(this.userName);
+      this.notifyNeedModified();
     });
   }
 
@@ -158,9 +189,10 @@ export class FundingBasket implements OnInit, OnDestroy {
     this.fundingBasketService.updateNeed(this.userName, need)
         .subscribe(() => {
           //this.getNeeds();
-          //window.location.reload();
+          window.location.reload();
           // this.fundingBasketService.updateItemCount(this.userName);
-          this.fundingBasketService.updateUserNeeds(this.userName);
+          // this.fundingBasketService.updateUserNeeds(this.userName);
+          this.notifyNeedModified();
         });
 
   }
@@ -170,19 +202,19 @@ export class FundingBasket implements OnInit, OnDestroy {
     need.maxQuantity--; // temporary visual, does NOT affect the data.json file
     if (need.maxQuantity == 0){
       this.fundingBasketService.deleteNeed(this.userName, need.id).subscribe(() => {
-        //window.location.reload(); 
+        window.location.reload(); 
         // this.fundingBasketService.updateItemCount(this.userName);
-        this.fundingBasketService.updateUserNeeds(this.userName);
+        // this.fundingBasketService.updateUserNeeds(this.userName);
       });
     }
     else{
     this.fundingBasketService.updateNeed(this.userName, need)
         .subscribe(() =>{ 
           //this.getNeeds(); 
-          //window.location.reload(); 
+          window.location.reload(); 
           // this.fundingBasketService.updateItemCount(this.userName);
-          this.fundingBasketService.updateUserNeeds(this.userName);
-
+          // this.fundingBasketService.updateUserNeeds(this.userName);
+          this.notifyNeedModified();
         });
     }
   }
@@ -194,10 +226,26 @@ export class FundingBasket implements OnInit, OnDestroy {
         .subscribe(() => {
           //this.getNeeds()
           // this.fundingBasketService.updateItemCount(this.userName);
-          this.fundingBasketService.updateUserNeeds(this.userName);
+          // this.fundingBasketService.updateUserNeeds(this.userName);
       });
       }
     }
+  }
+
+  
+  /**
+   * Notify the application when a need is modified
+   */
+  private notifyNeedModified(): void {
+    // BroadcastChannel for immediate cross-tab messaging
+    try {
+      if ('BroadcastChannel' in window) {
+        console.log("BROADCASTED")
+        const bc = new BroadcastChannel('needs');
+        bc.postMessage('cupboard-updated');
+        bc.close();
+      }
+    } catch {}
   }
 
 }

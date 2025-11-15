@@ -21,8 +21,8 @@ export class FundingBasketService {
   itemCount$ = this.itemCountSubject.asObservable();
 
   // BehaviorSubject used for tracking the needs in the funding basket
-  private userBasketSubject = new BehaviorSubject<Need[]>({} as Need[]);
-  userNeeds$ = this.userBasketSubject.asObservable();
+  private static userBasketSubject = new BehaviorSubject<Need[]>({} as Need[]);
+  static userNeeds$ = FundingBasketService.userBasketSubject.asObservable();
 
 
   constructor(
@@ -47,11 +47,12 @@ export class FundingBasketService {
   getNeeds(userName: String): Observable<any> {
     const url = `${this.needsUrl}/${userName}/needs`;
 
-    return this.http.get<any>(url).pipe(
-      tap(_ => {
-        this.updateUserNeeds(userName);
-      })
-    );
+    return this.http.get<any>(url);
+    // .pipe(
+    //   tap(_ => {
+    //     this.updateUserNeeds(userName);
+    //   })
+    // );
   }
 
   /** 
@@ -69,7 +70,7 @@ export class FundingBasketService {
     return this.http.put(url, need, this.httpOptions).pipe(
       tap(_ => {
         this.updateItemCount(userName);
-        this.updateUserNeeds(userName);
+        // this.updateUserNeeds(userName);
       })
     );
   }
@@ -81,7 +82,7 @@ export class FundingBasketService {
     return this.http.put(url, this.httpOptions).pipe(
       tap(_ => {
         this.updateItemCount(userName);
-        this.updateUserNeeds(userName);
+        // this.updateUserNeeds(userName);
       })
     );
   }
@@ -93,7 +94,7 @@ export class FundingBasketService {
     return this.http.post<Need>(url, need, this.httpOptions).pipe(
       tap(_ => {
         this.updateItemCount(userName);
-        this.updateUserNeeds(userName);
+        // this.updateUserNeeds(userName);
       })
     );
   }
@@ -105,7 +106,7 @@ export class FundingBasketService {
     return this.http.delete<Need>(url, this.httpOptions).pipe(
       tap(_ => {
         this.updateItemCount(userName);
-        this.updateUserNeeds(userName);
+        // this.updateUserNeeds(userName);
       })
     );
   }
@@ -147,11 +148,11 @@ export class FundingBasketService {
   updateUserNeeds(userName: String): void {
     this.getNeeds(userName).subscribe({
       next: (needs) => { // updates the front-end needs with the backend
-        this.userBasketSubject.next(needs);
+        FundingBasketService.userBasketSubject.next(needs);
       },
       error: (err) => {
         console.error('Failed to update the user needs:', err);
-        this.userBasketSubject.next({} as Need[]);
+        FundingBasketService.userBasketSubject.next({} as Need[]);
       }
     });
   }
@@ -160,7 +161,7 @@ export class FundingBasketService {
    * Return the current funding basket needs
    */
   getCurrentUserNeeds(): Need[] {
-    return this.userBasketSubject.value;
+    return FundingBasketService.userBasketSubject.value;
   }
 
   addDonation(userName: string, amount: number) {

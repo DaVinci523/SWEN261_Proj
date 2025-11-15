@@ -61,11 +61,12 @@ export class AdminPageService {
   getNeeds(): Observable<Need[]> {
 
     // sends a GET request to the needsUrl
-    return this.http.get<Need[]>(this.needsUrl).pipe(
-      tap(_ => {
-        this.needsCupboardService.updateCupboardNeeds();
-      })
-    );
+    return this.http.get<Need[]>(this.needsUrl);
+    // .pipe(
+    //   tap(_ => {
+    //     this.needsCupboardService.updateCupboardNeeds();
+    //   })
+    // );
   }
 
 
@@ -90,7 +91,7 @@ export class AdminPageService {
     return this.http.put<Need>(this.needsUrl, updatedNeed).pipe(
       tap(_ => {
         this.log(`updated need id=${need.id}`);
-        this.needsCupboardService.updateCupboardNeeds();
+        // this.needsCupboardService.updateCupboardNeeds();
       }),
       catchError(this.handleError<any>('updateNeed'))
     );
@@ -103,7 +104,7 @@ export class AdminPageService {
     return this.http.put(url, this.httpOptions).pipe(
       tap(_ => {
         this.log(`updated need id=${id}`);
-        this.needsCupboardService.updateCupboardNeeds();
+        // this.needsCupboardService.updateCupboardNeeds();
       }),
       catchError(this.handleError<any>('updateNeed'))
     );
@@ -121,7 +122,7 @@ export class AdminPageService {
     return this.http.post<Need>(this.needsUrl, need, this.httpOptions).pipe(
       tap((newNeed: Need) => {
         this.log(`added need w/ id=${newNeed.id}`);
-        this.needsCupboardService.updateCupboardNeeds();
+        // this.needsCupboardService.updateCupboardNeeds();
       }),
       catchError(this.handleError<Need>('addNeed'))
       );
@@ -139,7 +140,7 @@ export class AdminPageService {
     return this.http.delete<Need>(`${this.needsUrl}/${needId}`).pipe(
       tap(_ => {
         this.log(`deleted need id=${needId}`);
-        this.needsCupboardService.updateCupboardNeeds();
+        // this.needsCupboardService.updateCupboardNeeds();
       }),
       catchError(this.handleError<Need>('deleteNeed'))
     );

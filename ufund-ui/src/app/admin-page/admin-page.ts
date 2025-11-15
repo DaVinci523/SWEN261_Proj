@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AdminPageService } from '../admin-page-service';
 import { Need } from '../need';
 import { User } from '../user';
@@ -17,7 +17,9 @@ import { ModalService } from '../modal-service';
   styleUrl: './admin-page.css'
 })
 
-export class AdminPage {
+export class AdminPage implements OnInit, OnDestroy{
+  private needsChannel?: BroadcastChannel;
+
   usernameToRemove = '';
   users: Account[] = [];
   totalDonated: number = 0;
@@ -25,9 +27,18 @@ export class AdminPage {
   newGoal: number | null = null;
   needFilledColor = "#bbffacff";
 
+  private messageHandler = (event: MessageEvent) => {
+    console.log("I GOT A MESSAGE: " + event);
+    if (event.data && event.data.startsWith('cupboard-updated')) {
+      this.getNeeds();
+      this.refresh();
+      this.loadDonationStatus();
+      console.log("Needs updated");
+    }
+  };
 
-  private getNeedsSubscription: Subscription;
-  private usersPollSubscription?: Subscription;
+  // private getNeedsSubscription: Subscription;
+  //private usersPollSubscription?: Subscription;
  
   constructor(
     private adminPageService:AdminPageService, // adminPageService to connect to REST API back-end      
@@ -38,15 +49,15 @@ export class AdminPage {
     private modal: ModalService
   ){
     // Continuously call getNeeds on set intervals (ex: 5000 is 5 seconds) to keep them updated when page is not reloaded.
-    this.getNeedsSubscription = interval(500).subscribe(() => {
-      this.getNeeds();
-      this.refresh();
-      this.loadDonationStatus();
-    })
+    // this.getNeedsSubscription = interval(500).subscribe(() => {
+    //   //this.getNeeds();
+    //   // this.refresh();
+    //   // this.loadDonationStatus();
+    // })
     //ensure users list is kept fresh even if getNeeds doesnt work
-    this.usersPollSubscription = interval(2000).subscribe(() => {
-      this.refresh();
-    });
+    // this.usersPollSubscription = interval(2000).subscribe(() => {
+    //   this.refresh();
+    // });
   }  
  
   needs:Need[] = []; // front-end container for all needs in cupboard
@@ -70,6 +81,32 @@ export class AdminPage {
     this.getNeeds();
     this.refresh();
     this.loadDonationStatus();
+
+    window.addEventListener('message', this.messageHandler); // listener for a message
+
+    if ('BroadcastChannel' in window) { // connect broadcast message
+      console.log("BRODCAST IN CHANNEL")
+      this.needsChannel = new BroadcastChannel('needs');
+      this.needsChannel.onmessage = (ev: MessageEvent) => {
+        if (ev.data === 'cupboard-updated') {
+          console.log('AdminPage received cupboard-updated via BroadcastChannel', ev.data);
+          this.getNeeds();
+          this.refresh();
+          this.loadDonationStatus();
+        }
+      };
+      console.log('AdminPage BroadcastChannel listener attached');
+    }
+  }
+
+  /**
+   * Remove subscription if it still exists when this component is destroyed to prevent memory leaks.
+   */
+  ngOnDestroy(): void{
+    window.removeEventListener('message', this.messageHandler);
+    if (this.needsChannel) {
+      this.needsChannel.close();
+    }
   }
  
   /**
@@ -116,6 +153,7 @@ export class AdminPage {
           // adds the need back in by tagging its visibility to true
           this.adminPageService.changeNeedVisibility(need.id, true).subscribe();
           changedVisibilty = true;
+          this.notifyNeedModified();
           window.location.reload();
         }
       });
@@ -125,6 +163,7 @@ export class AdminPage {
         this.adminPageService.createNeed({ name, value, type, currentQuantity: 0, maxQuantity: quantity, visible: true} as Need)
           .subscribe(need => {
             this.needs.push(need);
+            this.notifyNeedModified();
             window.location.reload();
         });
       }
@@ -147,6 +186,7 @@ export class AdminPage {
         this.notifyNeedDeleted(need);
 
         this.adminPageService.changeNeedVisibility(need.id, false).subscribe(() => {
+          this.notifyNeedModified();
           window.location.reload();
         });
       }
@@ -191,6 +231,7 @@ export class AdminPage {
     // calls the updateNeed function from adminPageService, subscribing to the observable
     this.adminPageService.updateNeed(need, name, value, currentQuantity, maxQuantity, type, true).subscribe(needs =>
       {this.needs = this.needs.filter(n => n !== needs);
+      this.notifyNeedModified();
       window.location.reload();
     });
    
@@ -265,7 +306,7 @@ export class AdminPage {
   }
 
   /**
-   * Allow the admin to update the goal but he cannot update it below the current totalDonated
+   * Allow the admin to update the goal but they cannot update it below the current totalDonated
    * @returns 
    */
   updateGoal(): void {
@@ -308,6 +349,21 @@ export class AdminPage {
       if ('BroadcastChannel' in window) {
         const bc = new BroadcastChannel('needs');
         bc.postMessage(payload);
+        bc.close();
+      }
+    } catch {}
+  }
+
+  /**
+   * Notify the application when a need is modified
+   */
+  private notifyNeedModified(): void {
+    // BroadcastChannel for immediate cross-tab messaging
+    try {
+      if ('BroadcastChannel' in window) {
+        console.log("BROADCASTED")
+        const bc = new BroadcastChannel('needs');
+        bc.postMessage('cupboard-updated');
         bc.close();
       }
     } catch {}
