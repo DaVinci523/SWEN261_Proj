@@ -31,6 +31,10 @@ export class ReviewsCard {
       let randNum1 = Math.floor(Math.random() * list.length); // generate random numbers for indeces of random reviews
       let randNum2 = Math.floor(Math.random() * list.length);
       
+      while(randNum2 == randNum1){ // keep re-rolling if the ids are the same (avoid repeating reviews)
+        randNum2 = Math.floor(Math.random() * list.length);
+      }
+
       this.displayedReviews.push(list[randNum1]);
       this.displayedReviews.push(list[randNum2]);
 
@@ -41,15 +45,20 @@ export class ReviewsCard {
    * Pulls up two random reviews to display
    */
   refreshReviews(): void {
+
+    let randNum1 = Math.floor(Math.random() * this.allReviews.length); // generate random numbers for indeces of random reviews
+    let randNum2 = Math.floor(Math.random() * this.allReviews.length);
+    
+    // avoid repeat reviews at the same time
+    while(randNum2 == randNum1){
+      randNum2 = Math.floor(Math.random() * this.allReviews.length);
+    }
+
     while(this.displayedReviews.length > 0){ // clear the display
       this.displayedReviews.pop();
     }
 
-    // add to the display
-    let randNum1 = Math.floor(Math.random() * this.allReviews.length); // generate random numbers for indeces of random reviews
-    let randNum2 = Math.floor(Math.random() * this.allReviews.length);
-      
-    this.displayedReviews.push(this.allReviews[randNum1]);
+    this.displayedReviews.push(this.allReviews[randNum1]); // add to the display
     this.displayedReviews.push(this.allReviews[randNum2]);
   }
 

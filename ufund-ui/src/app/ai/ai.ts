@@ -51,7 +51,7 @@ export class Ai {
     this.isLoading = true;
     setTimeout(() => {
       this.isLoading = false;
-    }, 1000);
+    }, 2000);
   }
 
 }

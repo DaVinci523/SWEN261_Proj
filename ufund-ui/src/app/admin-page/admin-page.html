@@ -17,26 +17,50 @@
                 @for (need of needs; track need.id) {
                     <!-- list item for a single need--> 
                     @if (need.visible){ <!--only show need if it is visible-->
-                        <li>
-                            <span class="data-container">
-                                <span id="need-variables">
-                                    <!-- all attributes utilize interpolation to display -->
-                                    <span class="identifier variable">Id: <b>{{need.id}}</b></span> 
-                                    <span class="variable">Name: <b>{{need.name}}</b></span>
-                                    <span class="variable">Value: <b>${{need.value}}</b></span>
-                                    <span class="variable">Quantity: <b>{{need.currentQuantity}}/{{need.maxQuantity}}</b></span>
-                                    <span class="variable">Type: <b>"{{need.type}}"</b></span>
+                        @if(need.currentQuantity >= need.maxQuantity){ <!--Need is fufilled-->
+                            <li [style.--fill-color]="needFilledColor" [style.--donation-progress-stop]="(need.currentQuantity/need.maxQuantity) * 100 + '%'">
+                                <span class="data-container">
+                                    <span id="need-variables">
+                                        <!-- all attributes utilize interpolation to display -->
+                                        <span class="identifier variable">Id: <b>{{need.id}}</b></span> 
+                                        <span class="variable">Name: <b>{{need.name}}</b></span>
+                                        <span class="variable">Value: <b>${{need.value}}</b></span>
+                                        <span class="variable">Quantity: <b>{{need.currentQuantity}}/{{need.maxQuantity}}</b></span>
+                                        <span class="variable">Type: <b>"{{need.type}}"</b></span>
+                                    </span>
+                                    <span id="modification-buttons">
+                                        <!-- update button attacked to every need to update it in the needs cupboard -->
+                                        <!-- uses inputs from right column as parameters for updated attributes-->
+                                        <button type="button" title="Fill in fields on the right, then click me" class="update" (click)= "updateNeed(need, needName.value, needValue.valueAsNumber, need.currentQuantity, needQuant.valueAsNumber, needType.value);">Update Need</button>  
+                                        
+                                        <!-- delete button attached to every need to immediately remvove it from the needs cupboard -->
+                                        <button type = button class="delete" (click) = "deleteNeed(need)"> Delete Need </button>
+                                    </span>
                                 </span>
-                                <span id="modification-buttons">
-                                    <!-- update button attacked to every need to update it in the needs cupboard -->
-                                    <!-- uses inputs from right column as parameters for updated attributes-->
-                                    <button type="button" title="Fill in fields on the right, then click me" class="update" (click)= "updateNeed(need, needName.value, needValue.valueAsNumber, need.currentQuantity, needQuant.valueAsNumber, needType.value);">Update Need</button>  
-                                    
-                                    <!-- delete button attached to every need to immediately remvove it from the needs cupboard -->
-                                    <button type = button class="delete" (click) = "deleteNeed(need)"> Delete Need </button>
+                            </li>
+                        }
+                        @else{ <!--Need is not fufilled-->
+                            <li [style.--donation-progress-stop]="(need.currentQuantity/need.maxQuantity) * 100 + '%'">
+                                <span class="data-container">
+                                    <span id="need-variables">
+                                        <!-- all attributes utilize interpolation to display -->
+                                        <span class="identifier variable">Id: <b>{{need.id}}</b></span> 
+                                        <span class="variable">Name: <b>{{need.name}}</b></span>
+                                        <span class="variable">Value: <b>${{need.value}}</b></span>
+                                        <span class="variable">Quantity: <b>{{need.currentQuantity}}/{{need.maxQuantity}}</b></span>
+                                        <span class="variable">Type: <b>"{{need.type}}"</b></span>
+                                    </span>
+                                    <span id="modification-buttons">
+                                        <!-- update button attacked to every need to update it in the needs cupboard -->
+                                        <!-- uses inputs from right column as parameters for updated attributes-->
+                                        <button type="button" title="Fill in fields on the right, then click me" class="update" (click)= "updateNeed(need, needName.value, needValue.valueAsNumber, need.currentQuantity, needQuant.valueAsNumber, needType.value);">Update Need</button>  
+                                        
+                                        <!-- delete button attached to every need to immediately remvove it from the needs cupboard -->
+                                        <button type = button class="delete" (click) = "deleteNeed(need)"> Delete Need </button>
+                                    </span>
                                 </span>
-                            </span>
-                        </li>
+                            </li>
+                        }
                     }
                 }
                 <!-- notifies the user if the needs cupboard is empty ---> 
@@ -51,22 +75,22 @@
             <div id="add-update-editor">
                 <h2>Add/Update Need:</h2>
 
-                <div>
+                <div class="variable-input">
                     <div>Need Name: </div>
                     <!-- name input is saved in needName -->
                     <input type="text" id="username" name="username" #needName placeholder="Enter need name">
                 </div>
-                <div>
+                <div class="variable-input">
                     <div>Quantity: </div>                                
                     <!-- quantity input is saved in needQuant -->
                     <input type="number" #needQuant placeholder="Enter quantity">
                 </div>
-                <div>
+                <div class="variable-input">
                     <div>Value: </div>     
                     <!-- value input is saved in needValue -->
                     <input type="number" #needValue placeholder="Enter value">
                 </div>
-                <div>
+                <div class="variable-input">
                     <div>Type: </div>           
                     <!-- type input is saved in needType -->
                     <input type="text" #needType placeholder="Enter type">
@@ -106,7 +130,7 @@
                 <h2>Current Users ({{ users.length }})</h2>
                 <ul>
                     @for (user of users; track user.username) {
-                        <li>
+                        <li class="user-card">
                             <strong>{{user.username}}</strong> — role: {{ user.role }}
                         </li>
                     }

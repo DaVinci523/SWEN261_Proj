@@ -39,6 +39,10 @@
   line-height: 1;
   cursor: pointer;
 }
+.icon-btn:hover {
+  transform: translateY(1px);
+  opacity: 1;
+}
 
 .modal-body{
   padding: 16px 18px;
@@ -62,6 +66,11 @@
   background: rgba(252, 251, 251, 0.08);
   color: #0c0c0c;
   cursor: pointer;
+  box-shadow: 2px 2px 2px black;
+}
+.btn:hover {
+  transform: translateY(-1px);
+  opacity: 1;
 }
 
 .btn:hover{

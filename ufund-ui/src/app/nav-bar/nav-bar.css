@@ -1,11 +1,11 @@
 .nav-bar {
   background: #ffa718;
-  border-bottom: 24px solid rgba(0, 0, 0, 0.12);
+  border-bottom: 8px solid rgba(0, 0, 0, 0.12);
   padding: 0.75em;
   padding-right: 2em;
   display: flex;
   align-items: center;
-  box-shadow: 0 2px 6px rgba(0,0,0,.06);
+  box-shadow: 0px 2px 16px #523200ff;
 }
 
 .icon-link.home {
@@ -52,11 +52,15 @@
   border-radius: 8px;
   border: 2px solid black;
   cursor: pointer;
+  box-shadow: 2px 2px 4px black;
 }
 .reviews-button:hover { 
   background: #fff7e6; 
   transform: translateY(-1px);
   opacity: 1;
+}
+.reviews-button:active {
+    transform: translateY(0.5px);
 }
 
 .icon-link img {
@@ -90,4 +94,16 @@ svg:hover {
   border-radius: 50%;
   padding: 2px 5px;
   font-size: 10px
+}
+
+button {
+  box-shadow: 2px 2px 4px black;
+}
+button:hover { 
+  background: #fff7e6; 
+  transform: translateY(-1px);
+  opacity: 1;
+}
+button:active {
+    transform: translateY(0.5px);
 }
