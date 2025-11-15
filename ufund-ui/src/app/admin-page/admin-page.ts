@@ -1,4 +1,3 @@
-
 import { Component } from '@angular/core';
 import { AdminPageService } from '../admin-page-service';
 import { Need } from '../need';
@@ -143,15 +142,19 @@ export class AdminPage {
     this.modal.confirmDialog('Delete', 'Are you sure you want to delete this need?', 'Yes', 'No')
     .subscribe(ok => {
       if (ok) {
-        // updates the needs list once the need has been deleted
+        // update local list
         this.needs = this.needs.filter(n => n !== need);
-        window.location.reload();
 
-        // removes the need by tagging its visibility to false
-        this.adminPageService.changeNeedVisibility(need.id, false).subscribe();
+        // notify all tabs that this need was deleted
+        this.notifyNeedDeleted(need);
+
+        this.adminPageService.changeNeedVisibility(need.id, false).subscribe(() => {
+          window.location.reload();
+        });
       }
     });
   }
+
 
   /**
    *updates a need both from the needs list and the back-end
@@ -282,4 +285,34 @@ export class AdminPage {
       });
     }
   }
+
+  /**
+   * Notify users when a need is deleted
+   * @param need The need being deleted
+   */
+  private notifyNeedDeleted(need: Need): void {
+    const payload = {
+      type: 'need-deleted',
+      id: need.id,
+      name: need.name
+    };
+
+    // Fallback via localStorage (works across tabs in same browser)
+    try {
+      localStorage.setItem(
+        'need-deleted:' + need.id,
+        JSON.stringify({ ts: Date.now(), ...payload })
+      );
+    } catch {}
+
+    // BroadcastChannel for immediate cross-tab messaging
+    try {
+      if ('BroadcastChannel' in window) {
+        const bc = new BroadcastChannel('needs');
+        bc.postMessage(payload);
+        bc.close();
+      }
+    } catch {}
+  }
+
 }

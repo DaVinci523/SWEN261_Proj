@@ -30,6 +30,8 @@ An online U-Fund system built in Java **24**
 
 ## Known bugs and disclaimers
 
+- For improved user experience please test race conditions on the same browser (not incognito)
+
 - For the application to run the funding_basket.json should have at Least the following data: (copy & paste)
 {"users": [{"userName":"helper123","basket":[]},{"userName":"helper456","basket":[]}]}
 

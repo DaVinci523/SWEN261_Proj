@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { ModalService, ModalConfig, ModalState } from '../modal-service';
 
 @Component({
@@ -72,4 +72,23 @@ export class ModalHost {
       this.modal.cancel();
     }
   }
+
+  @HostListener('document:keydown', ['$event'])
+  onKeydown(event: KeyboardEvent): void {
+    if (!this.visible) {
+      return; // ignore keys when modal is closed
+    }
+
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      this.modal.confirm(); // acts like clicking OK/Yes
+    }
+
+    //allow Esc to cancel when there's a Cancel button
+    if (event.key === 'Escape' && this.showCancel) {
+      event.preventDefault();
+      this.modal.cancel();
+    }
+  }
+
 }
