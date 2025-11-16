@@ -3,7 +3,7 @@ import { AdminPageService } from '../admin-page-service';
 import { Need } from '../need';
 import { User } from '../user';
 import { FundingBasketService } from '../funding-basket-service';
-import { interval, Subscription } from 'rxjs';
+import { interval, Observable, Subscription } from 'rxjs';
 import { DonationService } from '../donation';
 import { AccountsService } from '../accounts-service';
 import { Account } from '../account';
@@ -63,6 +63,9 @@ export class AdminPage implements OnInit, OnDestroy{
   needs:Need[] = []; // front-end container for all needs in cupboard
   usernames:String[] = [];
 
+  /**
+   * Refresh the list of users in the admin page
+   */
   refresh(): void {
     this.accounts.getAccounts().subscribe(list => {
       if (Array.isArray(list)) {
@@ -151,23 +154,27 @@ export class AdminPage implements OnInit, OnDestroy{
     }
     else{
       var changedVisibilty = false; // used to check if a need had its visibility changed so the program only creates or changes visibility and not both.
+
+      const visibilityUpdates: Observable<any>[] = []; // list of updates that occured
+
       // checks through every cupboard need and if it matches the newly created need's name and that need is not visible, then set the visibility of that need to true.
       this.needs.forEach(need => {
         if(need.name.toLowerCase() == name.toLowerCase() && !need.visible){ // check names ignoring case and whitespace
-        
+          changedVisibilty = true;
           // adds the need back in by tagging its visibility to true
-          this.adminPageService.changeNeedVisibility(need.id, true).subscribe(() => {
-            changedVisibilty = true;
-            this.getNeeds();
-            this.refresh();
-            this.loadDonationStatus();
-            this.notifyNeedModified();
-          });
-          // window.location.reload();
+          visibilityUpdates.push(this.adminPageService.changeNeedVisibility(need.id, true));
         }
       });
 
-      if(!changedVisibilty){
+      if(changedVisibilty){ // update if a visibility was changed
+        forkJoin(visibilityUpdates).subscribe(() => {
+          this.getNeeds();
+          this.refresh();
+          this.loadDonationStatus();
+          this.notifyNeedModified();
+        });
+      }
+      else{
         // calls the createNeed function, passing the parameters as a Need object, subscribing to the observable
         this.adminPageService.createNeed({ name, value, type, currentQuantity: 0, maxQuantity: quantity, visible: true} as Need)
           .subscribe(need => {
@@ -180,10 +187,6 @@ export class AdminPage implements OnInit, OnDestroy{
         });
       }
     }
-    this.getNeeds();
-    this.refresh();
-    this.loadDonationStatus();
-    this.notifyNeedModified();
   }
 
   /**

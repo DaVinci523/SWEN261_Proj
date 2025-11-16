@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 
 import { Need } from '../need';
 import { User } from '../user';
-import { interval, Subscription } from 'rxjs';
+import { forkJoin, interval, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-checkout',
@@ -58,18 +58,32 @@ export class Checkout implements OnInit{
   address: string = "";
 
   getNeeds(): void { // gets the needs from the REST api by running a program in the needService
-    this.fundingBasketService.getNeeds(this.userName).subscribe(userNeeds => 
-    {
-      this.userNeeds = userNeeds;
-      console.log("USR NEEDS: " + userNeeds);
-      this.calculateTotals();
-    }); // retrieve a user's funding basket Needs
 
-    this.needsCupboardService.getNeeds().subscribe(needsCupboard => {
+    // // [Previous code]
+    // this.fundingBasketService.getNeeds(this.userName).subscribe(userNeeds => 
+    // {
+    //   this.userNeeds = userNeeds;
+    //   console.log("USR NEEDS: " + userNeeds);
+    //   this.calculateTotals();
+    // }); // retrieve a user's funding basket Needs
+
+    // this.needsCupboardService.getNeeds().subscribe(needsCupboard => {
+    //   this.needsCupboard = needsCupboard;
+    //   console.log("NEEDS CUP: " + needsCupboard);
+    //   this.calculateTotals();
+    // }); // retrieve needsCupboard Needs  }
+
+    forkJoin({ // prompted Copilot AI to try and fix this async function issue [prompted: the code in this method ^ and how to make it runt calculateTotals after the other two are run]
+      userNeeds: this.fundingBasketService.getNeeds(this.userName),
+      needsCupboard: this.needsCupboardService.getNeeds()
+    }).subscribe(({ userNeeds, needsCupboard }) => {
+      this.userNeeds = userNeeds;
       this.needsCupboard = needsCupboard;
-      console.log("NEEDS CUP: " + needsCupboard);
+      console.log("USR NEEDS:", userNeeds);
+      console.log("NEEDS CUP:", needsCupboard);
       this.calculateTotals();
-    }); // retrieve needsCupboard Needs  }
+    });
+
 
   }
 
@@ -138,6 +152,7 @@ export class Checkout implements OnInit{
     // Send donation to backend
     if (this.donationTotal > 0) {
       updateRequests.push(this.donationService.addDonation(this.donationTotal));
+      this.notifyNeedModified();
     }
 
     // Update cupboard + remove needs
@@ -154,6 +169,7 @@ export class Checkout implements OnInit{
       if(userNeed.type === "donation"){
         updateRequests.push(this.fundingBasketService.deleteNeed(this.userName, userNeed.id));
       }
+      this.notifyNeedModified();
 
     });
 
@@ -161,12 +177,9 @@ export class Checkout implements OnInit{
       .then(() => {
         console.log("Checkout Completed Successfully");
         this.notifyNeedModified();
-        // window.location.reload();
       })
       .catch(err => console.log("Checkout Error:", err));
     
-    this.notifyNeedModified();
-    // window.location.reload(); // reload the page
   }
 
 
