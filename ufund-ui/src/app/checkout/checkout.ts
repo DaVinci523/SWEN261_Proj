@@ -19,7 +19,7 @@ import { forkJoin, interval, Subscription } from 'rxjs';
 export class Checkout implements OnInit{
   private needsChannel?: BroadcastChannel;
 
-  // private getNeedsSubscription: Subscription;
+  private getNeedsSubscription: Subscription;
 
   private messageHandler = (event: MessageEvent) => {
     console.log("I GOT A MESSAGE: " + event);
@@ -38,10 +38,10 @@ export class Checkout implements OnInit{
     private donationService: DonationService
   ) {
     // Continuously call getNeeds on set intervals (ex: 5000 is 5 seconds) to keep them updated when page is not reloaded.
-    // this.getNeedsSubscription = interval(500).subscribe(() => {
-    //   // this.getNeeds();
-    //   // this.calculateTotals();
-    // })
+    this.getNeedsSubscription = interval(500).subscribe(() => {
+      this.getNeeds();
+      this.calculateTotals();
+    })
   }
 
   user = inject(User);
