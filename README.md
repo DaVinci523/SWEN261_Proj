@@ -51,13 +51,16 @@ An online U-Fund system built in Java **24**
 {"users":[{"username":"helper456","password":"456","role":"helper"},{"username":"helper123","password":"123","role":"helper"},{"username":"admin","password":"admin","role":"admin"}]}
 
 
-2. Disclaimers & Unresolved features: The following are features that have not been implemented for the sake of focusing on other areas of the application
+2. Disclaimers & Unresolved features: (The following are features that have not been implemented for the sake of focusing on other areas of the application):
 - Designated types for the needs, so that admins can only create needs that belong to the designated type
-- Replace the intervals with observables / more dynamic methods of transfering data.
+- Replace the intervals with observables / more dynamic methods of transfering data. (WORKING ON)
+- - (UPDATE) Most of the intervals have been updated by using messages as signals to reload the data in response to user actions instead of a set timer
+- - (DISCLAIMER) There are still 2 intervals present
+- - - The checkout component in the front end had a bug using messages where the user's funding basket would not be properly updated, this was temporarily fixed by using an interval.
+- - - The user.ts file has an interval to check for users being created and deleted.
 - Moving some logic such as checkout to the backend.
 - Our AI is Not connected to our site's backend. Functionally it does not interact with our site, it only answers user's questions regarding what an item does.
 - - Our AI currently is setup for 250 prompts per day, a limit-reached message will display indicating this limit has been reached. 
-- Our Reviews home-page card has a chance to refresh to a review that was previously displayed, but if the program were to have hundreds of reviews, the odds of that happening would be much lower.
 
 ## How to test it
 
