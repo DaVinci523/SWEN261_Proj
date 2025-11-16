@@ -11,8 +11,7 @@ import { ModalService } from '../modal-service';
   standalone: false
 })
 export class ReviewsPage implements OnInit {
-   private reviewsChannel?: BroadcastChannel;
-
+  private reviewsChannel?: BroadcastChannel;
 
   private messageHandler = (event: MessageEvent) => {
     console.log("I GOT A MESSAGE: " + event);
