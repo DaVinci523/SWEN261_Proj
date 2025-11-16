@@ -19,6 +19,7 @@ import { ModalService } from '../modal-service';
 
 export class AdminPage implements OnInit, OnDestroy{
   private needsChannel?: BroadcastChannel;
+  private usersChannel?: BroadcastChannel;
 
   usernameToRemove = '';
   users: Account[] = [];
@@ -35,7 +36,12 @@ export class AdminPage implements OnInit, OnDestroy{
       this.loadDonationStatus();
       console.log("Needs updated");
     }
+    if (event.data && event.data.startsWith('user-created')) {
+      this.refresh();
+      console.log("User Created");
+    }
   };
+
 
   // private getNeedsSubscription: Subscription;
   //private usersPollSubscription?: Subscription;
@@ -90,6 +96,7 @@ export class AdminPage implements OnInit, OnDestroy{
     if ('BroadcastChannel' in window) { // connect broadcast message
       console.log("BRODCAST IN CHANNEL")
       this.needsChannel = new BroadcastChannel('needs');
+      this.usersChannel = new BroadcastChannel('users');
       this.needsChannel.onmessage = (ev: MessageEvent) => {
         if (ev.data === 'cupboard-updated') {
           console.log('AdminPage received cupboard-updated via BroadcastChannel', ev.data);
@@ -98,7 +105,16 @@ export class AdminPage implements OnInit, OnDestroy{
           this.loadDonationStatus();
         }
       };
-      console.log('AdminPage BroadcastChannel listener attached');
+      console.log('AdminPage needs BroadcastChannel listener attached');
+
+      this.usersChannel.onmessage = (ev: MessageEvent) => {
+        if (ev.data === 'user-created') {
+          console.log('AdminPage received user-created via BroadcastChannel', ev.data);
+          this.refresh();
+        }
+      };
+      console.log('AdminPage user BroadcastChannel listener attached');
+
     }
   }
 
