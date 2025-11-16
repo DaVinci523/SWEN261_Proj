@@ -98,9 +98,6 @@ export class NeedsCupboard implements OnInit, OnDestroy {
     if (this.needsChannel) {
       this.needsChannel.close();
     }
-    // if (this.getNeedsSubscription){
-    //   this.getNeedsSubscription.unsubscribe();
-    // }
   }
 
   /**
@@ -140,7 +137,10 @@ export class NeedsCupboard implements OnInit, OnDestroy {
       ? this.needsCupboardService.searchNeeds(term)
       : this.needsCupboardService.getNeeds();
     }
-    method.subscribe((needs: Need[]) => this.needs = needs);
+    method.subscribe((needs: Need[]) => {
+      this.needs = needs;
+      this.loadDonationStatus();
+    });
   }
 
   /**
@@ -199,6 +199,7 @@ export class NeedsCupboard implements OnInit, OnDestroy {
     this.needsCupboardService.addNeed({ name } as Need)
       .subscribe(need => {
         this.needs.push(need);
+        this.notifyNeedModified();
       });
   }
   /**
@@ -208,6 +209,7 @@ export class NeedsCupboard implements OnInit, OnDestroy {
   delete(need: Need): void {
     this.needs = this.needs.filter(h => h !== need);
     this.needsCupboardService.deleteNeed(need.id).subscribe();
+    this.notifyNeedModified();
   }
   /**
    * Move a need from the needs cupboard to the logged in users funding basket
@@ -215,8 +217,9 @@ export class NeedsCupboard implements OnInit, OnDestroy {
    */
   moveToFunding(need: Need): void{
     this.fundingBasketService.addNeed(this.userName,need).subscribe(() => {
-        window.location.reload();
+        // window.location.reload();
         this.needs.push(need);
+        this.notifyNeedModified();
       });
   }
 
@@ -253,5 +256,19 @@ loadDonationStatus(): void {
   });
 }
 
+/**
+ * Notify the application when a need is modified
+ */
+private notifyNeedModified(): void {
+  // BroadcastChannel for immediate cross-tab messaging
+  try {
+    if ('BroadcastChannel' in window) {
+      console.log("BROADCASTED")
+      const bc = new BroadcastChannel('needs');
+      bc.postMessage('cupboard-updated');
+      bc.close();
+    }
+  } catch {}
+}
 
 }

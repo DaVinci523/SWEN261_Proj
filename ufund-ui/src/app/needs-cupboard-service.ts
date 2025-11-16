@@ -15,10 +15,6 @@ import {MessageService} from './message';
 export class NeedsCupboardService {
   private needsUrl = 'http://localhost:8080/needs'
 
-  // BehaviorSubject used for tracking the needs in the needs cupboard
-  private static cupboardSubject = new BehaviorSubject<Need[]>({} as Need[]);
-  static cupboardNeeds$ = NeedsCupboardService.cupboardSubject.asObservable();
-
   constructor(
       private http: HttpClient,
       private MessageService: MessageService){}
@@ -26,11 +22,6 @@ export class NeedsCupboardService {
   /** GET needs from the server */
   getNeeds(): Observable<any> {
     return this.http.get(this.needsUrl);
-    // .pipe(
-    //   tap(_ => {
-    //     this.updateCupboardNeeds();
-    //   })
-    // );
   }
 
   httpOptions = {
@@ -44,7 +35,6 @@ export class NeedsCupboardService {
     return this.http.get<Need>(url).pipe(
       tap(_ => {
         this.log(`fetched need id=${id}`);
-        // this.updateCupboardNeeds();
     }),
       catchError(this.handleError<Need>(`getNeed id=${id}`))
     );
@@ -106,7 +96,6 @@ export class NeedsCupboardService {
     return this.http.post<Need>(this.needsUrl, need, this.httpOptions).pipe(
       tap((newNeed: Need) => {
         this.log(`added need w/ id=${newNeed.id}`);
-        // this.updateCupboardNeeds();
     }),
       catchError(this.handleError<Need>('addNeed')),
     );
@@ -119,7 +108,6 @@ export class NeedsCupboardService {
     return this.http.delete<Need>(url, this.httpOptions).pipe(
       tap(_ => {
         this.log(`deleted need id=${id}`);
-        // this.updateCupboardNeeds();
     }),
       catchError(this.handleError<Need>('deleteNeed'))
     );
@@ -130,33 +118,9 @@ export class NeedsCupboardService {
     return this.http.put(this.needsUrl, need, this.httpOptions).pipe(
       tap(_ => {
         this.log(`updated need id=${need.id}`);
-        // this.updateCupboardNeeds();
     }),
       catchError(this.handleError<any>('updateNeed'))
     );
-  }
-
-  
-  /**
-   * Refreshes and updates the observable cupboard
-   */
-  updateCupboardNeeds(): void {
-    this.getNeeds().subscribe({
-      next: (needs) => { // updates the front-end needs with the backend
-        NeedsCupboardService.cupboardSubject.next(needs);
-      },
-      error: (err) => {
-        console.error('Failed to update the cupboard needs:', err);
-        NeedsCupboardService.cupboardSubject.next({} as Need[]);
-      }
-    });
-  }
-
-  /**
-   * Return the current cupboard needs
-   */
-  getCurrentUserNeeds(): Need[] {
-    return NeedsCupboardService.cupboardSubject.value;
   }
 
   /**
@@ -184,13 +148,5 @@ export class NeedsCupboardService {
   private log(message: string) {
     this.MessageService.add(`NeedService: ${message}`);
   }
-
-
-
-
-
-
-
-
 
 }

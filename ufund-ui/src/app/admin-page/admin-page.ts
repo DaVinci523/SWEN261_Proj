@@ -138,7 +138,12 @@ export class AdminPage implements OnInit, OnDestroy{
     // checks if name is empty
     if (value <0 || quantity < 0){
       this.modal.infoDialog('Not allowed', 'You cannot set values to negative.', 'OK')
-      .subscribe(() => {});
+      .subscribe(() => {
+        this.getNeeds();
+        this.refresh();
+        this.loadDonationStatus();
+        this.notifyNeedModified();
+      });
     }
     
     else if (!name) {
@@ -151,10 +156,14 @@ export class AdminPage implements OnInit, OnDestroy{
         if(need.name.toLowerCase() == name.toLowerCase() && !need.visible){ // check names ignoring case and whitespace
         
           // adds the need back in by tagging its visibility to true
-          this.adminPageService.changeNeedVisibility(need.id, true).subscribe();
-          changedVisibilty = true;
-          this.notifyNeedModified();
-          window.location.reload();
+          this.adminPageService.changeNeedVisibility(need.id, true).subscribe(() => {
+            changedVisibilty = true;
+            this.getNeeds();
+            this.refresh();
+            this.loadDonationStatus();
+            this.notifyNeedModified();
+          });
+          // window.location.reload();
         }
       });
 
@@ -163,11 +172,18 @@ export class AdminPage implements OnInit, OnDestroy{
         this.adminPageService.createNeed({ name, value, type, currentQuantity: 0, maxQuantity: quantity, visible: true} as Need)
           .subscribe(need => {
             this.needs.push(need);
+            this.getNeeds();
+            this.refresh();
+            this.loadDonationStatus();
             this.notifyNeedModified();
-            window.location.reload();
+            // window.location.reload();
         });
       }
     }
+    this.getNeeds();
+    this.refresh();
+    this.loadDonationStatus();
+    this.notifyNeedModified();
   }
 
   /**
@@ -186,9 +202,16 @@ export class AdminPage implements OnInit, OnDestroy{
         this.notifyNeedDeleted(need);
 
         this.adminPageService.changeNeedVisibility(need.id, false).subscribe(() => {
-          this.notifyNeedModified();
-          window.location.reload();
+          // this.notifyNeedModified();
+          // this.getNeeds();
+          // this.refresh();
+          // this.loadDonationStatus();
+          // window.location.reload();
         });
+        this.notifyNeedModified();
+        this.getNeeds();
+        this.refresh();
+        this.loadDonationStatus();
       }
     });
   }
@@ -229,10 +252,13 @@ export class AdminPage implements OnInit, OnDestroy{
     this.needs = this.needs.filter(n => n !== need);
 
     // calls the updateNeed function from adminPageService, subscribing to the observable
-    this.adminPageService.updateNeed(need, name, value, currentQuantity, maxQuantity, type, true).subscribe(needs =>
-      {this.needs = this.needs.filter(n => n !== needs);
+    this.adminPageService.updateNeed(need, name, value, currentQuantity, maxQuantity, type, true).subscribe(needs => {
+      this.needs = this.needs.filter(n => n !== needs);
+      this.getNeeds();
+      this.refresh();
+      this.loadDonationStatus();
       this.notifyNeedModified();
-      window.location.reload();
+      // window.location.reload();
     });
    
   }      
@@ -321,6 +347,7 @@ export class AdminPage implements OnInit, OnDestroy{
       this.donationService.setGoal(this.newGoal).subscribe(() => {
         this.loadDonationStatus();
         this.newGoal = null;
+        this.notifyNeedModified();
       });
     }
   }

@@ -30,15 +30,7 @@ export class FundingBasket implements OnInit, OnDestroy {
     public fundingBasketService: FundingBasketService,
     private needsCupboardService: NeedsCupboardService,
     private router: Router,
-  ) {
-    // Continuously call getNeeds on set intervals (ex: 5000 is 5 seconds) to keep them updated when page is not reloaded.
-    // this.getNeedsSubscription = interval(2000).subscribe(() => {
-    //   //this.getNeeds();
-    //   //fundingBasketService.updateItemCount(this.userName);
-    //   //fundingBasketService.updateUserNeeds(this.userName);
-    //   // console.log(fundingBasketService.getCurrentUserNeeds());
-    // })
-  }
+  ) {}
 
   user = inject(User); // for setting the current user's username
 
@@ -72,15 +64,6 @@ export class FundingBasket implements OnInit, OnDestroy {
       return;
     }
     this.userName = this.currentUser;
-    // Refresh the basket 
-    // this.fundingBasketService.updateUserNeeds(this.userName);
-    // Subscribe to live basket updates
-      FundingBasketService.userNeeds$.subscribe((needs: Need[]) => {
-      this.userNeeds = needs;
-    });
-    NeedsCupboardService.cupboardNeeds$.subscribe((cupbNeeds: Need[]) => {
-      this.needsCupboard = cupbNeeds;
-    });
     
     this.getNeeds();
 
@@ -94,9 +77,6 @@ export class FundingBasket implements OnInit, OnDestroy {
     if (this.needsChannel) {
       this.needsChannel.close();
     }
-    // if (this.getNeedsSubscription){
-    //   this.getNeedsSubscription.unsubscribe();
-    // }
   }
 
   getNeeds(): void {
@@ -107,20 +87,16 @@ export class FundingBasket implements OnInit, OnDestroy {
       this.needsCupboardService.getNeeds().subscribe(cupNeeds => {
         this.needsCupboard = cupNeeds;
 
-        //this.needsCupboard$.subscribe(need => this.needsCupboard = need); // update to observable
-
         var updateCalls: any[] = [];
 
         // Update the data for each of the current user's needs to be the same as the cupboards data
         this.userNeeds.forEach(userNeed => {
-          //userNeeds.forEach(userNeed => {
 
             this.needsCupboard.forEach(cupboardNeed => { //loop through the cupboard's needs
-              //cupboardNeeds.forEach(cupboardNeed => { 
 
                 if(userNeed.id == cupboardNeed.id){ // update the respective data for each userNeed
                   if(userNeed !== cupboardNeed){ // update only if there is a discrepency
-                    //updated = true;
+
                     updateCalls.push(this.fundingBasketService.updateNeed( this.userName, { 
                       id: cupboardNeed.id, 
                       name: cupboardNeed.name, 
@@ -130,13 +106,12 @@ export class FundingBasket implements OnInit, OnDestroy {
                       type: cupboardNeed.type, 
                       visible: cupboardNeed.visible
                     } as Need)); // reload the page after updating
+
                   }
                 }
 
-              //});
             });
 
-          //});
         });
 
         if (updateCalls.length > 0) {
@@ -144,10 +119,8 @@ export class FundingBasket implements OnInit, OnDestroy {
             // Refresh data after all updates complete
             this.fundingBasketService.getNeeds(this.userName).subscribe((userNeeds) => this.userNeeds = userNeeds);
             this.needsCupboardService.getNeeds().subscribe(cupNeeds => this.needsCupboard = cupNeeds);
-            // this.fundingBasketService.updateItemCount(this.userName);
+            this.fundingBasketService.updateItemCount(this.userName);
             
-            // this.fundingBasketService.updateUserNeeds(this.userName);
-            // this.needsCupboardService.updateCupboardNeeds();
           });
         }
 
@@ -168,8 +141,7 @@ export class FundingBasket implements OnInit, OnDestroy {
     this.fundingBasketService.addNeed(this.userName, { id, name, value, currentQuantity: 0, maxQuantity: 1, type, visible: true } as Need)
       .subscribe(need => {
         this.userNeeds.push(need);
-        // this.fundingBasketService.updateItemCount(this.userName);
-        // this.fundingBasketService.updateUserNeeds(this.userName);
+        this.fundingBasketService.updateItemCount(this.userName);
         this.notifyNeedModified();
       });
   }
@@ -177,24 +149,20 @@ export class FundingBasket implements OnInit, OnDestroy {
   delete(need: Need): void {
     this.userNeeds = this.userNeeds.filter(n => n !== need); // removes the given need in the front end by re-defining the list by only filetering in needs that weren't given
     this.fundingBasketService.deleteNeed(this.userName, need.id).subscribe(() => {
-      // this.fundingBasketService.updateItemCount(this.userName);
-      // this.fundingBasketService.updateUserNeeds(this.userName);
+      this.fundingBasketService.updateItemCount(this.userName);
       this.notifyNeedModified();
     });
   }
 
   increaseQuantity(need: Need): void {
-    //this.fundingBasketService.increaseQuantity(need).subscribe();
     need.maxQuantity++;; // temporary visual, does NOT affect the data.json file
     this.fundingBasketService.updateNeed(this.userName, need)
         .subscribe(() => {
           //this.getNeeds();
-          window.location.reload();
-          // this.fundingBasketService.updateItemCount(this.userName);
-          // this.fundingBasketService.updateUserNeeds(this.userName);
+          // window.location.reload();
+          this.fundingBasketService.updateItemCount(this.userName);
           this.notifyNeedModified();
         });
-
   }
 
   decreaseQuantity(need: Need): void {
@@ -202,18 +170,17 @@ export class FundingBasket implements OnInit, OnDestroy {
     need.maxQuantity--; // temporary visual, does NOT affect the data.json file
     if (need.maxQuantity == 0){
       this.fundingBasketService.deleteNeed(this.userName, need.id).subscribe(() => {
-        window.location.reload(); 
-        // this.fundingBasketService.updateItemCount(this.userName);
-        // this.fundingBasketService.updateUserNeeds(this.userName);
+        // window.location.reload(); 
+        this.fundingBasketService.updateItemCount(this.userName);
+        this.notifyNeedModified();
       });
     }
     else{
     this.fundingBasketService.updateNeed(this.userName, need)
         .subscribe(() =>{ 
           //this.getNeeds(); 
-          window.location.reload(); 
-          // this.fundingBasketService.updateItemCount(this.userName);
-          // this.fundingBasketService.updateUserNeeds(this.userName);
+          // window.location.reload(); 
+          this.fundingBasketService.updateItemCount(this.userName);
           this.notifyNeedModified();
         });
     }
@@ -225,8 +192,8 @@ export class FundingBasket implements OnInit, OnDestroy {
       this.fundingBasketService.updateNeed(this.userName, need)
         .subscribe(() => {
           //this.getNeeds()
-          // this.fundingBasketService.updateItemCount(this.userName);
-          // this.fundingBasketService.updateUserNeeds(this.userName);
+          this.fundingBasketService.updateItemCount(this.userName);
+          this.notifyNeedModified();
       });
       }
     }

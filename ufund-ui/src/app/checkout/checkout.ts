@@ -19,14 +19,15 @@ import { interval, Subscription } from 'rxjs';
 export class Checkout implements OnInit{
   private needsChannel?: BroadcastChannel;
 
-  private getNeedsSubscription: Subscription;
+  // private getNeedsSubscription: Subscription;
 
   private messageHandler = (event: MessageEvent) => {
     console.log("I GOT A MESSAGE: " + event);
     if (event.data && event.data.startsWith('cupboard-updated')) {
       this.getNeeds();
       this.calculateTotals();
-      console.log("Needs updated");
+      // window.location.reload();
+      console.log("Checkout Needs updated");
     }
   };
   
@@ -37,10 +38,10 @@ export class Checkout implements OnInit{
     private donationService: DonationService
   ) {
     // Continuously call getNeeds on set intervals (ex: 5000 is 5 seconds) to keep them updated when page is not reloaded.
-    this.getNeedsSubscription = interval(500).subscribe(() => {
-      // this.getNeeds();
-      // this.calculateTotals();
-    })
+    // this.getNeedsSubscription = interval(500).subscribe(() => {
+    //   // this.getNeeds();
+    //   // this.calculateTotals();
+    // })
   }
 
   user = inject(User);
@@ -59,11 +60,16 @@ export class Checkout implements OnInit{
   getNeeds(): void { // gets the needs from the REST api by running a program in the needService
     this.fundingBasketService.getNeeds(this.userName).subscribe(userNeeds => 
     {
-      this.userNeeds = userNeeds
+      this.userNeeds = userNeeds;
+      console.log("USR NEEDS: " + userNeeds);
       this.calculateTotals();
-    }
-    ); // retrieve a user's funding basket Needs
-    this.needsCupboardService.getNeeds().subscribe(needsCupboard => this.needsCupboard = needsCupboard); // retrieve needsCupboard Needs  }
+    }); // retrieve a user's funding basket Needs
+
+    this.needsCupboardService.getNeeds().subscribe(needsCupboard => {
+      this.needsCupboard = needsCupboard;
+      console.log("NEEDS CUP: " + needsCupboard);
+      this.calculateTotals();
+    }); // retrieve needsCupboard Needs  }
 
   }
 
@@ -75,6 +81,7 @@ export class Checkout implements OnInit{
     }
     this.userName = this.currentUser;
     this.getNeeds();
+    this.calculateTotals();
 
     window.addEventListener('message', this.messageHandler); // listener for a message
 
@@ -85,6 +92,7 @@ export class Checkout implements OnInit{
           console.log('Checkout received cupboard-updated via BroadcastChannel', ev.data);
           this.getNeeds();
           this.calculateTotals();
+          // window.location.reload();
         }
       };
       console.log('Checkout BroadcastChannel listener attached');
@@ -119,7 +127,9 @@ export class Checkout implements OnInit{
 
     this.userNeeds.forEach(userNeed => {
       const subtotal = userNeed.value * userNeed.maxQuantity;
-      this.cartTotal += subtotal;
+      if(userNeed.visible){
+        this.cartTotal += subtotal;
+      }
       if (userNeed.type === "donation") {
         this.donationTotal += subtotal;
       }
@@ -134,7 +144,6 @@ export class Checkout implements OnInit{
     this.userNeeds.forEach(userNeed => {
       if (userNeed.type !== "donation") {
         this.needsCupboard.forEach(cupboardNeed => {
-          console.log(cupboardNeed);
           if (cupboardNeed.id == userNeed.id && cupboardNeed.visible && userNeed.visible) {
             cupboardNeed.currentQuantity += userNeed.maxQuantity;
             updateRequests.push(this.needsCupboardService.updateNeed(cupboardNeed));
@@ -142,6 +151,10 @@ export class Checkout implements OnInit{
           }
         });
       }
+      if(userNeed.type === "donation"){
+        updateRequests.push(this.fundingBasketService.deleteNeed(this.userName, userNeed.id));
+      }
+
     });
 
     Promise.all(updateRequests.map(req => req.toPromise()))
@@ -160,6 +173,7 @@ export class Checkout implements OnInit{
   deleteNeed(need: Need): void {
     this.userNeeds = this.userNeeds.filter(n => n !== need); // removes the given need in the front end by re-defining the list by only filetering in needs that weren't given
     this.fundingBasketService.deleteNeed(this.userName, need.id).subscribe();
+    this.notifyNeedModified();
   }
 
   saveAll(): void {
@@ -180,6 +194,8 @@ export class Checkout implements OnInit{
   calculateTotals(): void {
   this.cartTotal = 0;
   this.donationTotal = 0;
+
+  console.log(this.userNeeds);
 
   this.userNeeds.forEach(need => {
     if(need.visible){
