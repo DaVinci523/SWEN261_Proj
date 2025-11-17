@@ -34,7 +34,7 @@ public class GeminiAPI {
         """;
 
     /**
-     * Creates the Gemini API using GeminiAPIConfig to build the client  
+     * Creates the Gemini API using GeminiAPIConfig to build the client 
      */
     public GeminiAPI() {
         this.client = GeminiAPIConfig.genaiClient(); 
@@ -47,7 +47,8 @@ public class GeminiAPI {
      */
     public void initChat(){
 
-        GenerateContentResponse initResponse = this.chat.sendMessage(INIT_PROMPT);
+        this.chat.sendMessage(INIT_PROMPT);
+    
     }
 
     /**
