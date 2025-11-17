@@ -2,8 +2,12 @@ package com.ufund.api.ufundapi.model;
 
 import com.google.genai.Client;
 import com.google.genai.types.GenerateContentResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.genai.Chat;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
 import org.springframework.stereotype.Component;
 
@@ -14,10 +18,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class GeminiAPI {
 
+    private ObjectMapper objectMapper;
     private Client client;
     private Chat chat;
-    private String filename;
-    
+    private ArrayList<String> needs;
+    private String filename = "http/localhost:8080/needs";
 
 
     private final String INIT_PROMPT = """
@@ -35,12 +40,20 @@ public class GeminiAPI {
         your baseline.
         """;
 
+
+    private final String NEEDS_PROMPT = """
+        
+        I am giving you a list of needs. Each need is defined within a set of square brackets. The needs are given in the following format 
+
+
+        """;
     /**
      * Creates the Gemini API using GeminiAPIConfig to build the client 
      */
     public GeminiAPI() {
         this.client = GeminiAPIConfig.genaiClient(); 
         this.chat = this.client.chats.create("gemini-2.5-flash-lite");
+        this.objectMapper = new ObjectMapper();
         this.initChat();
     }
 
@@ -53,8 +66,38 @@ public class GeminiAPI {
     
     }
 
-    public void loadNeeds() {
+    public String needToString(Need need){
+        String needStr = "[";
+
+        needStr = need.getName() + ": "; 
+
+        needStr = needStr + need.getType() + ", ";
         
+        needStr = needStr + String.valueOf(need.getValue()) + ", ";
+
+        needStr = needStr + String.valueOf(need.getCurrentQuantity()) + ", ";
+
+        needStr = needStr + String.valueOf(need.getMaxQuantity()); 
+
+        needStr += "]";
+
+        return needStr;
+    }
+
+    public void loadNeeds() throws IOException{
+        //use object mapper to deserialize  file into needsArray
+        Need[] needsArray = objectMapper.readValue(new File(filename), Need[].class);
+        
+        String strungNeed; 
+
+        for(Need need : needsArray){
+
+            strungNeed = needToString(need);
+
+            needs.add(strungNeed);
+
+        }
+
     }
 
     /**
@@ -63,11 +106,22 @@ public class GeminiAPI {
      */
     public APIResponse generateResponse(String prompt) {
 
-            // Call the Gemini API to generate the response
-            GenerateContentResponse userResponse = this.chat.sendMessage(prompt);
+            try{
+                loadNeeds();
+        
+
+
+                // Call the Gemini API to generate the response
+                GenerateContentResponse userResponse = this.chat.sendMessage(prompt);
+
+                 // gets the text from the response and assigns it the response instance field
+                return new APIResponse(userResponse.text(),prompt);
+        
+            } catch (IOException e){
+                
+                return new APIResponse("There was an error with loading the needs, please contact administration.", prompt);
+            }       
             
-            // gets the text from the response and assigns it the response instance field
-            return new APIResponse(userResponse.text(),prompt);
             
     }
 }

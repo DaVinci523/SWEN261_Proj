@@ -34,7 +34,6 @@ public class GeminiFileDAO implements GeminiDAO {
     public GeminiFileDAO(@Value("${responses.file}") String filename, ObjectMapper objectMapper) throws IOException {
         this.filename = filename;
         this.objectMapper = objectMapper;
-        this.geminiAPI = new GeminiAPI();
         load(); // loads in responses from file
     }
 
