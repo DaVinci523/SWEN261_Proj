@@ -55,8 +55,9 @@ An online U-Fund system built in Java **24**
 - Designated types for the needs, so that admins can only create needs that belong to the designated type
 - Replace the intervals with observables / more dynamic methods of transfering data. (WORKING ON)
 - - (UPDATE) Most of the intervals have been updated by using messages as signals to reload the data in response to user actions instead of a set timer
-- - (DISCLAIMER) There are still 2 intervals present
+- - (DISCLAIMER) There are still 3 intervals present
 - - - The checkout component in the front end had a bug using messages where the user's funding basket would not be properly updated, this was temporarily fixed by using an interval.
+- - - The admin-page component in the front end had a bug when Initially deleting a need it did not work as intended, the admin page was not properly updated, this was temporarily fixed by re-adding an interval. 
 - - - The user.ts file has an interval to check for users being created and deleted.
 - Moving some logic such as checkout to the backend.
 - Our AI is Not connected to our site's backend. Functionally it does not interact with our site, it only answers user's questions regarding what an item does.
