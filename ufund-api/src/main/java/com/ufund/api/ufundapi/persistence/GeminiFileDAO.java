@@ -34,6 +34,7 @@ public class GeminiFileDAO implements GeminiDAO {
     public GeminiFileDAO(@Value("${responses.file}") String filename, ObjectMapper objectMapper) throws IOException {
         this.filename = filename;
         this.objectMapper = objectMapper;
+        this.geminiAPI = new GeminiAPI();
         load(); // loads in responses from file
     }
 
@@ -78,7 +79,7 @@ public class GeminiFileDAO implements GeminiDAO {
         
         // cleans the response of special characters and creates new APIResponse
         String messyResp = messyResponse.getResponse();
-        String cleanResp = messyResp.replaceAll("[\\\\-\\\\+\\\\\\^\"]", "");
+        String cleanResp = messyResp.replaceAll("[\\\\-\\\\+\\\\\\^*\"]", "");
         APIResponse cleanResponse = new APIResponse(cleanResp, prompt);
         
         // adds the clean response to responses
