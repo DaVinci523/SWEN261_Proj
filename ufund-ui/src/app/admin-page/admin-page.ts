@@ -43,7 +43,7 @@ export class AdminPage implements OnInit, OnDestroy{
   };
 
 
-  // private getNeedsSubscription: Subscription;
+  private getNeedsSubscription: Subscription;
   //private usersPollSubscription?: Subscription;
  
   constructor(
@@ -55,11 +55,11 @@ export class AdminPage implements OnInit, OnDestroy{
     private modal: ModalService
   ){
     // Continuously call getNeeds on set intervals (ex: 5000 is 5 seconds) to keep them updated when page is not reloaded.
-    // this.getNeedsSubscription = interval(500).subscribe(() => {
-    //   //this.getNeeds();
-    //   // this.refresh();
-    //   // this.loadDonationStatus();
-    // })
+    this.getNeedsSubscription = interval(500).subscribe(() => {
+      this.getNeeds();
+      // this.refresh();
+      // this.loadDonationStatus();
+    })
     //ensure users list is kept fresh even if getNeeds doesnt work
     // this.usersPollSubscription = interval(2000).subscribe(() => {
     //   this.refresh();
