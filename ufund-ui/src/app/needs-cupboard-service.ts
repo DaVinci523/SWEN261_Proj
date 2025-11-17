@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
 import { Need } from './need';
@@ -33,7 +33,9 @@ export class NeedsCupboardService {
   getNeed(id: number): Observable<Need> {
     const url = `${this.needsUrl}/${id}`;
     return this.http.get<Need>(url).pipe(
-      tap(_ => this.log(`fetched need id=${id}`)),
+      tap(_ => {
+        this.log(`fetched need id=${id}`);
+    }),
       catchError(this.handleError<Need>(`getNeed id=${id}`))
     );
   }
@@ -92,8 +94,10 @@ export class NeedsCupboardService {
   /** POST: add a new need to the server */
   addNeed(need: Need): Observable<Need> {
     return this.http.post<Need>(this.needsUrl, need, this.httpOptions).pipe(
-      tap((newNeed: Need) => this.log(`added need w/ id=${newNeed.id}`)),
-      catchError(this.handleError<Need>('addNeed'))
+      tap((newNeed: Need) => {
+        this.log(`added need w/ id=${newNeed.id}`);
+    }),
+      catchError(this.handleError<Need>('addNeed')),
     );
   }
 
@@ -102,7 +106,9 @@ export class NeedsCupboardService {
     const url = `${this.needsUrl}/${id}`;
 
     return this.http.delete<Need>(url, this.httpOptions).pipe(
-      tap(_ => this.log(`deleted need id=${id}`)),
+      tap(_ => {
+        this.log(`deleted need id=${id}`);
+    }),
       catchError(this.handleError<Need>('deleteNeed'))
     );
   }
@@ -110,7 +116,9 @@ export class NeedsCupboardService {
   /** PUT: update the need on the server */
   updateNeed(need: Need): Observable<any> {
     return this.http.put(this.needsUrl, need, this.httpOptions).pipe(
-      tap(_ => this.log(`updated need id=${need.id}`)),
+      tap(_ => {
+        this.log(`updated need id=${need.id}`);
+    }),
       catchError(this.handleError<any>('updateNeed'))
     );
   }
@@ -140,13 +148,5 @@ export class NeedsCupboardService {
   private log(message: string) {
     this.MessageService.add(`NeedService: ${message}`);
   }
-
-
-
-
-
-
-
-
 
 }

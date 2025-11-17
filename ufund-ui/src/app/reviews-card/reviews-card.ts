@@ -9,6 +9,16 @@ import { Router } from '@angular/router';
   styleUrl: './reviews-card.css'
 })
 export class ReviewsCard {
+  private reviewsChannel?: BroadcastChannel;
+
+  private messageHandler = (event: MessageEvent) => {
+    console.log("I GOT A MESSAGE: " + event);
+    if (event.data && event.data.startsWith('review-updated')) {
+      this.loadAll();
+      console.log("Reviews updated");
+    }
+  };
+
   allReviews: Review[] = [];
   displayedReviews: Review[] = [];
   avgRating = 0;
@@ -20,14 +30,35 @@ export class ReviewsCard {
   ) {}
 
   ngOnInit(): void {
+    window.addEventListener('message', this.messageHandler); // listener for a message
+
+    if ('BroadcastChannel' in window) { // connect broadcast message
+      console.log("BRODCAST IN CHANNEL")
+      this.reviewsChannel = new BroadcastChannel('reviews');
+      this.reviewsChannel.onmessage = (ev: MessageEvent) => {
+        if (ev.data === 'review-updated') {
+          console.log('ReviewPage received review-updated via BroadcastChannel', ev.data);
+          this.loadAll();
+        }
+      };
+      console.log('NeedsCupboard BroadcastChannel listener attached');
+    }
 
     this.loadAll();
   }
 
   loadAll(): void {
+    
     const self = this;
     this.reviewService.getReviews().subscribe((list: Review[]) => {
-      this.allReviews = list
+      if(list.length < 2){ // do nothing if there are not 2 or more reviews
+        console.log("Break")
+        return;
+      }
+      this.allReviews = list;
+      this.displayedReviews = [];
+      
+      
       let randNum1 = Math.floor(Math.random() * list.length); // generate random numbers for indeces of random reviews
       let randNum2 = Math.floor(Math.random() * list.length);
       
@@ -45,6 +76,9 @@ export class ReviewsCard {
    * Pulls up two random reviews to display
    */
   refreshReviews(): void {
+    if(this.allReviews.length < 2){ // do nothing if there are not 2 or more reviews
+      return;
+    }
 
     let randNum1 = Math.floor(Math.random() * this.allReviews.length); // generate random numbers for indeces of random reviews
     let randNum2 = Math.floor(Math.random() * this.allReviews.length);

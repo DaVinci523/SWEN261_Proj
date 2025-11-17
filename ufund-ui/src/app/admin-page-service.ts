@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {MessageService} from './message';
+import { NeedsCupboardService } from './needs-cupboard-service';
 
 
 @Injectable({
@@ -13,20 +14,7 @@ export class AdminPageService {
 
   private needsUrl = 'http://localhost:8080/needs';
 
-  constructor(private http: HttpClient,  private MessageService: MessageService) {}
-  
-  // Add Behavior Subject // DOES NOTHING
-  static cupboardSubject = new BehaviorSubject([] as Need[]); 
-  // currentCupboard = AdminPageService.cupboardSubject.asObservable();
-
-  /**
-   * Updates the cupboard BehaviorSubject to the new given need cupboard
-   * @param newCupboard 
-   */ // DOES NOTHING
-  public static updateCurrentCupboard(newCupboard: Need[]){
-    AdminPageService.cupboardSubject.next(newCupboard);
-    console.log(AdminPageService.cupboardSubject);
-  }
+  constructor(private http: HttpClient,  private MessageService: MessageService, private needsCupboardService: NeedsCupboardService) {}
 
   /** 
    * Log a NeedService message with the MessageService 
@@ -96,7 +84,9 @@ export class AdminPageService {
     
     // sends a PUT request to the needsUrl with the updated need object
     return this.http.put<Need>(this.needsUrl, updatedNeed).pipe(
-      tap(_ => this.log(`updated need id=${need.id}`)),
+      tap(_ => {
+        this.log(`updated need id=${need.id}`);
+      }),
       catchError(this.handleError<any>('updateNeed'))
     );
   } 
@@ -106,7 +96,9 @@ export class AdminPageService {
     const url = `${this.needsUrl}/${id}/visible/?visible=${visible}`;
 
     return this.http.put(url, this.httpOptions).pipe(
-      tap(_ => this.log(`updated need id=${id}`)),
+      tap(_ => {
+        this.log(`updated need id=${id}`);
+      }),
       catchError(this.handleError<any>('updateNeed'))
     );
   }
@@ -121,7 +113,9 @@ export class AdminPageService {
 
     // sends a POST request to the needsUrl with the need object
     return this.http.post<Need>(this.needsUrl, need, this.httpOptions).pipe(
-      tap((newNeed: Need) => this.log(`added need w/ id=${newNeed.id}`)),
+      tap((newNeed: Need) => {
+        this.log(`added need w/ id=${newNeed.id}`);
+      }),
       catchError(this.handleError<Need>('addNeed'))
       );
   }
@@ -136,7 +130,9 @@ export class AdminPageService {
 
     // sends a DELETE request to the needsUrl with the need's id
     return this.http.delete<Need>(`${this.needsUrl}/${needId}`).pipe(
-      tap(_ => this.log(`deleted need id=${needId}`)),
+      tap(_ => {
+        this.log(`deleted need id=${needId}`);
+      }),
       catchError(this.handleError<Need>('deleteNeed'))
     );
   }
