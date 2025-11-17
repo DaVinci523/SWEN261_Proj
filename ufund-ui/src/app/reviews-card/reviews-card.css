@@ -64,6 +64,7 @@ div#review-text {
     width: 70%;
     padding: 0% 10%;
     padding-top: 1.2em;
+    margin-top: 1.6em;
     overflow-y: scroll;
     overflow-wrap: break-word;
     text-align: left;
