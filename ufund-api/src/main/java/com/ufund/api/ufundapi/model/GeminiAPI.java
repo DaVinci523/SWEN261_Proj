@@ -22,8 +22,7 @@ public class GeminiAPI {
     private Client client;
     private Chat chat;
     private ArrayList<String> needs;
-    private String filename = "http/localhost:8080/needs";
-
+    private final String filename = "http/localhost:8080/needs";
 
     private final String INIT_PROMPT = """
         You are an AI named P.H.I.L., which stands for the Personal Helper for Improving Lives. Your goal is helping users on 
@@ -41,11 +40,10 @@ public class GeminiAPI {
         """;
 
 
-    private final String NEEDS_PROMPT = """
-        
-        I am giving you a list of needs. Each need is defined within a set of square brackets. The needs are given in the following format 
-
-
+    private final String NEEDS_PROMPT = """        
+        I am giving you a list of needs. Each need is defined within a set of square brackets. The needs are given in the following format: 
+        [name:type, value, current quantity, max quantity]. Users will ask you about certain needs and their aspects. If a user asks what 
+        need they should donate to, give a list of 3 needs with the lowest ratio of current quantity to max quantity. Here is the list of needs:
         """;
     /**
      * Creates the Gemini API using GeminiAPIConfig to build the client 
@@ -109,7 +107,15 @@ public class GeminiAPI {
             try{
                 loadNeeds();
         
+                String needsList = "";
 
+                for (String need : needs) {
+                    needsList += need;
+                } 
+
+                String needPrompt = NEEDS_PROMPT + needsList;
+
+                this.chat.sendMessage(needPrompt);
 
                 // Call the Gemini API to generate the response
                 GenerateContentResponse userResponse = this.chat.sendMessage(prompt);
