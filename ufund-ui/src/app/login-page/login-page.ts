@@ -71,6 +71,8 @@ export class LoginPage {
             alert('Account could not be created.');
             return;
           }
+          this.notifyUserCreated();
+          
           this.modal.infoDialog('Account Creation', 'Account created, logging you in now...', 'OK')
           .subscribe(go => {
             // set session locally; backend already created the account (and funding basket via your server-side hook)
@@ -87,4 +89,20 @@ export class LoginPage {
       });
     });
   }
+
+  /**
+   * Notify the application when a need is modified
+   */
+  private notifyUserCreated(): void {
+    // BroadcastChannel for immediate cross-tab messaging
+    try {
+      if ('BroadcastChannel' in window) {
+        console.log("BROADCASTED")
+        const bc = new BroadcastChannel('users');
+        bc.postMessage('user-created');
+        bc.close();
+      }
+    } catch {}
+  }
+
 }

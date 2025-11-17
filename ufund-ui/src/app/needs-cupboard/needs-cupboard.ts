@@ -15,8 +15,19 @@ import { interval, Subscription } from 'rxjs';
   styleUrls: ['./needs-cupboard.css']
 })
 export class NeedsCupboard implements OnInit, OnDestroy {
-  private getNeedsSubscription: Subscription;
+  private needsChannel?: BroadcastChannel;
+
+  // private getNeedsSubscription: Subscription;
   quantityTerm: any;
+
+  private messageHandler = (event: MessageEvent) => {
+    console.log("I GOT A MESSAGE: " + event);
+    if (event.data && event.data.startsWith('cupboard-updated')) {
+      this.getNeeds();
+      this.loadDonationStatus();
+      console.log("Needs updated");
+    }
+  };
 
   constructor(
     private needsCupboardService: NeedsCupboardService,
@@ -25,10 +36,10 @@ export class NeedsCupboard implements OnInit, OnDestroy {
     private donationService: DonationService
   ) {
     // Continuously call getNeeds on set intervals (ex: 5000 is 5 seconds) to keep them updated when page is not reloaded.
-    this.getNeedsSubscription = interval(4000).subscribe(() => {
-      this.getNeeds();
-      this.loadDonationStatus();
-    })
+    // this.getNeedsSubscription = interval(4000).subscribe(() => {
+    //   // this.getNeeds();
+    //   // this.loadDonationStatus();
+    // })
   }
 
   user = inject(User);
@@ -62,14 +73,30 @@ export class NeedsCupboard implements OnInit, OnDestroy {
 
     const saved = localStorage.getItem('buttonText');
     if (saved) this.buttonText = saved;
+
+    window.addEventListener('message', this.messageHandler); // listener for a message
+
+    if ('BroadcastChannel' in window) { // connect broadcast message
+      console.log("BRODCAST IN CHANNEL")
+      this.needsChannel = new BroadcastChannel('needs');
+      this.needsChannel.onmessage = (ev: MessageEvent) => {
+        if (ev.data === 'cupboard-updated') {
+          console.log('NeedsCupboard received cupboard-updated via BroadcastChannel', ev.data);
+          this.getNeeds();
+          this.loadDonationStatus();
+        }
+      };
+      console.log('NeedsCupboard BroadcastChannel listener attached');
+    }
   }
 
   /**
    * Remove getNeedsSubscription if it still exists when this component is destroyed to prevent memory leaks.
    */
   ngOnDestroy(): void{
-    if (this.getNeedsSubscription){
-      this.getNeedsSubscription.unsubscribe();
+    window.removeEventListener('message', this.messageHandler);
+    if (this.needsChannel) {
+      this.needsChannel.close();
     }
   }
 
@@ -110,7 +137,10 @@ export class NeedsCupboard implements OnInit, OnDestroy {
       ? this.needsCupboardService.searchNeeds(term)
       : this.needsCupboardService.getNeeds();
     }
-    method.subscribe((needs: Need[]) => this.needs = needs);
+    method.subscribe((needs: Need[]) => {
+      this.needs = needs;
+      this.loadDonationStatus();
+    });
   }
 
   /**
@@ -169,6 +199,7 @@ export class NeedsCupboard implements OnInit, OnDestroy {
     this.needsCupboardService.addNeed({ name } as Need)
       .subscribe(need => {
         this.needs.push(need);
+        this.notifyNeedModified();
       });
   }
   /**
@@ -178,6 +209,7 @@ export class NeedsCupboard implements OnInit, OnDestroy {
   delete(need: Need): void {
     this.needs = this.needs.filter(h => h !== need);
     this.needsCupboardService.deleteNeed(need.id).subscribe();
+    this.notifyNeedModified();
   }
   /**
    * Move a need from the needs cupboard to the logged in users funding basket
@@ -185,8 +217,9 @@ export class NeedsCupboard implements OnInit, OnDestroy {
    */
   moveToFunding(need: Need): void{
     this.fundingBasketService.addNeed(this.userName,need).subscribe(() => {
-      window.location.reload();
+        // window.location.reload();
         this.needs.push(need);
+        this.notifyNeedModified();
       });
   }
 
@@ -223,5 +256,19 @@ loadDonationStatus(): void {
   });
 }
 
+/**
+ * Notify the application when a need is modified
+ */
+private notifyNeedModified(): void {
+  // BroadcastChannel for immediate cross-tab messaging
+  try {
+    if ('BroadcastChannel' in window) {
+      console.log("BROADCASTED")
+      const bc = new BroadcastChannel('needs');
+      bc.postMessage('cupboard-updated');
+      bc.close();
+    }
+  } catch {}
+}
 
 }

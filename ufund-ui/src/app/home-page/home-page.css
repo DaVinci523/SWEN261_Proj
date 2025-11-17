@@ -10,7 +10,7 @@
 .overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,.35);
+  background: rgba(0,0,0,.46);
 }
 
 .content {
@@ -56,7 +56,7 @@
 
   opacity: 0;
   animation: fadeUp .8s ease-out .45s forwards;
-  box-shadow: 2px 2px 6px black;
+  box-shadow: 0px 0px 0px black;
 }
 .fund-now-button:hover { 
   opacity: .92; 
@@ -187,7 +187,7 @@
   height: auto;
   display: block;
   border-radius: 14px;
-  box-shadow: 2px 2px 10px black;
+  box-shadow: 2px 2px 10px gray;
 }
 
 .about-text{

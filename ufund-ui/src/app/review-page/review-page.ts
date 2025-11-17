@@ -11,6 +11,16 @@ import { ModalService } from '../modal-service';
   standalone: false
 })
 export class ReviewsPage implements OnInit {
+  private reviewsChannel?: BroadcastChannel;
+
+  private messageHandler = (event: MessageEvent) => {
+    console.log("I GOT A MESSAGE: " + event);
+    if (event.data && event.data.startsWith('review-updated')) {
+      this.loadByRating();
+      console.log("Reviews updated");
+    }
+  };
+
   reviews: Review[] = [];
   avgRating = 0;
   dummyTracker = 0; // angular does not like all the stars being individual elements with the same key, so this will give them different keys
@@ -36,6 +46,20 @@ export class ReviewsPage implements OnInit {
     }
     this.form.userName = u; // will always create a review for the current user
 
+    window.addEventListener('message', this.messageHandler); // listener for a message
+
+    if ('BroadcastChannel' in window) { // connect broadcast message
+      console.log("BRODCAST IN CHANNEL")
+      this.reviewsChannel = new BroadcastChannel('reviews');
+      this.reviewsChannel.onmessage = (ev: MessageEvent) => {
+        if (ev.data === 'review-updated') {
+          console.log('ReviewPage received review-updated via BroadcastChannel', ev.data);
+          this.loadByRating();
+        }
+      };
+      console.log('NeedsCupboard BroadcastChannel listener attached');
+    }
+
     this.loadAll();
   }
 
@@ -52,6 +76,7 @@ export class ReviewsPage implements OnInit {
   loadAll(): void {
     const self = this;
     this.reviewService.getReviews().subscribe(function(list) {
+      console.log(list);
       self.onLoaded(list);
     });
   }
@@ -63,6 +88,7 @@ export class ReviewsPage implements OnInit {
     }
     const self = this;
     this.reviewService.getReviewsByRating(this.filterRating).subscribe(function(list) {
+      console.log(list);
       self.onLoaded(list);
     });
   }
@@ -92,7 +118,7 @@ export class ReviewsPage implements OnInit {
     }
   }
 
-  submit(): void {
+  create(): void {
     const name = this.form.userName;
     const text = this.form.reviewText;
 
@@ -117,19 +143,20 @@ export class ReviewsPage implements OnInit {
         self.form.reviewText = "";
         self.form.rating = 5;
         self.loadByRating();
+        self.notifyReviewModified();
       });
+
   }
 
   delete(id: number): void {
     this.modal.confirmDialog('Review', 'Delete review?', 'Yes', 'No')
     .subscribe(ok => {
       if (ok) {
-
-      const self = this;
-      this.reviewService.deleteReview(id).subscribe(function(_) {
-        self.loadByRating();
-      });
-
+        const self = this;
+        this.reviewService.deleteReview(id).subscribe(function(_) {
+          self.loadByRating();
+          self.notifyReviewModified();
+        });
       }
     });
   }
@@ -152,5 +179,20 @@ export class ReviewsPage implements OnInit {
       i = i + 1;
     }
     return arr;
+  }
+
+  /**
+   * Notify the application when a review is modified
+   */
+  private notifyReviewModified(): void {
+    // BroadcastChannel for immediate cross-tab messaging
+    try {
+      if ('BroadcastChannel' in window) {
+        console.log("BROADCASTED")
+        const bc = new BroadcastChannel('reviews');
+        bc.postMessage('review-updated');
+        bc.close();
+      }
+    } catch {}
   }
 }

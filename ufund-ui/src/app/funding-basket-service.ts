@@ -22,7 +22,7 @@ export class FundingBasketService {
 
   constructor(
     private http: HttpClient,
-    private MessageService: MessageService
+    private MessageService: MessageService,
   ) { }
 
   // Save/Modify the Server methods //
@@ -33,7 +33,7 @@ export class FundingBasketService {
 
   getUserNames(): Observable<any> {
     const url = `${this.needsUrl}/usernames`;
-
+    
     return this.http.get(url);
   }
 
@@ -56,14 +56,22 @@ export class FundingBasketService {
   updateNeed(userName: String, need: Need): Observable<any> {
     const url = `${this.needsUrl}/${userName}`;
 
-    return this.http.put(url, need, this.httpOptions)
+    return this.http.put(url, need, this.httpOptions).pipe(
+      tap(_ => {
+        this.updateItemCount(userName);
+      })
+    );
   }
 
   /** PUT: update the need's visibility on the server */
   changeNeedVisibility(userName: String, id: number, visible: boolean): Observable<any> {
     const url = `${this.needsUrl}/${userName}/${id}/visible/?visible=${visible}`;
 
-    return this.http.put(url, this.httpOptions)
+    return this.http.put(url, this.httpOptions).pipe(
+      tap(_ => {
+        this.updateItemCount(userName);
+      })
+    );
   }
 
   /** POST: add a new need to the server */
@@ -71,7 +79,9 @@ export class FundingBasketService {
     const url = `${this.needsUrl}/${userName}`;
 
     return this.http.post<Need>(url, need, this.httpOptions).pipe(
-      tap(_ => this.updateItemCount(userName))
+      tap(_ => {
+        this.updateItemCount(userName);
+      })
     );
   }
 
@@ -80,7 +90,9 @@ export class FundingBasketService {
     const url = `${this.needsUrl}/${userName}/${id}`;
 
     return this.http.delete<Need>(url, this.httpOptions).pipe(
-      tap(_ => this.updateItemCount(userName))
+      tap(_ => {
+        this.updateItemCount(userName);
+      })
     );
   }
 
@@ -114,6 +126,7 @@ export class FundingBasketService {
   getCurrentItemCount(): number {
     return this.itemCountSubject.value;
   }
+
 
   addDonation(userName: string, amount: number) {
   const donationNeed = {
