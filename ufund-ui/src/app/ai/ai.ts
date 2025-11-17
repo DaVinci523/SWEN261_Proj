@@ -11,7 +11,8 @@ import { APIResponse } from '../response';
 
 export class Ai {
   
-    
+    timeDelay = 3000;
+
     constructor(
       private aiService:AiService
     ){}
@@ -21,10 +22,25 @@ export class Ai {
 
     isVisible = "hidden";
     isLoading: boolean = false;
+    isDisabled: boolean = false; 
 
-
+    delayButton(prompt:string):void { // delays button activation to prevent model overloading
+      
+      this.isDisabled = true;
+      
+      console.log("request submitted");
+      
+      setTimeout(() => {
+      
+        this.createResponse(prompt);
+      
+        this.isDisabled = false;
+      
+      }, this.timeDelay);
     
-    createResponse(prompt:string ): void { // creates a response to the prompt using the GeminiAPI
+    }
+    
+    createResponse( prompt:string ): void { // creates a response to the prompt using the GeminiAPI
 
       this.aiService.createResponse(prompt).subscribe((response: APIResponse) => {
 
@@ -51,7 +67,7 @@ export class Ai {
     this.isLoading = true;
     setTimeout(() => {
       this.isLoading = false;
-    }, 2000);
+    }, this.timeDelay);
   }
 
 }
