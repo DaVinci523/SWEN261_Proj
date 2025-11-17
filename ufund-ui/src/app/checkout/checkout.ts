@@ -74,7 +74,7 @@ export class Checkout implements OnInit{
    * your cart broken down into both the donationTotal and the complete total
    */
   checkout(): void {
-    this.modal.confirmDialog('Checkout', 'Are you sure you want to checkout these items?', 'Yes', 'No')
+    this.modal.confirmDialog('Checkout', 'Confirm checkout?', 'Yes', 'No')
     .subscribe(ok => {
       if (ok) {
         this.nameOnCard = "";
