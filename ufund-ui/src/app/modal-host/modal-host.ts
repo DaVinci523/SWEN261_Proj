@@ -28,6 +28,10 @@ export class ModalHost {
     });
   }
 
+  /**
+   * Applies the given configuration to the modal instance
+   * @param cfg The modal configuration to apply
+   */
   private applyConfig(cfg: ModalConfig): void {
     if (cfg.title) {
       this.title = cfg.title;
@@ -66,6 +70,10 @@ export class ModalHost {
     }
   }
 
+  /**
+   * Method to handle clicks on the overlay
+   * @param e Mouse click
+   */
   onOverlayClick(e: MouseEvent): void {
     const target = e.target as HTMLElement;
     if (target && target.classList.contains('modal-overlay')) {
@@ -73,6 +81,10 @@ export class ModalHost {
     }
   }
 
+  /**
+   * Method to handle keydown events for modal actions
+   * @param event keyboard event
+   */
   @HostListener('document:keydown', ['$event'])
   onKeydown(event: KeyboardEvent): void {
     if (!this.visible) {

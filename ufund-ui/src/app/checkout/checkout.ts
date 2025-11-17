@@ -1,8 +1,8 @@
 import { Component, OnInit, inject } from '@angular/core';
-
 import { FundingBasketService } from '../funding-basket-service';
 import { NeedsCupboardService } from '../needs-cupboard-service';
 import { DonationService } from '../donation';
+import { ModalService } from '../modal-service';
 
 import { Router } from '@angular/router';
 
@@ -24,7 +24,8 @@ export class Checkout implements OnInit{
     private router: Router,
     private fundingBasketService: FundingBasketService,
     private needsCupboardService: NeedsCupboardService,
-    private donationService: DonationService
+    private donationService: DonationService,
+    private modal: ModalService
   ) {
     // Continuously call getNeeds on set intervals (ex: 5000 is 5 seconds) to keep them updated when page is not reloaded.
     this.getNeedsSubscription = interval(500).subscribe(() => {
@@ -73,50 +74,56 @@ export class Checkout implements OnInit{
    * your cart broken down into both the donationTotal and the complete total
    */
   checkout(): void {
-    this.nameOnCard = "";
-    this.cardNumber = "";
-    this.address = "";
+    this.modal.confirmDialog('Checkout', 'Are you sure you want to checkout these items?', 'Yes', 'No')
+    .subscribe(ok => {
+      if (ok) {
+        this.nameOnCard = "";
+        this.cardNumber = "";
+        this.address = "";
 
-    const updateRequests = [];
+        const updateRequests = [];
 
-    // Compute totals
-    this.cartTotal = 0;
-    this.donationTotal = 0;
+        // Compute totals
+        this.cartTotal = 0;
+        this.donationTotal = 0;
 
-    this.userNeeds.forEach(userNeed => {
-      const subtotal = userNeed.value * userNeed.maxQuantity;
-      this.cartTotal += subtotal;
-      if (userNeed.type === "donation") {
-        this.donationTotal += subtotal;
-      }
-    });
-
-    // Send donation to backend
-    if (this.donationTotal > 0) {
-      updateRequests.push(this.donationService.addDonation(this.donationTotal));
-    }
-
-    // Update cupboard + remove needs
-    this.userNeeds.forEach(userNeed => {
-      if (userNeed.type !== "donation") {
-        this.needsCupboard.forEach(cupboardNeed => {
-          if (cupboardNeed.id == userNeed.id && cupboardNeed.visible && userNeed.visible) {
-            cupboardNeed.currentQuantity += userNeed.maxQuantity;
-            updateRequests.push(this.needsCupboardService.updateNeed(cupboardNeed));
+        
+        this.userNeeds.forEach(userNeed => {
+          const subtotal = userNeed.value * userNeed.maxQuantity;
+          this.cartTotal += subtotal;
+          if (userNeed.type === "donation") {
+            this.donationTotal += subtotal;
           }
         });
-      }
-      updateRequests.push(this.fundingBasketService.deleteNeed(this.userName, userNeed.id));
-    });
 
-    Promise.all(updateRequests.map(req => req.toPromise()))
-      .then(() => {
-        console.log("Checkout Completed Successfully");
-        window.location.reload();
-      })
-      .catch(err => console.log("Checkout Error:", err));
-    
-    window.location.reload(); // reload the page
+        // Send donation to backend
+        if (this.donationTotal > 0) {
+          updateRequests.push(this.donationService.addDonation(this.donationTotal));
+        }
+
+        // Update cupboard + remove needs
+        this.userNeeds.forEach(userNeed => {
+          if (userNeed.type !== "donation") {
+            this.needsCupboard.forEach(cupboardNeed => {
+              if (cupboardNeed.id == userNeed.id && cupboardNeed.visible && userNeed.visible) {
+                cupboardNeed.currentQuantity += userNeed.maxQuantity;
+                updateRequests.push(this.needsCupboardService.updateNeed(cupboardNeed));
+              }
+            });
+          }
+          updateRequests.push(this.fundingBasketService.deleteNeed(this.userName, userNeed.id));
+        });
+
+        Promise.all(updateRequests.map(req => req.toPromise()))
+          .then(() => {
+            console.log("Checkout Completed Successfully");
+            window.location.reload();
+          })
+          .catch(err => console.log("Checkout Error:", err));
+        
+        window.location.reload(); // reload the page
+      }
+    });
   }
 
 
