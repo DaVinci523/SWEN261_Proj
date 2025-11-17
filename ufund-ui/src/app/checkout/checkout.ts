@@ -117,11 +117,11 @@ export class Checkout implements OnInit{
         Promise.all(updateRequests.map(req => req.toPromise()))
           .then(() => {
             console.log("Checkout Completed Successfully");
-            window.location.reload();
+            this.router.navigate(['/helper']); // go to helper page on checkout
           })
           .catch(err => console.log("Checkout Error:", err));
         
-        window.location.reload(); // reload the page
+        this.router.navigate(['/helper']); // go to helper page on checkout
       }
     });
   }
