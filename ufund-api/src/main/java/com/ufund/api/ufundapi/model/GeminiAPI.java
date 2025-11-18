@@ -22,7 +22,7 @@ public class GeminiAPI {
     private Client client;
     private Chat chat;
     private ArrayList<String> needs;
-    private final String filename = "data/needs.json";
+    private final String FILENAME = "data/needs.json";
 
     private final String INIT_PROMPT = """
         You are an AI named P.H.I.L., which stands for the Personal Helper for Improving Lives. Your goal is helping users on 
@@ -87,7 +87,7 @@ public class GeminiAPI {
     public void loadNeeds() throws IOException{
 
         //use object mapper to deserialize  file into needsArray
-        Need[] needsArray = objectMapper.readValue(new File(filename), Need[].class);
+        Need[] needsArray = objectMapper.readValue(new File(FILENAME), Need[].class);
         
         String strungNeed; 
 
@@ -128,7 +128,7 @@ public class GeminiAPI {
         
             } catch (IOException e){
                 System.out.println(e);
-                return new APIResponse("There was an error with loading the needs, please contact administration." + e, prompt);
+                return new APIResponse("There was an error with generating the needs, please contact administration.", prompt);
             }       
             
             
