@@ -48,6 +48,7 @@ The MVP supports simple authentication with login and logout. The reserved usern
 
 ### Enhancements
 > _**[Sprint 4]** Describe what enhancements you have implemented for the project._
+
 One of the enhancements implemented in the project is the review system. This system allows users to place reviews on their experiences with the site and assign it a rating from 1-5. These reviews will then be posted for all other users to see on the review page with a corresponding number of stars to the rating being displayed. Additionally, we added a reviews section to the homepage that displays two random reviews that have been placed. The user can also shuffle the reviews displayed on the homepage to get two new random reviews. While the admin is unable to place a review, they have the ability to delete any review if they determine it's contents to be harmful or malicious. The backend of the review system was implemented across all four tiers including the model, persistance, controller, and service tier. Specifically, Review.java is the review model, ReviewFileDAO.java is the review persistance, ReviewController.java is the review controller, and ReviewServiceImplementation.java is the review service. A review contains an id, the username of the user who left it, the review text, and the rating. All reviews are saved in the reviews.json file. 
 
 
