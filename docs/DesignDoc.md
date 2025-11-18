@@ -736,13 +736,8 @@ For sprint three, our acceptance testing has been nearly fully passed. The fails
 
 
 ### Unit Testing and Code Coverage
-> _**[Sprint 4]** Discuss your unit testing strategy. Report on the code coverage
-> achieved from unit testing of the code base. Discuss the team's
-> coverage targets, why you selected those values, and how well your
-> code coverage met your targets._
+Our final code coverage achieved across all tiers of the ufund-api was 97%. Specifically, the Persistance tier had 96% coverage, the Controller tier had 97% coverage, the model tier had 96% coverage, and the service tier has 98% coverage. Our coverage target for each tier was 95% with the goal of each specific file element having at least 90% coverage. These values were selected to ensure we had strong, functional code across all tiers and files. Additionally, we chose to set the coverage targets that high to ensure that each method has at least some form of testing so nothing falls through and gets missed. Overall, our code coverage reached the target in every case except for the gemini ai chatbot files in the controller and model tiers. This was largely a result of the AI being one of the last things to be completed before the end of the sprint. Despite those two files falling short of the 90% target, the model and controller tiers still surpassed the 95% coverage goal for tiers.
 
->_**[Sprint 2, 3 & 4]** **Include images of your code coverage report.** If there are any anomalies, discuss
-> those._W
 <img width="821" height="718" alt="General Code Coverage Reports" src="s3finalcoverage.png" />
 
 ## Ongoing Rationale
