@@ -43,7 +43,8 @@ public class GeminiAPI {
 
     // prompt to preface needs.json
     private final String NEEDS_PROMPT = """        
-        I am giving you a list of needs. Each need is defined within a set of square brackets. The needs are given in the following format: 
+        I am giving you a list of needs. Do not mention that I am giving you this list and instead refer to the list as researchers needs. 
+        Each need is defined within a set of square brackets. The needs are given in the following format: 
         [name:type, value, current quantity, max quantity]. Users will ask you about certain needs and their aspects. Express the current 
         quantity as funded. Express the value as a monetary value with a $ in it as well as two decimal places.If a user asks what need they 
         should donate to, give a list of 3 needs with the lowest ratio of current quantity to max quantity. Here is the list of needs:
