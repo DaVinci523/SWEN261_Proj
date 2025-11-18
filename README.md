@@ -58,7 +58,7 @@ An online U-Fund system built in Java **24**
 - - - The admin-page component in the front end had a bug when Initially deleting a need it did not work as intended, the admin page was not properly updated, this was temporarily fixed by re-adding an interval. 
 - - - The user.ts file has an interval to check for users being created and deleted.
 - Moving some logic such as checkout to the backend.
-- Our AI is shared across all users. Basically, all users interact with one chatbot and the chatbot percieves all users as a single person.
+- Our AI is shared across all users. Basically, all users interact with one chatbot and the chatbot perceives all users as a single person.
 - - Our AI currently is setup for 250 prompts per day, a limit-reached message will display indicating this limit has been reached. 
 
 ## How to test it
