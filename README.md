@@ -16,8 +16,6 @@ An online U-Fund system built in Java **24**
 
 - Java **24** (Make sure to have correct JAVA_HOME setup in your environment)
 - Maven
--  _add any other tech stack requirements_
-
 
 ## How to run it
 
@@ -53,14 +51,14 @@ An online U-Fund system built in Java **24**
 
 2. Disclaimers & Unresolved features: (The following are features that have not been implemented for the sake of focusing on other areas of the application):
 - Designated types for the needs, so that admins can only create needs that belong to the designated type
-- Replace the intervals with observables / more dynamic methods of transfering data. (WORKING ON)
+- Replace the intervals with observables / more dynamic methods of transfering data. 
 - - (UPDATE) Most of the intervals have been updated by using messages as signals to reload the data in response to user actions instead of a set timer
 - - (DISCLAIMER) There are still 3 intervals present
 - - - The checkout component in the front end had a bug using messages where the user's funding basket would not be properly updated, this was temporarily fixed by using an interval.
 - - - The admin-page component in the front end had a bug when Initially deleting a need it did not work as intended, the admin page was not properly updated, this was temporarily fixed by re-adding an interval. 
 - - - The user.ts file has an interval to check for users being created and deleted.
 - Moving some logic such as checkout to the backend.
-- Our AI is Not connected to our site's backend. Functionally it does not interact with our site, it only answers user's questions regarding what an item does.
+- Our AI is shared across all users. Basically, all users interact with one chatbot and the chatbot percieves all users as a single person.
 - - Our AI currently is setup for 250 prompts per day, a limit-reached message will display indicating this limit has been reached. 
 
 ## How to test it
