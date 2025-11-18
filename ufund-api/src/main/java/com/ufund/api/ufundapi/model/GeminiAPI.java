@@ -24,6 +24,7 @@ public class GeminiAPI {
     private ArrayList<String> needs;
     private final String FILENAME = "data/needs.json";
 
+    // prompt to train ai on the website
     private final String INIT_PROMPT = """
         You are an AI named P.H.I.L., which stands for the Personal Helper for Improving Lives. Your goal is helping users on 
         our website, myResearch. I am going to provide you with a bunch of different paths users can take to do diffrent actions 
@@ -40,6 +41,7 @@ public class GeminiAPI {
         """;
 
 
+    // prompt to preface needs.json
     private final String NEEDS_PROMPT = """        
         I am giving you a list of needs. Each need is defined within a set of square brackets. The needs are given in the following format: 
         [name:type, value, current quantity, max quantity]. Users will ask you about certain needs and their aspects. Express the current 
@@ -66,6 +68,11 @@ public class GeminiAPI {
     
     }
 
+    /**
+     * Converts a need to a String
+     * @param need
+     * @return String representation of a Need
+     */
     public String needToString(Need need){
         String needStr = "[";
 
@@ -83,7 +90,12 @@ public class GeminiAPI {
 
         return needStr;
     }
+    
 
+    /**
+     * loads the needs from json file into an ArrayList
+     * @throws IOException
+     */
     public void loadNeeds() throws IOException{
 
         //use object mapper to deserialize  file into needsArray
@@ -91,6 +103,7 @@ public class GeminiAPI {
         
         String strungNeed; 
 
+        // converts the need into a string and adds it to the ArrayList
         for(Need need : needsArray){
 
             strungNeed = needToString(need);
@@ -108,6 +121,7 @@ public class GeminiAPI {
     public APIResponse generateResponse(String prompt) {
 
             try{
+                // attempts to load in needs
                 loadNeeds();
         
                 String needsList = "";
@@ -116,8 +130,10 @@ public class GeminiAPI {
                     needsList += need;
                 } 
 
+                // creates prompt for the API with the needs in the json file 
                 String needPrompt = NEEDS_PROMPT + needsList;
 
+                // sends the need prompt to the API
                 this.chat.sendMessage(needPrompt);
 
                 // Call the Gemini API to generate the response
@@ -127,7 +143,8 @@ public class GeminiAPI {
                 return new APIResponse(userResponse.text(),prompt);
         
             } catch (IOException e){
-                System.out.println(e);
+                
+                // sends an error message if an IOException occured
                 return new APIResponse("There was an error with generating the needs, please contact administration.", prompt);
             }       
             
