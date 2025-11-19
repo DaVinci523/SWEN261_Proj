@@ -45,36 +45,37 @@ The MVP supports simple authentication with login and logout. The reserved usern
 
 ### MVP Features
 >  _**[Sprint 4]** Provide a list of top-level Epics and/or Stories of the MVP._
+
 **Epic - Authentication and Roles**
-As a visitor, I can log in with a username so I can use the system as either a Helper or the U-fund Manager. <br>
-As the user logged in as admin, I am treated as the U-fund Manager and taken to the admin view while any other username logs me in as a Helper.
-As any logged in user, I can log out and return to the home page.
+  * As a visitor, I can log in with a username so I can use the system as either a Helper or the U-fund Manager. 
+  * As the user logged in as admin, I am treated as the U-fund Manager and taken to the admin view while any other username logs me in as a Helper.
+  * As any logged in user, I can log out and return to the home page.
 
 **Epic - Manage the Needs Cupboard (U-fund Manager)**
-As the U-fund Manager, I can view the full list of needs currently in the cupboard.
-As the U-fund Manager, I can create a new need by specifying its name, value, quantity, and type.
-As the U-fund Manager, I can update or delete existing needs so the cupboard always reflects the current set of items available for funding.
-As the U-fund Manager, I can edit the donation goal so it can reflect the current state of our goals.
-As the U-fund Manager, I can delete users so that I can prevent them from accessing the application.
+  * As the U-fund Manager, I can view the full list of needs currently in the cupboard.
+  * As the U-fund Manager, I can create a new need by specifying its name, value, quantity, and type.
+  * As the U-fund Manager, I can update or delete existing needs so the cupboard always reflects the current set of items available for funding.
+  * As the U-fund Manager, I can edit the donation goal so it can reflect the current state of our goals.
+  * As the U-fund Manager, I can delete users so that I can prevent them from accessing the application.
 
 **Epic - Helper Functionality**
-As a Helper, I can view all available needs in the cupboard so I can decide what to fund.
-As a Helper, I can search needs by name, type, quantity, and value to find causes that interest me.
-As a Helper, I can add a need from the cupboard to my personal funding basket.
-As a Helper, I can adjust quantities or remove items from my basket so my planned contribution matches what I want to fund.
-As a Helper, I can see a list of all items currently in my basket.
+  * As a Helper, I can view all available needs in the cupboard so I can decide what to fund.
+  * As a Helper, I can search needs by name, type, quantity, and value to find causes that interest me.
+  * As a Helper, I can add a need from the cupboard to my personal funding basket.
+  * As a Helper, I can adjust quantities or remove items from my basket so my planned contribution matches what I want to fund.
+  * As a Helper, I can see a list of all items currently in my basket.
 
 **Epic -  Persistence and Application State**
-As the system, I load needs, user baskets, reviews,  and account data from JSON files at startup so that needed data is displayed properly to users.
-As for the system, I save updated needs and baskets back to JSON whenever changes occur so the cupboard and user baskets remain consistent across sessions.
+  * As the system, I load needs, user baskets, reviews,  and account data from JSON files at startup so that needed data is displayed properly to users.
+  * As for the system, I save updated needs and baskets back to JSON whenever changes occur so the cupboard and user baskets remain consistent across sessions.
 
 **Epic - Reviews**
-As a user, I can see two random reviews on the homepage so I can get an initial perspective on the application.
-As a Helper, I can add a review with stars and a description so that I can provide feedback on the application.
-As the U-fund Manager, I can delete a review so that I can moderate any harmful messages.
+  * As a user, I can see two random reviews on the homepage so I can get an initial perspective on the application.
+  * As a Helper, I can add a review with stars and a description so that I can provide feedback on the application.
+  * As the U-fund Manager, I can delete a review so that I can moderate any harmful messages.
 
 **Epic - AI**
-As a helper, I can use P.H.I.L on any page so that I can learn more about the application.
+  * As a helper, I can use P.H.I.L on any page so that I can learn more about the application.
 
 ### Enhancements
 > _**[Sprint 4]** Describe what enhancements you have implemented for the project._
