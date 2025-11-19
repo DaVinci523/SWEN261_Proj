@@ -34,6 +34,7 @@ The myResearch program seeks to help student researchers by providing them with 
 | Value | The monetary value of a product |
 | Type | The category a product was placed in  |
 | SPA | Single Page |
+| Personal Helper for Improving Lives (P.H.I.L.) | The AI Chatbot feature |
 
 
 ## Requirements
@@ -100,11 +101,62 @@ When logged in, any user can navigate to the reviews page from the navigation ba
 > responsibilities.  This should be a narrative description, i.e. it has
 > a flow or "story line" that the reader can follow._
 
+* Angular components: (components will be referred to by their folder name, ie. helper-page, modal-host, nav-bar...)
+
+We have five main components that the handle routing and pop-ups on each page: home-page, checkout-page, helper-page, login-page, and review-page components.
+  - These components, alongside our nav-bar, directly route users to other areas of the website. 
+
+Our nav-bar component is placed in the top-line of our page .html files so that it is consistent across the website. 
+
+The admin-page does not have any routing because the admin does not have other sections they need to look into apart from the reviews page, which has a button to navigate to it in the nav-bar component. 
+
+
+* Within these pages are the components that manage our front-end logic.
+
+The needs-cupboard and funding-basket components house and modify their respective user's needs:
+- The funding-basket component is present in both the helper-page and checkout-page to display and modify the current-users needs in their funding basket. 
+  - It contains options to increase or decrease the quantity of a need, or completely delete a need from the user's basket.
+- The needs-cupboard component is only present in the helper-page.
+  - It contains the option to add an item to the funding basket. 
+  - In addition, the needs have colored progress bars that are orange when not filled, and green when the need is met/is in surplus.
+
+The checkout component is present in the checkout-page.
+- It contains a button to checkout the user's funding basket. 
+- It also displays the total cart value and any needs that have already been met in the cupboard.
+
+The modal-host component is present throughout all our application within various components. 
+- It is a framework for pop-ups with modifiable text.
+
+The reviews-card component is present in the home page.
+- It displays two random reviews.
+- It contains a button to refresh the two reviews to two random reviews. (there will not be two of the same review displayed at the same time)
+- It contains a button to navigate to the review-page
+
+The ai component is present in the nav-bar, and thus shared across all pages with a nav-bar.
+- ai handles our AI chatbot P.H.I.L., containing prompt input, the chatbot's output, and a button to toggle the ai's visibility.
+
+Services:
+  - Each of these components have an associating service denoted by similar names. Each component contains one or more of the services that are needed.
+  - The admin-page-service, ai-service, funding-basket-service, needs-cupboard-service, and review-service connect the front-end to the api through http requests. 
+  - The modal-service contains user input logic for the modal-host component
+
+=================================================================================================================================================================
+$ git commit -m "View Tier UI architecture summary"
 > _**[Sprint 4]** You must  provide at least **2 sequence diagrams** as is relevant to a particular aspects 
 > of the design that you are describing.  (**For example**, in a shopping experience application you might create a 
 > sequence diagram of a customer searching for an item and adding to their cart.)
 > As these can span multiple tiers, be sure to include an relevant HTTP requests from the client-side to the server-side 
 > to help illustrate the end-to-end flow._
+
+Sequences: 
+
+Checkout:
+
+Admin:
+
+Reviews:
+
+AI: 
 
 > _**[Sprint 4]** To adequately show your system, you will need to present the **class diagrams** where relevant in your design. Some additional tips:_
  >* _Class diagrams only apply to the **ViewModel** and **Model** Tier_
