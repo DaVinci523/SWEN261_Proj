@@ -744,10 +744,6 @@ Our code analysis proved helpful in highlighting key flaws in our design. Throug
 Issue 1 : 
 One of the biggest issues found in the code analysis was a security flaw in our AI enhancement. Our analysis recommended that we secure or remove the product key, this is due to the fact that this would prevent unauthorized use if found or data breaches. If we were to continue improving our design we would plan on encapsulating  this vital information like the API keys and user data so that our site would be safe for all users.
 
-<img width="800" height="70" alt="Code Analysis" src="API Key.png" />
-
-The screenshot above shows the insecurity within our code. Our API Key can be easily accessed allowing for decreased security.
-
 Issue 2 : 
 
 <img width="800" height="150" alt="Code Analysis" src="CSS Issue.png" />
