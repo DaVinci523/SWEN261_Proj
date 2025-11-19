@@ -46,7 +46,7 @@ The MVP supports simple authentication with login and logout. The reserved usern
 ### MVP Features
 >  _**[Sprint 4]** Provide a list of top-level Epics and/or Stories of the MVP._
 **Epic - Authentication and Roles**
-As a visitor, I can log in with a username so I can use the system as either a Helper or the U-fund Manager.
+As a visitor, I can log in with a username so I can use the system as either a Helper or the U-fund Manager. <br>
 As the user logged in as admin, I am treated as the U-fund Manager and taken to the admin view while any other username logs me in as a Helper.
 As any logged in user, I can log out and return to the home page.
 
