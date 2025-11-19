@@ -140,7 +140,11 @@ Services:
   - The admin-page-service, ai-service, funding-basket-service, needs-cupboard-service, and review-service connect the front-end to the api through http requests. 
   - The modal-service contains user input logic for the modal-host component
 
-__***__
+***
+
+---
+
+____________
 
 > _**[Sprint 4]** You must  provide at least **2 sequence diagrams** as is relevant to a particular aspects 
 > of the design that you are describing.  (**For example**, in a shopping experience application you might create a 
