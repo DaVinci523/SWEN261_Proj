@@ -101,7 +101,7 @@ When logged in, any user can navigate to the reviews page from the navigation ba
 > responsibilities.  This should be a narrative description, i.e. it has
 > a flow or "story line" that the reader can follow._
 
-* Angular components: (components will be referred to by their folder name, ie. helper-page, modal-host, nav-bar...)
+Angular components: (components will be referred to by their folder name, ie. helper-page, modal-host, nav-bar...)
 
 We have five main components that the handle routing and pop-ups on each page: home-page, checkout-page, helper-page, login-page, and review-page components.
   - These components, alongside our nav-bar, directly route users to other areas of the website. 
@@ -140,8 +140,8 @@ Services:
   - The admin-page-service, ai-service, funding-basket-service, needs-cupboard-service, and review-service connect the front-end to the api through http requests. 
   - The modal-service contains user input logic for the modal-host component
 
-=================================================================================================================================================================
-$ git commit -m "View Tier UI architecture summary"
+__***__
+
 > _**[Sprint 4]** You must  provide at least **2 sequence diagrams** as is relevant to a particular aspects 
 > of the design that you are describing.  (**For example**, in a shopping experience application you might create a 
 > sequence diagram of a customer searching for an item and adding to their cart.)
