@@ -739,7 +739,7 @@ Finally, as stated above the Need model file is a domain abstraction that is not
 ## Static Code Analysis/Future Design Improvements
 Our code analysis proved helpful in highlighting key flaws in our design. Through the use of both SonarQube and SonarScanner we were able to get both numeric values that showed our coverage as well as key insight as to what in our code raises alarm. This allows the team to retrospectively improve on fields of our code that had issues.
 
-<img width="593" height="332" alt="Code Analysis" src="S4 Code Analysis.png" />
+<img width="" height="332" alt="Code Analysis" src="S4 Code Analysis.png" />
 
 Issue 1 : 
 One of the biggest issues found in the code analysis was a security flaw in our AI enhancement. Our analysis recommended that we secure or remove the product key, this is due to the fact that this would prevent unauthorized use if found or data breaches. If we were to continue improving our design we would plan on encapsulating  this vital information like the API keys and user data so that our site would be safe for all users.
