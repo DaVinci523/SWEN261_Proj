@@ -1,7 +1,1 @@
-{
-    "users":[
-        {"username":"helper456","password":"456","role":"helper"},
-        {"username":"helper123","password":"123","role":"helper"},
-        {"username":"admin","password":"admin","role":"admin"}
-    ]
-}
+{"users":[{"username":"helper456","password":"456","role":"helper"},{"username":"helper123","password":"123","role":"helper"},{"username":"admin","password":"admin","role":"admin"},{"username":"AJ","password":"0530","role":"helper"}]}

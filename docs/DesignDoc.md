@@ -722,16 +722,19 @@ Finally, the Review Controller handles all REST API requests for reviews. For ex
 
 Sprint 4: The Object Oriented Design Principle that the CTRL team decided to champion in sprint 4 is the dependency inversion principle. The dependency inversion principle states that high level modules should not be dependent on low level modules and that abstractions should not depend on concrete implementations. The dependency inversion principle can be demonstrated by our needs cupboard across all four tiers. Starting with the NeedsCupboardController in the controller tier, the controller utilizes NeedsCupboardService which is the interface for the service. This means that the NeedsCupboardController is not dependent on the DAO, rather is is dependent on the abstraction of the service. This follows the first part of the dependency inversion principle that states high level modules should not be dependent on low level modules. The implementation of NeedsCupboardService in the NeedsCupboardController file can be seen in the image below.
 
+<img width="593" height="332" alt="Review Controller POST method" src="s4ooController.png" />
 
-Similarly, the service tier does not depend on the NeedsCupboardFileDAO's concrete implementation. Instead, it utilizes the interface NeedsCupboardDAO which is independent of the actual storage of data. This follows the dependency inversion principle as high level logic is 
-dependent on the abstraction rather than the concrete implementation. One example from NeedsCupboardServiceImplemenation is the updateNeed method which is shown below. The updateNeed method is not dependent on how NeedsCupboardDAO handles updateNeed, only that the DAO does handle it. 
+Similarly, the service tier does not depend on the NeedsCupboardFileDAO's concrete implementation. Instead, it utilizes the interface NeedsCupboardDAO which is independent of the actual storage of data. This follows the dependency inversion principle as high level logic is dependent on the abstraction rather than the concrete implementation. One example from NeedsCupboardServiceImplemenation is the updateNeed method which is shown below. The updateNeed method is not dependent on how NeedsCupboardDAO handles updateNeed, only that the DAO does handle it. 
 
+<img width="593" height="332" alt="Review Controller POST method" src="s4ooService.png" />
 
 NeedsCupboardFileDAO in the persistance tier follows the dependency inversion principle by not being dependent on the controller or service tiers and only depending on the Need model. The Need model file is considered a domain abstraction which means that the persistance tier is only dependent on abstractions and not higher level logic. This is shown below in how the code only utilizes the Need model file and not any of the files from the controller or service files. 
 
+<img width="593" height="332" alt="Review Controller POST method" src="s4ooPersistance.png" />
 
 Finally, as stated above the Need model file is a domain abstraction that is not dependent on any of the other higher level modules. This can be demonstrated by the Need constructor where no higher level files are used, proving that the Need model file and by extension the rest of the NeedsCupboard system follows the dependency inversion principle. 
 
+<img width="593" height="332" alt="Review Controller POST method" src="s4ooModel.png" />
 
 ## Static Code Analysis/Future Design Improvements
 > _**[Sprint 4]** With the results from the Static Code Analysis exercise, 
