@@ -142,10 +142,6 @@ Services:
 
 ***
 
----
-
-____________
-
 > _**[Sprint 4]** You must  provide at least **2 sequence diagrams** as is relevant to a particular aspects 
 > of the design that you are describing.  (**For example**, in a shopping experience application you might create a 
 > sequence diagram of a customer searching for an item and adding to their cart.)
@@ -154,19 +150,21 @@ ____________
 
 Sequences: 
 
-Checkout:
+- Checkout: home-page -> login-page -> helper-page -> checkout-page -> checkout
 
-Admin:
+- Admin: home-page -> login-page -> admin-page
 
-Reviews:
+- Reviews: home-page -> login-page -> reviews-page
 
-AI: 
+- AI: home-page -> ai
 
 > _**[Sprint 4]** To adequately show your system, you will need to present the **class diagrams** where relevant in your design. Some additional tips:_
  >* _Class diagrams only apply to the **ViewModel** and **Model** Tier_
 >* _A single class diagram of the entire system will not be effective. You may start with one, but will be need to break it down into smaller sections to account for requirements of each of the Tier static models below._
  >* _Correct labeling of relationships with proper notation for the relationship type, multiplicities, and navigation information will be important._
  >* _Include other details such as attributes and method signatures that you think are needed to support the level of detail in your discussion._
+
+***
 
 ### ViewModel Tier
 
