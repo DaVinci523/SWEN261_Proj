@@ -737,13 +737,25 @@ Finally, as stated above the Need model file is a domain abstraction that is not
 <img width="593" height="332" alt="Review Controller POST method" src="s4ooModel.png" />
 
 ## Static Code Analysis/Future Design Improvements
-> _**[Sprint 4]** With the results from the Static Code Analysis exercise, 
-> **Identify 3-4** areas within your code that have been flagged by the Static Code 
-> Analysis Tool (SonarQube) and provide your analysis and recommendations.  
-> Include any relevant screenshot(s) with each area._
+Our code analysis proved helpful in highlighting key flaws in our design. Through the use of both SonarQube and SonarScanner we were able to get both numeric values that showed our coverage as well as key insight as to what in our code raises alarm. This allows the team to retrospectively improve on fields of our code that had issues.
 
-> _**[Sprint 4]** Discuss **future** refactoring and other design improvements your team would explore if the team had additional time._
+<img width="" height="332" alt="Code Analysis" src="S4 Code Analysis.png" />
 
+Issue 1 : 
+One of the biggest issues found in the code analysis was a security flaw in our AI enhancement. Our analysis recommended that we secure or remove the product key, this is due to the fact that this would prevent unauthorized use if found or data breaches. If we were to continue improving our design we would plan on encapsulating  this vital information like the API keys and user data so that our site would be safe for all users.
+
+Issue 2 : 
+
+<img width="800" height="150" alt="Code Analysis" src="CSS Issue.png" />
+
+Another issue that was flagged a lot was our CSS. We had many depreciated or unusable commands that caused numerous flags that should have been fixed during coding. If we had more time we think it would be smart to go back through all of our CSS and remove any lines of code that proved to be unusable. In doing so we could also clean up the code analysis so that more important flaws can be highlighted and easily recognized.
+
+Issue 3 : 
+In both our front and back end we had a lot of nested code that could cause both confusion for the reader and allow more gateways for miscoverage and increased cognitive complexity. As seen in the screenshot below of a function that has 2 nested for loops and many if statements.
+
+<img width="800" height="400" alt="Code Analysis" src="Nesting Code.png" />
+
+If we had more time we would find it beneficial to refactor the code in such a way that conforms to good code writing practices. Such as creating a helper function that can replace the position of long nested calls.
 ## Testing
 ### Acceptance Testing
 Across Sprint 2, acceptance testing indicates that the majority of user stories have fully met their acceptance criteria. Core user flows behaving as expected like the persistent navigation bar correctly routes to myResearch (Homepage), Login, and Checkout; the Login Page accurately authenticates valid users and their roles; and the needs list currently sending data to the funding basket. One acceptance criteria failure (which was later resolved) was where the wrong user’s funding basket appeared after login. Another acceptance criteria failure that was fixed was the Update Need feature on the Admin Page which attempts to modify an existing need, currently reset fields to empty or zero and does not save updates. Other than that, all other tested stories passed without exception. 
