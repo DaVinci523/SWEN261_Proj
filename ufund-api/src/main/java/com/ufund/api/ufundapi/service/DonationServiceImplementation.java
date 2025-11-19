@@ -34,13 +34,13 @@ public class DonationServiceImplementation implements DonationService {
     public Donation addDonation(int amount) throws IOException {
         Donation status = donationDAO.getStatus();
 
-    // Add donation
-    status.setTotalDonated(status.getTotalDonated() + amount);
+        // Add donation
+        status.setTotalDonated(status.getTotalDonated() + amount);
 
-    // Save changes
-    donationDAO.save(status);
+        // Save changes
+        donationDAO.save(status);
 
-    return status;
+        return status;
     }
 
     /**
@@ -52,14 +52,14 @@ public class DonationServiceImplementation implements DonationService {
     public Donation setGoal(int newGoal) throws IOException {
         Donation status = donationDAO.getStatus();
 
-    // Prevent lowering the goal below what has already been raised
-    if (newGoal < status.getTotalDonated()) {
-        newGoal = status.getTotalDonated(); // clamp to minimum
-    }
+        // Prevent lowering the goal below what has already been raised
+        if (newGoal < status.getTotalDonated()) {
+            newGoal = status.getTotalDonated(); // clamp to minimum
+        }
 
-    status.setDonationGoal(newGoal);
-    donationDAO.setGoal(newGoal); // save
-    return status;
+        status.setDonationGoal(newGoal);
+        donationDAO.setGoal(newGoal); // save
+        return status;
     }
     
 }
