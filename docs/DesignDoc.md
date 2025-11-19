@@ -50,6 +50,8 @@ The MVP supports simple authentication with login and logout. The reserved usern
 ### Enhancements
 > _**[Sprint 4]** Describe what enhancements you have implemented for the project._
 
+One of the enhancements implemented in the project is the review system. This system allows users to place reviews on their experiences with the site and assign it a rating from 1-5. These reviews will then be posted for all other users to see on the review page with a corresponding number of stars to the rating being displayed. Additionally, we added a reviews section to the homepage that displays two random reviews that have been placed. The user can also shuffle the reviews displayed on the homepage to get two new random reviews. While the admin is unable to place a review, they have the ability to delete any review if they determine it's contents to be harmful or malicious. The backend of the review system was implemented across all four tiers including the model, persistance, controller, and service tier. Specifically, Review.java is the review model, ReviewFileDAO.java is the review persistance, ReviewController.java is the review controller, and ReviewServiceImplementation.java is the review service. A review contains an id, the username of the user who left it, the review text, and the rating. All reviews are saved in the reviews.json file. 
+
 
 ## Application Domain
 <img width="780" height="517" alt="Application Domain Analysis" src="DomainAnalysis.png" />
@@ -801,16 +803,42 @@ Finally, the Review Controller handles all REST API requests for reviews. For ex
 
 <img width="593" height="332" alt="Review Controller POST method" src="createReview.png" />
 
-> **[Sprint 4]** OO Design Principles should span across **all tiers.**
+Sprint 4: The Object Oriented Design Principle that the CTRL team decided to champion in sprint 4 is the dependency inversion principle. The dependency inversion principle states that high level modules should not be dependent on low level modules and that abstractions should not depend on concrete implementations. The dependency inversion principle can be demonstrated by our needs cupboard across all four tiers. Starting with the NeedsCupboardController in the controller tier, the controller utilizes NeedsCupboardService which is the interface for the service. This means that the NeedsCupboardController is not dependent on the DAO, rather is is dependent on the abstraction of the service. This follows the first part of the dependency inversion principle that states high level modules should not be dependent on low level modules. The implementation of NeedsCupboardService in the NeedsCupboardController file can be seen in the image below.
+
+<img width="593" height="332" alt="Review Controller POST method" src="s4ooController.png" />
+
+Similarly, the service tier does not depend on the NeedsCupboardFileDAO's concrete implementation. Instead, it utilizes the interface NeedsCupboardDAO which is independent of the actual storage of data. This follows the dependency inversion principle as high level logic is dependent on the abstraction rather than the concrete implementation. One example from NeedsCupboardServiceImplemenation is the updateNeed method which is shown below. The updateNeed method is not dependent on how NeedsCupboardDAO handles updateNeed, only that the DAO does handle it. 
+
+<img width="593" height="332" alt="Review Controller POST method" src="s4ooService.png" />
+
+NeedsCupboardFileDAO in the persistance tier follows the dependency inversion principle by not being dependent on the controller or service tiers and only depending on the Need model. The Need model file is considered a domain abstraction which means that the persistance tier is only dependent on abstractions and not higher level logic. This is shown below in how the code only utilizes the Need model file and not any of the files from the controller or service files. 
+
+<img width="593" height="332" alt="Review Controller POST method" src="s4ooPersistance.png" />
+
+Finally, as stated above the Need model file is a domain abstraction that is not dependent on any of the other higher level modules. This can be demonstrated by the Need constructor where no higher level files are used, proving that the Need model file and by extension the rest of the NeedsCupboard system follows the dependency inversion principle. 
+
+<img width="593" height="332" alt="Review Controller POST method" src="s4ooModel.png" />
 
 ## Static Code Analysis/Future Design Improvements
-> _**[Sprint 4]** With the results from the Static Code Analysis exercise, 
-> **Identify 3-4** areas within your code that have been flagged by the Static Code 
-> Analysis Tool (SonarQube) and provide your analysis and recommendations.  
-> Include any relevant screenshot(s) with each area._
+Our code analysis proved helpful in highlighting key flaws in our design. Through the use of both SonarQube and SonarScanner we were able to get both numeric values that showed our coverage as well as key insight as to what in our code raises alarm. This allows the team to retrospectively improve on fields of our code that had issues.
 
-> _**[Sprint 4]** Discuss **future** refactoring and other design improvements your team would explore if the team had additional time._
+<img width="" height="332" alt="Code Analysis" src="S4 Code Analysis.png" />
 
+Issue 1 : 
+One of the biggest issues found in the code analysis was a security flaw in our AI enhancement. Our analysis recommended that we secure or remove the product key, this is due to the fact that this would prevent unauthorized use if found or data breaches. If we were to continue improving our design we would plan on encapsulating  this vital information like the API keys and user data so that our site would be safe for all users.
+
+Issue 2 : 
+
+<img width="800" height="150" alt="Code Analysis" src="CSS Issue.png" />
+
+Another issue that was flagged a lot was our CSS. We had many depreciated or unusable commands that caused numerous flags that should have been fixed during coding. If we had more time we think it would be smart to go back through all of our CSS and remove any lines of code that proved to be unusable. In doing so we could also clean up the code analysis so that more important flaws can be highlighted and easily recognized.
+
+Issue 3 : 
+In both our front and back end we had a lot of nested code that could cause both confusion for the reader and allow more gateways for miscoverage and increased cognitive complexity. As seen in the screenshot below of a function that has 2 nested for loops and many if statements.
+
+<img width="800" height="400" alt="Code Analysis" src="Nesting Code.png" />
+
+If we had more time we would find it beneficial to refactor the code in such a way that conforms to good code writing practices. Such as creating a helper function that can replace the position of long nested calls.
 ## Testing
 ### Acceptance Testing
 Across Sprint 2, acceptance testing indicates that the majority of user stories have fully met their acceptance criteria. Core user flows behaving as expected like the persistent navigation bar correctly routes to myResearch (Homepage), Login, and Checkout; the Login Page accurately authenticates valid users and their roles; and the needs list currently sending data to the funding basket. One acceptance criteria failure (which was later resolved) was where the wrong user’s funding basket appeared after login. Another acceptance criteria failure that was fixed was the Update Need feature on the Admin Page which attempts to modify an existing need, currently reset fields to empty or zero and does not save updates. Other than that, all other tested stories passed without exception. 
@@ -819,13 +847,8 @@ For sprint three, our acceptance testing has been nearly fully passed. The fails
 
 
 ### Unit Testing and Code Coverage
-> _**[Sprint 4]** Discuss your unit testing strategy. Report on the code coverage
-> achieved from unit testing of the code base. Discuss the team's
-> coverage targets, why you selected those values, and how well your
-> code coverage met your targets._
+Our final code coverage achieved across all tiers of the ufund-api was 97%. Specifically, the Persistance tier had 96% coverage, the Controller tier had 97% coverage, the model tier had 96% coverage, and the service tier has 98% coverage. Our coverage target for each tier was 95% with the goal of each specific file element having at least 90% coverage. These values were selected to ensure we had strong, functional code across all tiers and files. Additionally, we chose to set the coverage targets that high to ensure that each method has at least some form of testing so nothing falls through and gets missed. Overall, our code coverage reached the target in every case except for the gemini ai chatbot files in the controller and model tiers. This was largely a result of the AI being one of the last things to be completed before the end of the sprint. Despite those two files falling short of the 90% target, the model and controller tiers still surpassed the 95% coverage goal for tiers.
 
->_**[Sprint 2, 3 & 4]** **Include images of your code coverage report.** If there are any anomalies, discuss
-> those._W
 <img width="821" height="718" alt="General Code Coverage Reports" src="s3finalcoverage.png" />
 
 ## Ongoing Rationale
