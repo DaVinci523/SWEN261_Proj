@@ -174,7 +174,7 @@ On the helper-page, the user clicks the "Add to Cart" or "Donate Extra" button (
 
 
 __Checkout a need:__
-<img height="382" alt="Checkout Sequence Diagram" src="MoveToFundingSequenceDiagram.png"/>
+<img height="382" alt="Checkout Sequence Diagram" src="CheckoutSequenceDiagram.png"/>
 On the checkout-page, in the checkout component, the user clicks "Checkout" button that first checks every need in the funding basket, calculates the total of the basket, and calls the donation (service) to update the total donation count based on that calculation. The donation (service) then sends an http request to the DonationController in the API, which then returns the resulting Donation of the update to the front end. Then, for each need in the use's funding basket, the checkout component finds the matching need in the need cupboard and modifies its current quantity. Afterwards, the component sends a broadcast to the rest of the application notifying that the needs have been updated, and then routes to the helper-page. 
 
 __Create Review:__
@@ -182,7 +182,7 @@ __Create Review:__
 On the review-page, the user fills in the Create Review card located on the top of the page. After filling in the information and clicking "Create Review", the component calls the review-service to add a review, which then sends an http request to the ReviewController in the API, which after more requests sent within the API, returns the status of success or an error. The front-end then sends a broadcast to the rest of the application notifying that the reviews have been updated. This currently only is checked by the home-page, which refreshes the displayed reviews if one of the displays was the target for deletion. 
 
 __Prompt AI Chatbot, P.H.I.L.:__
-<img height="382" alt="Prompt AI Sequence Diagram" src="MoveToFundingSequenceDiagram.png"/>
+<img height="382" alt="Prompt AI Sequence Diagram" src="AISequenceDiagram.png"/>
 On any page, with the ai tab toggled open, the user fills in the "Enter Prompt" text area. After filling in the information and clicking "Get Response", the component calls the ai-service to create a response. The service then sends a http request to the GeminiAPIController in the api, which further sends requests to other aspects of the API, and then to the Gemini API that returns the response, which is then returned back up to the front end and displayed in the textbox. 
 
 ***
