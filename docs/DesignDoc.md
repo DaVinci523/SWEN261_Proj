@@ -257,22 +257,22 @@ On any page, with the ai tab toggled open, the user fills in the "Enter Prompt" 
   * deleteNeedType()
       * Handles HTTP DELETE requests to the "/needs"
       * @param type , type of need to be deleted
-      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
+      * @return a Response entity containing HttpStatus.OK if the deletion was successful,
       * a HttpStatus.NOT_FOUND if a need of id doesn't exist
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred. 
       * Deletes a need given it contains the given type.
   * deleteAll()
       * Handles HTTP DELETE requests to the "/needs"
-      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
+      * @return a Response entity containing HttpStatus.OK if the deletion was successful,
       * a HttpStatus.NOT_FOUND if a need of id doesn't exist
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured.
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
       * Deletes all needs in the Cupboard. 
   * deleteNeedName()
       * Handles HTTP DELETE requests to the "/needs"
       * @param name , string to check if name contains
       * @return a Response entity containing HttpStatus.OK if the deletion was successful,
       * a HttpStatus.NOT_FOUND if a need of id doesn't exist
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred. 
       * Deletes needs given it contains the specified name.
     
 * FundingBasketController.java - Handles HTTP requests from the model tier for the Funding Basket.
@@ -280,45 +280,45 @@ On any page, with the ai tab toggled open, the user fills in the "Enter Prompt" 
       * Handles HTTP GET requests to "/funding_basket_needs/users"
       * @return a Response entity containing HttpStatus.OK if the array of users is returned,
       * a HttpStatus.NO_CONTENT if the returned data is null
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured.
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
   * getUsernames()
       * Handles HTTP GET requests to "/funding_basket_needs/usernames"
       * @return a Response entity containing HttpStatus.OK if the array of users is returned,
       * a HttpStatus.NO_CONTENT if the returned data is null
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred. 
   * getNeed()
       * Handles HTTP GET requests to "/funding_basket_needs/userName/id"
       * @param userName: the user to search in
       * @param id: the searched objects id
       * @return a Response entity containing HttpStatus.OK if the search was successful,
       * a HttpStatus.NOT_FOUND if the search fails due to a non existent id
-      *  HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+      *  HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred. 
   * getNeeds()
       * Handles HTTP GET requests to "/funding_basket_needs/userName/needs"
       * @param userName: the user to retrieve from
       * @return a Response entity containing HttpStatus.OK if the array of needs is returned,
       * a HttpStatus.NO_CONTENT if the returned data is null
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred. 
   * searchNeeds()
       * Handles HTTP GET requests to "/funding_basket_needs/userName/?name= "name""
       * @param userName: the user to search from
       * @param name , check if need contains String name
       * @return a Response entity containing HttpStatus.OK if the search was successful,
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred. 
   * createNeed()
       * Handles HTTP POST requests to "/funding_basket_needs/userName "need""
       * @param userName: the user to create in
       * @param need: the object to be created
       * @return a Response entity containing HttpStatus.CREATED if the creation was successful,
       * a HttpStatus.CONFLICT if the creation fails due to a conflict, or a HttpStatus.INTERNAL_SERVER_ERROR
-      * if an I/O error occured. 
+      * if an I/O error occurred. 
   * updateNeed()
       * Handles HTTP PUT requests to "/funding_basket_needs/userName "need""
       * @param userName: the user to update
       * @param need: the object to be updated
       * @return a Response entity containing HttpStatus.OK if the update was successful,
       * a HttpStatus.NOT_FOUND if need doesn't exist
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred. 
   * updateNeedVisibility()
       * Handles HTTP PUT requests to "/funding_basket_needs/userName/id/visible/"visible""
       * @param userName: the user to update
@@ -326,41 +326,41 @@ On any page, with the ai tab toggled open, the user fills in the "Enter Prompt" 
       * @param visible: the visibility state to set the need
       * @return a Response entity containing HttpStatus.OK if the update was successful,
       * a HttpStatus.NOT_FOUND if need doesn't exist
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred. 
   * deleteNeedId()
       * Handles HTTP DELETE requests to "/funding_basket_needs/userName/id"
       * @param userName: the user to delete from
       * @param id , id of need to be deleted
-      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
+      * @return a Response entity containing HttpStatus.OK if the deletion was successful,
       * a HttpStatus.NOT_FOUND if a need of id doesn't exist
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured.
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
   * deleteNeedType()
       * Handles HTTP DELETE requests to "/funding_basket_needs/userName/type/type"
       * @param userName: the user to delete from
       * @param type , type of need to be deleted
-      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
+      * @return a Response entity containing HttpStatus.OK if the deletion was successful,
       * a HttpStatus.NOT_FOUND if a need of id doesn't exist
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred. 
   * deleteAll()
       * Handles HTTP DELETE requests to "/funding_basket_needs/userName"
       * @param userName: the user to delete from
-      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
+      * @return a Response entity containing HttpStatus.OK if the deletion was successful,
       * a HttpStatus.NOT_FOUND if a need of id doesn't exist
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred. 
   * deleteNeedName()
       * Handles HTTP DELETE requests to "/funding_basket_needs/name/"name""
       * @param userName: the user to delete from
       * @param name , string to check if name contains
-      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
+      * @return a Response entity containing HttpStatus.OK if the deletion was successful,
       * a HttpStatus.NOT_FOUND if a need of id doesn't exist
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured.
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
    
 * ReviewController.java - Handles HTTP requests for reviews
   * getReviews()
       * Handles HTTP GET requests to "/reviews"
       * @return a Response entity containing HttpStatus.OK if the array of reviews is successfully returned,
       * an HttpStatus.NO_CONTENT if there are no reviews
-      * an HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured
+      * an HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred
   * getReviewsByRating()
       * Handles HTTP GET requests to "/reviews/rating/{rating}"
       * @param rating: the rating value the reviews are filtered by
@@ -372,7 +372,7 @@ On any page, with the ai tab toggled open, the user fills in the "Enter Prompt" 
       * @param review: the Review object to be created
       * @return a Response entity containing HttpStatus.CREATED if the review is successfully created,
       * HttpStatus.CONFLICT if the creation failed,
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred
   * deleteReview()
       * Handles HTTP DELETE requests to "/reviews/{id}"
       * @param id: the id of the review that is being deleted
@@ -387,7 +387,7 @@ On any page, with the ai tab toggled open, the user fills in the "Enter Prompt" 
       * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurs
   * deleteAllReviews()
       * Handles HTTP DELETE requests to "/reviews"
-      * @return a Response entity contatin HttpStatus.OK if all the reviews were deleted successfully,
+      * @return a Response entity contain HttpStatus.OK if all the reviews were deleted successfully,
       * HttpStatus.NOT_FOUND if there are no reviews
       * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurs. 
 
@@ -463,7 +463,7 @@ For the core shopping flow, NeedsCupboardController and FundingBasketController 
 Account management uses the same pattern. AccountController exposes routes for listing accounts, getting usernames, checking if a username exists, creating accounts, logging in, and deleting accounts. It depends on AccountService and AccountServiceImplementation, which rely on AccountDAO and, when needed, coordinate with FundingBasketDAO so that user data stays consistent when accounts are removed. The review system mirrors this as well: ReviewController accepts requests to fetch, filter, create, and delete reviews, forwarding them to ReviewService and ReviewServiceImplementation, which operate on review data through ReviewDAO.
 
 <img width="929" height="716" alt="Account Class Diagram" src="AccountClassDiagram.png" />
-<img width="929" height="716" alt="Review Class Diagram" src="ReviewClassDiagrm.png" />
+<img width="929" height="716" alt="Review Class Diagram" src="ReviewClassDiagram.png" />
 
 Enhancement features are also integrated into this tier. DonationController provides endpoints to read donation status, add new donations, and update the donation goal, delegating to DonationService and DonationServiceImplementation, which use DonationDAO for storage. GeminiAPIController offers an endpoint that takes a prompt and returns an AI-generated reply; it calls GeminiAPIService and GeminiAPIServiceImplementation, which wrap the Gemini client and use GeminiFileDAO to persist prompt response pairs as APIResponse objects. Overall, the ViewModel tier ties the Angular UI to the Model tier through a consistent controller–service–DAO pattern, covering needs, baskets, accounts, reviews, donations, and AI assistance.
 
@@ -493,14 +493,14 @@ Finally, our Model tier has an Account.java and AccountDataWrapper.java. Account
   
   * FundingBasketDataWrapper.java - Create a Data Wrapper object with a given list of users (List<User>).
     * Contains (getUsers() -> List<User>) that returns the list of users.
-    * The DataWrapper is used in FundingBasketFileDAO.java to wrap the data taken from funding_basket.json into a list of Users for proccessing by the application, and then later setting data proccessed by the application to the .json file.
+    * The DataWrapper is used in FundingBasketFileDAO.java to wrap the data taken from funding_basket.json into a list of Users for processing by the application, and then later setting data processed by the application to the .json file.
   * User.java - Create a User object with a given name and basket(list of needs)
     * Contains getters (getName() -> String, getNeeds() -> Need[]) and a (toString() -> String) override.
     * This is used in FundingBasketFileDAO.java to hold data for a user/s.
 
   * NeedCupboardFileDAO.java - the working logic behind our application for accessing the Needs Cupboard. 
     * getNeedsArray()
-      * @param text, if this string is passed in only add needs contaiting to Array
+      * @param text, if this string is passed in only add needs containing to Array
       * @return Array of Needs
       * Creates array of Needs from tree map for needs that contain "text".
       * if "text" is null, array will contain all needs in the treemap.
@@ -537,18 +537,18 @@ Finally, our Model tier has an Account.java and AccountDataWrapper.java. Account
       * @return false, if deletion failed 
     * deleteNeedType()
       * Delete all needs of specific type
-      * Seemed liike using a removeIf is the best way to do this 
+      * Seemed like using a removeIf is the best way to do this 
       * since you cant iterate through a tree map and delete things without throwing error.
       * @param int id
-      * @return true if file was updated succesfully
+      * @return true if file was updated successfully
       * @return false, if deletion failed
     * deleteAll()
       * Delete all needs
-      * @return true if file was updated succesfully
+      * @return true if file was updated successfully
       * @return false, if deletion failed
     * deleteNeedName()
       * Delete all needs of specific name
-      * @return true if file was updated succesfully
+      * @return true if file was updated successfully
       * @return false, if deletion failed 
 
   * FundingBasketFileDAO.java - the working logic behind our application for accessing the Needs Cupboard. 
@@ -592,7 +592,7 @@ Finally, our Model tier has an Account.java and AccountDataWrapper.java. Account
       * @param userName: the name of the user the new need belongs to
       * @param need: the input object containing the id, name, value, quantity, and type
       * @return the new need
-      * @throws I/O exception if an error occured while saving the new Need to storage
+      * @throws I/O exception if an error occurred while saving the new Need to storage
     * updateNeed()
       * Update need's contents, ie name, value, quantity, type
       * @param userName the user this method will modify
@@ -602,25 +602,25 @@ Finally, our Model tier has an Account.java and AccountDataWrapper.java. Account
       * Delete need at specified id
       * @param userName the user this method will modify
       * @param int id
-      * @return true if file was updated succesfully
+      * @return true if file was updated successfully
       * @return false, if deletion failed
     * deleteNeedType()
       * Delete all needs of specific type
-      * Seemed liike using a removeIf is the best way to do this 
+      * Seemed like using a removeIf is the best way to do this 
       * since you cant iterate through a tree map and delete things without throwing error.
       * @param userName the user this method will modify
       * @param string type
-      * @return true if file was updated succesfully
+      * @return true if file was updated successfully
       * @return false, if deletion failed 
     * deleteAll()
       * Delete all needs
       * @param userName the user this method will modify
-      * @return true if file was updated succesfully
+      * @return true if file was updated successfully
       * @return false, if deletion failed 
     * deleteNeedName()
       * Delete all needs of specific name
       * @param userName the user this method will modify
-      * @return true if file was updated succesfully
+      * @return true if file was updated successfully
       * @return false, if deletion failed
         
   * Review.java
@@ -630,7 +630,7 @@ Finally, our Model tier has an Account.java and AccountDataWrapper.java. Account
   
   * ReviewFileDAO.java - the working logic behind our application for accessing Reviews.
     * getReviews()
-      * Loads all of the reviews from the persistance storage
+      * Loads all of the reviews from the persistence storage
       * @return an array of all reviews stored in the JSON file
     * getReviewsByRating
       * Filters the list of reviews to only show those that have the same rating as specified
@@ -640,7 +640,7 @@ Finally, our Model tier has an Account.java and AccountDataWrapper.java. Account
       * Adds a new review into the JSON file and assigns it a unique id.
       * @param Review review: the review object that is being added
       * @return the new Review now with an id
-      * @throws I/O exception if an error ocurred
+      * @throws I/O exception if an error occurred
     * deleteReview()
       * Removes a review from the JSON based on its id
       * @param int id: the id of the review to delete
@@ -650,7 +650,7 @@ Finally, our Model tier has an Account.java and AccountDataWrapper.java. Account
       * @param String userName: the username of the user whose reviews should be deleted
       * @return true if the review was deleted successfully or false if it was not
     * deleteAll()
-      * Deletes all the reviews from the persistance storage
+      * Deletes all the reviews from the persistence storage
       * @return true if the file was updated successfully or false if it failed
     * save()
       * Write the current list of reviews into the JSON file
@@ -799,7 +799,7 @@ The need class only takes in primitive types as variables, which means that it h
 As a result of the persistence tier being designed this way, if something such as how the data is stored is modified, the rest of the system will remain unaffected following the open/closed principle. 
 
 
-Sprint 2: The two Object Oriented Design principles that the CTRL team is championing throughout Sprint 2 are the Law of Demeter and Pure Fabrication. The Law of Demeter principle is being followed through our implementation of service classes, which serves as an inbetween for the controller and DAO. This prevents the classes from having to call other classes that are distant which would break the “don’t talk to strangers” principle for the Law of Demeter. This can be shown through NeedsCupboardServiceImplementation and how it only talks to its DAO. 
+Sprint 2: The two Object Oriented Design principles that the CTRL team is championing throughout Sprint 2 are the Law of Demeter and Pure Fabrication. The Law of Demeter principle is being followed through our implementation of service classes, which serves as an in-between for the controller and DAO. This prevents the classes from having to call other classes that are distant which would break the “don’t talk to strangers” principle for the Law of Demeter. This can be shown through NeedsCupboardServiceImplementation and how it only talks to its DAO. 
 
 <img width="493" height="332" alt="NeedsCupboardServiceImplementation" src="NeedsCupboardServiceImplementation.png" />
 
@@ -831,7 +831,7 @@ Similarly, the service tier does not depend on the NeedsCupboardFileDAO's concre
 
 <img width="593" height="332" alt="Review Controller POST method" src="s4ooService.png" />
 
-NeedsCupboardFileDAO in the persistance tier follows the dependency inversion principle by not being dependent on the controller or service tiers and only depending on the Need model. The Need model file is considered a domain abstraction which means that the persistance tier is only dependent on abstractions and not higher level logic. This is shown below in how the code only utilizes the Need model file and not any of the files from the controller or service files. 
+NeedsCupboardFileDAO in the persistence tier follows the dependency inversion principle by not being dependent on the controller or service tiers and only depending on the Need model. The Need model file is considered a domain abstraction which means that the persistence tier is only dependent on abstractions and not higher level logic. This is shown below in how the code only utilizes the Need model file and not any of the files from the controller or service files. 
 
 <img width="593" height="332" alt="Review Controller POST method" src="s4ooPersistance.png" />
 
