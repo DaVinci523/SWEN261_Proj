@@ -34,6 +34,7 @@ The myResearch program seeks to help student researchers by providing them with 
 | Value | The monetary value of a product |
 | Type | The category a product was placed in  |
 | SPA | Single Page |
+| Personal Helper for Improving Lives (P.H.I.L.) | The AI Chatbot feature |
 
 
 ## Requirements
@@ -127,23 +128,93 @@ In the home-page, any logged-in user will see a section dedicated to showcasing 
 
 When logged in, any user can navigate to the reviews page from the navigation bar. Here, non-admins have a field to create a review given the rating and description. Admins have the ability to delete any individual review.
 
-### View Tier
-> _**[Sprint 4]** Provide a summary of the View Tier UI of your architecture.
-> Describe the types of components in the tier and describe their
-> responsibilities.  This should be a narrative description, i.e. it has
-> a flow or "story line" that the reader can follow._
+*** 
 
-> _**[Sprint 4]** You must  provide at least **2 sequence diagrams** as is relevant to a particular aspects 
-> of the design that you are describing.  (**For example**, in a shopping experience application you might create a 
-> sequence diagram of a customer searching for an item and adding to their cart.)
-> As these can span multiple tiers, be sure to include an relevant HTTP requests from the client-side to the server-side 
-> to help illustrate the end-to-end flow._
+***
+
+### View Tier
+
+__Angular components: (components will be referred to by their folder name, ie. helper-page, modal-host, nav-bar...)__
+
+We have four main components that the handle routing and pop-ups on each page: home-page, checkout-page, helper-page, and login-page components.
+  - These components, alongside our nav-bar, directly route users to other areas of the website. 
+
+Our nav-bar component is placed in the top-line of our page .html files so that it is consistent across the website. 
+
+The admin-page does not have any routing because the admin does not have other sections they need to look into apart from the reviews page, which has a button to navigate to it in the nav-bar component. 
+- It contains a field to modify the needs in the needs cupboard. Being able to delete, update, or add new ones. 
+- It contains a field to modify the donation goal, increasing or decreasing how much money the admin would like to display. 
+- It contains a field to view all users and also delete them by name. However, admins are unable to delete other admins (in this case, the admin cannot delete themselves).
+
+The review-page does not have any routing because access to the page is handled in the nav-bar and the page itself does not need to route to other pages.
+- It contains a list of all the reviews formatted as cards with a number of gold stars to indicate a review's rating for the user to view.
+- It also contains a field to create a review given a rating and description. Each review is created by a user and is not anonymous. 
+
+
+__Within these pages are the components that manage our front-end logic.__
+
+The needs-cupboard and funding-basket components house and modify their respective user's needs:
+- The funding-basket component is present in both the helper-page and checkout-page to display and modify the current-users needs in their funding basket. 
+  - It contains options to increase or decrease the quantity of a need, or completely delete a need from the user's basket.
+- The needs-cupboard component is only present in the helper-page.
+  - It contains the option to add an item to the funding basket. 
+  - In addition, the needs have colored progress bars that are orange when not filled, and green when the need is met/is in surplus.
+
+The checkout component is present in the checkout-page.
+- It contains a button to checkout the user's funding basket. 
+- It also displays the total cart value and any needs that have already been met in the cupboard.
+
+The modal-host component is present throughout all our application within various components. 
+- It is a framework for pop-ups with modifiable text.
+
+The reviews-card component is present in the home page.
+- It displays two random reviews.
+- It contains a button to refresh the two reviews to two random reviews. (there will not be two of the same review displayed at the same time)
+- It contains a button to navigate to the review-page
+
+The ai component is present in the nav-bar, and thus shared across all pages with a nav-bar.
+- ai handles our AI chatbot P.H.I.L., containing prompt input, the chatbot's output, and a button to toggle the ai's visibility.
+
+__Services:__
+  - Each of these components have an associating service denoted by similar names. Each component contains one or more of the services that are needed.
+  - The admin-page-service, ai-service, funding-basket-service, needs-cupboard-service, donation(donation service) and review-service connect the front-end to the API through http requests. 
+  - The modal-service contains user input logic for the modal-host component
+  
+***
+
+__Sequences:__
+
+<img height="382" alt="Move To Funding Sequence Diagram" src="MoveToFundingSequenceDiagram.png"/>
+
+__Add Need from Cupboard to Funding Basket:__
+On the helper-page, the user clicks the "Add to Cart" or "Donate Extra" button (the button displays different text depending on the need's surplus status, but same logic) in the needs-cupboard that sends a request to the funding-basket-service that then sends a request to the API, which after more requests within the API, returns the status of success or an error. When a success status is received, sends a broadcast to the rest of the application notifying that the needs have been updated.
+
+<img height="382" alt="Checkout Sequence Diagram" src="MoveToFundingSequenceDiagram.png"/>
+
+__Checkout a need:__
+On the checkout-page, in the checkout component, the user clicks "Checkout" button that first checks every need in the funding basket, calculates the total of the basket, and calls the donation (service) to update the total donation count based on that calculation. The donation (service) then sends an http request to the DonationController in the API, which then returns the resulting Donation of the update to the front end. Then, for each need in the use's funding basket, the checkout component finds the matching need in the need cupboard and modifies its current quantity. Afterwards, the component sends a broadcast to the rest of the application notifying that the needs have been updated, and then routes to the helper-page. 
+
+<img height="382" alt="Create Review Sequence Diagram" src="ReviewSequenceDiagram.png"/>
+
+__Create Review:__
+On the review-page, the user fills in the Create Review card located on the top of the page. After filling in the information and clicking "Create Review", the component calls the review-service to add a review, which then sends an http request to the ReviewController in the API, which after more requests sent within the API, returns the status of success or an error. The front-end then sends a broadcast to the rest of the application notifying that the reviews have been updated. This currently only is checked by the home-page, which refreshes the displayed reviews if one of the displays was the target for deletion. 
+
+<img height="382" alt="Prompt AI Sequence Diagram" src="MoveToFundingSequenceDiagram.png"/>
+
+__Prompt AI Chatbot, P.H.I.L.:__
+On any page, with the ai tab toggled open, the user fills in the "Enter Prompt" text area. After filling in the information and clicking "Get Response", the component calls the ai-service to create a response. The service then sends a http request to the GeminiAPIController in the api, which further sends requests to other aspects of the API, and then to the Gemini API that returns the response, which is then returned back up to the front end and displayed in the textbox. 
+
+***
+
+***
+
 
 > _**[Sprint 4]** To adequately show your system, you will need to present the **class diagrams** where relevant in your design. Some additional tips:_
  >* _Class diagrams only apply to the **ViewModel** and **Model** Tier_
 >* _A single class diagram of the entire system will not be effective. You may start with one, but will be need to break it down into smaller sections to account for requirements of each of the Tier static models below._
  >* _Correct labeling of relationships with proper notation for the relationship type, multiplicities, and navigation information will be important._
  >* _Include other details such as attributes and method signatures that you think are needed to support the level of detail in your discussion._
+
 
 ### ViewModel Tier
 
@@ -783,13 +854,25 @@ Finally, as stated above the Need model file is a domain abstraction that is not
 <img width="593" height="332" alt="Review Controller POST method" src="s4ooModel.png" />
 
 ## Static Code Analysis/Future Design Improvements
-> _**[Sprint 4]** With the results from the Static Code Analysis exercise, 
-> **Identify 3-4** areas within your code that have been flagged by the Static Code 
-> Analysis Tool (SonarQube) and provide your analysis and recommendations.  
-> Include any relevant screenshot(s) with each area._
+Our code analysis proved helpful in highlighting key flaws in our design. Through the use of both SonarQube and SonarScanner we were able to get both numeric values that showed our coverage as well as key insight as to what in our code raises alarm. This allows the team to retrospectively improve on fields of our code that had issues.
 
-> _**[Sprint 4]** Discuss **future** refactoring and other design improvements your team would explore if the team had additional time._
+<img width="" height="332" alt="Code Analysis" src="S4 Code Analysis.png" />
 
+Issue 1 : 
+One of the biggest issues found in the code analysis was a security flaw in our AI enhancement. Our analysis recommended that we secure or remove the product key, this is due to the fact that this would prevent unauthorized use if found or data breaches. If we were to continue improving our design we would plan on encapsulating  this vital information like the API keys and user data so that our site would be safe for all users.
+
+Issue 2 : 
+
+<img width="800" height="150" alt="Code Analysis" src="CSS Issue.png" />
+
+Another issue that was flagged a lot was our CSS. We had many depreciated or unusable commands that caused numerous flags that should have been fixed during coding. If we had more time we think it would be smart to go back through all of our CSS and remove any lines of code that proved to be unusable. In doing so we could also clean up the code analysis so that more important flaws can be highlighted and easily recognized.
+
+Issue 3 : 
+In both our front and back end we had a lot of nested code that could cause both confusion for the reader and allow more gateways for miscoverage and increased cognitive complexity. As seen in the screenshot below of a function that has 2 nested for loops and many if statements.
+
+<img width="800" height="400" alt="Code Analysis" src="Nesting Code.png" />
+
+If we had more time we would find it beneficial to refactor the code in such a way that conforms to good code writing practices. Such as creating a helper function that can replace the position of long nested calls.
 ## Testing
 ### Acceptance Testing
 Across Sprint 2, acceptance testing indicates that the majority of user stories have fully met their acceptance criteria. Core user flows behaving as expected like the persistent navigation bar correctly routes to myResearch (Homepage), Login, and Checkout; the Login Page accurately authenticates valid users and their roles; and the needs list currently sending data to the funding basket. One acceptance criteria failure (which was later resolved) was where the wrong user’s funding basket appeared after login. Another acceptance criteria failure that was fixed was the Update Need feature on the Admin Page which attempts to modify an existing need, currently reset fields to empty or zero and does not save updates. Other than that, all other tested stories passed without exception. 
