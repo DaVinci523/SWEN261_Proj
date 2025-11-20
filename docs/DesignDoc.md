@@ -45,7 +45,6 @@ This section describes the features of the application.
 The MVP supports simple authentication with login and logout. The reserved username admin designates the U-fund Manager role; any other username is treated as a Helper. Helpers can browse and search a catalog of “needs,” add selected items to a personal funding basket, and then check out to fund the items in that basket. The U-fund Manager maintains the “needs cupboard,” with permission to add, update, and delete needs, but cannot view any individual funding basket to keep contributor activity private and roles separated. All application state (the needs cupboard, baskets, and relevant user interactions) is persisted to files so updates survive restarts and can be reloaded on the next session.
 
 ### MVP Features
->  _**[Sprint 4]** Provide a list of top-level Epics and/or Stories of the MVP._
 
 **Epic - Authentication and Roles**
   * As a visitor, I can log in with a username so I can use the system as either a Helper or the U-fund Manager. 
@@ -207,14 +206,6 @@ On any page, with the ai tab toggled open, the user fills in the "Enter Prompt" 
 ***
 
 ***
-
-
-> _**[Sprint 4]** To adequately show your system, you will need to present the **class diagrams** where relevant in your design. Some additional tips:_
- >* _Class diagrams only apply to the **ViewModel** and **Model** Tier_
->* _A single class diagram of the entire system will not be effective. You may start with one, but will be need to break it down into smaller sections to account for requirements of each of the Tier static models below._
- >* _Correct labeling of relationships with proper notation for the relationship type, multiplicities, and navigation information will be important._
- >* _Include other details such as attributes and method signatures that you think are needed to support the level of detail in your discussion._
-
 
 ### ViewModel Tier
 
@@ -465,14 +456,8 @@ On any page, with the ai tab toggled open, the user fills in the "Enter Prompt" 
     * @throws IOException
     * @PostMapping
 
+***
 
-> _**[Sprint 4]** Provide a summary of this tier of your architecture. This
-> section will follow the same instructions that are given for the View
-> Tier above._
-
-> _At appropriate places as part of this narrative provide **one** or more updated and **properly labeled**
-> static models (UML class diagrams) with some details such as associations (connections) between classes, and critical attributes and methods. (**Be sure** to revisit the Static **UML Review Sheet** to ensure your class diagrams are using correct format and syntax.)_
->
 The ViewModel tier is the middle layer of the system. It exposes the REST API that the Angular front end calls and shields the UI from persistence details. Each feature follows the same structure: a controller that defines HTTP endpoints, a service interface that describes the business operations, and a concrete service implementation that delegates to the appropriate DAO in the Model tier.
 
 For the core shopping flow, NeedsCupboardController and FundingBasketController provide endpoints for working with needs and funding baskets. NeedsCupboardController handles global operations on the shared cupboard of Need objects, passing work to NeedsCupboardService and NeedsCupboardServiceImplementation, which in turn call NeedsCupboardDAO. FundingBasketController manages per-user baskets (fetching, searching, updating, and clearing items) through FundingBasketService and FundingBasketServiceImplementation, which talk to FundingBasketDAO. Together these classes implement everything the Needs page and Checkout page require to move items between cupboard and basket and to keep user-specific state.
@@ -491,6 +476,9 @@ Enhancement features are also integrated into this tier. DonationController prov
 <img width="929" height="716" alt="Donation Class Diagram" src="DonationClassDiagram.png" />
 <img width="929" height="716" alt="Gemini API Class Diagram" src="GeminiAPIClassDiagram.png" />
 
+***
+
+***
 
 ### Model Tier
 
@@ -798,6 +786,9 @@ Finally, our Model tier has an Account.java and AccountDataWrapper.java. Account
 <img width="593" height="332" alt="Model Tier Classes " src="ModelClasses.png" />
 <img width="593" height="332" alt="DAO Model Tier Classes " src="DAOModelClasses.png"/>
 
+***
+
+***
 
 ## OO Design Principles
 Sprint 1: The two Object Oriented Design principles that the CTRL team is championing throughout the design and implementation are Low Coupling and Open/Close. The Low Coupling principle is aimed towards minimizing interdependence between different classes.  One example of Low Coupling in our project can be shown through our Need and User model classes. 
@@ -853,6 +844,10 @@ Finally, as stated above the Need model file is a domain abstraction that is not
 
 <img width="593" height="332" alt="Review Controller POST method" src="s4ooModel.png" />
 
+***
+
+***
+
 ## Static Code Analysis/Future Design Improvements
 Our code analysis proved helpful in highlighting key flaws in our design. Through the use of both SonarQube and SonarScanner we were able to get both numeric values that showed our coverage as well as key insight as to what in our code raises alarm. This allows the team to retrospectively improve on fields of our code that had issues.
 
@@ -873,20 +868,27 @@ In both our front and back end we had a lot of nested code that could cause both
 <img width="800" height="400" alt="Code Analysis" src="Nesting Code.png" />
 
 If we had more time we would find it beneficial to refactor the code in such a way that conforms to good code writing practices. Such as creating a helper function that can replace the position of long nested calls.
+
+***
+
 ## Testing
 ### Acceptance Testing
 Across Sprint 2, acceptance testing indicates that the majority of user stories have fully met their acceptance criteria. Core user flows behaving as expected like the persistent navigation bar correctly routes to myResearch (Homepage), Login, and Checkout; the Login Page accurately authenticates valid users and their roles; and the needs list currently sending data to the funding basket. One acceptance criteria failure (which was later resolved) was where the wrong user’s funding basket appeared after login. Another acceptance criteria failure that was fixed was the Update Need feature on the Admin Page which attempts to modify an existing need, currently reset fields to empty or zero and does not save updates. Other than that, all other tested stories passed without exception. 
 
 For sprint three, our acceptance testing has been nearly fully passed. The fails came in the form of two features we did not end up implementing. One was implementing designated types, which restricted the types the admin could enter to be a set list. The other is deleting reviews by username and filtering reviews by rating. We did not get to them due to the time constraints alongside other workloads, but realistically we could get them done in a good week of dedicated work.
 
+***
 
 ### Unit Testing and Code Coverage
 Our final code coverage achieved across all tiers of the ufund-api was 97%. Specifically, the Persistance tier had 96% coverage, the Controller tier had 97% coverage, the model tier had 96% coverage, and the service tier has 98% coverage. Our coverage target for each tier was 95% with the goal of each specific file element having at least 90% coverage. These values were selected to ensure we had strong, functional code across all tiers and files. Additionally, we chose to set the coverage targets that high to ensure that each method has at least some form of testing so nothing falls through and gets missed. Overall, our code coverage reached the target in every case except for the gemini ai chatbot files in the controller and model tiers. This was largely a result of the AI being one of the last things to be completed before the end of the sprint. Despite those two files falling short of the 90% target, the model and controller tiers still surpassed the 95% coverage goal for tiers.
 
 <img width="821" height="718" alt="General Code Coverage Reports" src="s3finalcoverage.png" />
 
+***
+
+***
+
 ## Ongoing Rationale
->_**[Sprint 1, 2, 3 & 4]** Throughout the project, provide a time stamp **(yyyy/mm/dd): Sprint # and description** of any _**mayor**_ team decisions or design milestones/changes and corresponding justification._
 
 * Sprint #1:
 * 2025/09/10
