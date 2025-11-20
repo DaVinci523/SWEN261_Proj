@@ -97,11 +97,11 @@ In the home-page, any logged-in user will see a section dedicated to showcasing 
 
 When logged in, any user can navigate to the reviews page from the navigation bar. Here, non-admins have a field to create a review given the rating and description. Admins have the ability to delete any individual review.
 
+*** 
+
+***
+
 ### View Tier
-> _**[Sprint 4]** Provide a summary of the View Tier UI of your architecture.
-> Describe the types of components in the tier and describe their
-> responsibilities.  This should be a narrative description, i.e. it has
-> a flow or "story line" that the reader can follow._
 
 __Angular components: (components will be referred to by their folder name, ie. helper-page, modal-host, nav-bar...)__
 
@@ -149,40 +149,28 @@ __Services:__
   - The admin-page-service, ai-service, funding-basket-service, needs-cupboard-service, donation(donation service) and review-service connect the front-end to the API through http requests. 
   - The modal-service contains user input logic for the modal-host component
   
-
 ***
-
-> _**[Sprint 4]** You must  provide at least **2 sequence diagrams** as is relevant to a particular aspects 
-> of the design that you are describing.  (**For example**, in a shopping experience application you might create a 
-> sequence diagram of a customer searching for an item and adding to their cart.)
-> As these can span multiple tiers, be sure to include an relevant HTTP requests from the client-side to the server-side 
-> to help illustrate the end-to-end flow._
 
 __Sequences:__
 
-- Checkout: home-page -> login-page -> helper-page -> checkout-page -> checkout
-
-- Admin: home-page -> login-page -> admin-page
-
-- Reviews: home-page -> login-page -> reviews-page
-
-- AI: home-page -> ai
+<img height="382" alt="Move To Funding Sequence Diagram" src="MoveToFundingSequenceDiagram.png"/>
 
 __Add Need from Cupboard to Funding Basket:__
-<img height="382" alt="Move To Funding Sequence Diagram" src="MoveToFundingSequenceDiagram.png"/>
 On the helper-page, the user clicks the "Add to Cart" or "Donate Extra" button (the button displays different text depending on the need's surplus status, but same logic) in the needs-cupboard that sends a request to the funding-basket-service that then sends a request to the API, which after more requests within the API, returns the status of success or an error. When a success status is received, sends a broadcast to the rest of the application notifying that the needs have been updated.
 
+<img height="382" alt="Checkout Sequence Diagram" src="MoveToFundingSequenceDiagram.png"/>
 
 __Checkout a need:__
-<img height="382" alt="Checkout Sequence Diagram" src="CheckoutSequenceDiagram.png"/>
 On the checkout-page, in the checkout component, the user clicks "Checkout" button that first checks every need in the funding basket, calculates the total of the basket, and calls the donation (service) to update the total donation count based on that calculation. The donation (service) then sends an http request to the DonationController in the API, which then returns the resulting Donation of the update to the front end. Then, for each need in the use's funding basket, the checkout component finds the matching need in the need cupboard and modifies its current quantity. Afterwards, the component sends a broadcast to the rest of the application notifying that the needs have been updated, and then routes to the helper-page. 
 
-__Create Review:__
 <img height="382" alt="Create Review Sequence Diagram" src="ReviewSequenceDiagram.png"/>
+
+__Create Review:__
 On the review-page, the user fills in the Create Review card located on the top of the page. After filling in the information and clicking "Create Review", the component calls the review-service to add a review, which then sends an http request to the ReviewController in the API, which after more requests sent within the API, returns the status of success or an error. The front-end then sends a broadcast to the rest of the application notifying that the reviews have been updated. This currently only is checked by the home-page, which refreshes the displayed reviews if one of the displays was the target for deletion. 
 
+<img height="382" alt="Prompt AI Sequence Diagram" src="MoveToFundingSequenceDiagram.png"/>
+
 __Prompt AI Chatbot, P.H.I.L.:__
-<img height="382" alt="Prompt AI Sequence Diagram" src="AISequenceDiagram.png"/>
 On any page, with the ai tab toggled open, the user fills in the "Enter Prompt" text area. After filling in the information and clicking "Get Response", the component calls the ai-service to create a response. The service then sends a http request to the GeminiAPIController in the api, which further sends requests to other aspects of the API, and then to the Gemini API that returns the response, which is then returned back up to the front end and displayed in the textbox. 
 
 ***
