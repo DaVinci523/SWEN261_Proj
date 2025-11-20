@@ -406,12 +406,19 @@ The ViewModel tier is the middle layer of the system. It exposes the REST API th
 
 For the core shopping flow, NeedsCupboardController and FundingBasketController provide endpoints for working with needs and funding baskets. NeedsCupboardController handles global operations on the shared cupboard of Need objects, passing work to NeedsCupboardService and NeedsCupboardServiceImplementation, which in turn call NeedsCupboardDAO. FundingBasketController manages per-user baskets (fetching, searching, updating, and clearing items) through FundingBasketService and FundingBasketServiceImplementation, which talk to FundingBasketDAO. Together these classes implement everything the Needs page and Checkout page require to move items between cupboard and basket and to keep user-specific state.
 
+<img width="929" height="716" alt="Cupboard Class Diagram" src="NeedsCupboardClassDiagram.png" />
+<img width="929" height="716" alt="Funding Basket Class Diagram" src="FundingBasketClassDiagram.png" />
+
 Account management uses the same pattern. AccountController exposes routes for listing accounts, getting usernames, checking if a username exists, creating accounts, logging in, and deleting accounts. It depends on AccountService and AccountServiceImplementation, which rely on AccountDAO and, when needed, coordinate with FundingBasketDAO so that user data stays consistent when accounts are removed. The review system mirrors this as well: ReviewController accepts requests to fetch, filter, create, and delete reviews, forwarding them to ReviewService and ReviewServiceImplementation, which operate on review data through ReviewDAO.
+
+<img width="929" height="716" alt="Account Class Diagram" src="AccountClassDiagram.png" />
+<img width="929" height="716" alt="Review Class Diagram" src="ReviewClassDiagrm.png" />
 
 Enhancement features are also integrated into this tier. DonationController provides endpoints to read donation status, add new donations, and update the donation goal, delegating to DonationService and DonationServiceImplementation, which use DonationDAO for storage. GeminiAPIController offers an endpoint that takes a prompt and returns an AI-generated reply; it calls GeminiAPIService and GeminiAPIServiceImplementation, which wrap the Gemini client and use GeminiFileDAO to persist prompt response pairs as APIResponse objects. Overall, the ViewModel tier ties the Angular UI to the Model tier through a consistent controller–service–DAO pattern, covering needs, baskets, accounts, reviews, donations, and AI assistance.
 
-<img width="929" height="716" alt="View Model 1 Architecture" src="ViewModelClasses1.png" />
-<img width="929" height="716" alt="View Model 2 Architecture" src="ViewModelClasses2.png" />
+
+<img width="929" height="716" alt="Donation Class Diagram" src="DonationClassDiagram.png" />
+<img width="929" height="716" alt="Gemini API Class Diagram" src="GeminiAPIClassDiagram.png" />
 
 
 ### Model Tier
