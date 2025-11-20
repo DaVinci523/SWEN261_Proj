@@ -60,7 +60,7 @@ An online U-Fund system built in Java **24**
 - Moving some logic such as checkout to the backend.
 - Our AI is shared across all users. Basically, all users interact with one chatbot and the chatbot perceives all users as a single person.
 - - Our AI currently is setup for 250 prompts per day, a limit-reached message will display indicating this limit has been reached. 
-
+- - Our AI persists its conversation throughout all accounts, regardless if you log out and log in with a different account. 
 ## How to test it
 
 The Maven build script provides hooks for run unit tests and generate code coverage
