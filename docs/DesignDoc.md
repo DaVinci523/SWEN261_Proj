@@ -47,6 +47,37 @@ The MVP supports simple authentication with login and logout. The reserved usern
 ### MVP Features
 >  _**[Sprint 4]** Provide a list of top-level Epics and/or Stories of the MVP._
 
+**Epic - Authentication and Roles**
+  * As a visitor, I can log in with a username so I can use the system as either a Helper or the U-fund Manager. 
+  * As the user logged in as admin, I am treated as the U-fund Manager and taken to the admin view while any other username logs me in as a Helper.
+  * As any logged in user, I can log out and return to the home page.
+
+**Epic - Manage the Needs Cupboard (U-fund Manager)**
+  * As the U-fund Manager, I can view the full list of needs currently in the cupboard.
+  * As the U-fund Manager, I can create a new need by specifying its name, value, quantity, and type.
+  * As the U-fund Manager, I can update or delete existing needs so the cupboard always reflects the current set of items available for funding.
+  * As the U-fund Manager, I can edit the donation goal so it can reflect the current state of our goals.
+  * As the U-fund Manager, I can delete users so that I can prevent them from accessing the application.
+
+**Epic - Helper Functionality**
+  * As a Helper, I can view all available needs in the cupboard so I can decide what to fund.
+  * As a Helper, I can search needs by name, type, quantity, and value to find causes that interest me.
+  * As a Helper, I can add a need from the cupboard to my personal funding basket.
+  * As a Helper, I can adjust quantities or remove items from my basket so my planned contribution matches what I want to fund.
+  * As a Helper, I can see a list of all items currently in my basket.
+
+**Epic -  Persistence and Application State**
+  * As the system, I load needs, user baskets, reviews,  and account data from JSON files at startup so that needed data is displayed properly to users.
+  * As for the system, I save updated needs and baskets back to JSON whenever changes occur so the cupboard and user baskets remain consistent across sessions.
+
+**Epic - Reviews**
+  * As a user, I can see two random reviews on the homepage so I can get an initial perspective on the application.
+  * As a Helper, I can add a review with stars and a description so that I can provide feedback on the application.
+  * As the U-fund Manager, I can delete a review so that I can moderate any harmful messages.
+
+**Epic - AI**
+  * As a helper, I can use P.H.I.L on any page so that I can learn more about the application.
+
 ### Enhancements
 > _**[Sprint 4]** Describe what enhancements you have implemented for the project._
 
@@ -441,9 +472,24 @@ On any page, with the ai tab toggled open, the user fills in the "Enter Prompt" 
 
 > _At appropriate places as part of this narrative provide **one** or more updated and **properly labeled**
 > static models (UML class diagrams) with some details such as associations (connections) between classes, and critical attributes and methods. (**Be sure** to revisit the Static **UML Review Sheet** to ensure your class diagrams are using correct format and syntax.)_
-> 
-<img width="929" height="716" alt="View Model 1 Architecture" src="ViewModelClasses1.png" />
-<img width="929" height="716" alt="View Model 2 Architecture" src="ViewModelClasses2.png" />
+>
+The ViewModel tier is the middle layer of the system. It exposes the REST API that the Angular front end calls and shields the UI from persistence details. Each feature follows the same structure: a controller that defines HTTP endpoints, a service interface that describes the business operations, and a concrete service implementation that delegates to the appropriate DAO in the Model tier.
+
+For the core shopping flow, NeedsCupboardController and FundingBasketController provide endpoints for working with needs and funding baskets. NeedsCupboardController handles global operations on the shared cupboard of Need objects, passing work to NeedsCupboardService and NeedsCupboardServiceImplementation, which in turn call NeedsCupboardDAO. FundingBasketController manages per-user baskets (fetching, searching, updating, and clearing items) through FundingBasketService and FundingBasketServiceImplementation, which talk to FundingBasketDAO. Together these classes implement everything the Needs page and Checkout page require to move items between cupboard and basket and to keep user-specific state.
+
+<img width="929" height="716" alt="Cupboard Class Diagram" src="NeedsCupboardClassDiagram.png" />
+<img width="929" height="716" alt="Funding Basket Class Diagram" src="FundingBasketClassDiagram.png" />
+
+Account management uses the same pattern. AccountController exposes routes for listing accounts, getting usernames, checking if a username exists, creating accounts, logging in, and deleting accounts. It depends on AccountService and AccountServiceImplementation, which rely on AccountDAO and, when needed, coordinate with FundingBasketDAO so that user data stays consistent when accounts are removed. The review system mirrors this as well: ReviewController accepts requests to fetch, filter, create, and delete reviews, forwarding them to ReviewService and ReviewServiceImplementation, which operate on review data through ReviewDAO.
+
+<img width="929" height="716" alt="Account Class Diagram" src="AccountClassDiagram.png" />
+<img width="929" height="716" alt="Review Class Diagram" src="ReviewClassDiagrm.png" />
+
+Enhancement features are also integrated into this tier. DonationController provides endpoints to read donation status, add new donations, and update the donation goal, delegating to DonationService and DonationServiceImplementation, which use DonationDAO for storage. GeminiAPIController offers an endpoint that takes a prompt and returns an AI-generated reply; it calls GeminiAPIService and GeminiAPIServiceImplementation, which wrap the Gemini client and use GeminiFileDAO to persist prompt response pairs as APIResponse objects. Overall, the ViewModel tier ties the Angular UI to the Model tier through a consistent controller–service–DAO pattern, covering needs, baskets, accounts, reviews, donations, and AI assistance.
+
+
+<img width="929" height="716" alt="Donation Class Diagram" src="DonationClassDiagram.png" />
+<img width="929" height="716" alt="Gemini API Class Diagram" src="GeminiAPIClassDiagram.png" />
 
 
 ### Model Tier
@@ -910,4 +956,11 @@ Our final code coverage achieved across all tiers of the ufund-api was 97%. Spec
   * Merge sprint 3 feature branches into main and continue updating design doc to stay on schedule for sprint 3. 
   * With sprint deadline approaching the team looked over the rubric.
   * Also scrapped the designated types concept as we wanted to focus on finishing MVP and making sure our enhancements are of high quality.
+ 
+* Sprint #4:
+  
+* 11/15/2025 - 11/17/2025
+  * Took advantage of extra time to flesh out some more features into our project:
+  * More popups, refactoring real time update implementation, AI improvements, etc.
+
 
