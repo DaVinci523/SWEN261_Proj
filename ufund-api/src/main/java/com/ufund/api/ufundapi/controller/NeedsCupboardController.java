@@ -247,9 +247,9 @@ public class NeedsCupboardController {
     /**
      * Handles HTTP DELETE requests to the "/needs"
      * @param id , id of need to be deleted
-     * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
+     * @return a Response entity containing HttpStatus.OK if the deletion was successful,
      * a HttpStatus.NOT_FOUND if a need of id doesn't exist
-     * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+     * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred. 
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Need> deleteNeedId(@PathVariable int id){

@@ -206,251 +206,101 @@ On any page, with the ai tab toggled open, the user fills in the "Enter Prompt" 
 
 * NeedsCupboardController.java - Handles HTTP requests from the model tier for the Needs cupboard. 
   * getNeed()
-      * Handles HTTP GET requests to the "/needs/id"
-      * @param id: the searched objects id
-      * @return a Response entity containing HttpStatus.OK if the search was successful,
-      * a HttpStatus.NO_CONTENT if the returned data is null
-      *  HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
+      * Handles HTTP GET requests to the "/needs/{id}"
       * Retrieves a specified need given an id.
   * getNeeds()
       * Handles HTTP GET requests to the "/needs"
-      * @return a Response entity containing HttpStatus.OK if the array of needs is returned,
-      * a HttpStatus.NO_CONTENT if the return fails
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
       * Retrieves all needs in the NeedCupboard
   * searchNeeds()
-      * Handles HTTP GET requests to the "/needs/?name= "name""
-      * @param name , check if need contains String name
-      * @return a Response entity containing HttpStatus.OK if the search was successful,
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
+      * Handles HTTP GET requests to the "/needs/?name= {name}"
       * Searches for needs containing the given text
   * createNeed()
-      * Handles HTTP POST requests to the "/needs"
-      * @param need: the object to be created
-      * @return a Response entity containing HttpStatus.CREATED if the creation was successful,
-      * a HttpStatus.CONFLICT if the creation fails due to a conflict, or a HttpStatus.INTERNAL_SERVER_ERROR
-      * if an I/O error occurred.
+      * Handles HTTP POST requests to the "/needs/{need}"
       * Creates a need given its (name, value, quantity, and type). An id is automatically generated. 
   * updateNeed()
-      * Handles HTTP PUT requests to the "/needs"
-      * @param need: the object to be updated
-      * @return a Response entity containing HttpStatus.OK if the update was successful,
-      * a HttpStatus.NOT_FOUND if need doesn't exist
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
+      * Handles HTTP PUT requests to the "/needs/{need}"
       * Updates a need given its (id, name, value, quantity, and type). It will update the data at the specified id.
   * updateNeedVisibility()
-      * Handles HTTP PUT requests to the "/needs/visibile/"visible""
-      * @param userName: the user to update
-      * @param id: the id of the need to be updated
-      * @param visible: the visibility state to set the need
-      * @return a Response entity containing HttpStatus.OK if the update was successful,
-      * a HttpStatus.NOT_FOUND if need doesn't exist
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured.
-      * Updates a need's (visibile) attribute to true/false
+      * Handles HTTP PUT requests to the "/needs/visible/"visible""
+      * Updates a need's (visible) attribute to true/false
   * deleteNeed()
-      * Handles HTTP DELETE requests to the "/needs"
-      * @param id , id of need to be deleted
-      * @return a Response entity containing HttpStatus.OK if the deletion was successful,
-      * a HttpStatus.NOT_FOUND if a need of id doesn't exist
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
+      * Handles HTTP DELETE requests to the "/needs/{id}"
       * Deletes a need given its id. 
   * deleteNeedType()
       * Handles HTTP DELETE requests to the "/needs"
-      * @param type , type of need to be deleted
-      * @return a Response entity containing HttpStatus.OK if the deletion was successful,
-      * a HttpStatus.NOT_FOUND if a need of id doesn't exist
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred. 
       * Deletes a need given it contains the given type.
   * deleteAll()
       * Handles HTTP DELETE requests to the "/needs"
-      * @return a Response entity containing HttpStatus.OK if the deletion was successful,
-      * a HttpStatus.NOT_FOUND if a need of id doesn't exist
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
       * Deletes all needs in the Cupboard. 
   * deleteNeedName()
       * Handles HTTP DELETE requests to the "/needs"
-      * @param name , string to check if name contains
-      * @return a Response entity containing HttpStatus.OK if the deletion was successful,
-      * a HttpStatus.NOT_FOUND if a need of id doesn't exist
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred. 
       * Deletes needs given it contains the specified name.
     
 * FundingBasketController.java - Handles HTTP requests from the model tier for the Funding Basket.
   * getUsers()
       * Handles HTTP GET requests to "/funding_basket_needs/users"
-      * @return a Response entity containing HttpStatus.OK if the array of users is returned,
-      * a HttpStatus.NO_CONTENT if the returned data is null
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
   * getUsernames()
       * Handles HTTP GET requests to "/funding_basket_needs/usernames"
-      * @return a Response entity containing HttpStatus.OK if the array of users is returned,
-      * a HttpStatus.NO_CONTENT if the returned data is null
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred. 
   * getNeed()
-      * Handles HTTP GET requests to "/funding_basket_needs/userName/id"
-      * @param userName: the user to search in
-      * @param id: the searched objects id
-      * @return a Response entity containing HttpStatus.OK if the search was successful,
-      * a HttpStatus.NOT_FOUND if the search fails due to a non existent id
-      *  HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred. 
+      * Handles HTTP GET requests to "/funding_basket_needs/userName/{id}"
   * getNeeds()
       * Handles HTTP GET requests to "/funding_basket_needs/userName/needs"
-      * @param userName: the user to retrieve from
-      * @return a Response entity containing HttpStatus.OK if the array of needs is returned,
-      * a HttpStatus.NO_CONTENT if the returned data is null
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred. 
   * searchNeeds()
-      * Handles HTTP GET requests to "/funding_basket_needs/userName/?name= "name""
-      * @param userName: the user to search from
-      * @param name , check if need contains String name
-      * @return a Response entity containing HttpStatus.OK if the search was successful,
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred. 
+      * Handles HTTP GET requests to "/funding_basket_needs/userName/?name= {name}"
   * createNeed()
-      * Handles HTTP POST requests to "/funding_basket_needs/userName "need""
-      * @param userName: the user to create in
-      * @param need: the object to be created
-      * @return a Response entity containing HttpStatus.CREATED if the creation was successful,
-      * a HttpStatus.CONFLICT if the creation fails due to a conflict, or a HttpStatus.INTERNAL_SERVER_ERROR
-      * if an I/O error occurred. 
+      * Handles HTTP POST requests to "/funding_basket_needs/userName {need}"
   * updateNeed()
-      * Handles HTTP PUT requests to "/funding_basket_needs/userName "need""
-      * @param userName: the user to update
-      * @param need: the object to be updated
-      * @return a Response entity containing HttpStatus.OK if the update was successful,
-      * a HttpStatus.NOT_FOUND if need doesn't exist
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred. 
+      * Handles HTTP PUT requests to "/funding_basket_needs/userName {need}"
   * updateNeedVisibility()
-      * Handles HTTP PUT requests to "/funding_basket_needs/userName/id/visible/"visible""
-      * @param userName: the user to update
-      * @param id: the id of the need to be updated
-      * @param visible: the visibility state to set the need
-      * @return a Response entity containing HttpStatus.OK if the update was successful,
-      * a HttpStatus.NOT_FOUND if need doesn't exist
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred. 
+      * Handles HTTP PUT requests to "/funding_basket_needs/userName/id/visible/{visible}" 
   * deleteNeedId()
-      * Handles HTTP DELETE requests to "/funding_basket_needs/userName/id"
-      * @param userName: the user to delete from
-      * @param id , id of need to be deleted
-      * @return a Response entity containing HttpStatus.OK if the deletion was successful,
-      * a HttpStatus.NOT_FOUND if a need of id doesn't exist
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
+      * Handles HTTP DELETE requests to "/funding_basket_needs/userName/{id}"
   * deleteNeedType()
-      * Handles HTTP DELETE requests to "/funding_basket_needs/userName/type/type"
-      * @param userName: the user to delete from
-      * @param type , type of need to be deleted
-      * @return a Response entity containing HttpStatus.OK if the deletion was successful,
-      * a HttpStatus.NOT_FOUND if a need of id doesn't exist
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred. 
+      * Handles HTTP DELETE requests to "/funding_basket_needs/userName/type/{type}"
   * deleteAll()
-      * Handles HTTP DELETE requests to "/funding_basket_needs/userName"
-      * @param userName: the user to delete from
-      * @return a Response entity containing HttpStatus.OK if the deletion was successful,
-      * a HttpStatus.NOT_FOUND if a need of id doesn't exist
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred. 
+      * Handles HTTP DELETE requests to "/funding_basket_needs/{userName}"
   * deleteNeedName()
-      * Handles HTTP DELETE requests to "/funding_basket_needs/name/"name""
-      * @param userName: the user to delete from
-      * @param name , string to check if name contains
-      * @return a Response entity containing HttpStatus.OK if the deletion was successful,
-      * a HttpStatus.NOT_FOUND if a need of id doesn't exist
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
+      * Handles HTTP DELETE requests to "/funding_basket_needs/name/{name}"
    
 * ReviewController.java - Handles HTTP requests for reviews
   * getReviews()
       * Handles HTTP GET requests to "/reviews"
-      * @return a Response entity containing HttpStatus.OK if the array of reviews is successfully returned,
-      * an HttpStatus.NO_CONTENT if there are no reviews
-      * an HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred
   * getReviewsByRating()
       * Handles HTTP GET requests to "/reviews/rating/{rating}"
-      * @param rating: the rating value the reviews are filtered by
-      * @return a Response entity containing HttpStatus.OK if reviews with matching ratings are found
-      * a HttpStatus.NO_CONTENT if no reviews match the rating parameter
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurs
   * createReview()
       * Handles HTTP POST requests to "/reviews"
-      * @param review: the Review object to be created
-      * @return a Response entity containing HttpStatus.CREATED if the review is successfully created,
-      * HttpStatus.CONFLICT if the creation failed,
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred
   * deleteReview()
       * Handles HTTP DELETE requests to "/reviews/{id}"
-      * @param id: the id of the review that is being deleted
-      * @return a Response entity containing HttpStatus.OK if the review was deleted successfully,
-      * HttpStatus.NOT_FOUND if there is no review with the given id
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred
   * deleteReviewsByUsername()
       * Handles HTTP DELETE requests to "/reviews/user/{userName}"
-      * @param userName: the username of the user whose reviews should be deleted
-      * @return a Response entity containing HttpStatus.ok if the review was deleted successfully,
-      * HttpStatus.NOT_FOUND if there are no reviews from the given userName
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurs
   * deleteAllReviews()
       * Handles HTTP DELETE requests to "/reviews"
-      * @return a Response entity contain HttpStatus.OK if all the reviews were deleted successfully,
-      * HttpStatus.NOT_FOUND if there are no reviews
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurs. 
 
 * GeminiAPIController.java - Handles requests to API from model tier to generate a response
   * getGeminiResponse()
     * Get the API’s response for given prompt
-    * @param prompt, user-provided prompt
-    * @ return, ResponseEntity<APIResponse> containing the response or error message
 
 * AccountController.java - Handles HTTP requests for account management
   * getAccounts()
     * Handles HTTP GET requests to "/accounts"
-    * @return a ResponseEntity containing HttpStatus.OK with the array of accounts
-    * HttpStatus.NO_CONTENT if the returned data is null,
-    * or HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
   * getUsernames()
     * Handles HTTP GET requests to "/accounts/usernames"
-    * @return a ResponseEntity containing HttpStatus.OK with the array of usernames,
-    * HttpStatus.NO_CONTENT if the returned data is null,
-    * or HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
   * exists()
     * Handles HTTP GET requests to "/accounts/exists/{username}"
-    * @param username the username to check
-    * @return a ResponseEntity containing HttpStatus.OK with true/false,
-    * or HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
   * create()
     * Handles HTTP POST requests to "/accounts"
-    * @param account the Account to create
-    * @return a ResponseEntity containing HttpStatus.CREATED if creation was successful,
-    * HttpStatus.CONFLICT if the username already exists,
-    * or HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
   * login()
     * Handles HTTP POST requests to "/accounts/login"
-    * @param req the Account object containing username and password
-    * @return a ResponseEntity containing HttpStatus.OK if credentials are valid,
-    * HttpStatus.UNAUTHORIZED if invalid,
-    * or HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
   * delete()
     * Handles HTTP DELETE requests to "/accounts/{username}"
-    * @param username the username to delete
-    * @return a ResponseEntity containing HttpStatus.OK if deletion was successful,
-    * HttpStatus.NOT_FOUND if the username does not exist,
-    * or HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
 
 * DonationController.java - Handles HTTP requests for Donation System
   * getStatus()
     * Get the current information in donations
-    * @GetMapping
-    * @param donationService
-    * @return Status
-    * @throws IOException
   * addDonation()
     * Increment the donations
-    * @param amount
-    * @return donation increment
-    * @throws IOException
   * setGoal()
     * Update the donationGoal
-    * @param newGoal
-    * @return update goal
-    * @throws IOException
-    * @PostMapping
-
 ***
 
 The ViewModel tier is the middle layer of the system. It exposes the REST API that the Angular front end calls and shields the UI from persistence details. Each feature follows the same structure: a controller that defines HTTP endpoints, a service interface that describes the business operations, and a concrete service implementation that delegates to the appropriate DAO in the Model tier.
@@ -500,8 +350,6 @@ Finally, our Model tier has an Account.java and AccountDataWrapper.java. Account
 
   * NeedCupboardFileDAO.java - the working logic behind our application for accessing the Needs Cupboard. 
     * getNeedsArray()
-      * @param text, if this string is passed in only add needs containing to Array
-      * @return Array of Needs
       * Creates array of Needs from tree map for needs that contain "text".
       * if "text" is null, array will contain all needs in the treemap.
     * save()
@@ -525,7 +373,7 @@ Finally, our Model tier has an Account.java and AccountDataWrapper.java. Account
     * createNeed()
       * @param need: the input object containing the name, value, quantity, and type
       * @return the new need with a generated id
-      * @throws I/O exception if an error occured while saving the new Need to storage
+      * @throws I/O exception if an error occurred while saving the new Need to storage
     * updateNeed()
       * Update need's contents, ie name, value, quantity, type
       * @param  Need need
@@ -533,7 +381,7 @@ Finally, our Model tier has an Account.java and AccountDataWrapper.java. Account
     * deleteNeed()
       * Delete need at specified id
       * @param int id
-      * @return true if file was updated succesfully
+      * @return true if file was updated successfully
       * @return false, if deletion failed 
     * deleteNeedType()
       * Delete all needs of specific type
@@ -776,8 +624,6 @@ Finally, our Model tier has an Account.java and AccountDataWrapper.java. Account
 
 
 
-
-
 <img width="593" height="332" alt="Model Tier Classes " src="ModelClasses.png" />
 <img width="593" height="332" alt="DAO Model Tier Classes " src="DAOModelClasses.png"/>
 
@@ -827,7 +673,7 @@ Sprint 4: The Object Oriented Design Principle that the CTRL team decided to cha
 
 <img width="593" height="332" alt="Review Controller POST method" src="s4ooController.png" />
 
-Similarly, the service tier does not depend on the NeedsCupboardFileDAO's concrete implementation. Instead, it utilizes the interface NeedsCupboardDAO which is independent of the actual storage of data. This follows the dependency inversion principle as high level logic is dependent on the abstraction rather than the concrete implementation. One example from NeedsCupboardServiceImplemenation is the updateNeed method which is shown below. The updateNeed method is not dependent on how NeedsCupboardDAO handles updateNeed, only that the DAO does handle it. 
+Similarly, the service tier does not depend on the NeedsCupboardFileDAO's concrete implementation. Instead, it utilizes the interface NeedsCupboardDAO which is independent of the actual storage of data. This follows the dependency inversion principle as high level logic is dependent on the abstraction rather than the concrete implementation. One example from NeedsCupboardServiceImplementation is the updateNeed method which is shown below. The updateNeed method is not dependent on how NeedsCupboardDAO handles updateNeed, only that the DAO does handle it. 
 
 <img width="593" height="332" alt="Review Controller POST method" src="s4ooService.png" />
 
@@ -875,7 +721,7 @@ For sprint three, our acceptance testing has been nearly fully passed. The fails
 ***
 
 ### Unit Testing and Code Coverage
-Our final code coverage achieved across all tiers of the ufund-api was 97%. Specifically, the Persistance tier had 96% coverage, the Controller tier had 97% coverage, the model tier had 96% coverage, and the service tier has 98% coverage. Our coverage target for each tier was 95% with the goal of each specific file element having at least 90% coverage. These values were selected to ensure we had strong, functional code across all tiers and files. Additionally, we chose to set the coverage targets that high to ensure that each method has at least some form of testing so nothing falls through and gets missed. Overall, our code coverage reached the target in every case except for the gemini ai chatbot files in the controller and model tiers. This was largely a result of the AI being one of the last things to be completed before the end of the sprint. Despite those two files falling short of the 90% target, the model and controller tiers still surpassed the 95% coverage goal for tiers.
+Our final code coverage achieved across all tiers of the ufund-api was 97%. Specifically, the Persistence tier had 96% coverage, the Controller tier had 97% coverage, the model tier had 96% coverage, and the service tier has 98% coverage. Our coverage target for each tier was 95% with the goal of each specific file element having at least 90% coverage. These values were selected to ensure we had strong, functional code across all tiers and files. Additionally, we chose to set the coverage targets that high to ensure that each method has at least some form of testing so nothing falls through and gets missed. Overall, our code coverage reached the target in every case except for the gemini ai chatbot files in the controller and model tiers. This was largely a result of the AI being one of the last things to be completed before the end of the sprint. Despite those two files falling short of the 90% target, the model and controller tiers still surpassed the 95% coverage goal for tiers.
 
 <img width="821" height="718" alt="General Code Coverage Reports" src="s3finalcoverage.png" />
 
