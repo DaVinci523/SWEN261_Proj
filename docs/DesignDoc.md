@@ -29,8 +29,13 @@ The myResearch program seeks to help student researchers by providing them with 
 | Value | The monetary value of a product |
 | Type | The category a product was placed in  |
 | SPA | Single Page |
+| Need | The item a user would donate to |
+| Admin | The user who requests and manages needs |
 | Personal Helper for Improving Lives (P.H.I.L.) | The AI Chatbot feature |
 
+***
+
+***
 
 ## Requirements
 
@@ -38,6 +43,8 @@ This section describes the features of the application.
 
 ### Definition of MVP
 The MVP supports simple authentication with login and logout. The reserved username admin designates the U-fund Manager role; any other username is treated as a Helper. Helpers can browse and search a catalog of “needs,” add selected items to a personal funding basket, and then check out to fund the items in that basket. The U-fund Manager maintains the “needs cupboard,” with permission to add, update, and delete needs, but cannot view any individual funding basket to keep contributor activity private and roles separated. All application state (the needs cupboard, baskets, and relevant user interactions) is persisted to files so updates survive restarts and can be reloaded on the next session.
+
+***
 
 ### MVP Features
 
@@ -72,23 +79,27 @@ The MVP supports simple authentication with login and logout. The reserved usern
 **Epic - AI**
   * As a helper, I can use P.H.I.L on any page so that I can learn more about the application.
 
+***
+
 ### Enhancements
 
 One of the enhancements implemented in the project is the review system. This system allows users to place reviews on their experiences with the site and assign it a rating from 1-5. These reviews will then be posted for all other users to see on the review page with a corresponding number of stars to the rating being displayed. Additionally, we added a reviews section to the homepage that displays two random reviews that have been placed. The user can also shuffle the reviews displayed on the homepage to get two new random reviews. While the admin is unable to place a review, they have the ability to delete any review if they determine it's contents to be harmful or malicious. The backend of the review system was implemented across all four tiers including the model, persistence, controller, and service tier. Specifically, Review.java is the review model, ReviewFileDAO.java is the review persistence, ReviewController.java is the review controller, and ReviewServiceImplementation.java is the review service. A review contains an id, the username of the user who left it, the review text, and the rating. All reviews are saved in the reviews.json file. 
 
 Another enhancement implemented is the AI chatbot, Personal Helper for Improving Lives, or P.H.I.L.. This chatbot allows users to ask questions about individual needs like what they are, or how they are used. P.H.I.L. also has access to view the needs cupboard, so when prompted something like, "I want to help out! what should I donate to?" P.H.I.L. can respond with admin needs that have the lowest support and how much they cost. The chatbot was implemented across all four tiers including the model, persistence, controller, and service tiers.
 
+***
 ## Application Domain
 <img width="780" height="517" alt="Application Domain Analysis" src="DomainAnalysis.png" />
 
 This is a domain model of a  small funding platform: a User (assisted by an AI that answers need-related questions) interacts with two roles—Helper (username/password) and U-Fund Manager (admin credentials). Helpers can create reviews (username, rating) about the website, owns a funding basket, and shops for needs. A Funding Basket holds multiple basket items (quantity, name, value, type) that send amounts toward specific needs (id, name, value, quantity, type). Baskets produce transactions that update the need cupboard, where needs are stored; the U-Fund Manager manages the cupboard and can delete reviews. Overall flow: Helper → Basket → Basket Items → Transaction → Need/Need Cupboard, with governance by the U-Fund Manager and guidance from the AI for users.
 
 
+***
 
+***
 
 ## Architecture and Design
 <img width="789" height="382" alt="Architecture Design" src="ArchitectureAndDesign.png" />
-
 
 
 This section describes the application architecture.
