@@ -187,7 +187,7 @@ __Services:__
   
 ***
 
-__Sequences:__
+__Some Sequence Diagrams:__
 
 <img height="382" alt="Move To Funding Sequence Diagram" src="MoveToFundingSequenceDiagram.png"/>
 
