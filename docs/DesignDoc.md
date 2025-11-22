@@ -3,11 +3,6 @@ geometry: margin=1in
 ---
 # PROJECT Design Documentation
 
-> _The following template provides the headings for your Design
-> Documentation.  As you edit each section make sure you remove these
-> commentary 'blockquotes'; the lines that start with a > character
-> and appear in the generated PDF in italics but do so only **after** all team members agree that the requirements for that section and current Sprint have been met. **Do not** delete future Sprint expectations._
-
 ## Team Information
 * Team name: CTRL
 * Team members
@@ -45,13 +40,43 @@ This section describes the features of the application.
 The MVP supports simple authentication with login and logout. The reserved username admin designates the U-fund Manager role; any other username is treated as a Helper. Helpers can browse and search a catalog of “needs,” add selected items to a personal funding basket, and then check out to fund the items in that basket. The U-fund Manager maintains the “needs cupboard,” with permission to add, update, and delete needs, but cannot view any individual funding basket to keep contributor activity private and roles separated. All application state (the needs cupboard, baskets, and relevant user interactions) is persisted to files so updates survive restarts and can be reloaded on the next session.
 
 ### MVP Features
->  _**[Sprint 4]** Provide a list of top-level Epics and/or Stories of the MVP._
+
+**Epic - Authentication and Roles**
+  * As a visitor, I can log in with a username so I can use the system as either a Helper or the U-fund Manager. 
+  * As the user logged in as admin, I am treated as the U-fund Manager and taken to the admin view while any other username logs me in as a Helper.
+  * As any logged in user, I can log out and return to the home page.
+
+**Epic - Manage the Needs Cupboard (U-fund Manager)**
+  * As the U-fund Manager, I can view the full list of needs currently in the cupboard.
+  * As the U-fund Manager, I can create a new need by specifying its name, value, quantity, and type.
+  * As the U-fund Manager, I can update or delete existing needs so the cupboard always reflects the current set of items available for funding.
+  * As the U-fund Manager, I can edit the donation goal so it can reflect the current state of our goals.
+  * As the U-fund Manager, I can delete users so that I can prevent them from accessing the application.
+
+**Epic - Helper Functionality**
+  * As a Helper, I can view all available needs in the cupboard so I can decide what to fund.
+  * As a Helper, I can search needs by name, type, quantity, and value to find causes that interest me.
+  * As a Helper, I can add a need from the cupboard to my personal funding basket.
+  * As a Helper, I can adjust quantities or remove items from my basket so my planned contribution matches what I want to fund.
+  * As a Helper, I can see a list of all items currently in my basket.
+
+**Epic -  Persistence and Application State**
+  * As the system, I load needs, user baskets, reviews,  and account data from JSON files at startup so that needed data is displayed properly to users.
+  * As for the system, I save updated needs and baskets back to JSON whenever changes occur so the cupboard and user baskets remain consistent across sessions.
+
+**Epic - Reviews**
+  * As a user, I can see two random reviews on the homepage so I can get an initial perspective on the application.
+  * As a Helper, I can add a review with stars and a description so that I can provide feedback on the application.
+  * As the U-fund Manager, I can delete a review so that I can moderate any harmful messages.
+
+**Epic - AI**
+  * As a helper, I can use P.H.I.L on any page so that I can learn more about the application.
 
 ### Enhancements
-> _**[Sprint 4]** Describe what enhancements you have implemented for the project._
 
-One of the enhancements implemented in the project is the review system. This system allows users to place reviews on their experiences with the site and assign it a rating from 1-5. These reviews will then be posted for all other users to see on the review page with a corresponding number of stars to the rating being displayed. Additionally, we added a reviews section to the homepage that displays two random reviews that have been placed. The user can also shuffle the reviews displayed on the homepage to get two new random reviews. While the admin is unable to place a review, they have the ability to delete any review if they determine it's contents to be harmful or malicious. The backend of the review system was implemented across all four tiers including the model, persistance, controller, and service tier. Specifically, Review.java is the review model, ReviewFileDAO.java is the review persistance, ReviewController.java is the review controller, and ReviewServiceImplementation.java is the review service. A review contains an id, the username of the user who left it, the review text, and the rating. All reviews are saved in the reviews.json file. 
+One of the enhancements implemented in the project is the review system. This system allows users to place reviews on their experiences with the site and assign it a rating from 1-5. These reviews will then be posted for all other users to see on the review page with a corresponding number of stars to the rating being displayed. Additionally, we added a reviews section to the homepage that displays two random reviews that have been placed. The user can also shuffle the reviews displayed on the homepage to get two new random reviews. While the admin is unable to place a review, they have the ability to delete any review if they determine it's contents to be harmful or malicious. The backend of the review system was implemented across all four tiers including the model, persistence, controller, and service tier. Specifically, Review.java is the review model, ReviewFileDAO.java is the review persistence, ReviewController.java is the review controller, and ReviewServiceImplementation.java is the review service. A review contains an id, the username of the user who left it, the review text, and the rating. All reviews are saved in the reviews.json file. 
 
+Another enhancement implemented is the AI chatbot, Personal Helper for Improving Lives, or P.H.I.L.. This chatbot allows users to ask questions about individual needs like what they are, or how they are used. P.H.I.L. also has access to view the needs cupboard, so when prompted something like, "I want to help out! what should I donate to?" P.H.I.L. can respond with admin needs that have the lowest support and how much they cost. The chatbot was implemented across all four tiers including the model, persistence, controller, and service tiers.
 
 ## Application Domain
 <img width="780" height="517" alt="Application Domain Analysis" src="DomainAnalysis.png" />
@@ -97,11 +122,11 @@ In the home-page, any logged-in user will see a section dedicated to showcasing 
 
 When logged in, any user can navigate to the reviews page from the navigation bar. Here, non-admins have a field to create a review given the rating and description. Admins have the ability to delete any individual review.
 
+*** 
+
+***
+
 ### View Tier
-> _**[Sprint 4]** Provide a summary of the View Tier UI of your architecture.
-> Describe the types of components in the tier and describe their
-> responsibilities.  This should be a narrative description, i.e. it has
-> a flow or "story line" that the reader can follow._
 
 __Angular components: (components will be referred to by their folder name, ie. helper-page, modal-host, nav-bar...)__
 
@@ -149,64 +174,33 @@ __Services:__
   - The admin-page-service, ai-service, funding-basket-service, needs-cupboard-service, donation(donation service) and review-service connect the front-end to the API through http requests. 
   - The modal-service contains user input logic for the modal-host component
   
-
 ***
-
-> _**[Sprint 4]** You must  provide at least **2 sequence diagrams** as is relevant to a particular aspects 
-> of the design that you are describing.  (**For example**, in a shopping experience application you might create a 
-> sequence diagram of a customer searching for an item and adding to their cart.)
-> As these can span multiple tiers, be sure to include an relevant HTTP requests from the client-side to the server-side 
-> to help illustrate the end-to-end flow._
 
 __Sequences:__
 
-- Checkout: home-page -> login-page -> helper-page -> checkout-page -> checkout
-
-- Admin: home-page -> login-page -> admin-page
-
-- Reviews: home-page -> login-page -> reviews-page
-
-- AI: home-page -> ai
+<img height="382" alt="Move To Funding Sequence Diagram" src="MoveToFundingSequenceDiagram.png"/>
 
 __Add Need from Cupboard to Funding Basket:__
-<img height="382" alt="Move To Funding Sequence Diagram" src="MoveToFundingSequenceDiagram.png"/>
 On the helper-page, the user clicks the "Add to Cart" or "Donate Extra" button (the button displays different text depending on the need's surplus status, but same logic) in the needs-cupboard that sends a request to the funding-basket-service that then sends a request to the API, which after more requests within the API, returns the status of success or an error. When a success status is received, sends a broadcast to the rest of the application notifying that the needs have been updated.
 
+<img height="382" alt="Checkout Sequence Diagram" src="CheckoutSequenceDiagram.png"/>
 
 __Checkout a need:__
-<img height="382" alt="Checkout Sequence Diagram" src="CheckoutSequenceDiagram.png"/>
-On the checkout-page, in the checkout component, the user clicks "Checkout" button that first checks every need in the funding basket, calculates the total of the basket, and calls the donation (service) to update the total donation count based on that calculation. The donation (service) then sends an http request to the DonationController in the API, which then returns the resulting Donation of the update to the front end.
+On the checkout-page, in the checkout component, the user clicks "Checkout" button that first checks every need in the funding basket, calculates the total of the basket, and calls the donation (service) to update the total donation count based on that calculation. The donation (service) then sends an http request to the DonationController in the API, which then returns the resulting Donation of the update to the front end. Then, for each need in the use's funding basket, the checkout component finds the matching need in the need cupboard and modifies its current quantity. Afterwards, the component sends a broadcast to the rest of the application notifying that the needs have been updated, and then routes to the helper-page. 
 
-<img height="382" alt="Checkout Sequence Diagram (Donations)" src="checkoutDonationsSequence.png"/>
-
-Then, for each need in the user's funding basket, the checkout component finds the matching need in the need cupboard and modifies its current quantity. 
-
-
-<img height="382" alt="Checkout Sequence Diagram (Basket)" src="checkoutFundBasketSequenceDiagram.png"/>
-
-Afterwards, the component sends a broadcast to the rest of the application notifying that the needs have been updated, and then routes to the helper-page. 
-
-<img height="382" alt="Checkout Sequence Diagram (Cupboard)" src="checkoutNeedsSequenceDiagram.png"/>
+<img height="382" alt="Create Review Sequence Diagram" src="ReviewSequenceDiagram.png"/>
 
 __Create Review:__
-<img height="382" alt="Create Review Sequence Diagram" src="ReviewSequenceDiagram.png"/>
 On the review-page, the user fills in the Create Review card located on the top of the page. After filling in the information and clicking "Create Review", the component calls the review-service to add a review, which then sends an http request to the ReviewController in the API, which after more requests sent within the API, returns the status of success or an error. The front-end then sends a broadcast to the rest of the application notifying that the reviews have been updated. This currently only is checked by the home-page, which refreshes the displayed reviews if one of the displays was the target for deletion. 
 
-__Prompt AI Chatbot, P.H.I.L.:__
 <img height="382" alt="Prompt AI Sequence Diagram" src="AISequenceDiagram.png"/>
+
+__Prompt AI Chatbot, P.H.I.L.:__
 On any page, with the ai tab toggled open, the user fills in the "Enter Prompt" text area. After filling in the information and clicking "Get Response", the component calls the ai-service to create a response. The service then sends a http request to the GeminiAPIController in the api, which further sends requests to other aspects of the API, and then to the Gemini API that returns the response, which is then returned back up to the front end and displayed in the textbox. 
 
 ***
 
 ***
-
-
-> _**[Sprint 4]** To adequately show your system, you will need to present the **class diagrams** where relevant in your design. Some additional tips:_
- >* _Class diagrams only apply to the **ViewModel** and **Model** Tier_
->* _A single class diagram of the entire system will not be effective. You may start with one, but will be need to break it down into smaller sections to account for requirements of each of the Tier static models below._
- >* _Correct labeling of relationships with proper notation for the relationship type, multiplicities, and navigation information will be important._
- >* _Include other details such as attributes and method signatures that you think are needed to support the level of detail in your discussion._
-
 
 ### ViewModel Tier
 
@@ -263,22 +257,22 @@ On any page, with the ai tab toggled open, the user fills in the "Enter Prompt" 
   * deleteNeedType()
       * Handles HTTP DELETE requests to the "/needs"
       * @param type , type of need to be deleted
-      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
+      * @return a Response entity containing HttpStatus.OK if the deletion was successful,
       * a HttpStatus.NOT_FOUND if a need of id doesn't exist
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred. 
       * Deletes a need given it contains the given type.
   * deleteAll()
       * Handles HTTP DELETE requests to the "/needs"
-      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
+      * @return a Response entity containing HttpStatus.OK if the deletion was successful,
       * a HttpStatus.NOT_FOUND if a need of id doesn't exist
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured.
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
       * Deletes all needs in the Cupboard. 
   * deleteNeedName()
       * Handles HTTP DELETE requests to the "/needs"
       * @param name , string to check if name contains
       * @return a Response entity containing HttpStatus.OK if the deletion was successful,
       * a HttpStatus.NOT_FOUND if a need of id doesn't exist
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred. 
       * Deletes needs given it contains the specified name.
     
 * FundingBasketController.java - Handles HTTP requests from the model tier for the Funding Basket.
@@ -286,45 +280,45 @@ On any page, with the ai tab toggled open, the user fills in the "Enter Prompt" 
       * Handles HTTP GET requests to "/funding_basket_needs/users"
       * @return a Response entity containing HttpStatus.OK if the array of users is returned,
       * a HttpStatus.NO_CONTENT if the returned data is null
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured.
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
   * getUsernames()
       * Handles HTTP GET requests to "/funding_basket_needs/usernames"
       * @return a Response entity containing HttpStatus.OK if the array of users is returned,
       * a HttpStatus.NO_CONTENT if the returned data is null
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred. 
   * getNeed()
       * Handles HTTP GET requests to "/funding_basket_needs/userName/id"
       * @param userName: the user to search in
       * @param id: the searched objects id
       * @return a Response entity containing HttpStatus.OK if the search was successful,
       * a HttpStatus.NOT_FOUND if the search fails due to a non existent id
-      *  HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+      *  HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred. 
   * getNeeds()
       * Handles HTTP GET requests to "/funding_basket_needs/userName/needs"
       * @param userName: the user to retrieve from
       * @return a Response entity containing HttpStatus.OK if the array of needs is returned,
       * a HttpStatus.NO_CONTENT if the returned data is null
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred. 
   * searchNeeds()
       * Handles HTTP GET requests to "/funding_basket_needs/userName/?name= "name""
       * @param userName: the user to search from
       * @param name , check if need contains String name
       * @return a Response entity containing HttpStatus.OK if the search was successful,
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred. 
   * createNeed()
       * Handles HTTP POST requests to "/funding_basket_needs/userName "need""
       * @param userName: the user to create in
       * @param need: the object to be created
       * @return a Response entity containing HttpStatus.CREATED if the creation was successful,
       * a HttpStatus.CONFLICT if the creation fails due to a conflict, or a HttpStatus.INTERNAL_SERVER_ERROR
-      * if an I/O error occured. 
+      * if an I/O error occurred. 
   * updateNeed()
       * Handles HTTP PUT requests to "/funding_basket_needs/userName "need""
       * @param userName: the user to update
       * @param need: the object to be updated
       * @return a Response entity containing HttpStatus.OK if the update was successful,
       * a HttpStatus.NOT_FOUND if need doesn't exist
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred. 
   * updateNeedVisibility()
       * Handles HTTP PUT requests to "/funding_basket_needs/userName/id/visible/"visible""
       * @param userName: the user to update
@@ -332,41 +326,41 @@ On any page, with the ai tab toggled open, the user fills in the "Enter Prompt" 
       * @param visible: the visibility state to set the need
       * @return a Response entity containing HttpStatus.OK if the update was successful,
       * a HttpStatus.NOT_FOUND if need doesn't exist
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred. 
   * deleteNeedId()
       * Handles HTTP DELETE requests to "/funding_basket_needs/userName/id"
       * @param userName: the user to delete from
       * @param id , id of need to be deleted
-      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
+      * @return a Response entity containing HttpStatus.OK if the deletion was successful,
       * a HttpStatus.NOT_FOUND if a need of id doesn't exist
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured.
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
   * deleteNeedType()
       * Handles HTTP DELETE requests to "/funding_basket_needs/userName/type/type"
       * @param userName: the user to delete from
       * @param type , type of need to be deleted
-      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
+      * @return a Response entity containing HttpStatus.OK if the deletion was successful,
       * a HttpStatus.NOT_FOUND if a need of id doesn't exist
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred. 
   * deleteAll()
       * Handles HTTP DELETE requests to "/funding_basket_needs/userName"
       * @param userName: the user to delete from
-      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
+      * @return a Response entity containing HttpStatus.OK if the deletion was successful,
       * a HttpStatus.NOT_FOUND if a need of id doesn't exist
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured. 
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred. 
   * deleteNeedName()
       * Handles HTTP DELETE requests to "/funding_basket_needs/name/"name""
       * @param userName: the user to delete from
       * @param name , string to check if name contains
-      * @return a Response entity containing HttpStatus.OK if the deletionn was successful,
+      * @return a Response entity containing HttpStatus.OK if the deletion was successful,
       * a HttpStatus.NOT_FOUND if a need of id doesn't exist
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured.
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred.
    
 * ReviewController.java - Handles HTTP requests for reviews
   * getReviews()
       * Handles HTTP GET requests to "/reviews"
       * @return a Response entity containing HttpStatus.OK if the array of reviews is successfully returned,
       * an HttpStatus.NO_CONTENT if there are no reviews
-      * an HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured
+      * an HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred
   * getReviewsByRating()
       * Handles HTTP GET requests to "/reviews/rating/{rating}"
       * @param rating: the rating value the reviews are filtered by
@@ -378,7 +372,7 @@ On any page, with the ai tab toggled open, the user fills in the "Enter Prompt" 
       * @param review: the Review object to be created
       * @return a Response entity containing HttpStatus.CREATED if the review is successfully created,
       * HttpStatus.CONFLICT if the creation failed,
-      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occured
+      * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurred
   * deleteReview()
       * Handles HTTP DELETE requests to "/reviews/{id}"
       * @param id: the id of the review that is being deleted
@@ -393,7 +387,7 @@ On any page, with the ai tab toggled open, the user fills in the "Enter Prompt" 
       * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurs
   * deleteAllReviews()
       * Handles HTTP DELETE requests to "/reviews"
-      * @return a Response entity contatin HttpStatus.OK if all the reviews were deleted successfully,
+      * @return a Response entity contain HttpStatus.OK if all the reviews were deleted successfully,
       * HttpStatus.NOT_FOUND if there are no reviews
       * HttpStatus.INTERNAL_SERVER_ERROR if an I/O error occurs. 
 
@@ -457,17 +451,29 @@ On any page, with the ai tab toggled open, the user fills in the "Enter Prompt" 
     * @throws IOException
     * @PostMapping
 
+***
 
-> _**[Sprint 4]** Provide a summary of this tier of your architecture. This
-> section will follow the same instructions that are given for the View
-> Tier above._
+The ViewModel tier is the middle layer of the system. It exposes the REST API that the Angular front end calls and shields the UI from persistence details. Each feature follows the same structure: a controller that defines HTTP endpoints, a service interface that describes the business operations, and a concrete service implementation that delegates to the appropriate DAO in the Model tier.
 
-> _At appropriate places as part of this narrative provide **one** or more updated and **properly labeled**
-> static models (UML class diagrams) with some details such as associations (connections) between classes, and critical attributes and methods. (**Be sure** to revisit the Static **UML Review Sheet** to ensure your class diagrams are using correct format and syntax.)_
-> 
-<img width="929" height="716" alt="View Model 1 Architecture" src="ViewModelClasses1.png" />
-<img width="929" height="716" alt="View Model 2 Architecture" src="ViewModelClasses2.png" />
+For the core shopping flow, NeedsCupboardController and FundingBasketController provide endpoints for working with needs and funding baskets. NeedsCupboardController handles global operations on the shared cupboard of Need objects, passing work to NeedsCupboardService and NeedsCupboardServiceImplementation, which in turn call NeedsCupboardDAO. FundingBasketController manages per-user baskets (fetching, searching, updating, and clearing items) through FundingBasketService and FundingBasketServiceImplementation, which talk to FundingBasketDAO. Together these classes implement everything the Needs page and Checkout page require to move items between cupboard and basket and to keep user-specific state.
 
+<img width="929" height="716" alt="Cupboard Class Diagram" src="NeedsCupboardClassDiagram.png" />
+<img width="929" height="716" alt="Funding Basket Class Diagram" src="FundingBasketClassDiagram.png" />
+
+Account management uses the same pattern. AccountController exposes routes for listing accounts, getting usernames, checking if a username exists, creating accounts, logging in, and deleting accounts. It depends on AccountService and AccountServiceImplementation, which rely on AccountDAO and, when needed, coordinate with FundingBasketDAO so that user data stays consistent when accounts are removed. The review system mirrors this as well: ReviewController accepts requests to fetch, filter, create, and delete reviews, forwarding them to ReviewService and ReviewServiceImplementation, which operate on review data through ReviewDAO.
+
+<img width="929" height="716" alt="Account Class Diagram" src="AccountClassDiagram.png" />
+<img width="929" height="716" alt="Review Class Diagram" src="ReviewClassDiagram.png" />
+
+Enhancement features are also integrated into this tier. DonationController provides endpoints to read donation status, add new donations, and update the donation goal, delegating to DonationService and DonationServiceImplementation, which use DonationDAO for storage. GeminiAPIController offers an endpoint that takes a prompt and returns an AI-generated reply; it calls GeminiAPIService and GeminiAPIServiceImplementation, which wrap the Gemini client and use GeminiFileDAO to persist prompt response pairs as APIResponse objects. Overall, the ViewModel tier ties the Angular UI to the Model tier through a consistent controller–service–DAO pattern, covering needs, baskets, accounts, reviews, donations, and AI assistance.
+
+
+<img width="929" height="716" alt="Donation Class Diagram" src="DonationClassDiagram.png" />
+<img width="929" height="716" alt="Gemini API Class Diagram" src="GeminiAPIClassDiagram.png" />
+
+***
+
+***
 
 ### Model Tier
 
@@ -487,14 +493,14 @@ Finally, our Model tier has an Account.java and AccountDataWrapper.java. Account
   
   * FundingBasketDataWrapper.java - Create a Data Wrapper object with a given list of users (List<User>).
     * Contains (getUsers() -> List<User>) that returns the list of users.
-    * The DataWrapper is used in FundingBasketFileDAO.java to wrap the data taken from funding_basket.json into a list of Users for proccessing by the application, and then later setting data proccessed by the application to the .json file.
+    * The DataWrapper is used in FundingBasketFileDAO.java to wrap the data taken from funding_basket.json into a list of Users for processing by the application, and then later setting data processed by the application to the .json file.
   * User.java - Create a User object with a given name and basket(list of needs)
     * Contains getters (getName() -> String, getNeeds() -> Need[]) and a (toString() -> String) override.
     * This is used in FundingBasketFileDAO.java to hold data for a user/s.
 
   * NeedCupboardFileDAO.java - the working logic behind our application for accessing the Needs Cupboard. 
     * getNeedsArray()
-      * @param text, if this string is passed in only add needs contaiting to Array
+      * @param text, if this string is passed in only add needs containing to Array
       * @return Array of Needs
       * Creates array of Needs from tree map for needs that contain "text".
       * if "text" is null, array will contain all needs in the treemap.
@@ -531,18 +537,18 @@ Finally, our Model tier has an Account.java and AccountDataWrapper.java. Account
       * @return false, if deletion failed 
     * deleteNeedType()
       * Delete all needs of specific type
-      * Seemed liike using a removeIf is the best way to do this 
+      * Seemed like using a removeIf is the best way to do this 
       * since you cant iterate through a tree map and delete things without throwing error.
       * @param int id
-      * @return true if file was updated succesfully
+      * @return true if file was updated successfully
       * @return false, if deletion failed
     * deleteAll()
       * Delete all needs
-      * @return true if file was updated succesfully
+      * @return true if file was updated successfully
       * @return false, if deletion failed
     * deleteNeedName()
       * Delete all needs of specific name
-      * @return true if file was updated succesfully
+      * @return true if file was updated successfully
       * @return false, if deletion failed 
 
   * FundingBasketFileDAO.java - the working logic behind our application for accessing the Needs Cupboard. 
@@ -586,7 +592,7 @@ Finally, our Model tier has an Account.java and AccountDataWrapper.java. Account
       * @param userName: the name of the user the new need belongs to
       * @param need: the input object containing the id, name, value, quantity, and type
       * @return the new need
-      * @throws I/O exception if an error occured while saving the new Need to storage
+      * @throws I/O exception if an error occurred while saving the new Need to storage
     * updateNeed()
       * Update need's contents, ie name, value, quantity, type
       * @param userName the user this method will modify
@@ -596,25 +602,25 @@ Finally, our Model tier has an Account.java and AccountDataWrapper.java. Account
       * Delete need at specified id
       * @param userName the user this method will modify
       * @param int id
-      * @return true if file was updated succesfully
+      * @return true if file was updated successfully
       * @return false, if deletion failed
     * deleteNeedType()
       * Delete all needs of specific type
-      * Seemed liike using a removeIf is the best way to do this 
+      * Seemed like using a removeIf is the best way to do this 
       * since you cant iterate through a tree map and delete things without throwing error.
       * @param userName the user this method will modify
       * @param string type
-      * @return true if file was updated succesfully
+      * @return true if file was updated successfully
       * @return false, if deletion failed 
     * deleteAll()
       * Delete all needs
       * @param userName the user this method will modify
-      * @return true if file was updated succesfully
+      * @return true if file was updated successfully
       * @return false, if deletion failed 
     * deleteNeedName()
       * Delete all needs of specific name
       * @param userName the user this method will modify
-      * @return true if file was updated succesfully
+      * @return true if file was updated successfully
       * @return false, if deletion failed
         
   * Review.java
@@ -624,7 +630,7 @@ Finally, our Model tier has an Account.java and AccountDataWrapper.java. Account
   
   * ReviewFileDAO.java - the working logic behind our application for accessing Reviews.
     * getReviews()
-      * Loads all of the reviews from the persistance storage
+      * Loads all of the reviews from the persistence storage
       * @return an array of all reviews stored in the JSON file
     * getReviewsByRating
       * Filters the list of reviews to only show those that have the same rating as specified
@@ -634,7 +640,7 @@ Finally, our Model tier has an Account.java and AccountDataWrapper.java. Account
       * Adds a new review into the JSON file and assigns it a unique id.
       * @param Review review: the review object that is being added
       * @return the new Review now with an id
-      * @throws I/O exception if an error ocurred
+      * @throws I/O exception if an error occurred
     * deleteReview()
       * Removes a review from the JSON based on its id
       * @param int id: the id of the review to delete
@@ -644,7 +650,7 @@ Finally, our Model tier has an Account.java and AccountDataWrapper.java. Account
       * @param String userName: the username of the user whose reviews should be deleted
       * @return true if the review was deleted successfully or false if it was not
     * deleteAll()
-      * Deletes all the reviews from the persistance storage
+      * Deletes all the reviews from the persistence storage
       * @return true if the file was updated successfully or false if it failed
     * save()
       * Write the current list of reviews into the JSON file
@@ -775,6 +781,9 @@ Finally, our Model tier has an Account.java and AccountDataWrapper.java. Account
 <img width="593" height="332" alt="Model Tier Classes " src="ModelClasses.png" />
 <img width="593" height="332" alt="DAO Model Tier Classes " src="DAOModelClasses.png"/>
 
+***
+
+***
 
 ## OO Design Principles
 Sprint 1: The two Object Oriented Design principles that the CTRL team is championing throughout the design and implementation are Low Coupling and Open/Close. The Low Coupling principle is aimed towards minimizing interdependence between different classes.  One example of Low Coupling in our project can be shown through our Need and User model classes. 
@@ -790,7 +799,7 @@ The need class only takes in primitive types as variables, which means that it h
 As a result of the persistence tier being designed this way, if something such as how the data is stored is modified, the rest of the system will remain unaffected following the open/closed principle. 
 
 
-Sprint 2: The two Object Oriented Design principles that the CTRL team is championing throughout Sprint 2 are the Law of Demeter and Pure Fabrication. The Law of Demeter principle is being followed through our implementation of service classes, which serves as an inbetween for the controller and DAO. This prevents the classes from having to call other classes that are distant which would break the “don’t talk to strangers” principle for the Law of Demeter. This can be shown through NeedsCupboardServiceImplementation and how it only talks to its DAO. 
+Sprint 2: The two Object Oriented Design principles that the CTRL team is championing throughout Sprint 2 are the Law of Demeter and Pure Fabrication. The Law of Demeter principle is being followed through our implementation of service classes, which serves as an in-between for the controller and DAO. This prevents the classes from having to call other classes that are distant which would break the “don’t talk to strangers” principle for the Law of Demeter. This can be shown through NeedsCupboardServiceImplementation and how it only talks to its DAO. 
 
 <img width="493" height="332" alt="NeedsCupboardServiceImplementation" src="NeedsCupboardServiceImplementation.png" />
 
@@ -822,13 +831,17 @@ Similarly, the service tier does not depend on the NeedsCupboardFileDAO's concre
 
 <img width="593" height="332" alt="Review Controller POST method" src="s4ooService.png" />
 
-NeedsCupboardFileDAO in the persistance tier follows the dependency inversion principle by not being dependent on the controller or service tiers and only depending on the Need model. The Need model file is considered a domain abstraction which means that the persistance tier is only dependent on abstractions and not higher level logic. This is shown below in how the code only utilizes the Need model file and not any of the files from the controller or service files. 
+NeedsCupboardFileDAO in the persistence tier follows the dependency inversion principle by not being dependent on the controller or service tiers and only depending on the Need model. The Need model file is considered a domain abstraction which means that the persistence tier is only dependent on abstractions and not higher level logic. This is shown below in how the code only utilizes the Need model file and not any of the files from the controller or service files. 
 
 <img width="593" height="332" alt="Review Controller POST method" src="s4ooPersistance.png" />
 
 Finally, as stated above the Need model file is a domain abstraction that is not dependent on any of the other higher level modules. This can be demonstrated by the Need constructor where no higher level files are used, proving that the Need model file and by extension the rest of the NeedsCupboard system follows the dependency inversion principle. 
 
 <img width="593" height="332" alt="Review Controller POST method" src="s4ooModel.png" />
+
+***
+
+***
 
 ## Static Code Analysis/Future Design Improvements
 Our code analysis proved helpful in highlighting key flaws in our design. Through the use of both SonarQube and SonarScanner we were able to get both numeric values that showed our coverage as well as key insight as to what in our code raises alarm. This allows the team to retrospectively improve on fields of our code that had issues.
@@ -850,20 +863,27 @@ In both our front and back end we had a lot of nested code that could cause both
 <img width="800" height="400" alt="Code Analysis" src="Nesting Code.png" />
 
 If we had more time we would find it beneficial to refactor the code in such a way that conforms to good code writing practices. Such as creating a helper function that can replace the position of long nested calls.
+
+***
+
 ## Testing
 ### Acceptance Testing
 Across Sprint 2, acceptance testing indicates that the majority of user stories have fully met their acceptance criteria. Core user flows behaving as expected like the persistent navigation bar correctly routes to myResearch (Homepage), Login, and Checkout; the Login Page accurately authenticates valid users and their roles; and the needs list currently sending data to the funding basket. One acceptance criteria failure (which was later resolved) was where the wrong user’s funding basket appeared after login. Another acceptance criteria failure that was fixed was the Update Need feature on the Admin Page which attempts to modify an existing need, currently reset fields to empty or zero and does not save updates. Other than that, all other tested stories passed without exception. 
 
 For sprint three, our acceptance testing has been nearly fully passed. The fails came in the form of two features we did not end up implementing. One was implementing designated types, which restricted the types the admin could enter to be a set list. The other is deleting reviews by username and filtering reviews by rating. We did not get to them due to the time constraints alongside other workloads, but realistically we could get them done in a good week of dedicated work.
 
+***
 
 ### Unit Testing and Code Coverage
 Our final code coverage achieved across all tiers of the ufund-api was 97%. Specifically, the Persistance tier had 96% coverage, the Controller tier had 97% coverage, the model tier had 96% coverage, and the service tier has 98% coverage. Our coverage target for each tier was 95% with the goal of each specific file element having at least 90% coverage. These values were selected to ensure we had strong, functional code across all tiers and files. Additionally, we chose to set the coverage targets that high to ensure that each method has at least some form of testing so nothing falls through and gets missed. Overall, our code coverage reached the target in every case except for the gemini ai chatbot files in the controller and model tiers. This was largely a result of the AI being one of the last things to be completed before the end of the sprint. Despite those two files falling short of the 90% target, the model and controller tiers still surpassed the 95% coverage goal for tiers.
 
 <img width="821" height="718" alt="General Code Coverage Reports" src="s3finalcoverage.png" />
 
+***
+
+***
+
 ## Ongoing Rationale
->_**[Sprint 1, 2, 3 & 4]** Throughout the project, provide a time stamp **(yyyy/mm/dd): Sprint # and description** of any _**mayor**_ team decisions or design milestones/changes and corresponding justification._
 
 * Sprint #1:
 * 2025/09/10
@@ -933,4 +953,11 @@ Our final code coverage achieved across all tiers of the ufund-api was 97%. Spec
   * Merge sprint 3 feature branches into main and continue updating design doc to stay on schedule for sprint 3. 
   * With sprint deadline approaching the team looked over the rubric.
   * Also scrapped the designated types concept as we wanted to focus on finishing MVP and making sure our enhancements are of high quality.
+ 
+* Sprint #4:
+  
+* 11/15/2025 - 11/17/2025
+  * Took advantage of extra time to flesh out some more features into our project:
+  * More popups, refactoring real time update implementation, AI improvements, etc.
+
 
