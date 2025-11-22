@@ -175,7 +175,18 @@ On the helper-page, the user clicks the "Add to Cart" or "Donate Extra" button (
 
 __Checkout a need:__
 <img height="382" alt="Checkout Sequence Diagram" src="CheckoutSequenceDiagram.png"/>
-On the checkout-page, in the checkout component, the user clicks "Checkout" button that first checks every need in the funding basket, calculates the total of the basket, and calls the donation (service) to update the total donation count based on that calculation. The donation (service) then sends an http request to the DonationController in the API, which then returns the resulting Donation of the update to the front end. Then, for each need in the use's funding basket, the checkout component finds the matching need in the need cupboard and modifies its current quantity. Afterwards, the component sends a broadcast to the rest of the application notifying that the needs have been updated, and then routes to the helper-page. 
+On the checkout-page, in the checkout component, the user clicks "Checkout" button that first checks every need in the funding basket, calculates the total of the basket, and calls the donation (service) to update the total donation count based on that calculation. The donation (service) then sends an http request to the DonationController in the API, which then returns the resulting Donation of the update to the front end.
+
+<img height="382" alt="Checkout Sequence Diagram (Donations)" src="checkoutDonationsSequence.png"/>
+
+Then, for each need in the user's funding basket, the checkout component finds the matching need in the need cupboard and modifies its current quantity. 
+
+
+<img height="382" alt="Checkout Sequence Diagram (Basket)" src="checkoutFundBasketSequenceDiagram.png"/>
+
+Afterwards, the component sends a broadcast to the rest of the application notifying that the needs have been updated, and then routes to the helper-page. 
+
+<img height="382" alt="Checkout Sequence Diagram (Cupboard)" src="checkoutNeedsSequenceDiagram.png"/>
 
 __Create Review:__
 <img height="382" alt="Create Review Sequence Diagram" src="ReviewSequenceDiagram.png"/>
