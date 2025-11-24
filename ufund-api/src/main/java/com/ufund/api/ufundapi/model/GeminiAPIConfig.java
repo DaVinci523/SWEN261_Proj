@@ -22,7 +22,7 @@
             Builder clientBuilder = com.google.genai.Client.builder();
 
             // sets the API to use in the Builder 
-            clientBuilder = clientBuilder.apiKey("AIzaSyB3So1lECn4L2NRZlNhWhN7NAjmpEGlSPU");
+            clientBuilder = clientBuilder.apiKey("AIzaSyDSTlPSns_ukaxcF4uQkaCgUOPF1XX42lk");
 
             // builds the client
             return clientBuilder.build();
